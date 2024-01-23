@@ -17,23 +17,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "hash_map.h"
+#include "hash_set.h"
 #include <stdlib.h>
 #include <string.h>
 #define INIT_LEN 16
 
 static int
-sll_push_back(struct sll *sll, const int key, const int val)
+sll_push_back(struct sll *sll, const int key)
 {
     if (sll->head == NULL) {
         sll->head = sll->tail = malloc(sizeof(struct ht_node));
         sll->head->key = key;
-        sll->head->val = val;
         sll->head->next = NULL;
     } else {
         sll->tail->next = malloc(sizeof(struct ht_node));
         sll->tail->next->key = key;
-        sll->tail->next->val = val;
         sll->tail->next->next = NULL;
         sll->tail = sll->tail->next;
     }
@@ -42,13 +40,12 @@ sll_push_back(struct sll *sll, const int key, const int val)
 }
 
 static int
-sll_remove(struct sll *sll, const int key, int *val)
+sll_remove(struct sll *sll, const int key)
 {
     struct ht_node *tmp, *tmp_p = NULL;
     for (tmp = sll->head; tmp != NULL; tmp = tmp->next) {
         if (tmp->key == key) {
             struct ht_node *rmv = tmp;
-            *val = rmv->val;
             if (tmp_p != NULL)
                 tmp_p->next = rmv->next;
             else
@@ -65,90 +62,89 @@ sll_remove(struct sll *sll, const int key, int *val)
 }
 
 static int
-hash_map_resize(hash_map *map, size_t new_size)
+hash_set_resize(hash_set *set, size_t new_size)
 {
-    struct sll *old = map->sll;
-    size_t old_size = map->sll_len;
-    map->sll_len = new_size;
-    map->sll = malloc(sizeof(struct sll) * map->sll_len);
-    for (size_t i = 0; i < map->sll_len; i++)
-        map->sll[i].head = map->sll[i].tail = NULL;
-    map->len = 0;
+    struct sll *old = set->sll;
+    size_t old_size = set->sll_len;
+    set->sll_len = new_size;
+    set->sll = malloc(sizeof(struct sll) * set->sll_len);
+    for (size_t i = 0; i < set->sll_len; i++)
+        set->sll[i].head = set->sll[i].tail = NULL;
+    set->len = 0;
 
     struct ht_node *node;
     for (size_t i = 0; i < old_size; i++)
         for (node = old[i].head; node != NULL; node = node->next)
-            if (hash_map_insert(map, node->key, node->val))
+            if (hash_set_insert(set, node->key))
                 return -1;
     free(old);
 
     return 0;
 }
 
-hash_map
-hash_map_new()
+hash_set
+hash_set_new()
 {
-    hash_map map;
-    map.sll = malloc(sizeof(struct sll) * INIT_LEN);
+    hash_set set;
+    set.sll = malloc(sizeof(struct sll) * INIT_LEN);
     for (size_t i = 0; i < INIT_LEN; i++)
-        map.sll[i].head = map.sll[i].tail = NULL;
-    map.sll_len = INIT_LEN;
-    map.len = 0;
-    memset(map.key, 0, sizeof(map.key)); /* DEBUG, shall not be used */
+        set.sll[i].head = set.sll[i].tail = NULL;
+    set.sll_len = INIT_LEN;
+    set.len = 0;
+    memset(set.key, 0, sizeof(set.key)); /* DEBUG, shall not be used */
 
-    return map;
+    return set;
 }
 
 int
-hash_map_insert(hash_map *map, const int key, const int val)
+hash_set_insert(hash_set *set, const int key)
 {
-    if (map->sll_len < map->len)
+    if (set->sll_len < set->len)
         return -1;
-    if (map->sll_len == map->len)
-        hash_map_resize(map, map->sll_len * 2);
+    if (set->sll_len == set->len)
+        hash_set_resize(set, set->sll_len * 2);
     
-    size_t idx = siphash24(&key, sizeof(key), map->key) % map->sll_len;
-    if (sll_push_back(&map->sll[idx], key, val))
+    size_t idx = siphash24(&key, sizeof(key), set->key) % set->sll_len;
+    if (sll_push_back(&set->sll[idx], key))
         return -1;
 
-    map->len++;
+    set->len++;
 
     return 0;
 }
 
 int
-hash_map_remove(hash_map *map, const int key, int *val)
+hash_set_remove(hash_set *set, const int key)
 {
-    size_t idx = siphash24(&key, sizeof(key), map->key) % map->sll_len;
-    if (sll_remove(&map->sll[idx], key, val))
+    size_t idx = siphash24(&key, sizeof(key), set->key) % set->sll_len;
+    if (sll_remove(&set->sll[idx], key))
         return -1;
 
-    map->len--;
+    set->len--;
 
-    if (map->len > INIT_LEN * 2 && map->sll_len / 3 >= map->len)
-        if (hash_map_resize(map, map->sll_len / 2))
+    if (set->len > INIT_LEN * 2 && set->sll_len / 3 >= set->len)
+        if (hash_set_resize(set, set->sll_len / 2))
             return -1;
 
     return 0;
 }
 
 int
-hash_map_search(hash_map *map, const int key, int *val)
+hash_set_search(hash_set *set, const int key)
 {
-    size_t idx = siphash24(&key, sizeof(key), map->key) % map->sll_len;
+    size_t idx = siphash24(&key, sizeof(key), set->key) % set->sll_len;
     struct ht_node *tmp;
-    for (tmp = map->sll[idx].head; tmp != NULL; tmp = tmp->next) {
+    for (tmp = set->sll[idx].head; tmp != NULL; tmp = tmp->next) {
         if (tmp->key == key) {
-            *val = tmp->val;
-            return 0;
+            return 1;
         }
     }
 
-    return -1;
+    return 0;
 }
 
 void
-hash_map_free(const hash_map map)
+hash_set_free(const hash_set set)
 {
-    free(map.sll);
+    free(set.sll);
 }
