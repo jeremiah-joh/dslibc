@@ -40,7 +40,7 @@ int vec_remove(vec *, const size_t, int *);
 int vec_getnth(vec *, const size_t, int *);
 int vec_setnth(vec *, const size_t, const int);
 int vec_append(vec *, const vec *);
-void vec_free(const vec);
+void vec_free(vec);
 
 vec_iter vec_iter_new(vec);
 int vec_iter_next(vec_iter *, int *);

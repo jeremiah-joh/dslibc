@@ -20,6 +20,9 @@
 #include "bst_map.h"
 #include <stdlib.h>
 #include <string.h>
+#define FREE(ptr)   \
+free(ptr);          \
+ptr = NULL;
 
 bst_map
 bst_map_new()
@@ -82,14 +85,14 @@ bst_map_remove(bst_map *map, const int key, int *val)
 
             if (parent == NULL) {
                 parent = tmp;
-                free(parent);
+                FREE(parent);
                 map->root = tmp->left ? tmp->left : tmp->right;
             } else {
                 if (parent->left == tmp)
                     parent->left = tmp->left ? tmp->left : tmp->right;
                 else
                     parent->right = tmp->left ? tmp->left : tmp->right;
-                free(tmp);
+                FREE(tmp);
             }
 
             map->len--;
@@ -127,11 +130,11 @@ recursive_free(struct bst_node *node)
         recursive_free(node->left);
     if (node->right != NULL)
         recursive_free(node->right);
-    free(node);
+    FREE(node);
 }
 
 void
-bst_map_free(const bst_map map)
+bst_map_free(bst_map map)
 {
     recursive_free(map.root);
 }

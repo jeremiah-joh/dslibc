@@ -43,7 +43,7 @@ hash_map hash_map_new();
 int hash_map_insert(hash_map *, const int, const int);
 int hash_map_remove(hash_map *, const int, int *);
 int hash_map_search(hash_map *, const int, int *);
-void hash_map_free(const hash_map);
+void hash_map_free(hash_map);
 
 /* <MIT License>
  Copyright (c) 2013  Marek Majkowski <marek@popcount.org>
@@ -121,7 +121,9 @@ void hash_map_free(const hash_map);
 	HALF_ROUND(v2,v1,v0,v3,17,21);
 
 
-uint64_t siphash24(const void *src, unsigned long src_sz, const char key[16]) {
+static uint64_t
+siphash24(const void *src, unsigned long src_sz, const char key[16])
+{
 	const uint64_t *_key = (uint64_t *)key;
 	uint64_t k0 = _le64toh(_key[0]);
 	uint64_t k1 = _le64toh(_key[1]);

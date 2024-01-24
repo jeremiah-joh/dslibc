@@ -20,6 +20,9 @@
 #include "bst_set.h"
 #include <stdlib.h>
 #include <string.h>
+#define FREE(ptr)   \
+free(ptr);          \
+ptr = NULL;
 
 bst_set
 bst_set_new()
@@ -82,14 +85,14 @@ bst_set_remove(bst_set *set, const int key)
         } else {
             if (parent == NULL) {
                 parent = tmp;
-                free(parent);
+                FREE(parent);
                 set->root = tmp->left ? tmp->left : tmp->right;
             } else {
                 if (parent->left == tmp)
                     parent->left = tmp->left ? tmp->left : tmp->right;
                 else
                     parent->right = tmp->left ? tmp->left : tmp->right;
-                free(tmp);
+                FREE(tmp);
             }
             set->len--;
             return 0;
@@ -125,11 +128,11 @@ recursive_free(struct bst_node *node)
         recursive_free(node->left);
     if (node->right != NULL)
         recursive_free(node->right);
-    free(node);
+    FREE(node);
 }
 
 void
-bst_set_free(const bst_set set)
+bst_set_free(bst_set set)
 {
     recursive_free(set.root);
 }

@@ -35,4 +35,4 @@ bst_set bst_set_new();
 int bst_insert(bst_set *, const int);
 int bst_remove(bst_set *, const int);
 int bst_search(bst_set *, const int);
-void bst_free(const bst_set);
+void bst_free(bst_set);

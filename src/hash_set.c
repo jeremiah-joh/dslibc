@@ -21,6 +21,9 @@
 #include <stdlib.h>
 #include <string.h>
 #define INIT_LEN 16
+#define FREE(ptr)   \
+free(ptr);          \
+ptr = NULL;
 
 static int
 sll_push_back(struct sll *sll, const int key)
@@ -50,7 +53,7 @@ sll_remove(struct sll *sll, const int key)
                 tmp_p->next = rmv->next;
             else
                 sll->head->next = rmv->next;
-            free(rmv);
+            FREE(rmv);
             
             return 0;
         }
@@ -77,7 +80,7 @@ hash_set_resize(hash_set *set, size_t new_size)
         for (node = old[i].head; node != NULL; node = node->next)
             if (hash_set_insert(set, node->key))
                 return -1;
-    free(old);
+    FREE(old);
 
     return 0;
 }
@@ -144,7 +147,7 @@ hash_set_search(hash_set *set, const int key)
 }
 
 void
-hash_set_free(const hash_set set)
+hash_set_free(hash_set set)
 {
-    free(set.sll);
+    FREE(set.sll);
 }

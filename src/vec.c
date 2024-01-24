@@ -20,6 +20,9 @@
 #include "vec.h"
 #include <stdlib.h>
 #include <string.h>
+#define FREE(ptr)   \
+free(ptr);          \
+ptr = NULL;
 
 vec
 vec_new()
@@ -163,9 +166,9 @@ vec_append(vec *l_vec, const vec *r_vec)
 }
 
 void
-vec_free(const vec vec)
+vec_free(vec vec)
 {
-    free(vec.data);
+    FREE(vec.data);
 }
 
 vec_iter

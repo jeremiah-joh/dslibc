@@ -20,6 +20,9 @@
 #include "ll.h"
 #include <stdlib.h>
 #include <string.h>
+#define FREE(ptr)   \
+free(ptr);          \
+ptr = NULL;
 
 sll
 sll_new()
@@ -57,7 +60,7 @@ sll_pop_back(sll *sll, int *data)
         return -1;
     
     *data = sll->tail->data;
-    free(sll->tail);
+    FREE(sll->tail);
 
     if (sll->len == 1) {
         sll->head = sll->tail = NULL;
@@ -106,7 +109,7 @@ sll_remove(sll *sll, const size_t at, int *data)
     struct sll_node *rmv = tmp->next;
     *data = rmv->data;
     tmp->next = rmv->next;
-    free(rmv);
+    FREE(rmv);
 
     return 0;
 }
@@ -174,11 +177,11 @@ sll_node_free(struct sll_node *node)
 {
     if (node != NULL)
         sll_node_free(node->next);
-    free(node);
+    FREE(node);
 }
 
 void
-sll_free(const sll sll)
+sll_free(sll sll)
 {
     sll_node_free(sll.head);
 }
@@ -270,7 +273,7 @@ dll_pop_back(dll *dll, int *data)
 
     *data = dll->tail->data;
     struct dll_node *prev = dll->tail->prev;
-    free(dll->tail);
+    FREE(dll->tail);
     dll->tail = prev;
     dll->tail->next = NULL;
     dll->len--;
@@ -313,7 +316,7 @@ dll_pop_front(dll *dll, int *data)
 
     *data = dll->head->data;
     struct dll_node *next = dll->head->next;
-    free(dll->head);
+    FREE(dll->head);
     dll->head = next;
     dll->head->prev = NULL;
     dll->len--;
@@ -379,7 +382,7 @@ dll_remove(dll *dll, const size_t at, int *data)
     tmp->prev->next = tmp->next;
     tmp->next->prev = tmp->prev;
     *data = tmp->data;
-    free(tmp);
+    FREE(tmp);
 
     dll->len--;
     
@@ -497,11 +500,11 @@ dll_node_free(struct dll_node *node)
 {
     if (node != NULL)
         dll_node_free(node->next);
-    free(node);
+    FREE(node);
 }
 
 void
-dll_free(const dll dll)
+dll_free(dll dll)
 {
     dll_node_free(dll.head);
 }

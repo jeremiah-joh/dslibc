@@ -36,4 +36,4 @@ bst_map bst_map_new();
 int bst_map_insert(bst_map *, const int, const int);
 int bst_map_remove(bst_map *, const int, int *);
 int bst_map_search(bst_map *, const int, int *);
-void bst_map_free(const bst_map);
+void bst_map_free(bst_map);

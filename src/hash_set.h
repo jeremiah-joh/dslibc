@@ -60,7 +60,7 @@ hash_set hash_set_new();
 int hash_set_insert(hash_set *, const int);
 int hash_set_remove(hash_set *, const int);
 int hash_set_search(hash_set *, const int);
-void hash_set_free(const hash_set);
+void hash_set_free(hash_set);
 
 /* <MIT License>
  Copyright (c) 2013  Marek Majkowski <marek@popcount.org>
@@ -138,7 +138,9 @@ void hash_set_free(const hash_set);
 	HALF_ROUND(v2,v1,v0,v3,17,21);
 
 
-uint64_t siphash24(const void *src, unsigned long src_sz, const char key[16]) {
+static uint64_t
+siphash24(const void *src, unsigned long src_sz, const char key[16])
+{
 	const uint64_t *_key = (uint64_t *)key;
 	uint64_t k0 = _le64toh(_key[0]);
 	uint64_t k1 = _le64toh(_key[1]);

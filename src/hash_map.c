@@ -21,6 +21,9 @@
 #include <stdlib.h>
 #include <string.h>
 #define INIT_LEN 16
+#define FREE(ptr)   \
+free(ptr);          \
+ptr = NULL;
 
 static int
 sll_push_back(struct sll *sll, const int key, const int val)
@@ -53,7 +56,7 @@ sll_remove(struct sll *sll, const int key, int *val)
                 tmp_p->next = rmv->next;
             else
                 sll->head->next = rmv->next;
-            free(rmv);
+            FREE(rmv);
             
             return 0;
         }
@@ -80,7 +83,7 @@ hash_map_resize(hash_map *map, size_t new_size)
         for (node = old[i].head; node != NULL; node = node->next)
             if (hash_map_insert(map, node->key, node->val))
                 return -1;
-    free(old);
+    FREE(old);
 
     return 0;
 }
@@ -148,7 +151,7 @@ hash_map_search(hash_map *map, const int key, int *val)
 }
 
 void
-hash_map_free(const hash_map map)
+hash_map_free(hash_map map)
 {
-    free(map.sll);
+    FREE(map.sll);
 }
