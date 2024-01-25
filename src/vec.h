@@ -20,7 +20,7 @@
 #include <stddef.h>
 
 typedef struct {
-    int *data;
+    int *val;
     size_t len;
 } vec;
 

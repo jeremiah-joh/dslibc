@@ -20,7 +20,7 @@
 #include <stddef.h>
 
 struct sll_node {
-    int data;
+    int val;
     struct sll_node *next;
 };
 
@@ -36,7 +36,7 @@ typedef struct {
 } sll_iter;
 
 struct dll_node {
-    int data;
+    int val;
     struct dll_node *next;
     struct dll_node *prev;
 };

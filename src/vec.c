@@ -32,115 +32,115 @@ vec_new()
 }
 
 vec
-vec_from(const int *data, const size_t len)
+vec_from(const int *val, const size_t len)
 {
     vec vec = { malloc(0), 0 };
-    memcpy(vec.data, data, sizeof(int) * len);
+    memcpy(vec.val, val, sizeof(int) * len);
     return vec;
 }
 
 int
-vec_push_back(vec *vec, const int data)
+vec_push_back(vec *vec, const int val)
 {
-    if (vec->data == NULL)
+    if (vec->val == NULL)
         return -1;
 
-    vec->data = realloc(vec->data, sizeof(int) * ++vec->len);
-    vec->data[vec->len - 1] = data;
+    vec->val = realloc(vec->val, sizeof(int) * ++vec->len);
+    vec->val[vec->len - 1] = val;
 
     return 0;
 }
 
 int
-vec_pop_back(vec *vec, int *data)
+vec_pop_back(vec *vec, int *val)
 {
-    if (vec->data == NULL)
+    if (vec->val == NULL)
         return -1;
 
-    vec->data = realloc(vec->data, sizeof(int) * --vec->len);
-    *data = vec->data[vec->len];
+    vec->val = realloc(vec->val, sizeof(int) * --vec->len);
+    *val = vec->val[vec->len];
 
     return 0;
 }
 
 int
-vec_push_front(vec *vec, const int data)
+vec_push_front(vec *vec, const int val)
 {
-    if (vec->data == NULL)
+    if (vec->val == NULL)
         return -1;
 
-    vec->data = realloc(vec->data, sizeof(int) * ++vec->len);
-    memmove(vec->data + 1, vec->data, sizeof(int) * (vec->len - 1));
-    vec->data[0] = data;
+    vec->val = realloc(vec->val, sizeof(int) * ++vec->len);
+    memmove(vec->val + 1, vec->val, sizeof(int) * (vec->len - 1));
+    vec->val[0] = val;
 
     return 0;
 }
 
 int
-vec_pop_front(vec *vec, int *data)
+vec_pop_front(vec *vec, int *val)
 {
-    if (vec->data == NULL)
+    if (vec->val == NULL)
         return -1;
 
-    *data = vec->data[0];
-    memmove(vec->data, vec->data + 1, sizeof(int) * vec->len);
-    vec->data = realloc(vec->data, sizeof(int) * --vec->len);
+    *val = vec->val[0];
+    memmove(vec->val, vec->val + 1, sizeof(int) * vec->len);
+    vec->val = realloc(vec->val, sizeof(int) * --vec->len);
 
     return 0;
 }
 
 int
-vec_insert(vec *vec, const int data, const size_t at)
+vec_insert(vec *vec, const int val, const size_t at)
 {
-    if (vec->data == NULL)
+    if (vec->val == NULL)
         return -1;
     if (vec->len <= at)
         return -1;
     
-    vec->data = realloc(vec->data, sizeof(int) * ++vec->len);
-    memmove(vec->data + at + 1, vec->data + at, sizeof(int) * (vec->len - at));
-    vec->data[at] = data;
+    vec->val = realloc(vec->val, sizeof(int) * ++vec->len);
+    memmove(vec->val + at + 1, vec->val + at, sizeof(int) * (vec->len - at));
+    vec->val[at] = val;
 
     return 0;
 }
 
 int
-vec_remove(vec *vec, const size_t at, int *data)
+vec_remove(vec *vec, const size_t at, int *val)
 {
-    if (vec->data == NULL)
+    if (vec->val == NULL)
         return -1;
     if (vec->len <= at)
         return -1;
     
-    *data = vec->data[at];
-    memmove(vec->data + at, vec->data + at + 1, sizeof(int) * (vec->len - at));
-    vec->data = realloc(vec->data, sizeof(int) * --vec->len);
+    *val = vec->val[at];
+    memmove(vec->val + at, vec->val + at + 1, sizeof(int) * (vec->len - at));
+    vec->val = realloc(vec->val, sizeof(int) * --vec->len);
 
     return 0;
 }
 
 int
-vec_getnth(vec *vec, const size_t at, int *data)
+vec_getnth(vec *vec, const size_t at, int *val)
 {
-    if (vec->data == NULL)
+    if (vec->val == NULL)
         return -1;
     if (vec->len <= at)
         return -1;
     
-    *data = vec->data[at];
+    *val = vec->val[at];
 
     return 0;
 }
 
 int
-vec_setnth(vec *vec, const size_t at, const int data)
+vec_setnth(vec *vec, const size_t at, const int val)
 {
-    if (vec->data == NULL)
+    if (vec->val == NULL)
         return -1;
     if (vec->len <= at)
         return -1;
     
-    vec->data[at] = data;
+    vec->val[at] = val;
 
     return 0;
 }
@@ -148,7 +148,7 @@ vec_setnth(vec *vec, const size_t at, const int data)
 int
 vec_append(vec *l_vec, const vec *r_vec)
 {
-    if (l_vec->data == NULL || r_vec->data == NULL)
+    if (l_vec->val == NULL || r_vec->val == NULL)
         return -1;
     
     if (r_vec->len == 0)
@@ -158,8 +158,8 @@ vec_append(vec *l_vec, const vec *r_vec)
         return 0;
     }
 
-    l_vec->data = realloc(l_vec->data, sizeof(int) * (l_vec->len + r_vec->len));
-    memcpy(l_vec->data + l_vec->len, r_vec->data, sizeof(int) * r_vec->len);
+    l_vec->val = realloc(l_vec->val, sizeof(int) * (l_vec->len + r_vec->len));
+    memcpy(l_vec->val + l_vec->len, r_vec->val, sizeof(int) * r_vec->len);
     l_vec->len += r_vec->len;
 
     return 0;
@@ -168,7 +168,7 @@ vec_append(vec *l_vec, const vec *r_vec)
 void
 vec_free(vec vec)
 {
-    FREE(vec.data);
+    FREE(vec.val);
 }
 
 vec_iter
@@ -179,9 +179,9 @@ vec_iter_new(vec vec)
 }
 
 int
-vec_iter_next(vec_iter *iter, int *data)
+vec_iter_next(vec_iter *iter, int *val)
 {
-    *data = iter->vec.data[iter->cnt++];
+    *val = iter->vec.val[iter->cnt++];
 
     return 0;
 }
@@ -189,11 +189,11 @@ vec_iter_next(vec_iter *iter, int *data)
 int
 vec_iter_map(vec_iter *iter, int (*fn)(int item), vec *new)
 {
-    new->data = malloc(sizeof(int) * iter->vec.len);
+    new->val = malloc(sizeof(int) * iter->vec.len);
     new->len = iter->vec.len;
 
     for (size_t i = 0; i < iter->vec.len; i++)
-        new->data[i] = (*fn)(iter->vec.data[i]);
+        new->val[i] = (*fn)(iter->vec.val[i]);
 
     return 0;
 }
@@ -202,7 +202,7 @@ int
 vec_iter_for_each(vec_iter *iter, int (*fn)(int item))
 {
     for (size_t i = 0; i < iter->vec.len; i++)
-        iter->vec.data[i] = (*fn)(iter->vec.data[i]);
+        iter->vec.val[i] = (*fn)(iter->vec.val[i]);
 
     return 0;
 }

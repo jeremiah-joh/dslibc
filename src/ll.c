@@ -32,18 +32,18 @@ sll_new()
 }
 
 int
-sll_push_back(sll *sll, const int data)
+sll_push_back(sll *sll, const int val)
 {
     if ((sll->head == NULL || sll->tail == NULL) && sll->len > 0)
         return -1;
 
     if (sll->head == NULL) {
         sll->head = sll->tail = malloc(sizeof(struct sll_node));
-        sll->head->data = data;
+        sll->head->val = val;
         sll->head->next = NULL;
     } else {
         sll->tail->next = malloc(sizeof(struct sll_node));
-        sll->tail->next->data = data;
+        sll->tail->next->val = val;
         sll->tail->next->next = NULL;
         sll->tail = sll->tail->next;
     }
@@ -54,12 +54,12 @@ sll_push_back(sll *sll, const int data)
 }
 
 int
-sll_pop_back(sll *sll, int *data)
+sll_pop_back(sll *sll, int *val)
 {
     if (sll->len == 0)
         return -1;
     
-    *data = sll->tail->data;
+    *val = sll->tail->val;
     FREE(sll->tail);
 
     if (sll->len == 1) {
@@ -78,19 +78,19 @@ sll_pop_back(sll *sll, int *data)
 }
 
 int
-sll_insert(sll *sll, const int data, const size_t at)
+sll_insert(sll *sll, const int val, const size_t at)
 {
     if (sll->len < at)
         return -1;
     else if (sll->len == at)
-        sll_push_back(sll, data);
+        sll_push_back(sll, val);
     else {
         struct sll_node *tmp = sll->head;
         for (size_t i = 0; i < at - 1; i++)
             tmp = tmp->next;
         struct sll_node *ori = tmp->next;
         tmp->next = malloc(sizeof(struct sll_node));
-        tmp->next->data = data;
+        tmp->next->val = val;
         tmp->next->next = ori;
     }
 
@@ -98,12 +98,12 @@ sll_insert(sll *sll, const int data, const size_t at)
 }
 
 int
-sll_remove(sll *sll, const int data)
+sll_remove(sll *sll, const int val)
 {
     struct sll_node *tmp = sll->head;
     struct sll_node *tmp_p = NULL;
     while (tmp != NULL) {
-        if (tmp->data == data) {
+        if (tmp->val == val) {
             tmp_p->next = tmp->next;
             FREE(tmp);
             return 0;
@@ -117,7 +117,7 @@ sll_remove(sll *sll, const int data)
 }
 
 int
-sll_rmvnth(sll *sll, const size_t at, int *data)
+sll_rmvnth(sll *sll, const size_t at, int *val)
 {
     if (sll->len <= at)
         return -1;
@@ -126,7 +126,7 @@ sll_rmvnth(sll *sll, const size_t at, int *data)
     for (size_t i = 0; i < at - 1; i++)
         tmp = tmp->next;
     struct sll_node *rmv = tmp->next;
-    *data = rmv->data;
+    *val = rmv->val;
     tmp->next = rmv->next;
     FREE(rmv);
 
@@ -134,7 +134,7 @@ sll_rmvnth(sll *sll, const size_t at, int *data)
 }
 
 int
-sll_getnth(sll *sll, const size_t at, int *data)
+sll_getnth(sll *sll, const size_t at, int *val)
 {
     if (sll->len <= at)
         return -1;
@@ -142,13 +142,13 @@ sll_getnth(sll *sll, const size_t at, int *data)
     struct sll_node *tmp = sll->head;
     for (size_t i = 0; i < at; i++)
         tmp = tmp->next;
-    *data = tmp->data;
+    *val = tmp->val;
 
     return 0;
 }
 
 int
-sll_setnth(sll *sll, const size_t at, const int data)
+sll_setnth(sll *sll, const size_t at, const int val)
 {
     if (sll->len <= at)
         return -1;
@@ -156,17 +156,17 @@ sll_setnth(sll *sll, const size_t at, const int data)
     struct sll_node *tmp = sll->head;
     for (size_t i = 0; i < at; i++)
         tmp = tmp->next;
-    tmp->data = data;
+    tmp->val = val;
 
     return 0;
 }
 
 int
-sll_search(sll *sll, const int data, size_t *at)
+sll_search(sll *sll, const int val, size_t *at)
 {
     struct sll_node *tmp = sll->head;
     for (*at = 0; tmp != NULL; (*at)++) {
-        if (tmp->data == data)
+        if (tmp->val == val)
             return 0;
         tmp = tmp->next;
     }
@@ -213,14 +213,14 @@ sll_iter_new(sll sll)
 }
 
 int
-sll_iter_next(sll_iter *iter, int *data)
+sll_iter_next(sll_iter *iter, int *val)
 {
     if (iter->cur == NULL)
         iter->cur = iter->sll.head;
     else
         iter->cur = iter->cur->next;
 
-    *data = iter->cur->data;
+    *val = iter->cur->val;
 
     return 0;
 }
@@ -232,7 +232,7 @@ sll_iter_for_each(sll_iter *iter, int (*fn)(int item))
         iter->cur = iter->sll.head;
 
     while (iter->cur != NULL) {
-        iter->cur->data = (*fn)(iter->cur->data);
+        iter->cur->val = (*fn)(iter->cur->val);
         iter->cur = iter->cur->next;
     }
 
@@ -246,7 +246,7 @@ sll_iter_map(sll_iter *iter, int (*fn)(int item), sll *sll)
         iter->cur = iter->sll.head;
 
     while (iter->cur != NULL) {
-        sll_push_back(sll, (*fn)(iter->cur->data));
+        sll_push_back(sll, (*fn)(iter->cur->val));
         iter->cur = iter->cur->next;
     }
 
@@ -261,19 +261,19 @@ dll_new()
 }
 
 int
-dll_push_back(dll *dll, const int data)
+dll_push_back(dll *dll, const int val)
 {
     if ((dll->head == NULL || dll->tail == NULL) && dll->len > 0)
         return -1;
 
     if (dll->head == NULL) {
         dll->head = dll->tail = malloc(sizeof(struct dll_node));
-        dll->head->data = data;
+        dll->head->val = val;
         dll->head->next = NULL;
         dll->head->prev = NULL;
     } else {
         dll->tail->next = malloc(sizeof(struct dll_node));
-        dll->tail->next->data = data;
+        dll->tail->next->val = val;
         dll->tail->next->next = NULL;
         dll->tail->next->prev = dll->tail;
         dll->tail = dll->tail->next;
@@ -285,12 +285,12 @@ dll_push_back(dll *dll, const int data)
 }
 
 int
-dll_pop_back(dll *dll, int *data)
+dll_pop_back(dll *dll, int *val)
 {
     if (dll->len == 0)
         return -1;
 
-    *data = dll->tail->data;
+    *val = dll->tail->val;
     struct dll_node *prev = dll->tail->prev;
     FREE(dll->tail);
     dll->tail = prev;
@@ -304,19 +304,19 @@ dll_pop_back(dll *dll, int *data)
 }
 
 int
-dll_push_front(dll *dll, const int data)
+dll_push_front(dll *dll, const int val)
 {
     if ((dll->head == NULL || dll->tail == NULL) && dll->len > 0)
         return -1;
 
     if (dll->head == NULL) {
         dll->head = dll->tail = malloc(sizeof(struct dll_node));
-        dll->head->data = data;
+        dll->head->val = val;
         dll->head->next = NULL;
         dll->head->prev = NULL;
     } else {
         dll->head->prev = malloc(sizeof(struct dll_node));
-        dll->head->prev->data = data;
+        dll->head->prev->val = val;
         dll->head->prev->prev = NULL;
         dll->head->prev->next = dll->head;
         dll->head = dll->head->prev;
@@ -328,12 +328,12 @@ dll_push_front(dll *dll, const int data)
 }
 
 int
-dll_pop_front(dll *dll, int *data)
+dll_pop_front(dll *dll, int *val)
 {
     if (dll->len == 0)
         return -1;
 
-    *data = dll->head->data;
+    *val = dll->head->val;
     struct dll_node *next = dll->head->next;
     FREE(dll->head);
     dll->head = next;
@@ -347,12 +347,12 @@ dll_pop_front(dll *dll, int *data)
 }
 
 int
-dll_insert(dll *dll, const int data, const size_t at)
+dll_insert(dll *dll, const int val, const size_t at)
 {
     if (dll->len <= at)
         return -1;
     if (at == 0) {
-        dll_push_front(dll, data);
+        dll_push_front(dll, val);
         return 0;
     }
 
@@ -369,7 +369,7 @@ dll_insert(dll *dll, const int data, const size_t at)
     
     struct dll_node *next = tmp->next;
     tmp->next = malloc(sizeof(struct dll_node));
-    tmp->next->data = data;
+    tmp->next->val = val;
     tmp->next->next = next;
 
     dll->len++;
@@ -378,10 +378,10 @@ dll_insert(dll *dll, const int data, const size_t at)
 }
 
 int
-dll_remove(dll *dll, const int data)
+dll_remove(dll *dll, const int val)
 {
     for (struct dll_node *tmp = dll->head; tmp != NULL; tmp = tmp->next) {
-        if (tmp->data == data) {
+        if (tmp->val == val) {
             tmp->prev->next = tmp->next;
             tmp->next->prev = tmp->prev;
             FREE(tmp);
@@ -393,12 +393,12 @@ dll_remove(dll *dll, const int data)
 }
 
 int
-dll_rmvnth(dll *dll, const size_t at, int *data)
+dll_rmvnth(dll *dll, const size_t at, int *val)
 {
     if (dll->len <= at)
         return -1;
     if (dll->len - 1 == at) {
-        dll_pop_back(dll, data);
+        dll_pop_back(dll, val);
         return 0;
     }
 
@@ -415,7 +415,7 @@ dll_rmvnth(dll *dll, const size_t at, int *data)
 
     tmp->prev->next = tmp->next;
     tmp->next->prev = tmp->prev;
-    *data = tmp->data;
+    *val = tmp->val;
     FREE(tmp);
 
     dll->len--;
@@ -424,17 +424,17 @@ dll_rmvnth(dll *dll, const size_t at, int *data)
 }
 
 int
-dll_getnth(dll *dll, const size_t at, int *data)
+dll_getnth(dll *dll, const size_t at, int *val)
 {
     if (dll->len <= at)
         return -1;
 
     if (at == 0) {
-        *data = dll->head->data;
+        *val = dll->head->val;
         return 0;
     }
     if (at == dll->len - 1) {
-        *data = dll->tail->data;
+        *val = dll->tail->val;
         return 0;
     }
 
@@ -449,23 +449,23 @@ dll_getnth(dll *dll, const size_t at, int *data)
             tmp = tmp->prev;
     }
 
-    *data = tmp->data;
+    *val = tmp->val;
 
     return 0;
 }
 
 int
-dll_setnth(dll *dll, const size_t at, const int data)
+dll_setnth(dll *dll, const size_t at, const int val)
 {
     if (dll->len <= at)
         return -1;
 
     if (at == 0) {
-        dll->head->data = data;
+        dll->head->val = val;
         return 0;
     }
     if (at == dll->len - 1) {
-        dll->tail->data = data;
+        dll->tail->val = val;
         return 0;
     }
 
@@ -480,17 +480,17 @@ dll_setnth(dll *dll, const size_t at, const int data)
             tmp = tmp->prev;
     }
 
-    tmp->data = data;
+    tmp->val = val;
 
     return 0;
 }
 
 int
-dll_search_from_front(dll *dll, const int data, size_t *at)
+dll_search_from_front(dll *dll, const int val, size_t *at)
 {
     struct dll_node *tmp = dll->head;
     for (*at = 0; tmp != NULL; (*at)++) {
-        if (tmp->data == data)
+        if (tmp->val == val)
             return 0;
         tmp = tmp->next;
     }
@@ -500,11 +500,11 @@ dll_search_from_front(dll *dll, const int data, size_t *at)
 }
 
 int
-dll_search_from_back(dll *dll, const int data, size_t *at)
+dll_search_from_back(dll *dll, const int val, size_t *at)
 {
     struct dll_node *tmp = dll->tail;
     for (*at = dll->len - 1; tmp != NULL; (*at)--) {
-        if (tmp->data == data)
+        if (tmp->val == val)
             return 0;
         tmp = tmp->prev;
     }
@@ -551,14 +551,14 @@ dll_iter_new(dll dll)
 }
 
 int
-dll_iter_next(dll_iter *iter, int *data)
+dll_iter_next(dll_iter *iter, int *val)
 {
     if (iter->cur == NULL)
         iter->cur = iter->dll.head;
     else
         iter->cur = iter->cur->next;
 
-    *data = iter->cur->data;
+    *val = iter->cur->val;
 
     return 0;
 }
@@ -570,7 +570,7 @@ dll_iter_for_each(dll_iter *iter, int (*fn)(int item))
         iter->cur = iter->dll.head;
 
     while (iter->cur != NULL) {
-        iter->cur->data = (*fn)(iter->cur->data);
+        iter->cur->val = (*fn)(iter->cur->val);
         iter->cur = iter->cur->next;
     }
 
@@ -584,7 +584,7 @@ dll_iter_map(dll_iter *iter, int (*fn)(int item), dll *dll)
         iter->cur = iter->dll.head;
 
     while (iter->cur != NULL) {
-        dll_push_back(dll, (*fn)(iter->cur->data));
+        dll_push_back(dll, (*fn)(iter->cur->val));
         iter->cur = iter->cur->next;
     }
 
