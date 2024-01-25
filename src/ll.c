@@ -98,7 +98,26 @@ sll_insert(sll *sll, const int data, const size_t at)
 }
 
 int
-sll_remove(sll *sll, const size_t at, int *data)
+sll_remove(sll *sll, const int data)
+{
+    struct sll_node *tmp = sll->head;
+    struct sll_node *tmp_p = NULL;
+    while (tmp != NULL) {
+        if (tmp->data == data) {
+            tmp_p->next = tmp->next;
+            FREE(tmp);
+            return 0;
+        }
+
+        tmp_p = tmp;
+        tmp = tmp->next;
+    }
+
+    return -1;
+}
+
+int
+sll_rmvnth(sll *sll, const size_t at, int *data)
 {
     if (sll->len <= at)
         return -1;
@@ -359,7 +378,22 @@ dll_insert(dll *dll, const int data, const size_t at)
 }
 
 int
-dll_remove(dll *dll, const size_t at, int *data)
+dll_remove(dll *dll, const int data)
+{
+    for (struct dll_node *tmp = dll->head; tmp != NULL; tmp = tmp->next) {
+        if (tmp->data == data) {
+            tmp->prev->next = tmp->next;
+            tmp->next->prev = tmp->prev;
+            FREE(tmp);
+            return 0;
+        }
+    }
+
+    return -1;
+}
+
+int
+dll_rmvnth(dll *dll, const size_t at, int *data)
 {
     if (dll->len <= at)
         return -1;
