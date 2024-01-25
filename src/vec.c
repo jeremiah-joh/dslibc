@@ -105,7 +105,7 @@ vec_insert(vec *vec, const int val, const size_t at)
 }
 
 int
-vec_remove(vec *vec, const size_t at, int *val)
+vec_rmvnth(vec *vec, const size_t at, int *val)
 {
     if (vec->val == NULL)
         return -1;

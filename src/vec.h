@@ -36,7 +36,7 @@ int vec_pop_back(vec *, int *);
 int vec_push_front(vec *, const int);
 int vec_pop_front(vec *, int *);
 int vec_insert(vec *, const int, const size_t);
-int vec_remove(vec *, const size_t, int *);
+int vec_rmvnth(vec *, const size_t, int *);
 int vec_getnth(vec *, const size_t, int *);
 int vec_setnth(vec *, const size_t, const int);
 int vec_append(vec *, const vec *);
