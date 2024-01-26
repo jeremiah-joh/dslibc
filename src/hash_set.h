@@ -38,14 +38,14 @@
 #include <stddef.h>
 #define KEY_LEN 16
 
-struct ht_node {
+struct hash_set_node {
     int key;
-    struct ht_node *next;
+    struct hash_set_node *next;
 };
 
 struct sll {
-    struct ht_node *head;
-    struct ht_node *tail;
+    struct hash_set_node *head;
+    struct hash_set_node *tail;
     size_t len;
 };
 

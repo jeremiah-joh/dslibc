@@ -72,8 +72,8 @@ bst_set_insert(bst_set *set, const int key)
 int
 bst_set_remove(bst_set *set, const int key)
 {
-    struct bst_node *parent = NULL;
-    struct bst_node *tmp = set->root;
+    struct bst_set_node *parent = NULL;
+    struct bst_set_node *tmp = set->root;
     while (tmp != NULL) {
         int cmp = memcmp(&key, &tmp->key, sizeof(int));
         if (cmp < 0) {
@@ -106,7 +106,7 @@ int
 bst_set_search(bst_set *set, const int key)
 {
     if (set->root != NULL) {
-        struct bst_node *tmp = set->root;
+        struct bst_set_node *tmp = set->root;
         while (tmp != NULL) {
             int cmp = memcmp(&key, &tmp->key, sizeof(int));
             if (cmp < 0)
@@ -122,7 +122,7 @@ bst_set_search(bst_set *set, const int key)
 }
 
 static void
-recursive_free(struct bst_node *node)
+recursive_free(struct bst_set_node *node)
 {
     if (node->left != NULL)
         recursive_free(node->left);

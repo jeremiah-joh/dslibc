@@ -70,8 +70,8 @@ bst_map_insert(bst_map *map, const int key, const int val)
 int
 bst_map_remove(bst_map *map, const int key, int *val)
 {
-    struct bst_node *parent = NULL;
-    struct bst_node *tmp = map->root;
+    struct bst_map_node *parent = NULL;
+    struct bst_map_node *tmp = map->root;
     while (tmp != NULL) {
         int cmp = memcmp(&key, &tmp->key, sizeof(int));
         if (cmp < 0) {
@@ -106,7 +106,7 @@ bst_map_remove(bst_map *map, const int key, int *val)
 int
 bst_map_search(bst_map *map, const int key, int *val)
 {
-    struct bst_node *tmp = map->root;
+    struct bst_map_node *tmp = map->root;
     while (tmp != NULL) {
         int cmp = memcmp(&key, &tmp->key, sizeof(int));
         if (cmp < 0)
@@ -124,7 +124,7 @@ bst_map_search(bst_map *map, const int key, int *val)
 }
 
 static void
-recursive_free(struct bst_node *node)
+recursive_free(struct bst_map_node *node)
 {
     if (node->left != NULL)
         recursive_free(node->left);

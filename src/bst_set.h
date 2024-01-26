@@ -19,15 +19,15 @@
 
 #include <stddef.h>
 
-struct bst_node {
+struct bst_set_node {
     int key;
 
-    struct bst_node *left;
-    struct bst_node *right;
+    struct bst_set_node *left;
+    struct bst_set_node *right;
 };
 
 typedef struct {
-    struct bst_node *root;
+    struct bst_set_node *root;
     size_t len;
 } bst_set;
 

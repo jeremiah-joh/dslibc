@@ -29,12 +29,12 @@ static int
 sll_push_back(struct sll *sll, const int key, const int val)
 {
     if (sll->head == NULL) {
-        sll->head = sll->tail = malloc(sizeof(struct ht_node));
+        sll->head = sll->tail = malloc(sizeof(struct hash_map_node));
         sll->head->key = key;
         sll->head->val = val;
         sll->head->next = NULL;
     } else {
-        sll->tail->next = malloc(sizeof(struct ht_node));
+        sll->tail->next = malloc(sizeof(struct hash_map_node));
         sll->tail->next->key = key;
         sll->tail->next->val = val;
         sll->tail->next->next = NULL;
@@ -47,10 +47,10 @@ sll_push_back(struct sll *sll, const int key, const int val)
 static int
 sll_remove(struct sll *sll, const int key, int *val)
 {
-    struct ht_node *tmp, *tmp_p = NULL;
+    struct hash_map_node *tmp, *tmp_p = NULL;
     for (tmp = sll->head; tmp != NULL; tmp = tmp->next) {
         if (tmp->key == key) {
-            struct ht_node *rmv = tmp;
+            struct hash_map_node *rmv = tmp;
             *val = rmv->val;
             if (tmp_p != NULL)
                 tmp_p->next = rmv->next;
@@ -78,7 +78,7 @@ hash_map_resize(hash_map *map, size_t new_size)
         map->sll[i].head = map->sll[i].tail = NULL;
     map->len = 0;
 
-    struct ht_node *node;
+    struct hash_map_node *node;
     for (size_t i = 0; i < old_size; i++)
         for (node = old[i].head; node != NULL; node = node->next)
             if (hash_map_insert(map, node->key, node->val))
@@ -139,7 +139,7 @@ int
 hash_map_search(hash_map *map, const int key, int *val)
 {
     size_t idx = siphash24(&key, sizeof(key), map->key) % map->sll_len;
-    struct ht_node *tmp;
+    struct hash_map_node *tmp;
     for (tmp = map->sll[idx].head; tmp != NULL; tmp = tmp->next) {
         if (tmp->key == key) {
             *val = tmp->val;

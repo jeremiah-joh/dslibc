@@ -19,16 +19,16 @@
 
 #include <stddef.h>
 
-struct bst_node {
+struct bst_map_node {
     int key;
     int val;
 
-    struct bst_node *left;
-    struct bst_node *right;
+    struct bst_map_node *left;
+    struct bst_map_node *right;
 };
 
 typedef struct {
-    struct bst_node *root;
+    struct bst_map_node *root;
     size_t len;
 } bst_map;
 

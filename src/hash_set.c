@@ -29,11 +29,11 @@ static int
 sll_push_back(struct sll *sll, const int key)
 {
     if (sll->head == NULL) {
-        sll->head = sll->tail = malloc(sizeof(struct ht_node));
+        sll->head = sll->tail = malloc(sizeof(struct hash_set_node));
         sll->head->key = key;
         sll->head->next = NULL;
     } else {
-        sll->tail->next = malloc(sizeof(struct ht_node));
+        sll->tail->next = malloc(sizeof(struct hash_set_node));
         sll->tail->next->key = key;
         sll->tail->next->next = NULL;
         sll->tail = sll->tail->next;
@@ -45,10 +45,10 @@ sll_push_back(struct sll *sll, const int key)
 static int
 sll_remove(struct sll *sll, const int key)
 {
-    struct ht_node *tmp, *tmp_p = NULL;
+    struct hash_set_node *tmp, *tmp_p = NULL;
     for (tmp = sll->head; tmp != NULL; tmp = tmp->next) {
         if (tmp->key == key) {
-            struct ht_node *rmv = tmp;
+            struct hash_set_node *rmv = tmp;
             if (tmp_p != NULL)
                 tmp_p->next = rmv->next;
             else
@@ -75,7 +75,7 @@ hash_set_resize(hash_set *set, size_t new_size)
         set->sll[i].head = set->sll[i].tail = NULL;
     set->len = 0;
 
-    struct ht_node *node;
+    struct hash_set_node *node;
     for (size_t i = 0; i < old_size; i++)
         for (node = old[i].head; node != NULL; node = node->next)
             if (hash_set_insert(set, node->key))
@@ -136,7 +136,7 @@ int
 hash_set_search(hash_set *set, const int key)
 {
     size_t idx = siphash24(&key, sizeof(key), set->key) % set->sll_len;
-    struct ht_node *tmp;
+    struct hash_set_node *tmp;
     for (tmp = set->sll[idx].head; tmp != NULL; tmp = tmp->next) {
         if (tmp->key == key) {
             return 1;

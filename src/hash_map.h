@@ -20,15 +20,15 @@
 #include <stddef.h>
 #define KEY_LEN 16
 
-struct ht_node {
+struct hash_map_node {
     int key;
     int val;
-    struct ht_node *next;
+    struct hash_map_node *next;
 };
 
 struct sll {
-    struct ht_node *head;
-    struct ht_node *tail;
+    struct hash_map_node *head;
+    struct hash_map_node *tail;
     size_t len;
 };
 
