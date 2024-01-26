@@ -31,26 +31,28 @@ bst_set_new()
     return set;
 }
 
+static int
+new_node(struct bst_map_node **node, const int key)
+{
+    *node = malloc(sizeof(struct bst_set_node));
+    if (*node == NULL)
+        return -1;
+    (*node)->key = key;
+    (*node)->left = NULL;
+    (*node)->right = NULL;
+    map->len++;
+
+    return 0;
+}
+
 int
 bst_set_insert(bst_set *set, const int key)
 {
-    int
-    new_node(struct bst_node **node, const int key)
-    {
-        *node = malloc(sizeof(struct bst_node));
-        (*node)->key = key;
-        (*node)->left = NULL;
-        (*node)->right = NULL;
-        set->len++;
-
-        return *node ? 0 : -1;
-    }
-
     if (set->root == NULL) {
         return new_node(&set->root, key);
     }
 
-    struct bst_node *tmp = set->root;
+    struct bst_set_node *tmp = set->root;
     while (tmp != NULL) {
         int cmp = memcmp(&key, &tmp->key, sizeof(int));
         if (cmp < 0) {
