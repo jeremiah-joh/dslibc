@@ -21,8 +21,10 @@
 #include <stdlib.h>
 #include <string.h>
 #define FREE(ptr)   \
-free(ptr);          \
-ptr = NULL;
+do {                \
+    free(ptr);      \
+    ptr = NULL;     \
+} while (0)
 
 sll
 sll_new()

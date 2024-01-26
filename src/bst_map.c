@@ -21,8 +21,10 @@
 #include <stdlib.h>
 #include <string.h>
 #define FREE(ptr)   \
-free(ptr);          \
-ptr = NULL;
+do {                \
+    free(ptr);      \
+    ptr = NULL;     \
+} while (0)
 
 bst_map
 bst_map_new()

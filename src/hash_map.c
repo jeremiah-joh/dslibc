@@ -22,8 +22,10 @@
 #include <string.h>
 #define INIT_LEN 16
 #define FREE(ptr)   \
-free(ptr);          \
-ptr = NULL;
+do {                \
+    free(ptr);      \
+    ptr = NULL;     \
+} while (0)
 
 static int
 sll_push_back(struct sll *sll, const int key, const int val)
