@@ -17,6 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifndef _LL_H
+#define _LL_H
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -631,3 +634,5 @@ dll_##name##_iter_map(dll_iter *iter, type (*fn)(type item), dll_##name *dll) \
                                                                               \
     return 0;                                                                 \
 }
+
+#endif

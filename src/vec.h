@@ -17,6 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifndef _VEC_H
+#define _VEC_H
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,7 +30,6 @@ do {                \
 } while (0)
 
 #define INIT_VEC(name, type)                                                  \
-                                                                              \
 typedef struct {                                                              \
     type *val;                                                                \
     size_t len;                                                               \
@@ -222,3 +224,5 @@ vec_##name##_iter_for_each(vec_##name##_iter *iter, type (*fn)(type item))    \
                                                                               \
     return 0;                                                                 \
 }                                                                             
+
+#endif

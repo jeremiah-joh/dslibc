@@ -17,6 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifndef _BST_H
+#define _BST_H
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,7 +30,6 @@ do {                \
 } while (0)
 
 #define INIT_BST_MAP(name, type)                                              \
-                                                                              \
 struct bst_##name##_map_node {                                                \
     type key;                                                                 \
     type val;                                                                 \
@@ -160,7 +162,6 @@ bst_##name##_map_free(bst_##name##_map map)                                   \
 }
 
 #define INIT_BST_SET(name, type)                                              \
-                                                                              \
 struct bst_##name##_set_node {                                                \
     type key;                                                                 \
                                                                               \
@@ -287,3 +288,5 @@ bst_##name##_set_free(bst_##name##_set set)                                   \
 {                                                                             \
     set_recursive_free(set.root);                                             \
 }
+
+#endif
