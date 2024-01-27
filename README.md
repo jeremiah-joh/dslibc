@@ -1,10 +1,10 @@
 # Data Structure Library for C
-A collection of useful data structures written in C.
+A collection of useful data structures written in C99.
 
 ## Data structures
-| file name | data structure name | insert | remove | search | state |
+| File name | Data structure name | Insert | Remove | Search | State |
 |:---------:|---------------------|--------|--------|--------|-------|
-| vec.h | Vector(Double-Ended Queue) | O(n) | O(n) | O(1) | O |
+| vec.h | Vector (Double-Ended Queue) | O(n) | O(n) | O(1) | O |
 | ll.h | (Double, Singly) Linked List | O(n) | O(n) | O(n) | O |
 | bst.h | Binary Search Tree | O(log n) ~ O(n) | O(log n) ~ O(n) | O(log n) ~ O(n) | O |
 | avl.h | AVL tree | O(log n) | O(log n) | O(log n) | X |
