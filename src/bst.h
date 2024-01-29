@@ -79,10 +79,12 @@ bst_##name##_map_insert(bst_##name##_map *map, const type key, const type val)\
             if (tmp->left == NULL)                                            \
                 return new_node(&tmp->left, key, val);                        \
             tmp = tmp->left;                                                  \
-        } else {                                                              \
+        } else if (cmp > 0) {                                                 \
             if (tmp->right == NULL)                                           \
                 return new_node(&tmp->right, key, val);                       \
             tmp = tmp->right;                                                 \
+        } else {                                                              \
+            return -1;                                                        \
         }                                                                     \
     }                                                                         \
                                                                               \
