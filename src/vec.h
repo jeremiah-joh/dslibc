@@ -182,6 +182,12 @@ vec_##name##_append(vec_##name *l_vec, const vec_##name *r_vec)               \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
+size_t                                                                        \
+vec_##name##_length(vec_##name vec)                                           \
+{                                                                             \
+    return vec.len;                                                           \
+}                                                                             \
+                                                                              \
 void                                                                          \
 vec_##name##_free(vec_##name vec)                                             \
 {                                                                             \
