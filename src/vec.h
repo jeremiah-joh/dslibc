@@ -56,7 +56,7 @@ nvec_##name##_from(const type *val, const size_t len)                         \
 }                                                                             \
                                                                               \
 int                                                                           \
-nvec_##name##_push_back(nvec_##name *nvec, const type val)                    \
+nvec_##name##_push_back(nvec_##name *nvec, type val)                    \
 {                                                                             \
     if (nvec->val == NULL)                                                    \
         return -1;                                                            \
@@ -80,7 +80,7 @@ nvec_##name##_pop_back(nvec_##name *nvec, type *val)                          \
 }                                                                             \
                                                                               \
 int                                                                           \
-nvec_##name##_push_front(nvec_##name *nvec, const type val)                   \
+nvec_##name##_push_front(nvec_##name *nvec, type val)                   \
 {                                                                             \
     if (nvec->val == NULL)                                                    \
         return -1;                                                            \
@@ -106,7 +106,7 @@ nvec_##name##_pop_front(nvec_##name *nvec, type *val)                         \
 }                                                                             \
                                                                               \
 int                                                                           \
-nvec_##name##_insert(nvec_##name *nvec, const type val, const size_t at)      \
+nvec_##name##_insert(nvec_##name *nvec, type val, const size_t at)      \
 {                                                                             \
     if (nvec->val == NULL)                                                    \
         return -1;                                                            \
@@ -153,7 +153,7 @@ nvec_##name##_getnth(nvec_##name *nvec, const size_t at, type *val)           \
 }                                                                             \
                                                                               \
 int                                                                           \
-nvec_##name##_setnth(nvec_##name *nvec, const size_t at, const type val)      \
+nvec_##name##_setnth(nvec_##name *nvec, const size_t at, type val)      \
 {                                                                             \
     if (nvec->val == NULL)                                                    \
         return -1;                                                            \
@@ -285,7 +285,7 @@ vec_##name##_try_shrink(vec_##name *vec_##name)                               \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_push_back(vec_##name *vec_##name, const type val)                \
+vec_##name##_push_back(vec_##name *vec_##name, type val)                      \
 {                                                                             \
     vec_##name##_try_extend(vec_##name);                                      \
     vec_##name->val[vec_##name->len++] = val;                                 \
@@ -301,7 +301,7 @@ vec_##name##_pop_back(vec_##name *vec_##name, type *val)                      \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_push_front(vec_##name *vec_##name, const type val)               \
+vec_##name##_push_front(vec_##name *vec_##name, type val)                     \
 {                                                                             \
     vec_##name##_try_extend(vec_##name);                                      \
     memmove(vec_##name->val + 1,                                              \
@@ -323,7 +323,7 @@ vec_##name##_pop_front(vec_##name *vec_##name, type *val)                     \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_insert(vec_##name *vec_##name, const type val, const size_t at)  \
+vec_##name##_insert(vec_##name *vec_##name, type val, const size_t at)        \
 {                                                                             \
     if (at >= vec_##name->len)                                                \
         return -1;                                                            \
@@ -360,7 +360,7 @@ vec_##name##_getnth(vec_##name *vec_##name, const size_t at, type *val)       \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_setnth(vec_##name *vec_##name, const size_t at, const type val)  \
+vec_##name##_setnth(vec_##name *vec_##name, const size_t at, type val)        \
 {                                                                             \
     if (at >= vec_##name->len)                                                \
         return -1;                                                            \
