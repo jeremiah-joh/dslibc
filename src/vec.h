@@ -56,7 +56,7 @@ nvec_##name##_from(const type *val, const size_t len)                         \
 }                                                                             \
                                                                               \
 int                                                                           \
-nvec_##name##_push_back(nvec_##name *nvec, type val)                    \
+nvec_##name##_push_back(nvec_##name *nvec, const type val)                    \
 {                                                                             \
     if (nvec->val == NULL)                                                    \
         return -1;                                                            \
@@ -80,7 +80,7 @@ nvec_##name##_pop_back(nvec_##name *nvec, type *val)                          \
 }                                                                             \
                                                                               \
 int                                                                           \
-nvec_##name##_push_front(nvec_##name *nvec, type val)                   \
+nvec_##name##_push_front(nvec_##name *nvec, const type val)                   \
 {                                                                             \
     if (nvec->val == NULL)                                                    \
         return -1;                                                            \
@@ -106,7 +106,7 @@ nvec_##name##_pop_front(nvec_##name *nvec, type *val)                         \
 }                                                                             \
                                                                               \
 int                                                                           \
-nvec_##name##_insert(nvec_##name *nvec, type val, const size_t at)      \
+nvec_##name##_insert(nvec_##name *nvec, const type val, const size_t at)      \
 {                                                                             \
     if (nvec->val == NULL)                                                    \
         return -1;                                                            \
@@ -153,7 +153,7 @@ nvec_##name##_getnth(nvec_##name *nvec, const size_t at, type *val)           \
 }                                                                             \
                                                                               \
 int                                                                           \
-nvec_##name##_setnth(nvec_##name *nvec, const size_t at, type val)      \
+nvec_##name##_setnth(nvec_##name *nvec, const size_t at, const type val)      \
 {                                                                             \
     if (nvec->val == NULL)                                                    \
         return -1;                                                            \
@@ -174,7 +174,7 @@ nvec_##name##_append(nvec_##name *l_nvec, const nvec_##name *r_nvec)          \
     if (r_nvec->len == 0)                                                     \
         return 0;                                                             \
     if (l_nvec->len == 0) {                                                   \
-        memcpy(l_nvec, r_nvec, sizeof(nvec_##name));                          \
+        memcpy(l_nvec, r_nvec, sizeof(l_nvec));                               \
         return 0;                                                             \
     }                                                                         \
                                                                               \
@@ -217,13 +217,13 @@ nvec_##name##_iter_next(nvec_##name##_iter *iter, type *val)                  \
                                                                               \
 int                                                                           \
 nvec_##name##_iter_map(nvec_##name##_iter *iter,                              \
-                      type (*fn)(type item), nvec_##name *new)                \
+                      type (*fn)(type item), nvec_##name *vec)                \
 {                                                                             \
-    new->val = malloc(sizeof(type) * iter->nvec.len);                         \
-    new->len = iter->nvec.len;                                                \
+    vec->val = malloc(sizeof(type) * iter->nvec.len);                         \
+    vec->len = iter->nvec.len;                                                \
                                                                               \
     for (size_t i = 0; i < iter->nvec.len; i++)                               \
-        new->val[i] = (*fn)(iter->nvec.val[i]);                               \
+        vec->val[i] = (*fn)(iter->nvec.val[i]);                               \
                                                                               \
     return 0;                                                                 \
 }                                                                             \
@@ -258,143 +258,143 @@ vec_##name##_new()                                                            \
 }                                                                             \
                                                                               \
 static void                                                                   \
-vec_##name##_try_extend(vec_##name *vec_##name)                               \
+vec_##name##_try_extend(vec_##name *vec)                                      \
 {                                                                             \
-    if (vec_##name->len == vec_##name->cap) {                                 \
-        vec_##name->cap                                                       \
-            = vec_##name->cap                                                 \
-              ? vec_##name->cap + vec_##name->cap / 2 : INIT_LEN;             \
-        vec_##name->val                                                       \
-            = realloc(vec_##name->val, sizeof(type) * vec_##name->cap);       \
+    if (vec->len == vec->cap) {                                               \
+        vec->cap                                                              \
+            = (vec->cap != 0)                                                 \
+              ? vec->cap + vec->cap / 2 : INIT_LEN;                           \
+        vec->val                                                              \
+            = realloc(vec->val, sizeof(type) * vec->cap);                     \
     }                                                                         \
 }                                                                             \
                                                                               \
 static void                                                                   \
-vec_##name##_try_shrink(vec_##name *vec_##name)                               \
+vec_##name##_try_shrink(vec_##name *vec)                                      \
 {                                                                             \
-    if (vec_##name->cap > INIT_LEN * 2                                        \
-        && vec_##name->len <= vec_##name->cap / 3) {                          \
-        vec_##name->val                                                       \
-            = realloc(vec_##name->val,                                        \
-                      sizeof(type) * (vec_##name->cap /= 2));                 \
-    } else if (vec_##name->len == 0) {                                        \
-        vec_##name->cap = 0;                                                  \
-        free(vec_##name->val);                                                \
-        vec_##name->val = malloc(0);                                          \
+    if (vec->cap > INIT_LEN * 2                                               \
+        && vec->len <= vec->cap / 3) {                                        \
+        vec->val                                                              \
+            = realloc(vec->val,                                               \
+                      sizeof(type) * (vec->cap /= 2));                        \
+    } else if (vec->len == 0) {                                               \
+        vec->cap = 0;                                                         \
+        free(vec->val);                                                       \
+        vec->val = malloc(0);                                                 \
     }                                                                         \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_push_back(vec_##name *vec_##name, type val)                      \
+vec_##name##_push_back(vec_##name *vec, type val)                             \
 {                                                                             \
-    vec_##name##_try_extend(vec_##name);                                      \
-    vec_##name->val[vec_##name->len++] = val;                                 \
+    vec_##name##_try_extend(vec);                                             \
+    vec->val[vec->len++] = val;                                               \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_pop_back(vec_##name *vec_##name, type *val)                      \
+vec_##name##_pop_back(vec_##name *vec, type *val)                             \
 {                                                                             \
-    *val = vec_##name->val[--vec_##name->len];                                \
-    vec_##name##_try_shrink(vec_##name);                                      \
+    *val = vec->val[--vec->len];                                              \
+    vec_##name##_try_shrink(vec);                                             \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_push_front(vec_##name *vec_##name, type val)                     \
+vec_##name##_push_front(vec_##name *vec, type val)                            \
 {                                                                             \
-    vec_##name##_try_extend(vec_##name);                                      \
-    memmove(vec_##name->val + 1,                                              \
-            vec_##name->val,                                                  \
-            sizeof(type) * vec_##name->len++);                                \
-    vec_##name->val[0] = val;                                                 \
+    vec_##name##_try_extend(vec);                                             \
+    memmove(vec->val + 1,                                                     \
+            vec->val,                                                         \
+            sizeof(type) * vec->len++);                                       \
+    vec->val[0] = val;                                                        \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_pop_front(vec_##name *vec_##name, type *val)                     \
+vec_##name##_pop_front(vec_##name *vec, type *val)                            \
 {                                                                             \
-    *val = vec_##name->val[0];                                                \
-    memmove(vec_##name->val,                                                  \
-            vec_##name->val + 1,                                              \
-            sizeof(type) * --vec_##name->len);                                \
-    vec_##name##_try_shrink(vec_##name);                                      \
+    *val = vec->val[0];                                                       \
+    memmove(vec->val,                                                         \
+            vec->val + 1,                                                     \
+            sizeof(type) * --vec->len);                                       \
+    vec_##name##_try_shrink(vec);                                             \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_insert(vec_##name *vec_##name, type val, const size_t at)        \
+vec_##name##_insert(vec_##name *vec, type val, const size_t at)               \
 {                                                                             \
-    if (at >= vec_##name->len)                                                \
+    if (at >= vec->len)                                                       \
         return -1;                                                            \
-    vec_##name##_try_extend(vec_##name);                                      \
-    memmove(vec_##name->val + at + 1,                                         \
-            vec_##name->val + at,                                             \
-            sizeof(type) * (vec_##name->len++ - at));                         \
-    vec_##name->val[at] = val;                                                \
+    vec_##name##_try_extend(vec);                                             \
+    memmove(vec->val + at + 1,                                                \
+            vec->val + at,                                                    \
+            sizeof(type) * (vec->len++ - at));                                \
+    vec->val[at] = val;                                                       \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_rmvnth(vec_##name *vec_##name, const size_t at, type *val)       \
+vec_##name##_rmvnth(vec_##name *vec, const size_t at, type *val)              \
 {                                                                             \
     if (at == 0)                                                              \
-        return vec_##name##_pop_front(vec_##name, val);                       \
-    if (at == vec_##name->len - 1)                                            \
-        return vec_##name##_pop_back(vec_##name, val);                        \
-    *val = vec_##name->val[at];                                               \
-    memmove(vec_##name->val + at,                                             \
-            vec_##name->val + at + 1,                                         \
-            sizeof(type) * (vec_##name->len - at));                           \
-    vec_##name##_try_shrink(vec_##name);                                      \
+        return vec_##name##_pop_front(vec, val);                              \
+    if (at == vec->len - 1)                                                   \
+        return vec_##name##_pop_back(vec, val);                               \
+    *val = vec->val[at];                                                      \
+    memmove(vec->val + at,                                                    \
+            vec->val + at + 1,                                                \
+            sizeof(type) * (vec->len - at));                                  \
+    vec_##name##_try_shrink(vec);                                             \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_getnth(vec_##name *vec_##name, const size_t at, type *val)       \
+vec_##name##_getnth(vec_##name *vec, const size_t at, type *val)              \
 {                                                                             \
-    if (at >= vec_##name->len)                                                \
+    if (at >= vec->len)                                                       \
         return -1;                                                            \
-    *val = vec_##name->val[at];                                               \
+    *val = vec->val[at];                                                      \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_setnth(vec_##name *vec_##name, const size_t at, type val)        \
+vec_##name##_setnth(vec_##name *vec, const size_t at, type val)               \
 {                                                                             \
-    if (at >= vec_##name->len)                                                \
+    if (at >= vec->len)                                                       \
         return -1;                                                            \
-    vec_##name->val[at] = val;                                                \
+    vec->val[at] = val;                                                       \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_append(vec_##name *l_vec_##name, const vec_##name *r_vec_##name) \
+vec_##name##_append(vec_##name *l_vec, const vec_##name *r_vec)               \
 {                                                                             \
-    if (l_vec_##name->val == NULL || r_vec_##name->val == NULL)               \
+    if (l_vec->val == NULL || r_vec->val == NULL)                             \
         return -1;                                                            \
-    for (size_t i = 0; i < r_vec_##name->len; i++)                            \
-        if (vec_##name##_push_back(l_vec_##name, r_vec_##name->val[i]))       \
+    for (size_t i = 0; i < r_vec->len; i++)                                   \
+        if (vec_##name##_push_back(l_vec, r_vec->val[i]))                     \
             return -1;                                                        \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
 size_t                                                                        \
-vec_##name##_length(const vec_##name vec_##name)                              \
+vec_##name##_length(const vec_##name vec)                                     \
 {                                                                             \
-    return vec_##name.len;                                                    \
+    return vec.len;                                                           \
 }                                                                             \
                                                                               \
 size_t                                                                        \
-vec_##name##_sizeof(const vec_##name vec_##name)                              \
+vec_##name##_sizeof(const vec_##name vec)                                     \
 {                                                                             \
-    return vec_##name.cap;                                                    \
+    return vec.cap;                                                           \
 }                                                                             \
                                                                               \
 void                                                                          \
-vec_##name##_free(vec_##name vec_##name)                                      \
+vec_##name##_free(vec_##name vec)                                             \
 {                                                                             \
-    FREE(vec_##name.val);                                                     \
+    FREE(vec.val);                                                            \
 }                                                                             \
                                                                               \
 vec_##name##_iter                                                             \
@@ -414,13 +414,13 @@ vec_##name##_iter_next(vec_##name##_iter *iter, type *val)                    \
                                                                               \
 int                                                                           \
 vec_##name##_iter_map(vec_##name##_iter *iter,                                \
-                      type (*fn)(type item), vec_##name *new)                 \
+                      type (*fn)(type item), vec_##name *vec)                 \
 {                                                                             \
-    new->val = malloc(sizeof(type) * iter->vec.len);                          \
-    new->len = iter->vec.len;                                                 \
+    vec->val = malloc(sizeof(type) * iter->vec.len);                          \
+    vec->len = iter->vec.len;                                                 \
                                                                               \
     for (size_t i = 0; i < iter->vec.len; i++)                                \
-        new->val[i] = (*fn)(iter->vec.val[i]);                                \
+        vec->val[i] = (*fn)(iter->vec.val[i]);                                \
                                                                               \
     return 0;                                                                 \
 }                                                                             \
