@@ -156,8 +156,7 @@ hash_##name##_map_remove(hash_##name##_map *map, const type key, type *val)   \
         return -1;                                                            \
                                                                               \
     map->len--;                                                               \
-                                                                              \
-    if (map->len > INIT_LEN * 2 && map->sll_len / 3 >= map->len)              \
+    if (map->sll_len > INIT_LEN * 2 && map->sll_len / 3 >= map->len)          \
         if (hash_##name##_map_resize(map, map->sll_len / 2))                  \
             return -1;                                                        \
                                                                               \
@@ -306,7 +305,7 @@ hash_##name##_set_remove(hash_##name##_set *set, const type key)              \
                                                                               \
     set->len--;                                                               \
                                                                               \
-    if (set->len > INIT_LEN * 2 && set->sll_len / 3 >= set->len)              \
+    if (set->sll_len > INIT_LEN * 2 && set->sll_len / 3 >= set->len)          \
         if (hash_##name##_set_resize(set, set->sll_len / 2))                  \
             return -1;                                                        \
                                                                               \
