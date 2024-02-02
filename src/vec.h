@@ -133,7 +133,7 @@ nvec_##name##_rmvnth(nvec_##name *nvec, const size_t at, type *val)           \
     *val = nvec->val[at];                                                     \
     memmove(nvec->val + at,                                                   \
             nvec->val + at + 1,                                               \
-            sizeof(type) * (nvec->len - at));\                                \
+            sizeof(type) * (nvec->len - at));                                 \
     nvec->val = realloc(nvec->val, sizeof(type) * --nvec->len);               \
                                                                               \
     return 0;                                                                 \
