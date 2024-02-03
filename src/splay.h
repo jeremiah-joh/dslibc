@@ -65,7 +65,7 @@ rotate_right(splay_##name##_map *map, struct splay_##name##_map_node *root)   \
 }                                                                             \
                                                                               \
 static void                                                                   \
-splay(splay_##name##_map *map, struct splay_##name##_map_node *node)          \
+splay_map(splay_##name##_map *map, struct splay_##name##_map_node *node)          \
 {                                                                             \
     while (node->parent != NULL) {                                            \
         if (node->parent->parent == NULL) {                                   \
@@ -106,7 +106,7 @@ new_node(splay_##name##_map *map, struct splay_##name##_map_node **node,      \
     (*node)->left = NULL;                                                     \
     (*node)->right = NULL;                                                    \
     (*node)->parent = parent;                                                 \
-    splay(map, *node);                                                        \
+    splay_map(map, *node);                                                    \
     map->len++;                                                               \
     return 0;                                                                 \
 }                                                                             \
@@ -156,7 +156,7 @@ splay_##name##_map_remove(splay_##name##_map *map, const k_ty key, v_ty *val) \
             tmp = tmp->right;                                                 \
         else {                                                                \
             *val = tmp->val;                                                  \
-            splay(map, tmp);                                                  \
+            splay_map(map, tmp);                                              \
             if (tmp->left == NULL)                                            \
                 map->root = tmp->right;                                       \
             else if (tmp->right == NULL)                                      \
@@ -166,7 +166,7 @@ splay_##name##_map_remove(splay_##name##_map *map, const k_ty key, v_ty *val) \
                 while (max->right != NULL)                                    \
                     max = max->right;                                         \
                 splay_##name##_map buf = splay_##name##_map_new();            \
-                splay(&buf, max);                                             \
+                splay_map(&buf, max);                                         \
                 max->left = map->root;                                        \
                 map->root->parent = max->left;                                \
                 map->root = max;                                              \
@@ -193,7 +193,7 @@ splay_##name##_map_search(splay_##name##_map *map, const k_ty key, v_ty *val) \
             tmp = tmp->right;                                                 \
         else {                                                                \
             *val = tmp->val;                                                  \
-            splay(map, tmp);                                                  \
+            splay_map(map, tmp);                                              \
             return 0;                                                         \
         }                                                                     \
     }                                                                         \
@@ -222,6 +222,220 @@ void                                                                          \
 splay_##name##_map_free(splay_##name##_map map)                               \
 {                                                                             \
     splay_map_recursive_free(map.root);                                       \
+}
+
+#define INIT_SPLAY_SET(name, k_ty)                                            \
+struct splay_##name##_set_node {                                              \
+    k_ty key;                                                                 \
+    struct splay_##name##_set_node *left, *right, *parent;                    \
+};                                                                            \
+                                                                              \
+typedef struct {                                                              \
+    struct splay_##name##_set_node *root;                                     \
+    size_t len;                                                               \
+} splay_##name##_set;                                                         \
+                                                                              \
+static void                                                                   \
+rotate_left(splay_##name##_set *set, struct splay_##name##_set_node *root)    \
+{                                                                             \
+    struct splay_##name##_set_node *right = root->right;                      \
+    if (right != NULL) {                                                      \
+        root->right = right->left;                                            \
+        if (right->left != NULL)                                              \
+            right->left->parent = root;                                       \
+        right->parent = root->parent;                                         \
+    }                                                                         \
+                                                                              \
+    if (root->parent == NULL)                                                 \
+        set->root = right;                                                    \
+    else if (root->parent->left == root)                                      \
+        root->parent->left = right;                                           \
+    else                                                                      \
+        root->parent->right = right;                                          \
+                                                                              \
+    if (right != NULL)                                                        \
+        right->left = root;                                                   \
+                                                                              \
+    root->parent = right;                                                     \
+}                                                                             \
+                                                                              \
+static void                                                                   \
+rotate_right(splay_##name##_set *set, struct splay_##name##_set_node *root)   \
+{                                                                             \
+    struct splay_##name##_set_node *left = root->left;                        \
+    if (left != NULL) {                                                       \
+        root->left = left->right;                                             \
+        if (left->right != NULL)                                              \
+            left->right->parent = root;                                       \
+        left->parent = root->parent;                                          \
+    }                                                                         \
+                                                                              \
+    if (root->parent == NULL)                                                 \
+        set->root = left;                                                     \
+    else if (root->parent->left == root)                                      \
+        root->parent->left = left;                                            \
+    else                                                                      \
+        root->parent->right = left;                                           \
+                                                                              \
+    if (left != NULL)                                                         \
+        left->right = root;                                                   \
+    root->parent = left;                                                      \
+}                                                                             \
+                                                                              \
+static void                                                                   \
+splay_set(splay_##name##_set *set, struct splay_##name##_set_node *node)      \
+{                                                                             \
+    while (node->parent != NULL) {                                            \
+        if (node->parent->parent == NULL) {                                   \
+            if (node->parent->left == node)                                   \
+                rotate_right(set, node->parent);                              \
+            else                                                              \
+                rotate_left(set, node->parent);                               \
+        } else if (node->parent->left == node                                 \
+                   && node->parent->parent->left == node->parent) {           \
+            rotate_right(set, node->parent->parent);                          \
+            rotate_right(set, node->parent);                                  \
+        } else if (node->parent->right == node                                \
+                   && node->parent->parent->right == node->parent) {          \
+            rotate_left(set, node->parent->parent);                           \
+            rotate_left(set, node->parent);                                   \
+        } else if (node->parent->left == node                                 \
+                   && node->parent->parent->right == node->parent) {          \
+            rotate_right(set, node->parent);                                  \
+            rotate_left(set, node->parent);                                   \
+        } else {                                                              \
+            rotate_left(set, node->parent);                                   \
+            rotate_right(set, node->parent);                                  \
+        }                                                                     \
+    }                                                                         \
+                                                                              \
+    set->root = node;                                                         \
+}                                                                             \
+                                                                              \
+static int                                                                    \
+new_node(splay_##name##_set *set, struct splay_##name##_set_node **node,      \
+         k_ty key, struct splay_##name##_set_node *parent)                    \
+{                                                                             \
+    (*node) = malloc(sizeof(struct splay_##name##_set_node));                 \
+    if (node == NULL)                                                         \
+        return -1;                                                            \
+    (*node)->key = key;                                                       \
+    (*node)->left = NULL;                                                     \
+    (*node)->right = NULL;                                                    \
+    (*node)->parent = parent;                                                 \
+    splay_set(set, *node);                                                    \
+    set->len++;                                                               \
+    return 0;                                                                 \
+}                                                                             \
+                                                                              \
+splay_##name##_set                                                            \
+splay_##name##_set_new()                                                      \
+{                                                                             \
+    splay_##name##_set set = { NULL, 0 };                                     \
+    return set;                                                               \
+}                                                                             \
+                                                                              \
+int                                                                           \
+splay_##name##_set_insert(splay_##name##_set *set, const k_ty key)            \
+{                                                                             \
+    if (set->root == NULL)                                                    \
+        return new_node(set, &set->root, key, NULL);                          \
+                                                                              \
+    struct splay_##name##_set_node *tmp = set->root;                          \
+    while (tmp != NULL) {                                                     \
+        int cmp = memcmp(&key, &tmp->key, sizeof(key));                       \
+        if (cmp < 0) {                                                        \
+            if (tmp->left == NULL)                                            \
+                return new_node(set, &tmp->left, key, tmp);                   \
+            tmp = tmp->left;                                                  \
+        } else if (cmp > 0) {                                                 \
+            if (tmp->right == NULL)                                           \
+                return new_node(set, &tmp->right, key, tmp);                  \
+            tmp = tmp->right;                                                 \
+        } else {                                                              \
+            return -1;                                                        \
+        }                                                                     \
+    }                                                                         \
+                                                                              \
+    return 0;                                                                 \
+}                                                                             \
+                                                                              \
+int                                                                           \
+splay_##name##_set_remove(splay_##name##_set *set, const k_ty key)            \
+{                                                                             \
+    struct splay_##name##_set_node *tmp = set->root;                          \
+    while (tmp != NULL) {                                                     \
+        int cmp = memcmp(&key, &tmp->key, sizeof(key));                       \
+        if (cmp < 0)                                                          \
+            tmp = tmp->left;                                                  \
+        else if (cmp > 0)                                                     \
+            tmp = tmp->right;                                                 \
+        else {                                                                \
+            splay_set(set, tmp);                                              \
+            if (tmp->left == NULL)                                            \
+                set->root = tmp->right;                                       \
+            else if (tmp->right == NULL)                                      \
+                set->root = tmp->left;                                        \
+            else {                                                            \
+                struct splay_##name##_set_node *max = set->root->left;        \
+                while (max->right != NULL)                                    \
+                    max = max->right;                                         \
+                splay_##name##_set buf = splay_##name##_set_new();            \
+                splay_set(&buf, max);                                         \
+                max->left = set->root;                                        \
+                set->root->parent = max->left;                                \
+                set->root = max;                                              \
+            }                                                                 \
+            free(tmp);                                                        \
+            tmp = NULL;                                                       \
+            set->len--;                                                       \
+            return 1;                                                         \
+        }                                                                     \
+    }                                                                         \
+                                                                              \
+    return 0;                                                                 \
+}                                                                             \
+                                                                              \
+int                                                                           \
+splay_##name##_set_search(splay_##name##_set *set, const k_ty key)            \
+{                                                                             \
+    struct splay_##name##_set_node *tmp = set->root;                          \
+    while (tmp != NULL) {                                                     \
+        int cmp = memcmp(&key, &tmp->key, sizeof(key));                       \
+        if (cmp < 0)                                                          \
+            tmp = tmp->left;                                                  \
+        else if (cmp > 0)                                                     \
+            tmp = tmp->right;                                                 \
+        else {                                                                \
+            splay_set(set, tmp);                                              \
+            return 1;                                                         \
+        }                                                                     \
+    }                                                                         \
+                                                                              \
+    return 0;                                                                 \
+}                                                                             \
+                                                                              \
+size_t                                                                        \
+splay_##name##_set_length(splay_##name##_set set)                             \
+{                                                                             \
+    return set.len;                                                           \
+}                                                                             \
+                                                                              \
+static void                                                                   \
+splay_set_recursive_free(struct splay_##name##_set_node *node)                \
+{                                                                             \
+    if (node->left != NULL)                                                   \
+        splay_set_recursive_free(node->left);                                 \
+    if (node->right != NULL)                                                  \
+        splay_set_recursive_free(node->right);                                \
+    free(node);                                                               \
+    node = NULL;                                                              \
+}                                                                             \
+                                                                              \
+void                                                                          \
+splay_##name##_set_free(splay_##name##_set set)                               \
+{                                                                             \
+    splay_set_recursive_free(set.root);                                       \
 }
 
 #endif
