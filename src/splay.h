@@ -205,6 +205,23 @@ size_t                                                                        \
 splay_##name##_map_length(splay_##name##_map map)                             \
 {                                                                             \
     return map.len;                                                           \
+}                                                                             \
+                                                                              \
+static void                                                                   \
+splay_map_recursive_free(struct splay_##name##_map_node *node)                \
+{                                                                             \
+    if (node->left != NULL)                                                   \
+        splay_map_recursive_free(node->left);                                 \
+    if (node->right != NULL)                                                  \
+        splay_map_recursive_free(node->right);                                \
+    free(node);                                                               \
+    node = NULL;                                                              \
+}                                                                             \
+                                                                              \
+void                                                                          \
+splay_##name##_map_free(splay_##name##_map map)                               \
+{                                                                             \
+    splay_map_recursive_free(map.root);                                       \
 }
 
 #endif
