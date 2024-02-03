@@ -261,22 +261,17 @@ static void                                                                   \
 vec_##name##_try_extend(vec_##name *vec)                                      \
 {                                                                             \
     if (vec->len == vec->cap) {                                               \
-        vec->cap                                                              \
-            = (vec->cap != 0)                                                 \
-              ? vec->cap + vec->cap / 2 : INIT_LEN;                           \
-        vec->val                                                              \
-            = realloc(vec->val, sizeof(type) * vec->cap);                     \
+        vec->cap = vec->cap ? vec->cap + vec->cap / 2 : INIT_LEN;             \
+        vec->val = realloc(vec->val, sizeof(type) * vec->cap);                \
     }                                                                         \
 }                                                                             \
                                                                               \
 static void                                                                   \
 vec_##name##_try_shrink(vec_##name *vec)                                      \
 {                                                                             \
-    if (vec->cap > INIT_LEN * 2                                               \
-        && vec->len <= vec->cap / 3) {                                        \
-        vec->val                                                              \
-            = realloc(vec->val,                                               \
-                      sizeof(type) * (vec->cap /= 2));                        \
+    if (vec->cap > INIT_LEN + INIT_LEN / 2 && vec->len <= vec->cap / 2) {     \
+        vec->cap -= vec->cap / 3;                                             \
+        vec->val = realloc(vec->val, sizeof(type) * vec->cap);                \
     } else if (vec->len == 0) {                                               \
         vec->cap = 0;                                                         \
         free(vec->val);                                                       \
