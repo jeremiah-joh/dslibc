@@ -9,7 +9,7 @@ A collection of useful data structures written in C99.
 | bst.h | Binary Search Tree | O(log n) ~ O(n) | O(log n) ~ O(n) | O(log n) ~ O(n) | O |
 | avl.h | AVL tree | O(log n) | O(log n) | O(log n) | X |
 | rb.h | Red-Black tree | O(log n) | O(log n) | O(log n) | X |
-| splay.h | Splay tree | O(log n) ~ O(n) | O(log n) ~ O(n) | O(log n) ~ O(n) | X |
+| splay.h | Splay tree | O(log n) ~ O(n) | O(log n) ~ O(n) | O(log n) ~ O(n) | O |
 | ht.h | Hash table | O(1) ~ O(n) | O(1) ~ O(n) | O(1) ~ O(n) | O |
 
 note: all logs are base 2 logs
