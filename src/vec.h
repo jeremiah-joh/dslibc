@@ -174,7 +174,7 @@ nvec_##name##_append(nvec_##name *l_nvec, const nvec_##name *r_nvec)          \
     if (r_nvec->len == 0)                                                     \
         return 0;                                                             \
     if (l_nvec->len == 0) {                                                   \
-        memcpy(l_nvec, r_nvec, sizeof(l_nvec));                               \
+        memcpy(l_nvec, r_nvec, sizeof(type));                                 \
         return 0;                                                             \
     }                                                                         \
                                                                               \
