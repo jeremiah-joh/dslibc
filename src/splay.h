@@ -65,7 +65,7 @@ rotate_right(splay_##name##_map *map, struct splay_##name##_map_node *root)   \
 }                                                                             \
                                                                               \
 static void                                                                   \
-splay_map(splay_##name##_map *map, struct splay_##name##_map_node *node)          \
+splay_map(splay_##name##_map *map, struct splay_##name##_map_node *node)      \
 {                                                                             \
     while (node->parent != NULL) {                                            \
         if (node->parent->parent == NULL) {                                   \
