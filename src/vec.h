@@ -176,7 +176,19 @@ nvec_##name##_append(nvec_##name *l_nvec, const nvec_##name *r_nvec)          \
            r_nvec->val,                                                       \
            sizeof(type) * r_nvec->len);                                       \
     l_nvec->len += r_nvec->len;                                               \
+    return 0;                                                                 \
+}                                                                             \
                                                                               \
+int                                                                           \
+nvec_##name##_shrink(nvec_##name *nvec, const size_t len)                     \
+{                                                                             \
+    if (len > nvec.len)                                                       \
+        return -1;                                                            \
+    if (len == nvec.len)                                                      \
+        return 0;                                                             \
+    if ((nvec.val = realloc(nvec.val, len)) == NULL)                          \
+        return -1;                                                            \
+    nvec.len = len;                                                           \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
