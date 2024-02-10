@@ -63,7 +63,6 @@ nvec_##name##_push_back(nvec_##name *nvec, const type val)                    \
                                                                               \
     nvec->val = realloc(nvec->val, sizeof(type) * ++nvec->len);               \
     nvec->val[nvec->len - 1] = val;                                           \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -75,7 +74,6 @@ nvec_##name##_pop_back(nvec_##name *nvec, type *val)                          \
                                                                               \
     nvec->val = realloc(nvec->val, sizeof(type) * --nvec->len);               \
     *val = nvec->val[nvec->len];                                              \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -88,7 +86,6 @@ nvec_##name##_push_front(nvec_##name *nvec, const type val)                   \
     nvec->val = realloc(nvec->val, sizeof(type) * ++nvec->len);               \
     memmove(nvec->val + 1, nvec->val, sizeof(type) * (nvec->len - 1));        \
     nvec->val[0] = val;                                                       \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -101,7 +98,6 @@ nvec_##name##_pop_front(nvec_##name *nvec, type *val)                         \
     *val = nvec->val[0];                                                      \
     memmove(nvec->val, nvec->val + 1, sizeof(type) * nvec->len);              \
     nvec->val = realloc(nvec->val, sizeof(type) * --nvec->len);               \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -118,7 +114,6 @@ nvec_##name##_insert(nvec_##name *nvec, const type val, const size_t at)      \
             nvec->val + at,                                                   \
             sizeof(type) * (nvec->len - at));                                 \
     nvec->val[at] = val;                                                      \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -135,7 +130,6 @@ nvec_##name##_rmvnth(nvec_##name *nvec, const size_t at, type *val)           \
             nvec->val + at + 1,                                               \
             sizeof(type) * (nvec->len - at));                                 \
     nvec->val = realloc(nvec->val, sizeof(type) * --nvec->len);               \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -148,7 +142,6 @@ nvec_##name##_getnth(nvec_##name *nvec, const size_t at, type *val)           \
         return -1;                                                            \
                                                                               \
     *val = nvec->val[at];                                                     \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -161,7 +154,6 @@ nvec_##name##_setnth(nvec_##name *nvec, const size_t at, const type val)      \
         return -1;                                                            \
                                                                               \
     nvec->val[at] = val;                                                      \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -211,7 +203,6 @@ int                                                                           \
 nvec_##name##_iter_next(nvec_##name##_iter *iter, type *val)                  \
 {                                                                             \
     *val = iter->nvec.val[iter->cnt++];                                       \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -224,7 +215,6 @@ nvec_##name##_iter_map(nvec_##name##_iter *iter,                              \
                                                                               \
     for (size_t i = 0; i < iter->nvec.len; i++)                               \
         vec->val[i] = (*fn)(iter->nvec.val[i]);                               \
-                                                                              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -233,7 +223,6 @@ nvec_##name##_iter_for_each(nvec_##name##_iter *iter, type (*fn)(type item))  \
 {                                                                             \
     for (size_t i = 0; i < iter->nvec.len; i++)                               \
         iter->nvec.val[i] = (*fn)(iter->nvec.val[i]);                         \
-                                                                              \
     return 0;                                                                 \
 }
 
@@ -241,8 +230,7 @@ nvec_##name##_iter_for_each(nvec_##name##_iter *iter, type (*fn)(type item))  \
 #define INIT_VEC(name, type)                                                  \
 typedef struct {                                                              \
     type *val;                                                                \
-    size_t len;                                                               \
-    size_t cap;                                                               \
+    size_t len, cap;                                                          \
 } vec_##name;                                                                 \
                                                                               \
 typedef struct {                                                              \
