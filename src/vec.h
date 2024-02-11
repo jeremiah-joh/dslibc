@@ -198,6 +198,12 @@ nvec_##name##_length(nvec_##name nvec)                                        \
     return nvec.len;                                                          \
 }                                                                             \
                                                                               \
+size_t                                                                        \
+nvec_##name##_sizeof(nvec_##name nvec)                                        \
+{                                                                             \
+    return nvec.len * sizeof(type);                                           \
+}                                                                             \
+                                                                              \
 void                                                                          \
 nvec_##name##_free(nvec_##name nvec)                                          \
 {                                                                             \
@@ -375,6 +381,21 @@ vec_##name##_append(vec_##name *l_vec, const vec_##name *r_vec)               \
     for (size_t i = 0; i < r_vec->len; i++)                                   \
         if (vec_##name##_push_back(l_vec, r_vec->val[i]))                     \
             return -1;                                                        \
+    return 0;                                                                 \
+}                                                                             \
+                                                                              \
+int                                                                           \
+vec_##name##_shrink(vec_##name *vec, const size_t len)                        \
+{                                                                             \
+    if (len == vec->len)                                                      \
+        return 0;                                                             \
+    if (len > vec->len)                                                       \
+        return -1;                                                            \
+    while (vec->cap >= len && vec->cap > INIT_LEN)                            \
+        vec->cap -= vec->cap / 3;                                             \
+    if ((vec->val = realloc(vec->val, sizeof(type) * vec->cap)) == NULL)      \
+        return -1;                                                            \
+    vec->len = len;                                                           \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
