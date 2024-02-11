@@ -182,13 +182,13 @@ nvec_##name##_append(nvec_##name *l_nvec, const nvec_##name *r_nvec)          \
 int                                                                           \
 nvec_##name##_shrink(nvec_##name *nvec, const size_t len)                     \
 {                                                                             \
-    if (len > nvec.len)                                                       \
+    if (len > nvec->len)                                                      \
         return -1;                                                            \
-    if (len == nvec.len)                                                      \
+    if (len == nvec->len)                                                     \
         return 0;                                                             \
-    if ((nvec.val = realloc(nvec.val, len)) == NULL)                          \
+    if ((nvec->val = realloc(nvec->val, len)) == NULL)                        \
         return -1;                                                            \
-    nvec.len = len;                                                           \
+    nvec->len = len;                                                          \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
@@ -387,7 +387,7 @@ vec_##name##_length(const vec_##name vec)                                     \
 size_t                                                                        \
 vec_##name##_sizeof(const vec_##name vec)                                     \
 {                                                                             \
-    return vec.cap;                                                           \
+    return vec.cap * sizeof(type);                                            \
 }                                                                             \
                                                                               \
 void                                                                          \
