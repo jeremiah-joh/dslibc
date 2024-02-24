@@ -45,15 +45,30 @@ vec_new()
 static vec
 vec_from(type *arr, size_t len)
 {
-    vec vec;
-    vec.arr = malloc(0);
-    vec.len = len;
+    vec vec = { malloc(0), 0, len };
     if (update_capacity(&vec, vec.len))
         return vec_new();
 
-    memcpy(vec.arr, arr, sizeof(arr[0]) * vec.len);
+    memcpy(vec.arr, arr, sizeof(type) * vec.len);
 
     return vec;
+}
+
+static vec
+vec_slice(const vec *origin, const size_t head, const size_t tail)
+{
+    vec sli;
+    if (head >= tail || origin->arr == NULL)
+        return vec_new();
+
+    sli.arr = malloc(0);
+    sli.len = tail - head;
+    if (update_capacity(&sli, sli.len))
+        return vec_new();
+
+    memcpy(sli.arr, origin->arr + head, sizeof(type) * sli.len);
+
+    return sli;
 }
 
 static void
@@ -82,7 +97,7 @@ vec_push_front(vec *vec, const type val)
     if (update_capacity(vec, vec->len + 1))
         return -1;
 
-    memmove(vec->arr + 1, vec->arr, sizeof(val) * vec->len);
+    memmove(vec->arr + 1, vec->arr, sizeof(type) * vec->len);
     vec->arr[0] = val;
     vec->len++;
 
@@ -106,7 +121,7 @@ static int
 vec_pop_front(vec *vec, type *val)
 {
     *val = vec->arr[0];
-    memmove(vec->arr, vec->arr + 1, sizeof(val) * (vec->len - 1));
+    memmove(vec->arr, vec->arr + 1, sizeof(type) * (vec->len - 1));
 
     if (update_capacity(vec, vec->len - 1))
         return -1;
@@ -122,7 +137,7 @@ vec_insert(vec *vec, const type val, const size_t at)
     if (update_capacity(vec, vec->len + 1))
         return -1;
 
-    memmove(vec->arr + at + 1, vec->arr + at, sizeof(val) * (vec->len - at));
+    memmove(vec->arr + at + 1, vec->arr + at, sizeof(type) * (vec->len - at));
     vec->arr[at] = val;
     vec->len++;
 
@@ -134,7 +149,7 @@ vec_search(vec *vec, const type target)
 {
     size_t i;
     for (i = 0; i < vec->len; i++)
-        if (memcmp(&target, &vec->arr[i], sizeof(target)) == 0)
+        if (memcmp(&target, &vec->arr[i], sizeof(type)) == 0)
             break;
 
     return i;
@@ -147,7 +162,7 @@ vec_remove(vec *vec, const type target)
     if (i >= vec->len)
         return i;
 
-    memmove(vec->arr + i, vec->arr + i + 1, sizeof(target) * (vec->len - i));
+    memmove(vec->arr + i, vec->arr + i + 1, sizeof(type) * (vec->len - i));
     if (update_capacity(vec, vec->len - 1))
         return -1;
     vec->len--;
@@ -183,7 +198,7 @@ vec_rmvnth(vec *vec, type *val, const size_t at)
     if (vec_getnth(vec, val, at))
         return -1;
 
-    memmove(vec->arr + at, vec->arr + 1, sizeof(val) * (vec->len - at));
+    memmove(vec->arr + at, vec->arr + 1, sizeof(type) * (vec->len - at));
     if (update_capacity(vec, vec->len - 1))
         return -1;
     vec->len--;
