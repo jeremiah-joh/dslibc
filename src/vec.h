@@ -6,6 +6,7 @@ typedef int type;
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#define INIT_CAP 4
 
 #define INIT_VEC(name, type)
 
@@ -17,17 +18,18 @@ typedef struct {
 static int
 update_capacity(vec *vec, size_t len)
 {
-    size_t cap;
-    for (cap = 4; cap < len; cap += cap / 2)
-        ;
-
-    if (cap == vec->cap)
-        return 0;
-
     if (vec->arr == NULL)
         return -1;
+    if ((vec->len > 0 && len < vec->len - 1) || vec->len + 1 < len)
+        return -1;
 
-    vec->cap = cap;
+    if (vec->cap < len)
+        vec->cap += vec->cap ? vec->cap / 2 : INIT_CAP;
+    else if (vec->cap / 2 > len)
+        vec->cap -= (vec->cap > INIT_CAP) ? vec->cap / 3 : 0;
+    else
+        return 0;
+
     vec->arr = realloc(vec->arr, sizeof(type) * vec->cap);
 
     return vec->arr ? 0 : -1;
