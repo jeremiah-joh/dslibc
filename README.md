@@ -1,5 +1,5 @@
 # Data Structure Library for C
-A collection of useful data structures written in C99.
+A collection of useful data structures written in ANSI C.
 
 ## Data structures
 | File name | Data structure name | Insert | Remove | Search | State |
