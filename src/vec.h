@@ -20,15 +20,16 @@ update_capacity(vec *vec, size_t len)
 {
     if (vec->arr == NULL)
         return -1;
-    if ((vec->len > 0 && len < vec->len - 1) || vec->len + 1 < len)
-        return -1;
 
-    if (vec->cap < len)
-        vec->cap += vec->cap ? vec->cap / 2 : INIT_CAP;
-    else if (vec->cap / 2 > len)
-        vec->cap -= (vec->cap > INIT_CAP) ? vec->cap / 3 : 0;
-    else
+    if (vec->cap < len) {
+        while (vec->cap < len)
+            vec->cap += vec->cap ? vec->cap / 2 : INIT_CAP;
+    } else if (len < vec->cap / 2) {
+        while (len < vec->cap - vec->cap / 3 && vec->cap > INIT_CAP)
+            vec->cap -= (vec->cap > INIT_CAP) ? vec->cap / 3 : 0;
+    } else {
         return 0;
+    }
 
     vec->arr = realloc(vec->arr, sizeof(type) * vec->cap);
 
@@ -173,7 +174,7 @@ vec_remove(vec *vec, const type target)
 static int
 vec_getnth(const vec *vec, type *val, const size_t at)
 {
-    if (vec->arr == NULL || at >= vec->len)
+    if (vec->arr == NULL || vec->len == 0 || vec->len <= at)
         return -1;
 
     *val = vec->arr[at];
@@ -184,7 +185,7 @@ vec_getnth(const vec *vec, type *val, const size_t at)
 static int
 vec_setnth(const vec *vec, const type val, const size_t at)
 {
-    if (vec->arr == NULL || at >= vec->len)
+    if (vec->arr == NULL || vec->len == 0 || vec->len <= at)
         return -1;
 
     vec->arr[at] = val;
@@ -202,6 +203,38 @@ vec_rmvnth(vec *vec, type *val, const size_t at)
     if (update_capacity(vec, vec->len - 1))
         return -1;
     vec->len--;
+
+    return 0;
+}
+
+static type *
+vec_nth(vec *vec, const size_t at)
+{
+    if (vec->arr == NULL || vec->len == 0 || vec->len <= at)
+        return NULL;
+
+    return vec->arr + at;
+}
+
+static type *
+vec_front(vec *vec)
+{
+    return vec_nth(vec, 0);
+}
+
+static type *
+vec_back(vec *vec)
+{
+    return vec_nth(vec, vec->len - 1);
+}
+
+static int
+vec_resize(vec *vec, const size_t len)
+{
+    if (update_capacity(vec, len))
+        return -1;
+
+    vec->len = (len < vec->len) ? len : vec->len;
 
     return 0;
 }
