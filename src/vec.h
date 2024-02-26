@@ -44,7 +44,7 @@ vec_new()
 }
 
 static vec
-vec_from(type *arr, size_t len)
+vec_from_arr(type *arr, size_t len)
 {
     vec vec = { malloc(0), 0, len };
     if (update_capacity(&vec, vec.len))
@@ -53,6 +53,15 @@ vec_from(type *arr, size_t len)
     memcpy(vec.arr, arr, sizeof(type) * vec.len);
 
     return vec;
+}
+
+static vec
+vec_from_vec(const vec vec)
+{
+    vec copy = { malloc(sizeof(type) * vec.cap), vec.cap, vec.len };
+    memcpy(copy.arr, vec.arr);
+
+    return copy;
 }
 
 static vec
