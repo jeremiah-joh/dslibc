@@ -56,10 +56,10 @@ vec_from_arr(type *arr, size_t len)
 }
 
 static vec
-vec_from_vec(const vec vec)
+vec_from_vec(const vec origin)
 {
-    vec copy = { malloc(sizeof(type) * vec.cap), vec.cap, vec.len };
-    memcpy(copy.arr, vec.arr);
+    vec copy = { malloc(sizeof(type) * origin.cap), origin.cap, origin.len };
+    memcpy(copy.arr, origin.arr, sizeof(type) * origin.cap);
 
     return copy;
 }
