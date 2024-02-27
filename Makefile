@@ -5,4 +5,4 @@ check:
 debug:
 	cc $(CFLAG) -o debug *.c -g
 clean:
-	rm -f debug a.out *.gch
+	rm -f a.out debug *.gch

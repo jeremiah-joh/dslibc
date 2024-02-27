@@ -1,19 +1,20 @@
-#include "../src/vec.h"
+#include "src/vec.h"
+#include "src/ll.h"
 #include <assert.h>
 #include <string.h>
 
 static void
-test_slice()
+test_vec_slice()
 {
     int arr[] = { 1, 2, 3, 4, 5 };
-    vec all = vec_from(arr, 5);
+    vec all = vec_from_arr(arr, 5);
     vec sli = vec_slice(&all, 2, 4);
     assert(vec_length(&sli) == 2);
     assert(sli.arr[0] == 3 && sli.arr[1] == 4);
 }
 
 static void
-test_push_pop()
+test_vec_push_pop()
 {
     int i, tmp;
     vec vec = vec_new();
@@ -37,7 +38,7 @@ test_push_pop()
 }
 
 static void
-test_insert_search_remove()
+test_vec_insert_search_remove()
 {
     vec vec = vec_new();
     int i;
@@ -51,7 +52,7 @@ test_insert_search_remove()
 }
 
 static void
-test_get_set_rmv()
+test_vec_get_set_rmv()
 {
     vec vec = vec_new();
     int i, tmp;
@@ -70,7 +71,7 @@ test_get_set_rmv()
 }
 
 static void
-test_nth()
+test_vec_nth()
 {
     vec vec = vec_new();
     int i, tmp;
@@ -88,7 +89,7 @@ test_nth()
 }
 
 static void
-test_resize()
+test_vec_resize()
 {
     vec vec = vec_new();
     int i;
@@ -105,23 +106,37 @@ test_resize()
 }
 
 static void
-test_free()
+test_vec_free()
 {
     vec vec = vec_new();
     vec_free(&vec);
     assert(vec.arr == NULL && vec.len == 0 && vec.cap == 0);
 }
 
+static void
+test_sll_push()
+{
+    sll ll = sll_new();
+    sll_push_back(&ll, 0);
+    sll_push_back(&ll, 1);
+
+    assert(ll.head->data == 0);
+    assert(ll.head->next->data == 1);
+    assert(ll.tail == ll.head->next);
+}
+
 int
 main()
 {
-    test_slice();
-    test_push_pop();
-    test_insert_search_remove();
-    test_get_set_rmv();
-    test_nth();
-    test_resize();
-    test_free();
+    test_vec_slice();
+    test_vec_push_pop();
+    test_vec_insert_search_remove();
+    test_vec_get_set_rmv();
+    test_vec_nth();
+    test_vec_resize();
+    test_vec_free();
+
+    test_sll_push();
 
     return 0;
 }
