@@ -123,6 +123,27 @@ test_sll_push()
     assert(ll.head->data == 0);
     assert(ll.head->next->data == 1);
     assert(ll.tail == ll.head->next);
+    
+    sll_push_front(&ll, 0);
+    sll_push_front(&ll, 1);
+    
+    assert(ll.head->data == 1);
+    assert(ll.head->next->data == 0);
+}
+
+static void
+test_sll_free()
+{
+    int i;
+    sll ll = sll_new();
+    
+    for (i = 0; i < 8; i++)
+        sll_push_back(&ll, i);
+    
+    sll_free(&ll);
+
+    assert(ll.head == NULL && ll.tail == NULL);
+    assert(ll.len == 0);
 }
 
 int
@@ -137,6 +158,7 @@ main()
     test_vec_free();
 
     test_sll_push();
+    test_sll_free();
 
     return 0;
 }
