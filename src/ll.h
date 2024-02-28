@@ -26,17 +26,18 @@ sll_new()
 static sll
 sll_copy(const sll old)
 {
-    struct sll_node *tmp, *cpy_node;
+    struct sll_node *old_tmp, *cpy_tmp;
     sll cpy;
 
     if (old.root == NULL)
         return sll_new();
 
-    cpy_node = cpy.root = malloc(sizeof(struct sll_node));
-    for (tmp = old.root; tmp != NULL; tmp = tmp->next) {
-        cpy_node->data = tmp->data;
-        cpy_node->next = tmp->next ? malloc(sizeof(struct sll_node)) : NULL;
-        cpy_node = cpy_node->next;
+    cpy_tmp = cpy.root = malloc(sizeof(struct sll_node));
+    for (old_tmp = old.root; old_tmp != NULL; old_tmp = old_tmp->next) {
+        cpy_tmp->data = old_tmp->data;
+        cpy_tmp->next = old_tmp->next ? malloc(sizeof(struct sll_node)) : NULL;
+
+        cpy_tmp = cpy_tmp->next;
     }
 
     cpy.len = old.len;
@@ -225,6 +226,126 @@ sll_last(const sll *ll)
 
 static size_t
 sll_length(const sll *ll)
+{
+    return ll->len;
+}
+
+#define INIT_DLL(name, type)
+
+typedef struct {
+    struct dll_node *head, *tail;
+    size_t len;
+} dll;
+
+struct dll_node {
+    type data;
+    struct dll_node *prev, *next;
+};
+
+static dll
+dll_new()
+{
+    dll ll = { NULL, NULL, 0 };
+    return ll;
+}
+
+static dll
+dll_copy(const dll old)
+{
+    struct dll_node *old_tmp, *cpy_tmp, *tmp_prv = NULL;
+    dll cpy;
+
+    if (old.head == NULL)
+        return dll_new();
+
+    cpy_tmp = cpy.head = malloc(sizeof(struct dll_node));
+    for (old_tmp = old.head; old_tmp != NULL; old_tmp = old_tmp->next) {
+        cpy_tmp->data = old_tmp->data;
+        cpy_tmp->next = old_tmp->next ? malloc(sizeof(struct dll_node)) : NULL;
+        cpy_tmp->prev = tmp_prv;
+
+        tmp_prv = cpy_tmp;
+        cpy_tmp = cpy_tmp->next;
+    }
+
+    cpy.tail = tmp_prv;
+    cpy.len = old.len;
+
+    return cpy;
+}
+
+static int
+dll_push_back(dll *ll, const type data)
+{
+    struct dll_node *prev = ll->tail;
+
+    if (ll->head == NULL && ll->tail == NULL)
+        ll->head = ll->tail = malloc(sizeof(struct dll_node));
+    else
+        ll->tail = ll->tail->next = malloc(sizeof(struct dll_node));
+
+    ll->tail->data = data;
+    ll->tail->next = NULL;
+    ll->tail->prev = prev;
+    ll->len++;
+
+    return 0;
+}
+
+static int
+dll_push_front(dll *ll, const type data)
+{
+    if (ll->head == NULL && ll->tail == NULL)
+        ll->head = ll->tail = malloc(sizeof(struct dll_node));
+    else
+        ll->head = ll->head->prev = malloc(sizeof(struct dll_node));
+
+    ll->head->data = data;
+    ll->head->next = ll->head;
+    ll->head->prev = NULL;
+    ll->len++;
+
+    return 0;
+}
+
+static type *
+dll_getptr(dll *ll, const size_t at)
+{
+    struct dll_node *tmp;
+    size_t i;
+
+    if (ll->len <= at)
+        return NULL;
+
+    if (at < ll->len / 2) {
+        i = 0;
+        for (tmp = ll->head; i != at; tmp = tmp->next, i++)
+            if (tmp == NULL)
+                return NULL;
+    } else {
+        i = ll->len;
+        for (tmp = ll->tail; i != at; tmp = tmp->prev, i--)
+            if (tmp == NULL)
+                return NULL;
+    }
+
+    return &tmp->data;
+}
+
+static type *
+dll_first(dll *ll)
+{
+    return &ll->head->data;
+}
+
+static type *
+dll_last(dll *ll)
+{
+    return &ll->tail->data;
+}
+
+static size_t
+dll_length(const dll *ll)
 {
     return ll->len;
 }
