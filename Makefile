@@ -2,7 +2,9 @@ CFLAG = -Wall -ansi
 
 check:
 	cc $(CFLAG) *.c
-debug:
-	cc $(CFLAG) -o debug *.c -g
+	rm -f a.out
 clean:
 	rm -f a.out debug *.gch
+test:
+	cc $(CFLAG) -o debug *.c -g
+	./debug
