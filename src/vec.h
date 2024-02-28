@@ -46,10 +46,10 @@ vec_new()
 static vec
 vec_copy(const vec old)
 {
-    vec copy = { malloc(sizeof(type) * old.cap), old.cap, old.len };
-    memcpy(copy.arr, old.arr, sizeof(type) * old.cap);
+    vec cpy = { malloc(sizeof(type) * old.cap), old.cap, old.len };
+    memcpy(cpy.arr, old.arr, sizeof(type) * old.cap);
 
-    return copy;
+    return cpy;
 }
 
 static vec
