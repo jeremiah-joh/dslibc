@@ -44,6 +44,15 @@ vec_new()
 }
 
 static vec
+vec_copy(const vec old)
+{
+    vec copy = { malloc(sizeof(type) * old.cap), old.cap, old.len };
+    memcpy(copy.arr, old.arr, sizeof(type) * old.cap);
+
+    return copy;
+}
+
+static vec
 vec_from_arr(type *arr, size_t len)
 {
     vec vec = { malloc(0), 0, len };
@@ -53,15 +62,6 @@ vec_from_arr(type *arr, size_t len)
     memcpy(vec.arr, arr, sizeof(type) * vec.len);
 
     return vec;
-}
-
-static vec
-vec_from_vec(const vec old)
-{
-    vec copy = { malloc(sizeof(type) * old.cap), old.cap, old.len };
-    memcpy(copy.arr, old.arr, sizeof(type) * old.cap);
-
-    return copy;
 }
 
 static vec
