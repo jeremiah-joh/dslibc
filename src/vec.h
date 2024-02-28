@@ -56,10 +56,10 @@ vec_from_arr(type *arr, size_t len)
 }
 
 static vec
-vec_from_vec(const vec origin)
+vec_from_vec(const vec old)
 {
-    vec copy = { malloc(sizeof(type) * origin.cap), origin.cap, origin.len };
-    memcpy(copy.arr, origin.arr, sizeof(type) * origin.cap);
+    vec copy = { malloc(sizeof(type) * old.cap), old.cap, old.len };
+    memcpy(copy.arr, old.arr, sizeof(type) * old.cap);
 
     return copy;
 }
@@ -217,7 +217,7 @@ vec_rmvnth(vec *vec, type *val, const size_t at)
 }
 
 static type *
-vec_nth(vec *vec, const size_t at)
+vec_getptr(vec *vec, const size_t at)
 {
     if (vec->arr == NULL || vec->len == 0 || vec->len <= at)
         return NULL;
@@ -226,15 +226,15 @@ vec_nth(vec *vec, const size_t at)
 }
 
 static type *
-vec_front(vec *vec)
+vec_first(vec *vec)
 {
-    return vec_nth(vec, 0);
+    return vec_getptr(vec, 0);
 }
 
 static type *
-vec_back(vec *vec)
+vec_last(vec *vec)
 {
-    return vec_nth(vec, vec->len - 1);
+    return vec_getptr(vec, vec->len - 1);
 }
 
 static int
