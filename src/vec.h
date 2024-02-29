@@ -217,7 +217,7 @@ vec_rmvnth(vec *vec, type *val, const size_t at)
 }
 
 static type *
-vec_getptr(vec *vec, const size_t at)
+vec_nthptr(vec *vec, const size_t at)
 {
     if (vec->arr == NULL || vec->len == 0 || vec->len <= at)
         return NULL;
@@ -228,13 +228,13 @@ vec_getptr(vec *vec, const size_t at)
 static type *
 vec_first(vec *vec)
 {
-    return vec_getptr(vec, 0);
+    return vec_nthptr(vec, 0);
 }
 
 static type *
 vec_last(vec *vec)
 {
-    return vec_getptr(vec, vec->len - 1);
+    return vec_nthptr(vec, vec->len - 1);
 }
 
 static int

@@ -200,7 +200,7 @@ sll_rmvnth(sll *ll, type *data, const size_t at)
 }
 
 static type *
-sll_getptr(const sll *ll, const size_t at)
+sll_nthptr(const sll *ll, const size_t at)
 {
     struct sll_node *tmp;
     size_t i;
@@ -221,7 +221,7 @@ sll_first(const sll *ll)
 static type *
 sll_last(const sll *ll)
 {
-    return sll_getptr(ll, ll->len - 1);
+    return sll_nthptr(ll, ll->len - 1);
 }
 
 static size_t
