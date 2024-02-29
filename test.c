@@ -4,6 +4,8 @@
 #include <string.h>
 
 INIT_VEC(int, int);
+INIT_SLL(int, int);
+INIT_DLL(int, int);
 
 static void
 test_vec_copy()
@@ -128,27 +130,27 @@ test_vec_free()
 static void
 test_sll_copy()
 {
-    sll ll, copy;
+    sll_int ll, copy;
     size_t i;
 
-    ll = sll_new();
+    ll = sll_int_new();
 
-    sll_push(&ll, 0);
-    sll_push(&ll, 1);
-    sll_push(&ll, 2);
+    sll_int_push(&ll, 0);
+    sll_int_push(&ll, 1);
+    sll_int_push(&ll, 2);
 
-    copy = sll_copy(ll);
+    copy = sll_int_copy(ll);
 
-    for (i = 0; i < sll_length(&ll); i++)
-        assert(*sll_nthptr(&ll, i) == *sll_nthptr(&copy, i));
+    for (i = 0; i < sll_int_length(&ll); i++)
+        assert(*sll_int_nthptr(&ll, i) == *sll_int_nthptr(&copy, i));
 }
 
 static void
 test_sll_push()
 {
-    sll ll = sll_new();
-    sll_push(&ll, 0);
-    sll_push(&ll, 1);
+    sll_int ll = sll_int_new();
+    sll_int_push(&ll, 0);
+    sll_int_push(&ll, 1);
 
     assert(ll.root->data == 1);
     assert(ll.root->next->data == 0);
@@ -157,65 +159,65 @@ test_sll_push()
 static void
 test_sll_pop()
 {
-    sll ll = sll_new();
-    type data;
+    sll_int ll = sll_int_new();
+    int data;
 
-    sll_push(&ll, 0);
-    sll_push(&ll, 1);
+    sll_int_push(&ll, 0);
+    sll_int_push(&ll, 1);
 
-    sll_pop(&ll, &data);
+    sll_int_pop(&ll, &data);
     assert(ll.root->data == 0);
     assert(data == 1);
-    assert(sll_length(&ll) == 1);
+    assert(sll_int_length(&ll) == 1);
 }
 
 static void
 test_sll_insert()
 {
-    sll ll = sll_new();
+    sll_int ll = sll_int_new();
 
-    sll_push(&ll, 0);
-    sll_push(&ll, 1);
+    sll_int_push(&ll, 0);
+    sll_int_push(&ll, 1);
 
-    sll_insert(&ll, 2, 1);
+    sll_int_insert(&ll, 2, 1);
 
     assert(ll.root->data == 1);
     assert(ll.root->next->data == 2);
     assert(ll.root->next->next->data == 0);
-    assert(sll_length(&ll) == 3);
+    assert(sll_int_length(&ll) == 3);
 }
 
 static void
 test_sll_search_remove()
 {
     size_t i;
-    sll ll = sll_new();
+    sll_int ll = sll_int_new();
 
     for (i = 0; i < 8; i++)
-        sll_push(&ll, i);
+        sll_int_push(&ll, i);
     
-    assert(sll_search(&ll, 4) == 3);
-    assert(sll_remove(&ll, 4) == 3);
-    assert(sll_length(&ll) == 7);
+    assert(sll_int_search(&ll, 4) == 3);
+    assert(sll_int_remove(&ll, 4) == 3);
+    assert(sll_int_length(&ll) == 7);
 }
 
 static void
 test_sll_get_set_rmv()
 {
-    type data;
-    sll ll = sll_new();
+    int data;
+    sll_int ll = sll_int_new();
 
-    sll_push(&ll, 0);
-    sll_push(&ll, 1);
-    sll_push(&ll, 2);
+    sll_int_push(&ll, 0);
+    sll_int_push(&ll, 1);
+    sll_int_push(&ll, 2);
 
-    sll_getnth(&ll, &data, 1);
+    sll_int_getnth(&ll, &data, 1);
     assert(data == 1);
 
-    sll_setnth(&ll, data, 0);
+    sll_int_setnth(&ll, data, 0);
     assert(ll.root->data == data);
 
-    sll_rmvnth(&ll, &data, 2);
+    sll_int_rmvnth(&ll, &data, 2);
     assert(ll.len == 2);
     assert(ll.root->next->next == NULL);
 }
@@ -223,65 +225,65 @@ test_sll_get_set_rmv()
 static void
 test_sll_nthptr()
 {
-    sll ll = sll_new();
+    sll_int ll = sll_int_new();
 
-    sll_push(&ll, 0);
-    sll_push(&ll, 1);
+    sll_int_push(&ll, 0);
+    sll_int_push(&ll, 1);
 
-    assert(*sll_nthptr(&ll, 0) == ll.root->data);
-    assert(*sll_nthptr(&ll, 1) == ll.root->next->data);
+    assert(*sll_int_nthptr(&ll, 0) == ll.root->data);
+    assert(*sll_int_nthptr(&ll, 1) == ll.root->next->data);
 
-    assert(*sll_first(&ll) == 1);
-    assert(*sll_last(&ll) == 0);
+    assert(*sll_int_first(&ll) == 1);
+    assert(*sll_int_last(&ll) == 0);
 }
 
 static void
 test_sll_free()
 {
     int i;
-    sll ll = sll_new();
+    sll_int ll = sll_int_new();
     
     for (i = 0; i < 8; i++)
-        sll_push(&ll, i);
+        sll_int_push(&ll, i);
     
-    sll_free(&ll);
+    sll_int_free(&ll);
 
     assert(ll.root == NULL);
-    assert(sll_length(&ll) == 0);
+    assert(sll_int_length(&ll) == 0);
 }
 
 static void
 test_dll_copy()
 {
-    dll old, cpy;
+    dll_int old, cpy;
     size_t i;
 
-    old = dll_new();
+    old = dll_int_new();
     for (i = 0; i < 8; i++)
-        dll_push_back(&old, i);
+        dll_int_push_back(&old, i);
 
-    cpy = dll_copy(old);
+    cpy = dll_int_copy(old);
     for (i = 0; i < 8; i++)
-        assert(*dll_nthptr(&old, i) == *dll_nthptr(&cpy, i));
+        assert(*dll_int_nthptr(&old, i) == *dll_int_nthptr(&cpy, i));
 }
 
 static void
 test_dll_push()
 {
-    struct dll_node *tmp;
-    dll ll = dll_new();
+    struct dll_int_node *tmp;
+    dll_int ll = dll_int_new();
     size_t i;
 
     for (i = 0; i < 8; i++)
-        dll_push_back(&ll, i);
+        dll_int_push_back(&ll, i);
 
     for (i = 0, tmp = ll.head; tmp != NULL; i++, tmp = tmp->next)
         assert(tmp->data == i);
-    
-    ll = dll_new();
-    
+
+    ll = dll_int_new();
+
     for (i = 0; i < 8; i++)
-        dll_push_front(&ll, i);
+        dll_int_push_front(&ll, i);
 
     for (i = 0, tmp = ll.tail; tmp != NULL; i++, tmp = tmp->prev)
         assert(tmp->data == i);
@@ -290,80 +292,80 @@ test_dll_push()
 static void
 test_dll_pop()
 {
-    dll ll = dll_new();
+    dll_int ll = dll_int_new();
     size_t i;
     int data;
 
     for (i = 0; i < 4; i++)
-        dll_push_back(&ll, i);
+        dll_int_push_back(&ll, i);
 
-    dll_pop_back(&ll, &data);
+    dll_int_pop_back(&ll, &data);
     assert(data == 3);
 
-    dll_pop_front(&ll, &data);
+    dll_int_pop_front(&ll, &data);
     assert(data == 0);
 
-    assert(dll_length(&ll) == 2);
+    assert(dll_int_length(&ll) == 2);
 }
 
 static void
 test_dll_insert()
 {
-    dll ll = dll_new();
+    dll_int ll = dll_int_new();
     size_t i;
 
     for (i = 0; i < 4; i++)
-        dll_push_back(&ll, i);
+        dll_int_push_back(&ll, i);
 
-    dll_insert(&ll, 10, 1);
-    assert(*dll_nthptr(&ll, 1) == 10);
+    dll_int_insert(&ll, 10, 1);
+    assert(*dll_int_nthptr(&ll, 1) == 10);
 }
 
 static void
 test_dll_search_remove()
 {
-    dll ll = dll_new();
+    dll_int ll = dll_int_new();
     size_t i;
 
     for (i = 0; i < 4; i++)
-        dll_push_back(&ll, i);
+        dll_int_push_back(&ll, i);
 
-    assert(dll_search(&ll, 1) == 1);
-    assert(dll_remove(&ll, 1) == 1);
+    assert(dll_int_search(&ll, 1) == 1);
+    assert(dll_int_remove(&ll, 1) == 1);
 }
 
 static void
 test_dll_get_set_rmv()
 {
-    dll ll = dll_new();
+    dll_int ll = dll_int_new();
     size_t i;
     int data;
 
     for (i = 0; i < 4; i++)
-        dll_push_back(&ll, i);
+        dll_int_push_back(&ll, i);
 
-    dll_getnth(&ll, &data, 1);
+    dll_int_getnth(&ll, &data, 1);
     assert(data == 1);
 
-    dll_setnth(&ll, 2, 1);
-    assert(*dll_nthptr(&ll, 1) == 2);
+    dll_int_setnth(&ll, 2, 1);
+    assert(*dll_int_nthptr(&ll, 1) == 2);
 
-    dll_rmvnth(&ll, &data, 1);
+    dll_int_rmvnth(&ll, &data, 1);
     assert(data == 2);
 }
 
 static void
 test_dll_nthptr()
 {
-    dll ll = dll_new();
+    dll_int ll = dll_int_new();
     size_t i;
 
     for (i = 0; i < 4; i++)
-        dll_push_back(&ll, i);
+        dll_int_push_back(&ll, i);
 
-    assert(*dll_nthptr(&ll, 2) == 2);
-    assert(*dll_first(&ll) == 0);
-    assert(*dll_last(&ll) == 3);
+    assert(*dll_int_nthptr(&ll, 2) == 2);
+    assert(*dll_int_first(&ll) == 0);
+    assert(*dll_int_last(&ll) == 3);
 }
 
 int
