@@ -3,12 +3,14 @@
 #include <assert.h>
 #include <string.h>
 
+INIT_VEC(int, int);
+
 static void
 test_vec_copy()
 {
     int arr[] = { 1, 2, 3, 4, 5 };
-    vec old = vec_from_arr(arr, 5);
-    vec cpy = vec_copy(old);
+    vec_int old = vec_int_from_arr(arr, 5);
+    vec_int cpy = vec_int_copy(old);
 
     assert(memcmp(old.arr, cpy.arr, sizeof(int) * old.len) == 0);
 }
@@ -17,9 +19,9 @@ static void
 test_vec_slice()
 {
     int arr[] = { 1, 2, 3, 4, 5 };
-    vec all = vec_from_arr(arr, 5);
-    vec sli = vec_slice(&all, 2, 4);
-    assert(vec_length(&sli) == 2);
+    vec_int all = vec_int_from_arr(arr, 5);
+    vec_int sli = vec_int_slice(&all, 2, 4);
+    assert(vec_int_length(&sli) == 2);
     assert(sli.arr[0] == 3 && sli.arr[1] == 4);
 }
 
@@ -27,99 +29,99 @@ static void
 test_vec_push_pop()
 {
     int i, tmp;
-    vec vec = vec_new();
+    vec_int vec = vec_int_new();
     for (i = 0; i < 4; i++)
-        vec_push_back(&vec, i);
+        vec_int_push_back(&vec, i);
     for (i = 0; i < 4; i++)
-        vec_push_front(&vec, i);
-    assert(vec_length(&vec) == 8);
-    assert(vec_sizeof(&vec) == sizeof(int) * 9);
+        vec_int_push_front(&vec, i);
+    assert(vec_int_length(&vec) == 8);
+    assert(vec_int_sizeof(&vec) == sizeof(int) * 9);
 
     for (i = 0; i < 4; i++) {
-        vec_pop_back(&vec, &tmp);
+        vec_int_pop_back(&vec, &tmp);
         assert(tmp == 3 - i);
     }
     for (i = 0; i < 4; i++) {
-        vec_pop_front(&vec, &tmp);
+        vec_int_pop_front(&vec, &tmp);
         assert(tmp == 3 - i);
     }
-    assert(vec_length(&vec) == 0);
-    assert(vec_sizeof(&vec) == sizeof(int) * 4);
+    assert(vec_int_length(&vec) == 0);
+    assert(vec_int_sizeof(&vec) == sizeof(int) * 4);
 }
 
 static void
 test_vec_insert_search_remove()
 {
-    vec vec = vec_new();
+    vec_int vec = vec_int_new();
     int i;
     for (i = 0; i < 8; i++)
-        vec_push_back(&vec, i);
+        vec_int_push_back(&vec, i);
     
-    vec_insert(&vec, 11, 4);
+    vec_int_insert(&vec, 11, 4);
     assert(vec.arr[4] == 11);
-    assert(vec_search(&vec, 11) == 4);
-    assert(vec_remove(&vec, 11) == 4);
+    assert(vec_int_search(&vec, 11) == 4);
+    assert(vec_int_remove(&vec, 11) == 4);
 }
 
 static void
 test_vec_get_set_rmv()
 {
-    vec vec = vec_new();
+    vec_int vec = vec_int_new();
     int i, tmp;
     for (i = 0; i < 8; i++)
-        vec_push_back(&vec, i);
+        vec_int_push_back(&vec, i);
 
-    vec_getnth(&vec, &tmp, 3);
+    vec_int_getnth(&vec, &tmp, 3);
     assert(tmp == 3);
 
-    vec_setnth(&vec, 10, 3);
+    vec_int_setnth(&vec, 10, 3);
     assert(vec.arr[3] == 10);
 
-    vec_rmvnth(&vec, &tmp, 3);
+    vec_int_rmvnth(&vec, &tmp, 3);
     assert(tmp == 10);
-    assert(vec_length(&vec) == 7);
+    assert(vec_int_length(&vec) == 7);
 }
 
 static void
 test_vec_nthptr()
 {
-    vec vec = vec_new();
+    vec_int vec = vec_int_new();
     int i, tmp;
     for (i = 0; i < 8; i++)
-        vec_push_back(&vec, i);
+        vec_int_push_back(&vec, i);
     
-    tmp = *vec_nthptr(&vec, 3);
+    tmp = *vec_int_nthptr(&vec, 3);
     assert(tmp == 3);
 
-    *vec_first(&vec) = tmp;
+    *vec_int_first(&vec) = tmp;
     assert(vec.arr[0] == 3);
 
-    tmp = *vec_last(&vec);
+    tmp = *vec_int_last(&vec);
     assert(tmp == 7);
 }
 
 static void
 test_vec_resize()
 {
-    vec vec = vec_new();
+    vec_int vec = vec_int_new();
     int i;
     for (i = 0; i < 8; i++)
-        vec_push_back(&vec, i);
+        vec_int_push_back(&vec, i);
     
-    vec_resize(&vec, 0);
-    assert(vec_length(&vec) == 0);
-    assert(vec_sizeof(&vec) == sizeof(int) * 4);
+    vec_int_resize(&vec, 0);
+    assert(vec_int_length(&vec) == 0);
+    assert(vec_int_sizeof(&vec) == sizeof(int) * 4);
 
-    vec_resize(&vec, 10);
-    assert(vec_length(&vec) == 0);
-    assert(vec_sizeof(&vec) == sizeof(int) * 13);
+    vec_int_resize(&vec, 10);
+    assert(vec_int_length(&vec) == 0);
+    assert(vec_int_sizeof(&vec) == sizeof(int) * 13);
 }
 
 static void
 test_vec_free()
 {
-    vec vec = vec_new();
-    vec_free(&vec);
+    vec_int vec = vec_int_new();
+    vec_int_free(&vec);
     assert(vec.arr == NULL && vec.len == 0 && vec.cap == 0);
 }
 
