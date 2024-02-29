@@ -81,14 +81,14 @@ test_vec_get_set_rmv()
 }
 
 static void
-test_vec_getptr()
+test_vec_nthptr()
 {
     vec vec = vec_new();
     int i, tmp;
     for (i = 0; i < 8; i++)
         vec_push_back(&vec, i);
     
-    tmp = *vec_getptr(&vec, 3);
+    tmp = *vec_nthptr(&vec, 3);
     assert(tmp == 3);
 
     *vec_first(&vec) = tmp;
@@ -138,7 +138,7 @@ test_sll_copy()
     copy = sll_copy(ll);
 
     for (i = 0; i < sll_length(&ll); i++)
-        assert(*sll_getptr(&ll, i) == *sll_getptr(&copy, i));
+        assert(*sll_nthptr(&ll, i) == *sll_nthptr(&copy, i));
 }
 
 static void
@@ -219,15 +219,15 @@ test_sll_get_set_rmv()
 }
 
 static void
-test_sll_getptr()
+test_sll_nthptr()
 {
     sll ll = sll_new();
 
     sll_push(&ll, 0);
     sll_push(&ll, 1);
 
-    assert(*sll_getptr(&ll, 0) == ll.root->data);
-    assert(*sll_getptr(&ll, 1) == ll.root->next->data);
+    assert(*sll_nthptr(&ll, 0) == ll.root->data);
+    assert(*sll_nthptr(&ll, 1) == ll.root->next->data);
 
     assert(*sll_first(&ll) == 1);
     assert(*sll_last(&ll) == 0);
@@ -248,6 +248,122 @@ test_sll_free()
     assert(sll_length(&ll) == 0);
 }
 
+static void
+test_dll_copy()
+{
+    dll old, cpy;
+    size_t i;
+
+    old = dll_new();
+    for (i = 0; i < 8; i++)
+        dll_push_back(&old, i);
+
+    cpy = dll_copy(old);
+    for (i = 0; i < 8; i++)
+        assert(*dll_nthptr(&old, i) == *dll_nthptr(&cpy, i));
+}
+
+static void
+test_dll_push()
+{
+    struct dll_node *tmp;
+    dll ll = dll_new();
+    size_t i;
+
+    for (i = 0; i < 8; i++)
+        dll_push_back(&ll, i);
+
+    for (i = 0, tmp = ll.head; tmp != NULL; i++, tmp = tmp->next)
+        assert(tmp->data == i);
+    
+    ll = dll_new();
+    
+    for (i = 0; i < 8; i++)
+        dll_push_front(&ll, i);
+
+    for (i = 0, tmp = ll.tail; tmp != NULL; i++, tmp = tmp->prev)
+        assert(tmp->data == i);
+}
+
+static void
+test_dll_pop()
+{
+    dll ll = dll_new();
+    size_t i;
+    int data;
+
+    for (i = 0; i < 4; i++)
+        dll_push_back(&ll, i);
+
+    dll_pop_back(&ll, &data);
+    assert(data == 3);
+
+    dll_pop_front(&ll, &data);
+    assert(data == 0);
+
+    assert(dll_length(&ll) == 2);
+}
+
+static void
+test_dll_insert()
+{
+    dll ll = dll_new();
+    size_t i;
+
+    for (i = 0; i < 4; i++)
+        dll_push_back(&ll, i);
+
+    dll_insert(&ll, 10, 1);
+    assert(*dll_nthptr(&ll, 1) == 10);
+}
+
+static void
+test_dll_search_remove()
+{
+    dll ll = dll_new();
+    size_t i;
+
+    for (i = 0; i < 4; i++)
+        dll_push_back(&ll, i);
+
+    assert(dll_search(&ll, 1) == 1);
+    assert(dll_remove(&ll, 1) == 1);
+}
+
+static void
+test_dll_get_set_rmv()
+{
+    dll ll = dll_new();
+    size_t i;
+    int data;
+
+    for (i = 0; i < 4; i++)
+        dll_push_back(&ll, i);
+
+    dll_getnth(&ll, &data, 1);
+    assert(data == 1);
+
+    dll_setnth(&ll, 2, 1);
+    assert(*dll_nthptr(&ll, 1) == 2);
+
+    dll_rmvnth(&ll, &data, 1);
+    assert(data == 2);
+}
+
+static void
+test_dll_nthptr()
+{
+    dll ll = dll_new();
+    size_t i;
+
+    for (i = 0; i < 4; i++)
+        dll_push_back(&ll, i);
+
+    assert(*dll_nthptr(&ll, 2) == 2);
+    assert(*dll_first(&ll) == 0);
+    assert(*dll_last(&ll) == 3);
+}
+
 int
 main()
 {
@@ -256,7 +372,7 @@ main()
     test_vec_push_pop();
     test_vec_insert_search_remove();
     test_vec_get_set_rmv();
-    test_vec_getptr();
+    test_vec_nthptr();
     test_vec_resize();
     test_vec_free();
 
@@ -266,8 +382,16 @@ main()
     test_sll_insert();
     test_sll_search_remove();
     test_sll_get_set_rmv();
-    test_sll_getptr();
+    test_sll_nthptr();
     test_sll_free();
+
+    test_dll_copy();
+    test_dll_push();
+    test_dll_pop();
+    test_dll_insert();
+    test_dll_search_remove();
+    test_dll_get_set_rmv();
+    test_dll_nthptr();
 
     return 0;
 }

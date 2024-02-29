@@ -308,8 +308,180 @@ dll_push_front(dll *ll, const type data)
     return 0;
 }
 
+static int
+dll_pop_back(dll *ll, type *data)
+{
+    if (ll->len == 0 || ll->head == NULL || ll->tail == NULL)
+        return -1;
+
+    *data = ll->tail->data;
+    
+    ll->tail = ll->tail->prev;
+    free(ll->tail->next);
+    ll->len--;
+
+    return 0;
+}
+
+static int
+dll_pop_front(dll *ll, type *data)
+{
+    if (ll->len == 0 || ll->head == NULL || ll->tail == NULL)
+        return -1;
+
+    *data = ll->head->data;
+
+    ll->head = ll->head->next;
+    free(ll->head->prev);
+    ll->len--;
+
+    return 0;
+}
+
+static int
+dll_insert(dll *ll, const type data, const size_t at)
+{
+    size_t i;
+    struct dll_node *tmp, *new;
+
+    if (ll->len <= at)
+        return -1;
+
+    if (at < ll->len / 2) {
+        for (i = 0, tmp = ll->head; i != at; i++, tmp = tmp->next)
+            if (tmp == NULL)
+                return -1;
+    } else {
+        for (i = ll->len - 1, tmp = ll->tail; i != at; i--, tmp = tmp->prev)
+            if (tmp == NULL)
+                return -1;
+    }
+
+    new = malloc(sizeof(struct dll_node));
+    new->data = data;
+    new->next = tmp->next;
+    new->prev = tmp->prev;
+
+    tmp->prev->next = new;
+    tmp->next->prev = new;
+
+    ll->len++;
+
+    return 0;
+}
+
+static size_t
+dll_search(dll *ll, const type data)
+{
+    size_t i;
+    struct dll_node *tmp;
+
+    for (i = 0, tmp = ll->head; tmp != NULL; i++, tmp = tmp->next)
+        if (tmp->data == data)
+            break;
+
+    return i;
+}
+
+static size_t
+dll_remove(dll *ll, const type data)
+{
+    size_t i;
+    struct dll_node *tmp;
+
+    for (i = 0, tmp = ll->head; tmp != NULL; i++, tmp = tmp->next) {
+        if (tmp->data == data) {
+            tmp->prev->next = tmp->next;
+            tmp->next->prev = tmp->prev;
+            free(tmp);
+
+            break;
+        }
+    }
+
+    return i;
+}
+
+static int
+dll_getnth(const dll *ll, type *data, const size_t at)
+{
+    size_t i;
+    struct dll_node *tmp;
+
+    if (ll->len <= at)
+        return -1;
+
+    if (at < ll->len / 2) {
+        for (i = 0, tmp = ll->head; i != at; i++, tmp = tmp->next)
+            if (tmp == NULL)
+                return -1;
+    } else {
+        for (i = ll->len - 1, tmp = ll->tail; i != at; i--, tmp = tmp->prev)
+            if (tmp == NULL)
+                return -1;
+    }
+
+    *data = tmp->data;
+
+    return 0;
+}
+
+static int
+dll_setnth(const dll *ll, const type data, const size_t at)
+{
+    size_t i;
+    struct dll_node *tmp;
+
+    if (ll->len <= at)
+        return -1;
+
+    if (at < ll->len / 2) {
+        for (i = 0, tmp = ll->head; i != at; i++, tmp = tmp->next)
+            if (tmp == NULL)
+                return -1;
+    } else {
+        for (i = ll->len - 1, tmp = ll->tail; i != at; i--, tmp = tmp->prev)
+            if (tmp == NULL)
+                return -1;
+    }
+
+    tmp->data = data;
+
+    return 0;
+}
+
+static int
+dll_rmvnth(dll *ll, type *data, const size_t at)
+{
+    size_t i;
+    struct dll_node *tmp;
+
+    if (ll->len <= at)
+        return -1;
+
+    if (at < ll->len / 2) {
+        for (i = 0, tmp = ll->head; i != at; i++, tmp = tmp->next)
+            if (tmp == NULL)
+                return -1;
+    } else {
+        for (i = ll->len - 1, tmp = ll->tail; i != at; i--, tmp = tmp->prev)
+            if (tmp == NULL)
+                return -1;
+    }
+
+    *data = tmp->data;
+
+    tmp->prev->next = tmp->next;
+    tmp->next->prev = tmp->prev;
+    free(tmp);
+
+    ll->len--;
+
+    return 0;
+}
+
 static type *
-dll_getptr(dll *ll, const size_t at)
+dll_nthptr(dll *ll, const size_t at)
 {
     struct dll_node *tmp;
     size_t i;
@@ -318,13 +490,11 @@ dll_getptr(dll *ll, const size_t at)
         return NULL;
 
     if (at < ll->len / 2) {
-        i = 0;
-        for (tmp = ll->head; i != at; tmp = tmp->next, i++)
+        for (i = 0, tmp = ll->head; i != at; i++, tmp = tmp->next)
             if (tmp == NULL)
                 return NULL;
     } else {
-        i = ll->len;
-        for (tmp = ll->tail; i != at; tmp = tmp->prev, i--)
+        for (i = ll->len - 1, tmp = ll->tail; i != at; i--, tmp = tmp->prev)
             if (tmp == NULL)
                 return NULL;
     }
