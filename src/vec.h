@@ -34,14 +34,14 @@ update_capacity(vec_##name *vec, size_t len)                                  \
     return vec->arr ? 0 : -1;                                                 \
 }                                                                             \
                                                                               \
-static vec_##name                                                             \
+vec_##name                                                                    \
 vec_##name##_new()                                                            \
 {                                                                             \
     vec_##name vec = { malloc(0), 0, 0 };                                     \
     return vec;                                                               \
 }                                                                             \
                                                                               \
-static vec_##name                                                             \
+vec_##name                                                                    \
 vec_##name##_copy(const vec_##name old)                                       \
 {                                                                             \
     vec_##name cpy = { malloc(sizeof(type) * old.cap), old.cap, old.len };    \
@@ -50,7 +50,7 @@ vec_##name##_copy(const vec_##name old)                                       \
     return cpy;                                                               \
 }                                                                             \
                                                                               \
-static vec_##name                                                             \
+vec_##name                                                                    \
 vec_##name##_from_arr(type *arr, size_t len)                                  \
 {                                                                             \
     vec_##name vec = { malloc(0), 0, len };                                   \
@@ -62,7 +62,7 @@ vec_##name##_from_arr(type *arr, size_t len)                                  \
     return vec;                                                               \
 }                                                                             \
                                                                               \
-static vec_##name                                                             \
+vec_##name                                                                    \
 vec_##name##_slice(const vec_##name *origin,                                  \
                    const size_t head, const size_t tail)                      \
 {                                                                             \
@@ -80,7 +80,7 @@ vec_##name##_slice(const vec_##name *origin,                                  \
     return sli;                                                               \
 }                                                                             \
                                                                               \
-static void                                                                   \
+void                                                                          \
 vec_##name##_free(vec_##name *vec)                                            \
 {                                                                             \
     free(vec->arr);                                                           \
@@ -88,7 +88,7 @@ vec_##name##_free(vec_##name *vec)                                            \
     vec->cap = vec->len = 0;                                                  \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_push_back(vec_##name *vec, const type val)                       \
 {                                                                             \
     if (update_capacity(vec, vec->len + 1))                                   \
@@ -100,7 +100,7 @@ vec_##name##_push_back(vec_##name *vec, const type val)                       \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_push_front(vec_##name *vec, const type val)                      \
 {                                                                             \
     if (update_capacity(vec, vec->len + 1))                                   \
@@ -113,7 +113,7 @@ vec_##name##_push_front(vec_##name *vec, const type val)                      \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_pop_back(vec_##name *vec, type *val)                             \
 {                                                                             \
     *val = vec->arr[vec->len - 1];                                            \
@@ -126,7 +126,7 @@ vec_##name##_pop_back(vec_##name *vec, type *val)                             \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_pop_front(vec_##name *vec, type *val)                            \
 {                                                                             \
     *val = vec->arr[0];                                                       \
@@ -140,7 +140,7 @@ vec_##name##_pop_front(vec_##name *vec, type *val)                            \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_insert(vec_##name *vec, const type val, const size_t at)         \
 {                                                                             \
     if (update_capacity(vec, vec->len + 1))                                   \
@@ -153,7 +153,7 @@ vec_##name##_insert(vec_##name *vec, const type val, const size_t at)         \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static size_t                                                                 \
+size_t                                                                        \
 vec_##name##_search(vec_##name *vec, const type target)                       \
 {                                                                             \
     size_t i;                                                                 \
@@ -164,7 +164,7 @@ vec_##name##_search(vec_##name *vec, const type target)                       \
     return i;                                                                 \
 }                                                                             \
                                                                               \
-static size_t                                                                 \
+size_t                                                                        \
 vec_##name##_remove(vec_##name *vec, const type target)                       \
 {                                                                             \
     size_t i = vec_##name##_search(vec, target);                              \
@@ -179,7 +179,7 @@ vec_##name##_remove(vec_##name *vec, const type target)                       \
     return i;                                                                 \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_getnth(const vec_##name *vec, type *val, const size_t at)        \
 {                                                                             \
     if (vec->arr == NULL || vec->len == 0 || vec->len <= at)                  \
@@ -190,7 +190,7 @@ vec_##name##_getnth(const vec_##name *vec, type *val, const size_t at)        \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_setnth(const vec_##name *vec, const type val, const size_t at)   \
 {                                                                             \
     if (vec->arr == NULL || vec->len == 0 || vec->len <= at)                  \
@@ -201,7 +201,7 @@ vec_##name##_setnth(const vec_##name *vec, const type val, const size_t at)   \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_rmvnth(vec_##name *vec, type *val, const size_t at)              \
 {                                                                             \
     if (vec_##name##_getnth(vec, val, at))                                    \
@@ -215,7 +215,7 @@ vec_##name##_rmvnth(vec_##name *vec, type *val, const size_t at)              \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static type *                                                                 \
+type *                                                                        \
 vec_##name##_nthptr(vec_##name *vec, const size_t at)                         \
 {                                                                             \
     if (vec->arr == NULL || vec->len == 0 || vec->len <= at)                  \
@@ -224,19 +224,19 @@ vec_##name##_nthptr(vec_##name *vec, const size_t at)                         \
     return vec->arr + at;                                                     \
 }                                                                             \
                                                                               \
-static type *                                                                 \
+type *                                                                        \
 vec_##name##_first(vec_##name *vec)                                           \
 {                                                                             \
     return vec_##name##_nthptr(vec, 0);                                       \
 }                                                                             \
                                                                               \
-static type *                                                                 \
+type *                                                                        \
 vec_##name##_last(vec_##name *vec)                                            \
 {                                                                             \
     return vec_##name##_nthptr(vec, vec->len - 1);                            \
 }                                                                             \
                                                                               \
-static int                                                                    \
+int                                                                           \
 vec_##name##_resize(vec_##name *vec, const size_t len)                        \
 {                                                                             \
     if (update_capacity(vec, len))                                            \
@@ -247,13 +247,13 @@ vec_##name##_resize(vec_##name *vec, const size_t len)                        \
     return 0;                                                                 \
 }                                                                             \
                                                                               \
-static size_t                                                                 \
+size_t                                                                        \
 vec_##name##_length(const vec_##name *vec)                                    \
 {                                                                             \
     return vec->len;                                                          \
 }                                                                             \
                                                                               \
-static size_t                                                                 \
+size_t                                                                        \
 vec_##name##_sizeof(const vec_##name *vec)                                    \
 {                                                                             \
     return vec->cap * sizeof(type);                                           \
