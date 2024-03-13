@@ -8,3 +8,4 @@ clean:
 test:
 	cc $(CFLAG) -o debug *.c -g
 	./debug
+	rm -f debug
