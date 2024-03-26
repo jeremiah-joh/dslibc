@@ -59,7 +59,7 @@ vec_##name##_push_back(struct vec_##name *vec, const type val)                \
 	if ((vec->arr = realloc(vec->arr, vec->cap)) == NULL)                 \
 		return -1;                                                    \
                                                                               \
-	vec->arr[vec->len - 1] = val;                                         \
+	vec->arr[vec->len] = val;                                             \
 	vec->len++;                                                           \
                                                                               \
 	return 0;                                                             \
@@ -184,7 +184,21 @@ vec_##name##_remove(struct vec_##name *vec, const type val)                   \
                                                                               \
 	vec->len--;                                                           \
                                                                               \
-	return 0;                                                             \
+	return idx;                                                           \
+}                                                                             \
+                                                                              \
+int                                                                           \
+vec_##name##_shrink(struct vec_##name *vec, const size_t len)                 \
+{                                                                             \
+	if (vec->arr == NULL)                                                 \
+		return -1;                                                    \
+	if (vec->len <= len)                                                  \
+		return -1;                                                    \
+	                                                                      \
+	vec->len = len;                                                       \
+	vec->cap = new_cap_##name(len);                                       \
+                                                                              \
+	return (vec->arr = realloc(vec->arr, vec->cap)) ? 0 : -1;             \
 }                                                                             \
                                                                               \
 int                                                                           \
