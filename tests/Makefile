@@ -1,9 +1,5 @@
-STD = -Wall -ansi
+CFLAG = -Wall -ansi
 
-debug:
-	cc $(STD) -o debug *.c -g
 check:
-	cc $(STD) *.c
+	cc $(CFLAG) *.c
 	rm -f a.out
-clean:
-	rm -f debug a.out *.gch
