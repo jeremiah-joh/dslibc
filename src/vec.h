@@ -49,6 +49,24 @@ vec_##name##_copy(const struct vec_##name vec)                                \
 	return cpy;                                                           \
 }                                                                             \
                                                                               \
+struct vec_##name                                                             \
+vec_##name##_slice(const struct vec_##name vec,                               \
+                   const size_t head, const size_t tail)                      \
+{                                                                             \
+        struct vec_##name sli;                                                \
+                                                                              \
+	if (tail - 1 <= head)                                                 \
+		return vec_##name##_new();                                    \
+                                                                              \
+	sli.cap = new_cap_##name(tail - head);                                \
+	sli.arr = malloc(sli.cap);                                            \
+	sli.len = tail - head;                                                \
+                                                                              \
+	memcpy(sli.arr, vec.arr + head, sizeof(type) * sli.len);              \
+                                                                              \
+	return sli;                                                           \
+}                                                                             \
+                                                                              \
 int                                                                           \
 vec_##name##_push_back(struct vec_##name *vec, const type val)                \
 {                                                                             \
