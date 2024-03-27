@@ -9,7 +9,7 @@
 struct vec_##name {                                                           \
 	type *arr;                                                            \
 	size_t cap, len;                                                      \
-} /* to enforce semicolone */
+} /* to enforce semicolon */
 
 #define INIT_VEC_FUNC(name, type)                                             \
 static size_t                                                                 \
@@ -267,7 +267,7 @@ vec_##name##_tail(struct vec_##name *vec)                                     \
 	return (vec->arr) ? &vec->arr[vec->len - 1] : NULL;                   \
 }                                                                             \
                                                                               \
-struct vec_##name##_semi { /* to enforce semicolone */ }
+struct vec_##name##_semi { /* to enforce semicolon */ }
 
 #define INIT_VEC(name, type)                                                  \
 INIT_VEC_HEAD(name, type);                                                    \
