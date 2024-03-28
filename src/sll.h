@@ -128,6 +128,9 @@ sll_##name##_pop(struct sll_##name *sll, type *val)                           \
                                                                               \
 	sll->len--;                                                           \
                                                                               \
+	if (sll->len == 0)                                                    \
+		sll->head = sll->tail = NULL;                                 \
+                                                                              \
 	return 0;                                                             \
 }                                                                             \
                                                                               \
@@ -214,6 +217,9 @@ sll_##name##_remove(struct sll_##name *sll, const type val)                   \
                                                                               \
 	sll->len--;                                                           \
                                                                               \
+	if (sll->len == 0)                                                    \
+		sll->head = sll->tail = NULL;                                 \
+                                                                              \
 	return i;                                                             \
 }                                                                             \
                                                                               \
@@ -290,6 +296,9 @@ sll_##name##_rmvnth(struct sll_##name *sll, type *val, const size_t idx)      \
 	free(tmp);                                                            \
                                                                               \
 	sll->len--;                                                           \
+                                                                              \
+	if (sll->len == 0)                                                    \
+		sll->head = sll->tail = NULL;                                 \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
