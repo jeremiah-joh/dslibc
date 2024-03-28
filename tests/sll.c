@@ -177,6 +177,7 @@ main()
 	from();
 	push();
 	pop();
+	slice();
 	append();
 	insert();
 	search();
