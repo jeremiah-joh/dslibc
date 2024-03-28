@@ -186,6 +186,21 @@ ptr()
 	assert(v == 3);
 }
 
+void
+t_free()
+{
+	int arr[] = { 1, 2, 3 };
+	struct vec_int vec;
+
+	vec = vec_int_from(arr, 3);
+
+	vec_int_free(&vec);
+
+	assert(vec.arr == NULL);
+	assert(vec.cap == 0);
+	assert(vec.len == 0);
+}
+
 int
 main()
 {
@@ -200,6 +215,7 @@ main()
 	shrink();
 	nth();
 	ptr();
+	t_free();
 
 	return 0;
 }

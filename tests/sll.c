@@ -157,6 +157,20 @@ ptr()
 	assert(*sll_int_tail(&sll) == 3);
 }
 
+void
+t_free()
+{
+	struct sll_int sll;
+	int arr[3] = { 1, 2, 3 };
+
+	sll = sll_int_from(arr, 3);
+
+	sll_int_free(&sll);
+
+	assert(sll.head == NULL && sll.tail == NULL);
+	assert(sll.len == 0);
+}
+
 int
 main()
 {

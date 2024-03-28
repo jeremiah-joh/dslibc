@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-#define INIT_SLL_HEAD(name, type)                                             \
+#define INIT_SLL_TYPE(name, type)                                             \
 struct sll_##name##_node {                                                    \
 	type val;                                                             \
 	struct sll_##name##_node *nxt;                                        \
@@ -328,10 +328,24 @@ sll_##name##_tail(struct sll_##name *sll)                                     \
 	return &sll->tail->val;                                               \
 }                                                                             \
                                                                               \
+void                                                                          \
+sll_##name##_free(struct sll_##name *sll)                                     \
+{                                                                             \
+	struct sll_##name##_node *tmp, *nxt;                                  \
+                                                                              \
+	for (tmp = sll->head; tmp != NULL; tmp = nxt) {                       \
+		nxt = tmp->nxt;                                               \
+		free(tmp);                                                    \
+	}                                                                     \
+                                                                              \
+	sll->head = sll->tail = NULL;                                         \
+	sll->len = 0;                                                         \
+}                                                                             \
+                                                                              \
 struct sll_##name##_semi { /* to enforce semicolon */ }
 
 #define INIT_SLL(name, type)                                                  \
-INIT_SLL_HEAD(name, type);                                                    \
+INIT_SLL_TYPE(name, type);                                                    \
 INIT_SLL_FUNC(name, type)
 
 #endif
