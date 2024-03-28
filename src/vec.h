@@ -128,22 +128,24 @@ vec_##name##_pop_front(struct vec_##name *vec, type *val)                     \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_append(struct vec_##name *des, struct vec_##name *src)           \
+vec_##name##_append(struct vec_##name *des, const struct vec_##name src)      \
 {                                                                             \
-	if (des->arr == NULL && src->arr == NULL)                             \
+	if (des->arr == NULL && src.arr == NULL)                              \
 		return -1;                                                    \
-	if (src->arr == NULL)                                                 \
+	if (src.arr == NULL)                                                  \
 		return 0;                                                     \
 	if (des->arr == NULL) {                                               \
-		des = src;                                                    \
+		*des = src;                                                   \
 		return 0;                                                     \
 	}                                                                     \
 	                                                                      \
-	des->cap = new_cap_##name(des->len += src->len);                      \
+	des->cap = new_cap_##name(des->len + src.len);                        \
 	if ((des->arr = realloc(des->arr, des->cap)) == NULL)                 \
 		return -1;                                                    \
                                                                               \
-	memcpy(des->arr + des->len, src->arr, sizeof(type) * src->len);       \
+	memcpy(des->arr + des->len, src.arr, sizeof(type) * src.len);         \
+                                                                              \
+	des->len += src.len;                                                  \
                                                                               \
 	return 0;                                                             \
 }                                                                             \

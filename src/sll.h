@@ -132,21 +132,22 @@ sll_##name##_pop(struct sll_##name *sll, type *val)                           \
 }                                                                             \
                                                                               \
 int                                                                           \
-sll_##name##_append(struct sll_##name *des, struct sll_##name *src)           \
+sll_##name##_append(struct sll_##name *des, const struct sll_##name src)      \
 {                                                                             \
 	struct sll_##name new;                                                \
                                                                               \
-	if (des->head == NULL && src->head == NULL)                           \
+	if (des->head == NULL && src.head == NULL)                            \
 		return -1;                                                    \
-	if (src->head == NULL)                                                \
+	if (src.head == NULL)                                                 \
 		return 0;                                                     \
 	if (des->head == NULL) {                                              \
-		des = src;                                                    \
+		*des = src;                                                   \
 		return 0;                                                     \
 	}                                                                     \
                                                                               \
-	new = sll_##name##_copy(*src);                                        \
+	new = sll_##name##_copy(src);                                         \
 	des->tail->nxt = new.head;                                            \
+	des->tail = new.tail;                                                 \
 	des->len += new.len;                                                  \
                                                                               \
 	return 0;                                                             \

@@ -4,6 +4,36 @@
 INIT_VEC(int, int);
 
 void
+from()
+{
+	struct vec_int vec;
+	int arr[3] = { 1, 2, 3 };
+
+	vec = vec_int_from(arr, 3);
+
+	assert(vec.arr[0] == 1);
+	assert(vec.arr[1] == 2);
+	assert(vec.arr[2] == 3);
+}
+
+void
+slice()
+{
+	int arr[5] = { 1, 2, 3, 4, 5 };
+	struct vec_int vec, sli;
+
+	vec = vec_int_from(arr, 5);
+	sli = vec_int_slice(vec, 1, 4);
+	
+	assert(sli.len == 3);
+	assert(sli.arr[0] == 2);
+	assert(sli.arr[2] == 4);
+
+	sli = vec_int_slice(vec, 0, 1);
+	assert(sli.len == 0);
+}
+
+void
 push()
 {
 	struct vec_int vec = vec_int_new();
@@ -52,12 +82,17 @@ append()
 	vec_int_push_back(&des, 3);
 
 	src = vec_int_new();
-	vec_int_push_back(&des, 4);
-	vec_int_push_back(&des, 5);
-	vec_int_push_back(&des, 6);
+	vec_int_push_back(&src, 4);
+	vec_int_push_back(&src, 5);
+	vec_int_push_back(&src, 6);
 
-	vec_int_append(&des, &src);
+	vec_int_append(&des, src);
 	assert(des.len == 6);
+	assert(des.arr[0] == 1);
+	assert(des.arr[1] == 2);
+	assert(des.arr[2] == 3);
+	assert(des.arr[3] == 4);
+	assert(des.arr[4] == 5);
 	assert(des.arr[5] == 6);
 }
 
@@ -154,6 +189,8 @@ ptr()
 int
 main()
 {
+	from();
+	slice();
 	push();
 	pop();
 	append();
