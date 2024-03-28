@@ -148,6 +148,7 @@ sll_##name##_append(struct sll_##name *des, const struct sll_##name src)      \
 	new = sll_##name##_copy(src);                                         \
 	des->tail->nxt = new.head;                                            \
 	des->tail = new.tail;                                                 \
+                                                                              \
 	des->len += new.len;                                                  \
                                                                               \
 	return 0;                                                             \
