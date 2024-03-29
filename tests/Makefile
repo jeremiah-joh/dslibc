@@ -8,5 +8,7 @@ test:
 	./sll
 	$(CC) $(CFLAG) -o dll dll.c ../src/dll.h -g
 	./dll
+	$(CC) $(CFLAG) -o bst bst.c ../src/bst.h -g
+	./bst
 clean:
-	rm -f vec sll dll
+	rm -f vec sll dll bst
