@@ -25,6 +25,21 @@ from()
 }
 
 void
+copy()
+{
+	int key[] = { 2, 1, 3 };
+	int val[] = { 2, 1, 3 };
+	struct bst_int bst, cpy;
+
+	bst = bst_int_from(key, val, 3, cmp);
+	cpy = bst_int_copy(bst);
+
+	assert(bst.root->val == cpy.root->val);
+	assert(bst.root->rch->val == cpy.root->rch->val);
+	assert(bst.root->lch->val == cpy.root->lch->val);
+}
+
+void
 insert()
 {
 	struct bst_int bst;
@@ -106,6 +121,7 @@ int
 main()
 {
 	from();
+	copy();
 	insert();
 	search();
 	remove();

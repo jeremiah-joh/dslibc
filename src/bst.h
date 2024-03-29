@@ -18,6 +18,8 @@ struct bst_##name {                                                           \
 } /* to enforce semicolon */
 
 #define INIT_BST_FUNC(name, key_t, val_t)                                     \
+int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
+                                                                              \
 static struct bst_##name##_node *                                             \
 bst_##name##_new_node(const key_t key, const val_t val)                       \
 {                                                                             \
@@ -57,6 +59,17 @@ bst_##name##_get_node(struct bst_##name##_node **par,                         \
 }                                                                             \
                                                                               \
 static void                                                                   \
+bst_##name##_copy_node(struct bst_##name *cpy, struct bst_##name##_node *node)\
+{                                                                             \
+	bst_##name##_insert(cpy, node->key, node->val);                       \
+                                                                              \
+	if (node->lch != NULL)                                                \
+		bst_##name##_copy_node(cpy, node->lch);                       \
+	if (node->rch != NULL)                                                \
+		bst_##name##_copy_node(cpy, node->rch);                       \
+}                                                                             \
+                                                                              \
+static void                                                                   \
 bst_##name##_free_node(struct bst_##name##_node *node)                        \
 {                                                                             \
 	if (node->lch != NULL)                                                \
@@ -72,6 +85,30 @@ bst_##name##_new(int (*cmp)(key_t, key_t))                                    \
 {                                                                             \
 	struct bst_##name bst = { NULL, 0, cmp };                             \
 	return bst;                                                           \
+}                                                                             \
+                                                                              \
+struct bst_##name                                                             \
+bst_##name##_from(const key_t key[], const val_t val[],                       \
+                  const size_t len, int (*cmp)(key_t, key_t))                 \
+{                                                                             \
+	size_t i;                                                             \
+	struct bst_##name bst = { NULL, 0, cmp };                             \
+                                                                              \
+	for (i = 0; i < len; i++)                                             \
+		bst_##name##_insert(&bst, key[i], val[i]);                    \
+                                                                              \
+	return bst;                                                           \
+}                                                                             \
+                                                                              \
+struct bst_##name                                                             \
+bst_##name##_copy(const struct bst_##name bst)                                \
+{                                                                             \
+	struct bst_##name cpy;                                                \
+                                                                              \
+	cpy = bst_##name##_new(bst.cmp);                                      \
+	bst_##name##_copy_node(&cpy, bst.root);                               \
+                                                                              \
+	return cpy;                                                           \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -96,19 +133,6 @@ bst_##name##_insert(struct bst_##name *bst, const key_t key, const val_t val) \
 	bst->len++;                                                           \
                                                                               \
 	return 0;                                                             \
-}                                                                             \
-                                                                              \
-struct bst_##name                                                             \
-bst_##name##_from(const key_t key[], const val_t val[],                       \
-                  const size_t len, int (*cmp)(key_t, key_t))                 \
-{                                                                             \
-	size_t i;                                                             \
-	struct bst_##name bst = { NULL, 0, cmp };                             \
-                                                                              \
-	for (i = 0; i < len; i++)                                             \
-		bst_##name##_insert(&bst, key[i], val[i]);                    \
-                                                                              \
-	return bst;                                                           \
 }                                                                             \
                                                                               \
 int                                                                           \
