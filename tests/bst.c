@@ -75,16 +75,18 @@ void
 remove()
 {
 	int v;
-	int key[] = { 2, 1, 3 };
-	int val[] = { 2, 1, 3 };
+	int key[] = { 2, 1, 4, 3, 5 };
+	int val[] = { 2, 1, 4, 3, 5 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 3, cmp);
+	bst = bst_int_from(key, val, 5, cmp);
 	
-	bst_int_remove(&bst, 1, &v);
+	bst_int_remove(&bst, 4, &v);
 
-	assert(v == 1);
-	assert(bst.len == 2);
+	assert(v == 4);
+	assert(bst.root->rch->val == 5);
+	assert(bst.root->rch->lch->val == 3);
+	assert(bst.len == 4);
 }
 
 void

@@ -80,6 +80,44 @@ bst_##name##_free_node(struct bst_##name##_node *node)                        \
 	free(node);                                                           \
 }                                                                             \
                                                                               \
+static void                                                                   \
+bst_##name##_rmv1(struct bst_##name##_node **tmp)                             \
+{                                                                             \
+	struct bst_##name##_node *suc;                                        \
+                                                                              \
+	for (suc = (*tmp)->rch; suc->lch; suc = suc->lch)                     \
+		;                                                             \
+                                                                              \
+	(*tmp)->key = suc->key;                                               \
+	(*tmp)->val = suc->val;                                               \
+                                                                              \
+	*tmp = suc;                                                           \
+}                                                                             \
+                                                                              \
+static void                                                                   \
+bst_##name##_rmv2(struct bst_##name##_node *par,                              \
+                  struct bst_##name##_node *tmp)                              \
+{                                                                             \
+	if (par->lch == tmp)                                                  \
+		par->lch = NULL;                                              \
+	else                                                                  \
+		par->rch = NULL;                                              \
+                                                                              \
+	free(tmp);                                                            \
+}                                                                             \
+                                                                              \
+static void                                                                   \
+bst_##name##_rmv3(struct bst_##name##_node *par,                              \
+                  struct bst_##name##_node *tmp)                              \
+{                                                                             \
+	if (par->lch == tmp)                                                  \
+		par->lch = tmp->lch ? tmp->lch : tmp->rch;                    \
+	else                                                                  \
+		par->rch = tmp->rch ? tmp->rch : tmp->lch;                    \
+                                                                              \
+	free(tmp);                                                            \
+}                                                                             \
+                                                                              \
 struct bst_##name                                                             \
 bst_##name##_new(int (*cmp)(key_t, key_t))                                    \
 {                                                                             \
@@ -141,7 +179,6 @@ bst_##name##_search(struct bst_##name *bst, const key_t key, val_t *val)      \
 	struct bst_##name##_node *tmp, *par;                                  \
                                                                               \
 	par = bst->root;                                                      \
-                                                                              \
 	if (bst_##name##_get_node(&par, &tmp, key, bst->cmp))                 \
 		return -1;                                                    \
 	                                                                      \
@@ -156,18 +193,20 @@ bst_##name##_remove(struct bst_##name *bst, const key_t key, val_t *val)      \
 	struct bst_##name##_node *tmp, *par;                                  \
                                                                               \
 	par = bst->root;                                                      \
-                                                                              \
 	if (bst_##name##_get_node(&par, &tmp, key, bst->cmp))                 \
 		return -1;                                                    \
-	                                                                      \
+                                                                              \
 	*val = tmp->val;                                                      \
                                                                               \
-	if (tmp == par->lch)                                                  \
-		par->lch = tmp->lch ? tmp->lch : tmp->rch;                    \
+	if (tmp->lch && tmp->rch)                                             \
+		bst_##name##_rmv1(&tmp);                                      \
+	if (tmp->lch == NULL && tmp->rch == NULL)                             \
+		bst_##name##_rmv2(par, tmp);                                  \
 	else                                                                  \
-		par->rch = tmp->rch ? tmp->rch : tmp->lch;                    \
-	                                                                      \
-	bst->len--;                                                           \
+		bst_##name##_rmv3(par, tmp);                                  \
+                                                                              \
+	if (--bst->len == 0)                                                  \
+		bst->root = NULL;                                             \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
