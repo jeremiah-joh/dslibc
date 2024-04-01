@@ -1,3 +1,5 @@
+/* See COPYING file for copyright and license details. */
+
 #ifndef _SLL_H
 #define _SLL_H
 

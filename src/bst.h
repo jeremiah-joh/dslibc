@@ -1,3 +1,5 @@
+/* See COPYING file for copyright and license details. */
+
 #ifndef _BST_H
 #define _BST_H
 

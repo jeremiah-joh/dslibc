@@ -1,3 +1,5 @@
+/* See COPYING file for copyright and license details. */
+
 #ifndef _DLL_H
 #define _DLL_H
 

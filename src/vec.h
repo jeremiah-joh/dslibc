@@ -1,3 +1,5 @@
+/* See COPYING file for copyright and license details. */
+
 #ifndef _VEC_H
 #define _VEC_H
 
