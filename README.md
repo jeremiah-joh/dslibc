@@ -20,12 +20,16 @@ Usage
 
 First, copy header file into your project directory. And include it.
 
-There are three macros for each data structures.
-* `INIT_<data struct>_TYPE(name, type)` - Initialize type of data structure.
-Use in header file.
-* `INIT_<data struct>_FUNC(name, type)` - Initialize functions of data structure.
-Use in source file.
-* `INIT_<data struct>(name, type)` - Initialize both type and functions.
+There are three macros for each data structures.  
+These are for linear data structures.
+* `INIT_<data struct>(name, type)` - Initialize type and functions.
+* `INIT_<data struct>_TYPE(name, type)` - Initialize type.
+* `INIT_<data struct>_FUNC(name, type)` - Initialize functions.
+
+These are for map data structures.
+* `INIT_<data struct>(name, key_t, val_t)` - Initialize type and functions.
+* `INIT_<data struct>_TYPE(name, key_t, val_t)` - Initialize type.
+* `INIT_<data struct>_FUNC(name, key_t, val_t)` - Initialize functions.
 
 Use macro like follow.
 
@@ -43,7 +47,6 @@ main()
 
 	vec_age_push_back(&age, 21);
 	vec_age_push_back(&age, 32);
-	vec_age_push_back(&age, 43);
 
 	/* do something more */
 
