@@ -6,9 +6,10 @@ This is a coding style that I prefer.
 Basic
 -----
 
-Use C90(ISO/IEC 9899:1990) without extension.
-Declare variables on top of block.
-Use `for (;;)` instead of `while(1)` on infinite loop.
+Use C90(ISO/IEC 9899:1990) without extension.  
+Declare variables on top of block.  
+Use `for (;;)` instead of `while(1)` on infinite loop.  
+Try to avoid using `goto`.  
 
 Indentation
 -----------
@@ -73,7 +74,16 @@ do {
 } while (condition);
 ```
 
-Don't use { and } when code inside of flow control is only one line.
+Don't use { and } when code inside of flow control is only one line.  
+But use it when code looks like following:
+```c
+if (condition) {
+    do_this();
+} else {
+    do_that();
+    do_other();
+}
+```
 
 Put switch and case on same column. And comment when case fall-through.
 ```c
@@ -88,4 +98,3 @@ default:
     break;
 }
 ```
-
