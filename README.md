@@ -9,33 +9,48 @@ Following data structures are implemented.
 * Doubly Linked List
 * Binary Search Tree
 
-Following data strucuters are planned.
+Following data structures are planned.
 * AVL Tree
 * Red-Black Tree
 * Hash Table Map
 * Hash Table Set
 
-Basic Usage
------------
+Usage
+-----
 
-First, copy header file into your project directory.
+First, copy header file into your project directory. And include it.
 
 There are three macros for each data structures.
-* `INIT_<name>_TYPE` - Intitialize type of data structure. Use in header file.
-* `INIT_<name>_FUNC` - Intitialize functions of data strucutre. Use in source file.
-* `INIT_<name>` - Do both of them.
+* `INIT_<data struct>_TYPE(name, type)` - Initialize type of data structure.
+Use in header file.
+* `INIT_<data struct>_FUNC(name, type)` - Initialize functions of data structure.
+Use in source file.
+* `INIT_<data struct>(name, type)` - Initialize both type and functions.
 
 Use macro like follow.
-```c
-INIT_VEC_TYPE(age, int);
-INIT_VEC_FUNC(age, int);
-```
-
-or
 
 ```c
+#include "vec.h"
+
 INIT_VEC(age, int);
+
+int
+main()
+{
+	struct vec_age age;
+
+	age = vec_age_new();
+
+	vec_age_push_back(&age, 21);
+	vec_age_push_back(&age, 32);
+	vec_age_push_back(&age, 43);
+
+	/* do something more */
+
+	vec_age_free(&age);
+
+	return 0;
+}
 ```
 
-Then you can use `struct vec_age` and its functions.  
 See `docs/` directory for details of each data structures and their functions.
