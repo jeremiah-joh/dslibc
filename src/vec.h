@@ -7,11 +7,33 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define INIT_VEC_TYPE(name, type)                                             \
+#define INIT_VEC_HEAD(name, type)                                             \
 struct vec_##name {                                                           \
 	type *arr;                                                            \
 	size_t cap, len;                                                      \
-} /* to enforce semicolon */
+};                                                                            \
+                                                                              \
+struct vec_##name vec_##name##_new();                                         \
+struct vec_##name vec_##name##_from(const type *, const size_t);              \
+struct vec_##name vec_##name##_copy(const struct vec_##name);                 \
+struct vec_##name vec_##name##_slice(const struct vec_##name,                 \
+			             const size_t, const size_t);             \
+int vec_##name##_push_back(struct vec_##name *, const type);                  \
+int vec_##name##_push_front(struct vec_##name *, const type);                 \
+int vec_##name##_pop_back(struct vec_##name *, type *);                       \
+int vec_##name##_pop_front(struct vec_##name *, type *);                      \
+int vec_##name##_append(struct vec_##name *, const struct vec_##name);        \
+int vec_##name##_insert(struct vec_##name *, const type, const size_t);       \
+size_t vec_##name##_search(struct vec_##name *, const type);                  \
+size_t vec_##name##_remove(struct vec_##name *, const type);                  \
+int vec_##name##_shrink(struct vec_##name *, const size_t);                   \
+int vec_##name##_getnth(struct vec_##name *, type *, const size_t);           \
+int vec_##name##_setnth(struct vec_##name *, const type, const size_t);       \
+int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
+type *vec_##name##_getptr(struct vec_##name *, const size_t);                 \
+type *vec_##name##_head(struct vec_##name *);                                 \
+type *vec_##name##_tail(struct vec_##name *);                                 \
+void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
 
 #define INIT_VEC_FUNC(name, type)                                             \
 static size_t                                                                 \
@@ -300,7 +322,7 @@ vec_##name##_free(struct vec_##name *vec)                                     \
 struct vec_##name##_semi { /* to enforce semicolon */ }
 
 #define INIT_VEC(name, type)                                                  \
-INIT_VEC_TYPE(name, type);                                                    \
+INIT_VEC_HEAD(name, type);                                                    \
 INIT_VEC_FUNC(name, type)
 
 #endif
