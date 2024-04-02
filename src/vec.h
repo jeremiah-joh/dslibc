@@ -202,7 +202,7 @@ vec_##name##_search(struct vec_##name *vec, const type val)                   \
 	size_t i;                                                             \
                                                                               \
 	for (i = 0; i < vec->len; i++)                                        \
-		if (vec->arr[i] == val)                                       \
+		if (memcmp(&vec->arr[i], &val, sizeof(type)) == 0)            \
 			break;                                                \
                                                                               \
 	return i;                                                             \
