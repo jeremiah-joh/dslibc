@@ -236,8 +236,10 @@ vec_##name##_shrink(struct vec_##name *vec, const size_t len)                 \
 {                                                                             \
 	if (vec->arr == NULL)                                                 \
 		return -1;                                                    \
-	if (vec->len <= len)                                                  \
+	if (vec->len < len)                                                   \
 		return -1;                                                    \
+	if (vec->len == len)                                                  \
+		return 0;                                                     \
 	                                                                      \
 	vec->len = len;                                                       \
 	vec->cap = new_cap_##name(len);                                       \
@@ -246,7 +248,7 @@ vec_##name##_shrink(struct vec_##name *vec, const size_t len)                 \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_getnth(const struct vec_##name *vec, type *val, const size_t idx)\
+vec_##name##_getnth(struct vec_##name *vec, type *val, const size_t idx)      \
 {                                                                             \
 	if (vec->arr == NULL)                                                 \
 		return -1;                                                    \
