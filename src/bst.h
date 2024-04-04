@@ -17,11 +17,27 @@ struct bst_##name {                                                           \
 	struct bst_##name##_node *root;                                       \
 	size_t len;                                                           \
 	int (*cmp)(key_t, key_t);                                             \
-} /* to enforce semicolon */
+};                                                                            \
+                                                                              \
+struct bst_##name bst_##name##_new();                                         \
+struct bst_##name bst_##name##_from(const key_t [], const val_t [],           \
+                                    const size_t, int (*cmp)(key_t, key_t));  \
+struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
+struct bst_##name bst_##name##_slice(const struct bst_##name,                 \
+			             const size_t, const size_t);             \
+int bst_##name##_append(struct bst_##name *, const struct bst_##name);        \
+int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
+int bst_##name##_search(struct bst_##name *, const key_t, val_t *);           \
+int bst_##name##_remove(struct bst_##name *, const key_t, val_t *);           \
+int bst_##name##_getnth(struct bst_##name *, const key_t, val_t *);           \
+int bst_##name##_setnth(struct bst_##name *, const key_t, const val_t);       \
+int bst_##name##_rmvnth(struct bst_##name *, const key_t, val_t *);           \
+val_t *bst_##name##_getptr(struct bst_##name *, const key_t);                 \
+val_t *bst_##name##_head(struct bst_##name *);                                \
+val_t *bst_##name##_tail(struct bst_##name *);                                \
+void bst_##name##_free(struct bst_##name *) /* to enforce semicolon */
 
 #define INIT_BST_FUNC(name, key_t, val_t)                                     \
-int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
-                                                                              \
 static struct bst_##name##_node *                                             \
 bst_##name##_new_node(const key_t key, const val_t val)                       \
 {                                                                             \

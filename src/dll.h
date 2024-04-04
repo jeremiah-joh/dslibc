@@ -15,7 +15,29 @@ struct dll_##name##_node {                                                    \
 struct dll_##name {                                                           \
 	struct dll_##name##_node *head, *tail;                                \
 	size_t len;                                                           \
-} /* to enforce semicolon */
+};                                                                            \
+                                                                              \
+struct dll_##name dll_##name##_new();                                         \
+struct dll_##name dll_##name##_from(const type *, const size_t);              \
+struct dll_##name dll_##name##_copy(const struct dll_##name);                 \
+struct dll_##name dll_##name##_slice(const struct dll_##name,                 \
+			             const size_t, const size_t);             \
+int dll_##name##_push_back(struct dll_##name *, const type);                  \
+int dll_##name##_push_front(struct dll_##name *, const type);                 \
+int dll_##name##_pop_back(struct dll_##name *, type *);                       \
+int dll_##name##_pop_front(struct dll_##name *, type *);                      \
+int dll_##name##_append(struct dll_##name *, const struct dll_##name);        \
+int dll_##name##_insert(struct dll_##name *, const type, const size_t);       \
+size_t dll_##name##_search(struct dll_##name *, const type);                  \
+size_t dll_##name##_remove(struct dll_##name *, const type);                  \
+int dll_##name##_shrink(struct dll_##name *, const size_t);                   \
+int dll_##name##_getnth(struct dll_##name *, type *, const size_t);           \
+int dll_##name##_setnth(struct dll_##name *, const type, const size_t);       \
+int dll_##name##_rmvnth(struct dll_##name *, type *, const size_t);           \
+type *dll_##name##_getptr(struct dll_##name *, const size_t);                 \
+type *dll_##name##_head(struct dll_##name *);                                 \
+type *dll_##name##_tail(struct dll_##name *);                                 \
+void dll_##name##_free(struct dll_##name *) /* to enforce semicolon */
 
 #define INIT_DLL_FUNC(name, type)                                             \
 static struct dll_##name##_node *                                             \
@@ -286,7 +308,7 @@ dll_##name##_remove(struct dll_##name *dll, const type val)                   \
 }                                                                             \
                                                                               \
 int                                                                           \
-dll_##name##_getnth(const struct dll_##name *dll, type *val, const size_t idx)\
+dll_##name##_getnth(struct dll_##name *dll, type *val, const size_t idx)      \
 {                                                                             \
 	struct dll_##name##_node *tmp;                                        \
                                                                               \

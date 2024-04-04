@@ -15,7 +15,27 @@ struct sll_##name##_node {                                                    \
 struct sll_##name {                                                           \
 	struct sll_##name##_node *head, *tail;                                \
 	size_t len;                                                           \
-} /* to enforce semicolon */
+};                                                                            \
+                                                                              \
+struct sll_##name sll_##name##_new();                                         \
+struct sll_##name sll_##name##_from(const type *, const size_t);              \
+struct sll_##name sll_##name##_copy(const struct sll_##name);                 \
+struct sll_##name sll_##name##_slice(const struct sll_##name,                 \
+			             const size_t, const size_t);             \
+int sll_##name##_push(struct sll_##name *, const type);                       \
+int sll_##name##_pop(struct sll_##name *, type *);                            \
+int sll_##name##_append(struct sll_##name *, const struct sll_##name);        \
+int sll_##name##_insert(struct sll_##name *, const type, const size_t);       \
+size_t sll_##name##_search(struct sll_##name *, const type);                  \
+size_t sll_##name##_remove(struct sll_##name *, const type);                  \
+int sll_##name##_shrink(struct sll_##name *, const size_t);                   \
+int sll_##name##_getnth(struct sll_##name *, type *, const size_t);           \
+int sll_##name##_setnth(struct sll_##name *, const type, const size_t);       \
+int sll_##name##_rmvnth(struct sll_##name *, type *, const size_t);           \
+type *sll_##name##_getptr(struct sll_##name *, const size_t);                 \
+type *sll_##name##_head(struct sll_##name *);                                 \
+type *sll_##name##_tail(struct sll_##name *);                                 \
+void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
 
 #define INIT_SLL_FUNC(name, type)                                             \
 static struct sll_##name##_node *                                             \

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define INIT_VEC_HEAD(name, type)                                             \
+#define INIT_VEC_TYPE(name, type)                                             \
 struct vec_##name {                                                           \
 	type *arr;                                                            \
 	size_t cap, len;                                                      \
@@ -324,7 +324,7 @@ vec_##name##_free(struct vec_##name *vec)                                     \
 struct vec_##name##_semi { /* to enforce semicolon */ }
 
 #define INIT_VEC(name, type)                                                  \
-INIT_VEC_HEAD(name, type);                                                    \
+INIT_VEC_TYPE(name, type);                                                    \
 INIT_VEC_FUNC(name, type)
 
 #endif
