@@ -23,8 +23,6 @@ struct bst_##name bst_##name##_new();                                         \
 struct bst_##name bst_##name##_from(const key_t [], const val_t [],           \
                                     const size_t, int (*cmp)(key_t, key_t));  \
 struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
-struct bst_##name bst_##name##_slice(const struct bst_##name,                 \
-			             const size_t, const size_t);             \
 int bst_##name##_append(struct bst_##name *, const struct bst_##name);        \
 int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
 int bst_##name##_search(struct bst_##name *, const key_t, val_t *);           \
