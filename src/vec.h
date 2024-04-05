@@ -37,7 +37,7 @@ void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
 
 #define INIT_VEC_FUNC(name, type)                                             \
 static size_t                                                                 \
-new_cap_##name(const size_t len)                                              \
+vec_new_cap_##name(const size_t len)                                          \
 {                                                                             \
 	size_t i;                                                             \
 	for (i = 4; i < len; i <<= 1)                                         \
@@ -56,7 +56,7 @@ vec_##name##_new()                                                            \
 struct vec_##name                                                             \
 vec_##name##_from(const type *arr, const size_t len)                          \
 {                                                                             \
-	size_t cap = new_cap_##name(len);                                     \
+	size_t cap = vec_new_cap_##name(len);                                 \
 	struct vec_##name vec = { malloc(cap), cap, len };                    \
                                                                               \
 	memcpy(vec.arr, arr, sizeof(*arr) * len);                             \
@@ -82,7 +82,7 @@ vec_##name##_slice(const struct vec_##name vec,                               \
 	if (tail - 1 <= head)                                                 \
 		return vec_##name##_new();                                    \
                                                                               \
-	sli.cap = new_cap_##name(tail - head);                                \
+	sli.cap = vec_new_cap_##name(tail - head);                            \
 	sli.arr = malloc(sli.cap);                                            \
 	sli.len = tail - head;                                                \
                                                                               \
@@ -97,7 +97,7 @@ vec_##name##_push_back(struct vec_##name *vec, const type val)                \
 	if (vec->arr == NULL)                                                 \
 		return -1;                                                    \
                                                                               \
-	vec->cap = new_cap_##name(vec->len + 1);                              \
+	vec->cap = vec_new_cap_##name(vec->len + 1);                          \
 	if ((vec->arr = realloc(vec->arr, vec->cap)) == NULL)                 \
 		return -1;                                                    \
                                                                               \
@@ -113,7 +113,7 @@ vec_##name##_push_front(struct vec_##name *vec, const type val)               \
 	if (vec->arr == NULL)                                                 \
 		return -1;                                                    \
 	                                                                      \
-	vec->cap = new_cap_##name(vec->len + 1);                              \
+	vec->cap = vec_new_cap_##name(vec->len + 1);                          \
 	if ((vec->arr = realloc(vec->arr, vec->cap)) == NULL)                 \
 		return -1;                                                    \
                                                                               \
@@ -131,7 +131,7 @@ vec_##name##_pop_back(struct vec_##name *vec, type *val)                      \
 		return -1;                                                    \
 	                                                                      \
 	*val = vec->arr[vec->len - 1];                                        \
-	vec->cap = new_cap_##name(vec->len - 1);                              \
+	vec->cap = vec_new_cap_##name(vec->len - 1);                          \
 	vec->len--;                                                           \
                                                                               \
 	return (vec->arr = realloc(vec->arr, vec->cap)) ? 0 : -1;             \
@@ -144,7 +144,7 @@ vec_##name##_pop_front(struct vec_##name *vec, type *val)                     \
 		return -1;                                                    \
 	                                                                      \
 	*val = vec->arr[0];                                                   \
-	vec->cap = new_cap_##name(vec->len - 1);                              \
+	vec->cap = vec_new_cap_##name(vec->len - 1);                          \
 	memmove(vec->arr, vec->arr + 1, sizeof(type) * vec->len);             \
 	vec->len--;                                                           \
                                                                               \
@@ -163,7 +163,7 @@ vec_##name##_append(struct vec_##name *des, const struct vec_##name src)      \
 		return 0;                                                     \
 	}                                                                     \
 	                                                                      \
-	des->cap = new_cap_##name(des->len + src.len);                        \
+	des->cap = vec_new_cap_##name(des->len + src.len);                    \
 	if ((des->arr = realloc(des->arr, des->cap)) == NULL)                 \
 		return -1;                                                    \
                                                                               \
@@ -182,7 +182,7 @@ vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx) \
 	if (vec->len <= idx)                                                  \
 		return -1;                                                    \
 	                                                                      \
-	vec->cap = new_cap_##name(vec->len + 1);                              \
+	vec->cap = vec_new_cap_##name(vec->len + 1);                          \
 	if ((vec->arr = realloc(vec->arr, vec->cap)) == NULL)                 \
 		return -1;                                                    \
 	                                                                      \
@@ -222,7 +222,7 @@ vec_##name##_remove(struct vec_##name *vec, const type val)                   \
 	        vec->arr + idx + 1,                                           \
 	        sizeof(type) * (vec->len - idx));                             \
 	                                                                      \
-	vec->cap = new_cap_##name(vec->len - 1);                              \
+	vec->cap = vec_new_cap_##name(vec->len - 1);                          \
 	if ((vec->arr = realloc(vec->arr, vec->cap)) == NULL)                 \
 		return vec->len;                                              \
                                                                               \
@@ -242,7 +242,7 @@ vec_##name##_shrink(struct vec_##name *vec, const size_t len)                 \
 		return 0;                                                     \
 	                                                                      \
 	vec->len = len;                                                       \
-	vec->cap = new_cap_##name(len);                                       \
+	vec->cap = vec_new_cap_##name(len);                                   \
                                                                               \
 	return (vec->arr = realloc(vec->arr, vec->cap)) ? 0 : -1;             \
 }                                                                             \
@@ -286,7 +286,7 @@ vec_##name##_rmvnth(struct vec_##name *vec, type *val, const size_t idx)      \
 	        vec->arr + idx + 1,                                           \
 		sizeof(type) * (vec->len - idx));                             \
 	                                                                      \
-	vec->cap = new_cap_##name(vec->len - 1);                              \
+	vec->cap = vec_new_cap_##name(vec->len - 1);                          \
 	if ((vec->arr = realloc(vec->arr, vec->cap)) == NULL)                 \
 		return -1;                                                    \
                                                                               \
