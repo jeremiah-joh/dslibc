@@ -40,7 +40,7 @@ static size_t                                                                 \
 new_cap_##name(const size_t len)                                              \
 {                                                                             \
 	size_t i;                                                             \
-	for (i = 4; i < len; i += i / 2)                                      \
+	for (i = 4; i < len; i <<= 1)                                         \
 		;                                                             \
                                                                               \
 	return i * sizeof(type);                                              \
