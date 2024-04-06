@@ -48,9 +48,9 @@ int arr[] = { 1, 2, 3 };
 dll_int old = dll_int_from(arr, 3);
 dll_int new = dll_int_copy(old);
 
-assert(new.head->val == 1);
-assert(new.head->nxt->val == 2);
-assert(new.head->nxt->nxt->val == 3);
+assert(new.head->val == old.head->val);
+assert(new.head->nxt->val == old.head->nxt->val);
+assert(new.head->nxt->nxt->val == old.head->nxt->nxt->val);
 ```
 
 `struct dll_<name> dll_<name>_slice(const struct dll_<name> dll, const size_t head, const size_t tail)`

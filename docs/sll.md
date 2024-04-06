@@ -48,9 +48,9 @@ int arr[] = { 1, 2, 3 };
 sll_int old = sll_int_from(arr, 3);
 sll_int new = sll_int_copy(old);
 
-assert(new.head->val == 1);
-assert(new.head->nxt->val == 2);
-assert(new.head->nxt->nxt->val == 3);
+assert(new.head->val == old.head->val);
+assert(new.head->nxt->val == old.head->nxt->val);
+assert(new.head->nxt->nxt->val == old.head->nxt->nxt->val);
 ```
 
 `struct sll_<name> sll_<name>_slice(const struct sll_<name> sll, const size_t head, const size_t tail)`

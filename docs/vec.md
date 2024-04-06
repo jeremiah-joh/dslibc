@@ -48,9 +48,9 @@ int arr[] = { 1, 2, 3 };
 vec_int old = vec_int_from(arr, 3);
 vec_int new = vec_int_copy(old);
 
-assert(new.arr[0] == 1);
-assert(new.arr[1] == 2);
-assert(new.arr[2] == 3);
+assert(new.arr[0] == old.arr[0]);
+assert(new.arr[1] == old.arr[1]);
+assert(new.arr[2] == old.arr[2]);
 ```
 
 `struct vec_<name> vec_<name>_slice(const struct vec_<name> vec, const size_t head, const size_t tail)`
