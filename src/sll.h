@@ -21,7 +21,7 @@ struct sll_##name sll_##name##_new();                                         \
 struct sll_##name sll_##name##_from(const type *, const size_t);              \
 struct sll_##name sll_##name##_copy(const struct sll_##name);                 \
 struct sll_##name sll_##name##_slice(const struct sll_##name,                 \
-			             const size_t, const size_t);             \
+                                     const size_t, const size_t);             \
 int sll_##name##_push(struct sll_##name *, const type);                       \
 int sll_##name##_pop(struct sll_##name *, type *);                            \
 int sll_##name##_append(struct sll_##name *, const struct sll_##name);        \

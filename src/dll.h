@@ -21,7 +21,7 @@ struct dll_##name dll_##name##_new();                                         \
 struct dll_##name dll_##name##_from(const type *, const size_t);              \
 struct dll_##name dll_##name##_copy(const struct dll_##name);                 \
 struct dll_##name dll_##name##_slice(const struct dll_##name,                 \
-			             const size_t, const size_t);             \
+                                     const size_t, const size_t);             \
 int dll_##name##_push_back(struct dll_##name *, const type);                  \
 int dll_##name##_push_front(struct dll_##name *, const type);                 \
 int dll_##name##_pop_back(struct dll_##name *, type *);                       \
