@@ -17,7 +17,7 @@ struct vec_##name vec_##name##_new();                                         \
 struct vec_##name vec_##name##_from(const type *, const size_t);              \
 struct vec_##name vec_##name##_copy(const struct vec_##name);                 \
 struct vec_##name vec_##name##_slice(const struct vec_##name,                 \
-			             const size_t, const size_t);             \
+                                     const size_t, const size_t);             \
 int vec_##name##_push_back(struct vec_##name *, const type);                  \
 int vec_##name##_push_front(struct vec_##name *, const type);                 \
 int vec_##name##_pop_back(struct vec_##name *, type *);                       \
