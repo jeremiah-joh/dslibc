@@ -293,7 +293,7 @@ assert(*sll_<nam>_tail(&sll) == 3);
 
 Deallocates linked list from memory.  
 
-Using this function is recommanded because it prevents dangling pointer.
+Using this function is recommended because it prevents dangling pointer.
 
 ```c
 INIT_SLL(int, int);

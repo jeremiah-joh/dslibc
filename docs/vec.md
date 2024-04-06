@@ -235,7 +235,7 @@ assert(vec.arr[1] == 2);
 Get an element `val` at index `idx` in vector.  
 Returns 0 on success, -1 on out of range situation.
 
-Using this function is recommanded over `val = vec.arr[idx]` because it checks range.
+Using this function is recommended over `val = vec.arr[idx]` because it checks range.
 
 ```c
 INIT_VEC(int, int);
@@ -255,7 +255,7 @@ assert(val == 2);
 Assigns an element `val` at index `idx` in vector.
 Returns 0 on success, -1 on out of range situation.
 
-Using this function is recommanded over `vec.arr[idx] = val` because it checks range.
+Using this function is recommended over `vec.arr[idx] = val` because it checks range.
 
 ```c
 INIT_VEC(int, int);
@@ -334,7 +334,7 @@ assert(*vec_int_tail(&vec) == vec.arr[2]);
 
 Deallocates vector from memory.  
 
-Using this function is recommanded over `free(vec.arr)` because it prevents dangling pointer.
+Using this function is recommended over `free(vec.arr)` because it prevents dangling pointer.
 
 ```c
 INIT_VEC(int, int);

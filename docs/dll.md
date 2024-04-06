@@ -330,7 +330,7 @@ assert(*dll_int_tail(&dll) == dll.head->nxt->nxt->val);
 
 Deallocates linked list from memory.  
 
-Using this function is recommanded because it prevents dangling pointer.
+Using this function is recommended because it prevents dangling pointer.
 
 ```c
 INIT_DLL(int, int);
