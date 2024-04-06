@@ -146,4 +146,206 @@ assert(val == 1);
 `int vec_<name>_append(struct vec_<name> *des, const struct vec_<name> src)`
 ----------------------------------------------------------------------------
 
-Append two vectors together. 
+Appends two vectors together. Note that `src` vector is copied.  
+Returns 0 on success, -1 on failure.
+
+```c
+INIT_VEC(int, int);
+
+int arr1[] = { 1, 2, 3 };
+int arr2[] = { 4, 5, 6 };
+vec_int vec1 = vec_int_from(arr1, 3);
+vec_int vec2 = vec_int_from(arr2, 3);
+
+vec_int_append(&vec1, vec2);
+
+assert(vec1.arr[0] == 1);
+assert(vec1.arr[5] == 6);
+```
+
+`int vec_<name>_insert(struct vec_<name> *vec, const type val, const size_t idx)`
+---------------------------------------------------------------------------------
+
+Inserts an element `val` at given index `idx`.  
+Returns 0 on success, -1 on failure.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 3 };
+vec_int vec = vec_int_from(arr, 2);
+
+vec_int_insert(&vec, 2, 1);
+
+assert(vec.arr[1] == 2);
+```
+
+`size_t vec_<name>_search(struct vec_<name> *vec, const type val)`
+------------------------------------------------------------------
+
+Returns index number where the `val` is on success, length of vector on failure.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+assert(vec_int_search(&vec, 2) == 1);
+assert(vec_int_search(&vec, 4) == 3);
+```
+
+`size_t vec_<name>_remove(struct vec_<name> *vec, const type val)`
+------------------------------------------------------------------
+
+Finds given element `val` in vector and remove it.  
+Returns index number where the `val` is on success, length of vector on failure.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+assert(vec_int_search(&vec, 2) == 1);
+assert(vec_int_search(&vec, 4) == 3);
+```
+
+`int vec_<name>_shrink(struct vec_<name> *vec, const size_t len)`
+-----------------------------------------------------------------
+
+Shrinks vector to be given length `len`.  
+Returns 0 on success, -1 on failure.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+vec_int_shrink(&vec, 2);
+
+assert(vec.len == 2);
+assert(vec.arr[1] == 2);
+```
+
+`int vec_<name>_getnth(struct vec_<name> *vec, type *val, const size_t idx)`
+----------------------------------------------------------------------------
+
+Get an element `val` at index `idx` in vector.  
+Returns 0 on success, -1 on out of range situation.
+
+Using this function is recommanded over `val = vec.arr[idx]` because it checks range.
+
+```c
+INIT_VEC(int, int);
+
+int val;
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+vec_int_getnth(&vec, &val, 1);
+
+assert(val == 2);
+```
+
+`int vec_<name>_setnth(struct vec_<name> *vec, const type val, const size_t idx)`
+---------------------------------------------------------------------------------
+
+Assigns an element `val` at index `idx` in vector.
+Returns 0 on success, -1 on out of range situation.
+
+Using this function is recommanded over `vec.arr[idx] = val` because it checks range.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+vec_int_setnth(&vec, 4, 1);
+
+assert(val.arr[1] == 4);
+```
+
+`int vec_<name>_rmvnth(struct vec_<name> *vec, type *val, const size_t idx)`
+----------------------------------------------------------------------------
+
+Removes an element `val` at index `idx` in vector.  
+Returns 0 on success, -1 on out of range situation.
+
+```c
+INIT_VEC(int, int);
+
+int val;
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+vec_int_rmvnth(&vec, &val, 1);
+
+assert(val == 2);
+assert(vec.len == 2);
+```
+
+`type *vec_<name>_getptr(struct vec_<name> *vec, const size_t idx)`
+-------------------------------------------------------------------
+
+Returns pointer of element in vector, NULL pointer on out of range situation.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+assert(*vec_int_getptr(&vec, 1) == vec.arr[1]);
+```
+
+`type *vec_<name>_head(struct vec_<name> *vec)`
+-----------------------------------------------
+
+Returns pointer of first element in vector, NULL pointer when vector is empty.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+assert(*vec_int_head(&vec) == vec.arr[0]);
+```
+
+`type *vec_<name>_tail(struct vec_<name> *vec)`
+-----------------------------------------------
+
+Returns pointer of last element in vector, NULL pointer when vector is empty.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+assert(*vec_int_tail(&vec) == vec.arr[2]);
+```
+
+`void vec_<name>_free(struct vec_<name> *vec)`
+----------------------------------------------
+
+Deallocates vector from memory.  
+
+Using this function is recommanded over `free(vec.arr)` because it prevents dangling pointer.
+
+```c
+INIT_VEC(int, int);
+
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+vec_int_free(&vec);
+
+assert(vec.arr == NULL);
+assert(vec.cap == 0);
+assert(vec.len == 0);
+```
+
