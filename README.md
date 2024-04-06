@@ -12,13 +12,12 @@ Following data structures are implemented.
 Following data structures are planned.
 * AVL Tree
 * Red-Black Tree
-* Hash Table Map
-* Hash Table Set
+* Hash Table
 
 Usage
 -----
 
-First, copy header file into your project directory. And include it.
+First, copy a header file into your project directory.
 
 There are three macros for each data structures.  
 These are for linear data structures.
@@ -36,21 +35,21 @@ Use macro like follow.
 ```c
 #include "vec.h"
 
-INIT_VEC(age, int);
+INIT_VEC(int, int);
 
 int
 main()
 {
-	struct vec_age age;
+	struct vec_int int;
 
-	age = vec_age_new();
+	int = vec_int_new();
 
-	vec_age_push_back(&age, 21);
-	vec_age_push_back(&age, 32);
+	vec_int_push_back(&int, 21);
+	vec_int_push_back(&int, 32);
 
 	/* do something more */
 
-	vec_age_free(&age);
+	vec_int_free(&int);
 
 	return 0;
 }
