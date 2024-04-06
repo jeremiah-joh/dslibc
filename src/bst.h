@@ -35,7 +35,7 @@ struct bst_##name {                                                           \
 	int (*cmp)(key_t, key_t);                                             \
 };                                                                            \
                                                                               \
-struct bst_##name bst_##name##_new();                                         \
+struct bst_##name bst_##name##_new(int (*cmp)(key_t, key_t));                 \
 struct bst_##name bst_##name##_from(const key_t [], const val_t [],           \
                                     const size_t, int (*cmp)(key_t, key_t));  \
 struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
