@@ -324,6 +324,28 @@ dll_##name##_remove(struct dll_##name *dll, const type val)                   \
 }                                                                             \
                                                                               \
 int                                                                           \
+dll_##name##_shrink(struct dll_##name *dll, const size_t len)                 \
+{                                                                             \
+	struct dll_##name##_node *tmp, *nxt;                                  \
+                                                                              \
+	if (dll->len == 0)                                                    \
+		return 0;                                                     \
+	if (dll->len < len)                                                   \
+		return -1;                                                    \
+                                                                              \
+	tmp = dll_##name##_nth_node(dll, len - 1);                            \
+                                                                              \
+	for (dll->tail = tmp; tmp != NULL; tmp = nxt) {                       \
+		nxt = tmp->nxt;                                               \
+		free(tmp);                                                    \
+	}                                                                     \
+                                                                              \
+	dll->len = len;                                                       \
+                                                                              \
+	return 0;                                                             \
+}                                                                             \
+                                                                              \
+int                                                                           \
 dll_##name##_getnth(struct dll_##name *dll, type *val, const size_t idx)      \
 {                                                                             \
 	struct dll_##name##_node *tmp;                                        \

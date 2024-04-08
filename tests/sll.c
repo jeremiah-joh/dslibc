@@ -123,6 +123,18 @@ remove()
 }
 
 void
+shrink()
+{
+	int arr[] = { 1, 2, 3 };
+	struct sll_int sll = sll_int_from(arr, 3);
+
+	sll_int_shrink(&sll, 2);
+
+	assert(sll.tail->val == 2);
+	assert(sll.len == 2);
+}
+
+void
 nth()
 {
 	int v;
@@ -182,6 +194,7 @@ main()
 	insert();
 	search();
 	remove();
+	shrink();
 	nth();
 	ptr();
 

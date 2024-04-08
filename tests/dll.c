@@ -136,6 +136,20 @@ remove()
 }
 
 void
+shrink()
+{
+	int arr[] = { 1, 2, 3 };
+	struct dll_int dll;
+
+	dll = dll_int_from(arr, 3);
+
+	dll_int_shrink(&dll, 2);
+
+	assert(dll.tail->val == 2);
+	assert(dll.len == 2);
+}
+
+void
 nth()
 {
 	int v;
@@ -194,6 +208,7 @@ main()
 	insert();
 	search();
 	remove();
+	shrink();
 	nth();
 	ptr();
 	t_free();

@@ -262,6 +262,30 @@ sll_##name##_remove(struct sll_##name *sll, const type val)                   \
 }                                                                             \
                                                                               \
 int                                                                           \
+sll_##name##_shrink(struct sll_##name *sll, const size_t len)                 \
+{                                                                             \
+	size_t i;                                                             \
+	struct sll_##name##_node *tmp, *nxt;                                  \
+                                                                              \
+	if (sll->len == len)                                                  \
+		return 0;                                                     \
+	if (sll->len < len)                                                   \
+		return -1;                                                    \
+                                                                              \
+	for (i = 0, tmp = sll->head; i < len - 1; i++, tmp = tmp->nxt)        \
+		;                                                             \
+                                                                              \
+	for (sll->tail = tmp; tmp != NULL; tmp = nxt) {                       \
+		nxt = tmp->nxt;                                               \
+		free(tmp);                                                    \
+	}                                                                     \
+                                                                              \
+	sll->len = len;                                                       \
+                                                                              \
+	return 0;                                                             \
+}                                                                             \
+                                                                              \
+int                                                                           \
 sll_##name##_getnth(struct sll_##name *sll, type *val, const size_t idx)      \
 {                                                                             \
 	size_t i;                                                             \
