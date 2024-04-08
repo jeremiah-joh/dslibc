@@ -10,5 +10,7 @@ test:
 	./dll
 	$(CC) $(CFLAG) -o bst bst.c ../src/bst.h -g
 	./bst
+	$(CC) $(CFLAG) -o ht ht.c ../src/ht.h -g
+	./ht
 clean:
-	rm -f vec sll dll bst
+	rm -f vec sll dll bst ht
