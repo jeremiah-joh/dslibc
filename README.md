@@ -40,16 +40,16 @@ INIT_VEC(int, int);
 int
 main()
 {
-	struct vec_int int;
+	struct vec_int vec;
 
-	int = vec_int_new();
+	vec = vec_int_new();
 
-	vec_int_push_back(&int, 21);
-	vec_int_push_back(&int, 32);
+	vec_int_push_back(&vec, 21);
+	vec_int_push_back(&vec, 32);
 
 	/* do something more */
 
-	vec_int_free(&int);
+	vec_int_free(&vec);
 
 	return 0;
 }
