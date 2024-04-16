@@ -40,8 +40,6 @@ int vec_##name##_pop_back(struct vec_##name *, type *);                       \
 int vec_##name##_pop_front(struct vec_##name *, type *);                      \
 int vec_##name##_append(struct vec_##name *, const type *, const size_t);     \
 int vec_##name##_insert(struct vec_##name *, const type, const size_t);       \
-size_t vec_##name##_search(struct vec_##name *, const type);                  \
-size_t vec_##name##_remove(struct vec_##name *, const type);                  \
 int vec_##name##_shrink(struct vec_##name *, const size_t);                   \
 int vec_##name##_getnth(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_setnth(struct vec_##name *, const type, const size_t);       \
@@ -209,41 +207,6 @@ vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx) \
 	vec->len++;                                                           \
                                                                               \
 	return 0;                                                             \
-}                                                                             \
-                                                                              \
-size_t                                                                        \
-vec_##name##_search(struct vec_##name *vec, const type val)                   \
-{                                                                             \
-	size_t i;                                                             \
-                                                                              \
-	for (i = 0; i < vec->len; i++)                                        \
-		if (memcmp(&vec->arr[i], &val, sizeof(type)) == 0)            \
-			break;                                                \
-                                                                              \
-	return i;                                                             \
-}                                                                             \
-                                                                              \
-size_t                                                                        \
-vec_##name##_remove(struct vec_##name *vec, const type val)                   \
-{                                                                             \
-	size_t idx;                                                           \
-                                                                              \
-	if (vec->arr == NULL)                                                 \
-		return vec->len;                                              \
-	if ((idx = vec_##name##_search(vec, val)) == vec->len)                \
-		return vec->len;                                              \
-	                                                                      \
-	memmove(vec->arr + idx,                                               \
-	        vec->arr + idx + 1,                                           \
-	        sizeof(type) * (vec->len - idx));                             \
-	                                                                      \
-	vec->cap = vec_new_cap_##name(vec->len - 1);                          \
-	if ((vec->arr = realloc(vec->arr, vec->cap)) == NULL)                 \
-		return vec->len;                                              \
-                                                                              \
-	vec->len--;                                                           \
-                                                                              \
-	return idx;                                                           \
 }                                                                             \
                                                                               \
 int                                                                           \

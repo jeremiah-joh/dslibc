@@ -42,8 +42,6 @@ int sll_##name##_push(struct sll_##name *, const type);                       \
 int sll_##name##_pop(struct sll_##name *, type *);                            \
 int sll_##name##_append(struct sll_##name *, const struct sll_##name);        \
 int sll_##name##_insert(struct sll_##name *, const type, const size_t);       \
-size_t sll_##name##_search(struct sll_##name *, const type);                  \
-size_t sll_##name##_remove(struct sll_##name *, const type);                  \
 int sll_##name##_shrink(struct sll_##name *, const size_t);                   \
 int sll_##name##_getnth(struct sll_##name *, type *, const size_t);           \
 int sll_##name##_setnth(struct sll_##name *, const type, const size_t);       \
@@ -216,49 +214,6 @@ sll_##name##_insert(struct sll_##name *sll, const type val, const size_t idx) \
 	sll->len++;                                                           \
                                                                               \
 	return 0;                                                             \
-}                                                                             \
-                                                                              \
-size_t                                                                        \
-sll_##name##_search(struct sll_##name *sll, const type val)                   \
-{                                                                             \
-	size_t i;                                                             \
-	struct sll_##name##_node *tmp;                                        \
-                                                                              \
-	tmp = sll->head;                                                      \
-	for (i = 0; tmp != NULL; i++) {                                       \
-		if (tmp->val == val)                                          \
-			return i;                                             \
-                                                                              \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
-                                                                              \
-	return sll->len;                                                      \
-}                                                                             \
-                                                                              \
-size_t                                                                        \
-sll_##name##_remove(struct sll_##name *sll, const type val)                   \
-{                                                                             \
-	size_t i;                                                             \
-	struct sll_##name##_node *prv, *tmp;                                  \
-                                                                              \
-	tmp = sll->head;                                                      \
-	for (i = 0; tmp->val != val; i++) {                                   \
-		if (tmp == NULL)                                              \
-			return sll->len;                                      \
-                                                                              \
-		prv = tmp;                                                    \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
-                                                                              \
-	prv->nxt = tmp->nxt;                                                  \
-	free(tmp);                                                            \
-                                                                              \
-	sll->len--;                                                           \
-                                                                              \
-	if (sll->len == 0)                                                    \
-		sll->head = sll->tail = NULL;                                 \
-                                                                              \
-	return i;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \

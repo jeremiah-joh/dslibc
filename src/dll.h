@@ -44,8 +44,6 @@ int dll_##name##_pop_back(struct dll_##name *, type *);                       \
 int dll_##name##_pop_front(struct dll_##name *, type *);                      \
 int dll_##name##_append(struct dll_##name *, const struct dll_##name);        \
 int dll_##name##_insert(struct dll_##name *, const type, const size_t);       \
-size_t dll_##name##_search(struct dll_##name *, const type);                  \
-size_t dll_##name##_remove(struct dll_##name *, const type);                  \
 int dll_##name##_shrink(struct dll_##name *, const size_t);                   \
 int dll_##name##_getnth(struct dll_##name *, type *, const size_t);           \
 int dll_##name##_setnth(struct dll_##name *, const type, const size_t);       \
@@ -277,50 +275,6 @@ dll_##name##_insert(struct dll_##name *dll, const type val, const size_t idx) \
 	dll->len++;                                                           \
                                                                               \
 	return 0;                                                             \
-}                                                                             \
-                                                                              \
-size_t                                                                        \
-dll_##name##_search(struct dll_##name *dll, const type val)                   \
-{                                                                             \
-	size_t i;                                                             \
-	struct dll_##name##_node *tmp;                                        \
-                                                                              \
-        tmp = dll->head;                                                      \
-	for (i = 0; tmp != NULL; i++) {                                       \
-		if (tmp->val == val)                                          \
-			return i;                                             \
-                                                                              \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
-                                                                              \
-	return dll->len;                                                      \
-}                                                                             \
-                                                                              \
-size_t                                                                        \
-dll_##name##_remove(struct dll_##name *dll, const type val)                   \
-{                                                                             \
-	size_t i;                                                             \
-	struct dll_##name##_node *tmp;                                        \
-                                                                              \
-        tmp = dll->head;                                                      \
-	for (i = 0; tmp->val != val; i++) {                                   \
-		if (tmp == NULL)                                              \
-			return dll->len;                                      \
-                                                                              \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
-                                                                              \
-	tmp->prv->nxt = tmp->nxt;                                             \
-	tmp->nxt->prv = tmp->prv;                                             \
-                                                                              \
-	free(tmp);                                                            \
-                                                                              \
-	dll->len--;                                                           \
-                                                                              \
-	if (dll->len == 0)                                                    \
-		dll->head = dll->tail = NULL;                                 \
-                                                                              \
-	return i;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
