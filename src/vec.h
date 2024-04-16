@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
+ * Copyright (C) 2024 Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
  * 
  * Permission to use, copy, modify, and/or distribute this software
  * for any purpose with or without fee is hereby granted, provided
@@ -38,7 +38,7 @@ int vec_##name##_push_back(struct vec_##name *, const type);                  \
 int vec_##name##_push_front(struct vec_##name *, const type);                 \
 int vec_##name##_pop_back(struct vec_##name *, type *);                       \
 int vec_##name##_pop_front(struct vec_##name *, type *);                      \
-int vec_##name##_append(struct vec_##name *, const struct vec_##name);        \
+int vec_##name##_append(struct vec_##name *, const type *, const size_t);     \
 int vec_##name##_insert(struct vec_##name *, const type, const size_t);       \
 size_t vec_##name##_search(struct vec_##name *, const type);                  \
 size_t vec_##name##_remove(struct vec_##name *, const type);                  \
@@ -168,24 +168,23 @@ vec_##name##_pop_front(struct vec_##name *vec, type *val)                     \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_append(struct vec_##name *des, const struct vec_##name src)      \
+vec_##name##_append(struct vec_##name *des,                                   \
+                    const type *arr, const size_t len)                        \
 {                                                                             \
-	if (des->arr == NULL && src.arr == NULL)                              \
-		return -1;                                                    \
-	if (src.arr == NULL)                                                  \
+	if (arr == NULL || len == 0)                                          \
 		return 0;                                                     \
-	if (des->arr == NULL) {                                               \
-		*des = src;                                                   \
+	if (des->arr == NULL || des->len == 0) {                              \
+		*des = vec_##name##_from(arr, len);                           \
 		return 0;                                                     \
 	}                                                                     \
-	                                                                      \
-	des->cap = vec_new_cap_##name(des->len + src.len);                    \
+                                                                              \
+	des->cap = vec_new_cap_##name(des->len + len);                        \
 	if ((des->arr = realloc(des->arr, des->cap)) == NULL)                 \
 		return -1;                                                    \
                                                                               \
-	memcpy(des->arr + des->len, src.arr, sizeof(type) * src.len);         \
+	memcpy(des->arr + des->len, arr, sizeof(*arr) * len);                 \
                                                                               \
-	des->len += src.len;                                                  \
+	des->len += len;                                                      \
                                                                               \
 	return 0;                                                             \
 }                                                                             \

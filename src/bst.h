@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
+ * Copyright (C) 2024 Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
  * 
  * Permission to use, copy, modify, and/or distribute this software
  * for any purpose with or without fee is hereby granted, provided
@@ -36,9 +36,9 @@ struct bst_##name {                                                           \
 };                                                                            \
                                                                               \
 struct bst_##name bst_##name##_new(int (*cmp)(key_t, key_t));                 \
+struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
 struct bst_##name bst_##name##_from(const key_t [], const val_t [],           \
                                     const size_t, int (*cmp)(key_t, key_t));  \
-struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
 int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
 int bst_##name##_search(struct bst_##name *, const key_t, val_t *);           \
 int bst_##name##_remove(struct bst_##name *, const key_t, val_t *);           \
@@ -155,6 +155,17 @@ bst_##name##_new(int (*cmp)(key_t, key_t))                                    \
 }                                                                             \
                                                                               \
 struct bst_##name                                                             \
+bst_##name##_copy(const struct bst_##name bst)                                \
+{                                                                             \
+	struct bst_##name cpy;                                                \
+                                                                              \
+	cpy = bst_##name##_new(bst.cmp);                                      \
+	bst_##name##_copy_node(&cpy, bst.root);                               \
+                                                                              \
+	return cpy;                                                           \
+}                                                                             \
+                                                                              \
+struct bst_##name                                                             \
 bst_##name##_from(const key_t key[], const val_t val[],                       \
                   const size_t len, int (*cmp)(key_t, key_t))                 \
 {                                                                             \
@@ -165,17 +176,6 @@ bst_##name##_from(const key_t key[], const val_t val[],                       \
 		bst_##name##_insert(&bst, key[i], val[i]);                    \
                                                                               \
 	return bst;                                                           \
-}                                                                             \
-                                                                              \
-struct bst_##name                                                             \
-bst_##name##_copy(const struct bst_##name bst)                                \
-{                                                                             \
-	struct bst_##name cpy;                                                \
-                                                                              \
-	cpy = bst_##name##_new(bst.cmp);                                      \
-	bst_##name##_copy_node(&cpy, bst.root);                               \
-                                                                              \
-	return cpy;                                                           \
 }                                                                             \
                                                                               \
 int                                                                           \
