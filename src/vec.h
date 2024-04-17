@@ -141,7 +141,7 @@ vec_##name##_push_front(struct vec_##name *vec, const type val)               \
 int                                                                           \
 vec_##name##_pop_back(struct vec_##name *vec, type *val)                      \
 {                                                                             \
-	if (vec->arr == NULL)                                                 \
+	if (vec->arr == NULL || vec->len == 0)                                \
 		return -1;                                                    \
 	                                                                      \
 	*val = vec->arr[vec->len - 1];                                        \
@@ -154,7 +154,7 @@ vec_##name##_pop_back(struct vec_##name *vec, type *val)                      \
 int                                                                           \
 vec_##name##_pop_front(struct vec_##name *vec, type *val)                     \
 {                                                                             \
-	if (vec->arr == NULL)                                                 \
+	if (vec->arr == NULL || vec->len == 0)                                \
 		return -1;                                                    \
 	                                                                      \
 	*val = vec->arr[0];                                                   \
@@ -254,7 +254,7 @@ vec_##name##_setnth(struct vec_##name *vec, const type val, const size_t idx) \
 int                                                                           \
 vec_##name##_rmvnth(struct vec_##name *vec, type *val, const size_t idx)      \
 {                                                                             \
-	if (vec->arr == NULL)                                                 \
+	if (vec->arr == NULL || vec->len == 0)                                \
 		return -1;                                                    \
 	if (vec->len <= idx)                                                  \
 		return -1;                                                    \
