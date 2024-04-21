@@ -180,37 +180,6 @@ dll_int_insert(&dll, 2, 1);
 assert(dll.head->nxt->val == 2);
 ```
 
-`size_t dll_<name>_search(struct dll_<name> *dll, const type val)`
-------------------------------------------------------------------
-
-Returns index number where the `val` is on success, length of linked list on failure.
-
-```c
-INIT_DLL(int, int);
-
-int arr[] = { 1, 2, 3 };
-dll_int dll = dll_int_from(arr, 3);
-
-assert(dll_int_search(&dll, 2) == 1);
-assert(dll_int_search(&dll, 4) == 3);
-```
-
-`size_t dll_<name>_remove(struct dll_<name> *dll, const type val)`
-------------------------------------------------------------------
-
-Finds given element `val` in linked list and remove it.  
-Returns index number where the `val` is on success, length of linked list on failure.
-
-```c
-INIT_DLL(int, int);
-
-int arr[] = { 1, 2, 3 };
-dll_int dll = dll_int_from(arr, 3);
-
-assert(dll_int_search(&dll, 2) == 1);
-assert(dll_int_search(&dll, 4) == 3);
-```
-
 `int dll_<name>_shrink(struct dll_<name> *dll, const size_t len)`
 -----------------------------------------------------------------
 

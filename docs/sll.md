@@ -143,37 +143,6 @@ sll_int_insert(&sll, 2, 1);
 assert(sll.head->nxt->val == 2);
 ```
 
-`size_t sll_<name>_search(struct sll_<name> *sll, const type val)`
-------------------------------------------------------------------
-
-Returns index number where the `val` is on success, length of linked list on failure.
-
-```c
-INIT_SLL(int, int);
-
-int arr[] = { 1, 2, 3 };
-sll_int sll = sll_int_from(arr, 3);
-
-assert(sll_int_search(&sll, 2) == 1);
-assert(sll_int_search(&sll, 4) == 3);
-```
-
-`size_t sll_<name>_remove(struct sll_<name> *sll, const type val)`
-------------------------------------------------------------------
-
-Finds given element `val` in linked list and remove it.  
-Returns index number where the `val` is on success, length of linked list on failure.
-
-```c
-INIT_SLL(int, int);
-
-int arr[] = { 1, 2, 3 };
-sll_int sll = sll_int_from(arr, 3);
-
-assert(sll_int_search(&sll, 2) == 1);
-assert(sll_int_search(&sll, 4) == 3);
-```
-
 `int sll_<name>_shrink(struct sll_<name> *sll, const size_t len)`
 -----------------------------------------------------------------
 
