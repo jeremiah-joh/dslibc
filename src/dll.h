@@ -103,14 +103,13 @@ struct dll_##name                                                             \
 dll_##name##_from(const type *arr, const size_t len)                          \
 {                                                                             \
 	size_t i;                                                             \
-	struct dll_##name dll = { NULL, NULL, len };                          \
+	struct dll_##name dll;                                                \
                                                                               \
-	dll.head = dll.tail = dll_##name##_new_node(arr[0], NULL);            \
+	dll = dll_##name##_new();                                             \
                                                                               \
-	for (i = 1; i < len; i++) {                                           \
-		dll.tail->nxt = dll_##name##_new_node(arr[i], dll.tail);      \
-		dll.tail = dll.tail->nxt;                                     \
-	}                                                                     \
+	for (i = 0; i < len; i++)                                             \
+		if (dll_##name##_push_back(&dll, arr[i]))                     \
+			break;                                                \
                                                                               \
 	return dll;                                                           \
 }                                                                             \
@@ -121,14 +120,9 @@ dll_##name##_copy(const struct dll_##name dll)                                \
 	struct dll_##name cpy;                                                \
 	struct dll_##name##_node *tmp;                                        \
                                                                               \
-	cpy.head = cpy.tail = dll_##name##_new_node(dll.head->val, NULL);     \
-                                                                              \
-	for (tmp = dll.head->nxt; tmp != NULL; tmp = tmp->nxt) {              \
-		cpy.tail->nxt = dll_##name##_new_node(tmp->val, cpy.tail);    \
-		cpy.tail = cpy.tail->nxt;                                     \
-	}                                                                     \
-                                                                              \
-	cpy.len = dll.len;                                                    \
+	for (tmp = dll.head; tmp != NULL; tmp = tmp->nxt)                     \
+		if (dll_##name##_push_back(&cpy, tmp->val))                   \
+			break;                                                \
                                                                               \
 	return cpy;                                                           \
 }                                                                             \
@@ -141,19 +135,18 @@ dll_##name##_slice(const struct dll_##name dll,                               \
 	struct dll_##name sli;                                                \
 	struct dll_##name##_node *tmp;                                        \
                                                                               \
+	sli = dll_##name##_new();                                             \
+                                                                              \
 	if (tail - 1 <= head)                                                 \
-		return dll_##name##_new();                                    \
+		return sli;                                                   \
 	                                                                      \
 	tmp = dll_##name##_nth(&dll, head);                                   \
-	sli.head = sli.tail = dll_##name##_new_node(tmp->val, NULL);          \
+	for (i = head; i < tail; i++) {                                       \
+		if (dll_##name##_push_back(&sli, tmp->val))                   \
+			break;                                                \
                                                                               \
-	for (i = 0; i < tail - head; i++) {                                   \
 		tmp = tmp->nxt;                                               \
-		sli.tail = sli.tail->nxt                                      \
-			= dll_##name##_new_node(tmp->val, sli.tail);          \
 	}                                                                     \
-                                                                              \
-	sli.len = dll.len;                                                    \
                                                                               \
 	return sli;                                                           \
 }                                                                             \
@@ -163,11 +156,10 @@ dll_##name##_push_back(struct dll_##name *dll, const type val)                \
 {                                                                             \
 	if (dll->head == NULL) {                                              \
 		dll->head = dll->tail = dll_##name##_new_node(val, NULL);     \
-		dll->len++;                                                   \
-		return 0;                                                     \
+	} else {                                                              \
+		dll->tail->nxt = dll_##name##_new_node(val, dll->tail);       \
+		dll->tail = dll->tail->nxt;                                   \
 	}                                                                     \
-                                                                              \
-	dll->tail = dll->tail->nxt = dll_##name##_new_node(val, dll->tail);   \
                                                                               \
 	dll->len++;                                                           \
                                                                               \
@@ -181,14 +173,12 @@ dll_##name##_push_front(struct dll_##name *dll, const type val)               \
                                                                               \
 	if (dll->head == NULL) {                                              \
 		dll->head = dll->tail = dll_##name##_new_node(val, NULL);     \
-		dll->len++;                                                   \
-		return 0;                                                     \
+	} else {                                                              \
+		new = dll_##name##_new_node(val, NULL);                       \
+		dll->head->prv = new;                                         \
+		new->nxt = dll->head;                                         \
+		dll->head = new;                                              \
 	}                                                                     \
-                                                                              \
-	new = dll_##name##_new_node(val, NULL);                               \
-	dll->head->prv = new;                                                 \
-	new->nxt = dll->head;                                                 \
-	dll->head = new;                                                      \
                                                                               \
 	dll->len++;                                                           \
                                                                               \
@@ -236,23 +226,18 @@ dll_##name##_pop_front(struct dll_##name *dll, type *val)                     \
 int                                                                           \
 dll_##name##_append(struct dll_##name *des, const struct dll_##name src)      \
 {                                                                             \
-	struct dll_##name new;                                                \
-	                                                                      \
-	if (des->head == NULL && src.head == NULL)                            \
-		return -1;                                                    \
-	if (src.head == NULL)                                                 \
+	struct dll_##name##_node *tmp;                                        \
+                                                                              \
+	if (src.head == NULL || src.tail == NULL || src.len == 0)             \
 		return 0;                                                     \
-	if (des->head == NULL) {                                              \
+	if (des->head == NULL || des->tail == NULL || des->len == 0) {        \
 		*des = src;                                                   \
 		return 0;                                                     \
 	}                                                                     \
                                                                               \
-	new = dll_##name##_copy(src);                                         \
-	des->tail->nxt = new.head;                                            \
-	new.head->prv = des->tail;                                            \
-	des->tail = new.tail;                                                 \
-	                                                                      \
-	des->len += src.len;                                                  \
+	for (tmp = src.head; tmp != NULL; tmp = tmp->nxt)                     \
+		if (dll_##name##_push_back(des, tmp->val))                    \
+			return -1;                                            \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
@@ -280,21 +265,14 @@ dll_##name##_insert(struct dll_##name *dll, const type val, const size_t idx) \
 int                                                                           \
 dll_##name##_shrink(struct dll_##name *dll, const size_t len)                 \
 {                                                                             \
-	struct dll_##name##_node *tmp, *nxt;                                  \
+	type buf;                                                             \
                                                                               \
-	if (dll->len == 0)                                                    \
-		return 0;                                                     \
 	if (dll->len < len)                                                   \
 		return -1;                                                    \
-                                                                              \
-	tmp = dll_##name##_nth(dll, len - 1);                                 \
-                                                                              \
-	for (dll->tail = tmp; tmp != NULL; tmp = nxt) {                       \
-		nxt = tmp->nxt;                                               \
-		free(tmp);                                                    \
-	}                                                                     \
-                                                                              \
-	dll->len = len;                                                       \
+	                                                                      \
+	while (dll->len > len)                                                \
+		if (dll_##name##_pop_back(dll, &buf))                         \
+			return -1;                                            \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
@@ -320,7 +298,7 @@ dll_##name##_setnth(struct dll_##name *dll, const type val, const size_t idx) \
 {                                                                             \
 	struct dll_##name##_node *tmp;                                        \
                                                                               \
-	if (dll->head == NULL)                                                \
+	if (dll->head == NULL || dll->tail == NULL || dll->len == 0)          \
 		return -1;                                                    \
 	if (dll->len <= idx)                                                  \
 		return -1;                                                    \
@@ -336,23 +314,18 @@ dll_##name##_rmvnth(struct dll_##name *dll, type *val, const size_t idx)      \
 {                                                                             \
 	struct dll_##name##_node *tmp;                                        \
                                                                               \
-	if (dll->head == NULL)                                                \
+	if (dll->head == NULL || dll->tail == NULL || dll->len == 0)          \
 		return -1;                                                    \
-	if (dll->len <= idx)                                                  \
+	if ((tmp = dll_##name##_nth(dll, idx)) == NULL)                       \
 		return -1;                                                    \
 	                                                                      \
-	tmp = dll_##name##_nth(dll, idx);                                     \
 	*val = tmp->val;                                                      \
                                                                               \
 	tmp->prv->nxt = tmp->nxt;                                             \
 	tmp->nxt->prv = tmp->prv;                                             \
                                                                               \
 	free(tmp);                                                            \
-                                                                              \
 	dll->len--;                                                           \
-                                                                              \
-	if (dll->len == 0)                                                    \
-		dll->head = dll->tail = NULL;                                 \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
@@ -361,6 +334,7 @@ type *                                                                        \
 dll_##name##_getptr(struct dll_##name *dll, const size_t idx)                 \
 {                                                                             \
 	struct dll_##name##_node *tmp;                                        \
+                                                                              \
 	return (tmp = dll_##name##_nth(dll, idx)) ? &tmp->val : NULL;         \
 }                                                                             \
                                                                               \
