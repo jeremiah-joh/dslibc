@@ -30,7 +30,7 @@ slice()
 	assert(sli.arr[2] == 4);
 
 	sli = vec_int_slice(vec, 0, 1);
-	assert(sli.len == 0);
+	assert(sli.len == 1);
 }
 
 void
