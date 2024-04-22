@@ -71,7 +71,7 @@ dll_##name##_new_node(const type val, struct dll_##name##_node *prv)          \
 }                                                                             \
                                                                               \
 static struct dll_##name##_node *                                             \
-dll_##name##_nth_node(const struct dll_##name *dll, const size_t idx)         \
+dll_##name##_nth(const struct dll_##name *dll, const size_t idx)              \
 {                                                                             \
 	size_t i;                                                             \
 	struct dll_##name##_node *tmp;                                        \
@@ -144,7 +144,7 @@ dll_##name##_slice(const struct dll_##name dll,                               \
 	if (tail - 1 <= head)                                                 \
 		return dll_##name##_new();                                    \
 	                                                                      \
-	tmp = dll_##name##_nth_node(&dll, head);                              \
+	tmp = dll_##name##_nth(&dll, head);                                   \
 	sli.head = sli.tail = dll_##name##_new_node(tmp->val, NULL);          \
                                                                               \
 	for (i = 0; i < tail - head; i++) {                                   \
@@ -267,7 +267,7 @@ dll_##name##_insert(struct dll_##name *dll, const type val, const size_t idx) \
 	if (dll->len <= idx)                                                  \
 		return -1;                                                    \
                                                                               \
-	tmp = dll_##name##_nth_node(dll, idx);                                \
+	tmp = dll_##name##_nth(dll, idx);                                     \
 	new = dll_##name##_new_node(val, tmp->prv);                           \
 	new->nxt = tmp;                                                       \
 	tmp->prv = new;                                                       \
@@ -287,7 +287,7 @@ dll_##name##_shrink(struct dll_##name *dll, const size_t len)                 \
 	if (dll->len < len)                                                   \
 		return -1;                                                    \
                                                                               \
-	tmp = dll_##name##_nth_node(dll, len - 1);                            \
+	tmp = dll_##name##_nth(dll, len - 1);                                 \
                                                                               \
 	for (dll->tail = tmp; tmp != NULL; tmp = nxt) {                       \
 		nxt = tmp->nxt;                                               \
@@ -309,7 +309,7 @@ dll_##name##_getnth(struct dll_##name *dll, type *val, const size_t idx)      \
 	if (dll->len <= idx)                                                  \
 		return -1;                                                    \
                                                                               \
-	tmp = dll_##name##_nth_node(dll, idx);                                \
+	tmp = dll_##name##_nth(dll, idx);                                     \
 	*val = tmp->val;                                                      \
                                                                               \
 	return 0;                                                             \
@@ -325,7 +325,7 @@ dll_##name##_setnth(struct dll_##name *dll, const type val, const size_t idx) \
 	if (dll->len <= idx)                                                  \
 		return -1;                                                    \
                                                                               \
-	tmp = dll_##name##_nth_node(dll, idx);                                \
+	tmp = dll_##name##_nth(dll, idx);                                     \
 	tmp->val = val;                                                       \
                                                                               \
 	return 0;                                                             \
@@ -341,7 +341,7 @@ dll_##name##_rmvnth(struct dll_##name *dll, type *val, const size_t idx)      \
 	if (dll->len <= idx)                                                  \
 		return -1;                                                    \
 	                                                                      \
-	tmp = dll_##name##_nth_node(dll, idx);                                \
+	tmp = dll_##name##_nth(dll, idx);                                     \
 	*val = tmp->val;                                                      \
                                                                               \
 	tmp->prv->nxt = tmp->nxt;                                             \
@@ -361,7 +361,7 @@ type *                                                                        \
 dll_##name##_getptr(struct dll_##name *dll, const size_t idx)                 \
 {                                                                             \
 	struct dll_##name##_node *tmp;                                        \
-	return (tmp = dll_##name##_nth_node(dll, idx)) ? &tmp->val : NULL;    \
+	return (tmp = dll_##name##_nth(dll, idx)) ? &tmp->val : NULL;         \
 }                                                                             \
                                                                               \
 type *                                                                        \
