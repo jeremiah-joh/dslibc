@@ -93,7 +93,7 @@ vec_##name##_slice(const struct vec_##name vec,                               \
 {                                                                             \
         struct vec_##name sli;                                                \
                                                                               \
-	if (tail - 1 <= head)                                                 \
+	if (tail <= head)                                                     \
 		return vec_##name##_new();                                    \
                                                                               \
 	sli.cap = vec_new_cap_##name(tail - head);                            \
