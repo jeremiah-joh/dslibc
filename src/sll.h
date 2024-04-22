@@ -215,6 +215,9 @@ sll_##name##_shrink(struct sll_##name *sll, const size_t len)                 \
 {                                                                             \
 	type buf;                                                             \
                                                                               \
+	if (len > sll->len)                                                   \
+		return -1;                                                    \
+                                                                              \
 	while (sll->len > len)                                                \
 		if (sll_##name##_pop(sll, &buf))                              \
 			return -1;                                            \
