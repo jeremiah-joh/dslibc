@@ -17,4 +17,4 @@ test:
 	$(CC) $(CFLAGS) -o tests/ht tests/ht.c src/ht.h -g
 	./tests/ht
 clean:
-	rm -f vec sll dll bst
+	rm -f tests/vec tests/sll tests/dll tests/bst tests/avl tests/rbt tests/ht
