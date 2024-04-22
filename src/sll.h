@@ -58,10 +58,24 @@ sll_##name##_new_node(const type val)                                         \
 	struct sll_##name##_node *new;                                        \
 	if ((new = malloc(sizeof(struct sll_##name##_node))) == NULL)         \
 		return NULL;                                                  \
+                                                                              \
 	new->val = val;                                                       \
 	new->nxt = NULL;                                                      \
                                                                               \
 	return new;                                                           \
+}                                                                             \
+                                                                              \
+static struct sll_##name##_node *                                             \
+sll_##name##_nth(const struct sll_##name *sll, const size_t idx)              \
+{                                                                             \
+	size_t i;                                                             \
+	struct sll_##name##_node *tmp;                                        \
+                                                                              \
+	tmp = sll->head;                                                      \
+	for (i = 0; i < idx; i++)                                             \
+		tmp = tmp->nxt;                                               \
+                                                                              \
+	return tmp;                                                           \
 }                                                                             \
                                                                               \
 struct sll_##name                                                             \
@@ -75,12 +89,13 @@ struct sll_##name                                                             \
 sll_##name##_from(const type *arr, const size_t len)                          \
 {                                                                             \
 	size_t i;                                                             \
-	struct sll_##name sll = { NULL, NULL, len };                          \
+	struct sll_##name sll;                                                \
                                                                               \
-	sll.head = sll.tail = sll_##name##_new_node(arr[0]);                  \
+	sll = sll_##name##_new();                                             \
                                                                               \
-	for (i = 1; i < len; i++)                                             \
-		sll.tail = sll.tail->nxt = sll_##name##_new_node(arr[i]);     \
+	for (i = 0; i < len; i++)                                             \
+		if (sll_##name##_push(&sll, arr[i]))                          \
+			break;                                                \
                                                                               \
 	return sll;                                                           \
 }                                                                             \
@@ -91,12 +106,11 @@ sll_##name##_copy(const struct sll_##name sll)                                \
 	struct sll_##name cpy;                                                \
 	struct sll_##name##_node *tmp;                                        \
                                                                               \
-	cpy.head = cpy.tail = sll_##name##_new_node(sll.head->val);           \
+	cpy = sll_##name##_new();                                             \
                                                                               \
-	for (tmp = sll.head->nxt; tmp != NULL; tmp = tmp->nxt)                \
-		cpy.tail = cpy.tail->nxt = sll_##name##_new_node(tmp->val);   \
-                                                                              \
-	cpy.len = sll.len;                                                    \
+	for (tmp = sll.head; tmp != NULL; tmp = tmp->nxt)                     \
+		if (sll_##name##_push(&cpy, tmp->val))                        \
+			break;                                                \
                                                                               \
 	return cpy;                                                           \
 }                                                                             \
@@ -109,22 +123,19 @@ sll_##name##_slice(const struct sll_##name sll,                               \
 	struct sll_##name sli;                                                \
 	struct sll_##name##_node *tmp;                                        \
                                                                               \
-	if (tail - 1 <= head)                                                 \
-		return sll_##name##_new();                                    \
+	sli = sll_##name##_new();                                             \
                                                                               \
-	tmp = sll.head;                                                       \
-	i = 0;                                                                \
-	for (; i < head; i++)                                                 \
+	if (tail <= head)                                                     \
+		return sli;                                                   \
+	if ((tmp = sll_##name##_nth(&sll, head)) == NULL)                     \
+		return sli;                                                   \
+                                                                              \
+	for (i = head; i < tail; i++) {                                       \
+		if (sll_##name##_push(&sli, tmp->val))                        \
+			return sli;                                           \
+                                                                              \
 		tmp = tmp->nxt;                                               \
-                                                                              \
-	sli.head = sli.tail = sll_##name##_new_node(tmp->val);                \
-                                                                              \
-	for (; i < tail; i++) {                                               \
-		tmp = tmp->nxt;                                               \
-		sli.tail = sli.tail->nxt = sll_##name##_new_node(tmp->val);   \
 	}                                                                     \
-                                                                              \
-	sli.len = tail - head;                                                \
                                                                               \
 	return sli;                                                           \
 }                                                                             \
@@ -132,15 +143,14 @@ sll_##name##_slice(const struct sll_##name sll,                               \
 int                                                                           \
 sll_##name##_push(struct sll_##name *sll, const type val)                     \
 {                                                                             \
-	if (sll->head == NULL) {                                              \
-		sll->head = sll->tail = sll_##name##_new_node(val);           \
-		sll->len = 1;                                                 \
-		return sll->head ? 0 : -1;                                    \
-	}                                                                     \
+	struct sll_##name##_node *new;                                        \
                                                                               \
-	sll->tail = sll->tail->nxt = sll_##name##_new_node(val);              \
-	if (sll->tail == NULL)                                                \
+	if ((new = sll_##name##_new_node(val)) == NULL)                       \
 		return -1;                                                    \
+	if (sll->head == NULL || sll->tail == NULL || sll->len == 0)          \
+		sll->head = sll->tail = new;                                  \
+	else                                                                  \
+		sll->tail = sll->tail->nxt = new;                             \
                                                                               \
 	sll->len++;                                                           \
                                                                               \
@@ -150,22 +160,14 @@ sll_##name##_push(struct sll_##name *sll, const type val)                     \
 int                                                                           \
 sll_##name##_pop(struct sll_##name *sll, type *val)                           \
 {                                                                             \
-	struct sll_##name##_node *tmp;                                        \
-                                                                              \
-	if (sll->head == NULL)                                                \
+	if (sll->head == NULL || sll->tail == NULL || sll->len == 0)          \
 		return -1;                                                    \
-	                                                                      \
-	*val = sll->tail->val;                                                \
-	for (tmp = sll->head; tmp->nxt == sll->tail; tmp = tmp->nxt)          \
-		;                                                             \
+	if ((sll->tail = sll_##name##_nth(sll, sll->len - 2)) == NULL)        \
+		return -1;                                                    \
                                                                               \
-	free(sll->tail);                                                      \
-	sll->tail = tmp;                                                      \
-                                                                              \
+	*val = sll->tail->nxt->val;                                           \
+	free(sll->tail->nxt);                                                 \
 	sll->len--;                                                           \
-                                                                              \
-	if (sll->len == 0)                                                    \
-		sll->head = sll->tail = NULL;                                 \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
@@ -173,22 +175,18 @@ sll_##name##_pop(struct sll_##name *sll, type *val)                           \
 int                                                                           \
 sll_##name##_append(struct sll_##name *des, const struct sll_##name src)      \
 {                                                                             \
-	struct sll_##name new;                                                \
+	struct sll_##name##_node *tmp;                                        \
                                                                               \
-	if (des->head == NULL && src.head == NULL)                            \
-		return -1;                                                    \
-	if (src.head == NULL)                                                 \
+	if (src.head == NULL || src.tail == NULL || src.len == 0)             \
 		return 0;                                                     \
-	if (des->head == NULL) {                                              \
+	if (des->head == NULL || des->tail == NULL || des->len == 0) {        \
 		*des = src;                                                   \
 		return 0;                                                     \
 	}                                                                     \
                                                                               \
-	new = sll_##name##_copy(src);                                         \
-	des->tail->nxt = new.head;                                            \
-	des->tail = new.tail;                                                 \
-                                                                              \
-	des->len += new.len;                                                  \
+	for (tmp = src.head; tmp != NULL; tmp = tmp->nxt)                     \
+		if (sll_##name##_push(des, tmp->val))                         \
+			return -1;                                            \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
@@ -196,20 +194,16 @@ sll_##name##_append(struct sll_##name *des, const struct sll_##name src)      \
 int                                                                           \
 sll_##name##_insert(struct sll_##name *sll, const type val, const size_t idx) \
 {                                                                             \
-	size_t i;                                                             \
-	struct sll_##name##_node *tmp, *new;                                  \
+	struct sll_##name##_node *tmp, *nxt;                                  \
                                                                               \
-	tmp = sll->head;                                                      \
-	for (i = 0; i < idx - 1; i++) {                                       \
-		if (tmp == NULL)                                              \
-			return -1;                                            \
+	if (sll->head == NULL || sll->tail == NULL || sll->len == 0)          \
+		if (idx == 0)                                                 \
+			return sll_##name##_push(sll, val);                   \
                                                                               \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
-                                                                              \
-	new = sll_##name##_new_node(val);                                     \
-	tmp->nxt = new;                                                       \
-	new->nxt = tmp->nxt;                                                  \
+	tmp = sll_##name##_nth(sll, idx - 1);                                 \
+	nxt = tmp->nxt;                                                       \
+	tmp->nxt = sll_##name##_new_node(val);                                \
+	tmp->nxt->nxt = nxt;                                                  \
                                                                               \
 	sll->len++;                                                           \
                                                                               \
@@ -219,23 +213,11 @@ sll_##name##_insert(struct sll_##name *sll, const type val, const size_t idx) \
 int                                                                           \
 sll_##name##_shrink(struct sll_##name *sll, const size_t len)                 \
 {                                                                             \
-	size_t i;                                                             \
-	struct sll_##name##_node *tmp, *nxt;                                  \
+	type buf;                                                             \
                                                                               \
-	if (sll->len == len)                                                  \
-		return 0;                                                     \
-	if (sll->len < len)                                                   \
-		return -1;                                                    \
-                                                                              \
-	for (i = 0, tmp = sll->head; i < len - 1; i++, tmp = tmp->nxt)        \
-		;                                                             \
-                                                                              \
-	for (sll->tail = tmp; tmp != NULL; tmp = nxt) {                       \
-		nxt = tmp->nxt;                                               \
-		free(tmp);                                                    \
-	}                                                                     \
-                                                                              \
-	sll->len = len;                                                       \
+	while (sll->len > len)                                                \
+		if (sll_##name##_pop(sll, &buf))                              \
+			return -1;                                            \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
@@ -243,21 +225,10 @@ sll_##name##_shrink(struct sll_##name *sll, const size_t len)                 \
 int                                                                           \
 sll_##name##_getnth(struct sll_##name *sll, type *val, const size_t idx)      \
 {                                                                             \
-	size_t i;                                                             \
 	struct sll_##name##_node *tmp;                                        \
                                                                               \
-	if (sll->head == NULL)                                                \
+	if ((tmp = sll_##name##_nth(sll, idx)) == NULL)                       \
 		return -1;                                                    \
-	if (sll->len <= idx)                                                  \
-		return -1;                                                    \
-	                                                                      \
-	tmp = sll->head;                                                      \
-	for (i = 0; i < idx; i++) {                                           \
-		if (tmp == NULL)                                              \
-			return -1;                                            \
-                                                                              \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
                                                                               \
 	*val = tmp->val;                                                      \
                                                                               \
@@ -267,21 +238,10 @@ sll_##name##_getnth(struct sll_##name *sll, type *val, const size_t idx)      \
 int                                                                           \
 sll_##name##_setnth(struct sll_##name *sll, const type val, const size_t idx) \
 {                                                                             \
-	size_t i;                                                             \
 	struct sll_##name##_node *tmp;                                        \
                                                                               \
-	if (sll->head == NULL)                                                \
+	if ((tmp = sll_##name##_nth(sll, idx)) == NULL)                       \
 		return -1;                                                    \
-	if (sll->len <= idx)                                                  \
-		return -1;                                                    \
-	                                                                      \
-	tmp = sll->head;                                                      \
-	for (i = 0; i < idx; i++) {                                           \
-		if (tmp == NULL)                                              \
-			return -1;                                            \
-                                                                              \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
                                                                               \
 	tmp->val = val;                                                       \
                                                                               \
@@ -291,31 +251,19 @@ sll_##name##_setnth(struct sll_##name *sll, const type val, const size_t idx) \
 int                                                                           \
 sll_##name##_rmvnth(struct sll_##name *sll, type *val, const size_t idx)      \
 {                                                                             \
-	size_t i;                                                             \
-	struct sll_##name##_node *prv, *tmp;                                  \
+	struct sll_##name##_node *tmp, *nxt;                                  \
                                                                               \
-	if (sll->head == NULL)                                                \
+	if (idx == sll->len - 1)                                              \
+		return sll_##name##_pop(sll, val);                            \
+	if ((tmp = sll_##name##_nth(sll, idx - 1)) == NULL)                   \
 		return -1;                                                    \
-	if (sll->len <= idx)                                                  \
-		return -1;                                                    \
-	                                                                      \
-	tmp = sll->head;                                                      \
-	for (i = 0; i < idx; i++) {                                           \
-		prv = tmp;                                                    \
-		if (tmp == NULL)                                              \
-			return -1;                                            \
                                                                               \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
+	*val = tmp->nxt->val;                                                 \
                                                                               \
-	*val = tmp->val;                                                      \
-	prv->nxt = tmp->nxt;                                                  \
-	free(tmp);                                                            \
-                                                                              \
+	nxt = tmp->nxt;                                                       \
+	tmp->nxt = nxt->nxt;                                                  \
+	free(nxt);                                                            \
 	sll->len--;                                                           \
-                                                                              \
-	if (sll->len == 0)                                                    \
-		sll->head = sll->tail = NULL;                                 \
                                                                               \
 	return 0;                                                             \
 }                                                                             \
@@ -323,23 +271,9 @@ sll_##name##_rmvnth(struct sll_##name *sll, type *val, const size_t idx)      \
 type *                                                                        \
 sll_##name##_getptr(struct sll_##name *sll, const size_t idx)                 \
 {                                                                             \
-	size_t i;                                                             \
 	struct sll_##name##_node *tmp;                                        \
                                                                               \
-	if (sll->head == NULL)                                                \
-		return NULL;                                                  \
-	if (sll->len <= idx)                                                  \
-		return NULL;                                                  \
-	                                                                      \
-	tmp = sll->head;                                                      \
-	for (i = 0; i < idx; i++) {                                           \
-		if (tmp == NULL)                                              \
-			return NULL;                                          \
-                                                                              \
-		tmp = tmp->nxt;                                               \
-	}                                                                     \
-                                                                              \
-	return &tmp->val;                                                     \
+	return ((tmp = sll_##name##_nth(sll, idx))) ? &tmp->val : NULL;       \
 }                                                                             \
                                                                               \
 type *                                                                        \
