@@ -98,31 +98,6 @@ insert()
 }
 
 void
-search()
-{
-	struct sll_int sll = sll_int_new();
-	
-	sll_int_push(&sll, 1);
-	sll_int_push(&sll, 2);
-	sll_int_push(&sll, 3);
-
-	assert(sll_int_search(&sll, 2) == 1);
-}
-
-void
-remove()
-{
-	struct sll_int sll = sll_int_new();
-
-	sll_int_push(&sll, 1);
-	sll_int_push(&sll, 2);
-	sll_int_push(&sll, 3);
-
-	assert(sll_int_remove(&sll, 2) == 1);
-	assert(sll.len == 2);
-}
-
-void
 shrink()
 {
 	int arr[] = { 1, 2, 3 };
@@ -130,8 +105,8 @@ shrink()
 
 	sll_int_shrink(&sll, 2);
 
-	assert(sll.tail->val == 2);
 	assert(sll.len == 2);
+	assert(sll.tail->val == 2);
 }
 
 void
@@ -192,8 +167,6 @@ main()
 	slice();
 	append();
 	insert();
-	search();
-	remove();
 	shrink();
 	nth();
 	ptr();

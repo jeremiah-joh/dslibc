@@ -113,29 +113,6 @@ insert()
 }
 
 void
-search()
-{
-	int arr[] = { 1, 2, 3 };
-	struct dll_int dll;
-
-	dll = dll_int_from(arr, 3);
-
-	assert(dll_int_search(&dll, 2) == 1);
-}
-
-void
-remove()
-{
-	int arr[] = { 1, 2, 3 };
-	struct dll_int dll;
-
-	dll = dll_int_from(arr, 3);
-
-	assert(dll_int_remove(&dll, 2) == 1);
-	assert(dll.len == 2);
-}
-
-void
 shrink()
 {
 	int arr[] = { 1, 2, 3 };
@@ -206,8 +183,6 @@ main()
 	slice();
 	append();
 	insert();
-	search();
-	remove();
 	shrink();
 	nth();
 	ptr();

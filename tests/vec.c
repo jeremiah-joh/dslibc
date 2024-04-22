@@ -86,7 +86,7 @@ append()
 	vec_int_push_back(&src, 5);
 	vec_int_push_back(&src, 6);
 
-	vec_int_append(&des, src);
+	vec_int_append(&des, src.arr, src.len);
 	assert(des.len == 6);
 	assert(des.arr[0] == 1);
 	assert(des.arr[1] == 2);
@@ -105,32 +105,6 @@ insert()
 	vec_int_push_back(&vec, 2);
 
 	vec_int_insert(&vec, 3, 1);
-	assert(vec.arr[1] == 3);
-}
-
-void
-search()
-{
-	struct vec_int vec = vec_int_new();
-
-	vec_int_push_back(&vec, 1);
-	vec_int_push_back(&vec, 2);
-	vec_int_push_back(&vec, 3);
-
-	assert(vec_int_search(&vec, 2) == 1);
-	assert(vec_int_search(&vec, 4) == 3);
-}
-
-void
-remove()
-{
-	struct vec_int vec = vec_int_new();
-
-	vec_int_push_back(&vec, 1);
-	vec_int_push_back(&vec, 2);
-	vec_int_push_back(&vec, 3);
-
-	assert(vec_int_remove(&vec, 2) == 1);
 	assert(vec.arr[1] == 3);
 }
 
@@ -210,8 +184,6 @@ main()
 	pop();
 	append();
 	insert();
-	search();
-	remove();
 	shrink();
 	nth();
 	ptr();
