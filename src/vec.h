@@ -282,13 +282,13 @@ vec_##name##_getptr(struct vec_##name *vec, const size_t idx)                 \
 type *                                                                        \
 vec_##name##_head(struct vec_##name *vec)                                     \
 {                                                                             \
-	return (vec->arr) ? &vec->arr[0] : NULL;                              \
+	return vec->arr ? &vec->arr[0] : NULL;                                \
 }                                                                             \
                                                                               \
 type *                                                                        \
 vec_##name##_tail(struct vec_##name *vec)                                     \
 {                                                                             \
-	return (vec->arr) ? &vec->arr[vec->len - 1] : NULL;                   \
+	return vec->arr ? &vec->arr[vec->len - 1] : NULL;                     \
 }                                                                             \
                                                                               \
 void                                                                          \
