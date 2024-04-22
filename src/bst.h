@@ -65,8 +65,8 @@ bst_##name##_new_node(const key_t key, const val_t val)                       \
                                                                               \
 static int                                                                    \
 bst_##name##_get(struct bst_##name##_node **par,                              \
-                      struct bst_##name##_node **cur,                         \
-		      const key_t key, int (*cmp)(key_t, key_t))              \
+                 struct bst_##name##_node **cur,                              \
+		 const key_t key, int (*cmp)(key_t, key_t))                   \
 {                                                                             \
 	int res;                                                              \
                                                                               \
