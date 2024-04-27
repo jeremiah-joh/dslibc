@@ -55,17 +55,22 @@ void dll_##name##_free(struct dll_##name *) /* to enforce semicolon */
 
 #define INIT_DLL_FUNC(name, type)                                             \
 static struct dll_##name##_node *                                             \
-dll_##name##_new_node(const type val, struct dll_##name##_node *prv)          \
+dll_##name##_new_node(const type val,                                         \
+                      struct dll_##name##_node *prv,                          \
+		      struct dll_##name##_node *nxt)                          \
 {                                                                             \
 	struct dll_##name##_node *new;                                        \
 	if ((new = malloc(sizeof(struct dll_##name##_node))) == NULL)         \
 		return NULL;                                                  \
-	new->nxt = NULL;                                                      \
+                                                                              \
+	new->nxt = nxt;                                                       \
 	new->prv = prv;                                                       \
 	new->val = val;                                                       \
                                                                               \
-	if (prv != NULL)                                                      \
+	if (prv)                                                              \
 		prv->nxt = new;                                               \
+	if (nxt)                                                              \
+		nxt->prv = new;                                               \
                                                                               \
 	return new;                                                           \
 }                                                                             \
@@ -120,6 +125,8 @@ dll_##name##_copy(const struct dll_##name dll)                                \
 	struct dll_##name cpy;                                                \
 	struct dll_##name##_node *tmp;                                        \
                                                                               \
+	cpy = dll_##name##_new();                                             \
+                                                                              \
 	for (tmp = dll.head; tmp != NULL; tmp = tmp->nxt)                     \
 		if (dll_##name##_push_back(&cpy, tmp->val))                   \
 			break;                                                \
@@ -154,10 +161,11 @@ dll_##name##_slice(const struct dll_##name dll,                               \
 int                                                                           \
 dll_##name##_push_back(struct dll_##name *dll, const type val)                \
 {                                                                             \
-	if (dll->head == NULL) {                                              \
-		dll->head = dll->tail = dll_##name##_new_node(val, NULL);     \
+	if (dll->head == NULL || dll->tail == NULL || dll->len == 0) {        \
+		dll->head = dll_##name##_new_node(val, NULL, NULL);           \
+		dll->tail = dll->head;                                        \
 	} else {                                                              \
-		dll->tail->nxt = dll_##name##_new_node(val, dll->tail);       \
+		dll->tail->nxt = dll_##name##_new_node(val, dll->tail, NULL); \
 		dll->tail = dll->tail->nxt;                                   \
 	}                                                                     \
                                                                               \
@@ -169,15 +177,12 @@ dll_##name##_push_back(struct dll_##name *dll, const type val)                \
 int                                                                           \
 dll_##name##_push_front(struct dll_##name *dll, const type val)               \
 {                                                                             \
-	struct dll_##name##_node *new;                                        \
-                                                                              \
-	if (dll->head == NULL) {                                              \
-		dll->head = dll->tail = dll_##name##_new_node(val, NULL);     \
+	if (dll->head == NULL || dll->tail == NULL || dll->len == 0) {        \
+		dll->head = dll_##name##_new_node(val, NULL, NULL);           \
+		dll->tail = dll->head;                                        \
 	} else {                                                              \
-		new = dll_##name##_new_node(val, NULL);                       \
-		dll->head->prv = new;                                         \
-		new->nxt = dll->head;                                         \
-		dll->head = new;                                              \
+		dll->head->prv = dll_##name##_new_node(val, NULL, dll->head); \
+		dll->head = dll->head->prv;                                   \
 	}                                                                     \
                                                                               \
 	dll->len++;                                                           \
@@ -245,17 +250,13 @@ dll_##name##_append(struct dll_##name *des, const struct dll_##name src)      \
 int                                                                           \
 dll_##name##_insert(struct dll_##name *dll, const type val, const size_t idx) \
 {                                                                             \
-	struct dll_##name##_node *tmp, *new;                                  \
+	struct dll_##name##_node *tmp;                                        \
                                                                               \
-	if (dll->head == NULL)                                                \
-		return -1;                                                    \
 	if (dll->len <= idx)                                                  \
 		return -1;                                                    \
                                                                               \
 	tmp = dll_##name##_nth(dll, idx);                                     \
-	new = dll_##name##_new_node(val, tmp->prv);                           \
-	new->nxt = tmp;                                                       \
-	tmp->prv = new;                                                       \
+	dll_##name##_new_node(val, tmp->prv, tmp);                            \
                                                                               \
 	dll->len++;                                                           \
                                                                               \
