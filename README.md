@@ -55,4 +55,4 @@ main()
 }
 ```
 
-See `docs/` directory for details of each data structures and their functions.
+See [`docs/`](docs/) directory for details of each data structures.
