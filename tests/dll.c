@@ -154,7 +154,7 @@ ptr()
 
 	dll = dll_int_from(arr, 3);
 
-	assert(*dll_int_getptr(&dll, 1) == 2);
+	assert(*dll_int_ptr(&dll, 1) == 2);
 	assert(*dll_int_head(&dll) == 1);
 	assert(*dll_int_tail(&dll) == 3);
 }

@@ -98,7 +98,7 @@ ptr()
 
 	bst = bst_int_from(key, val, 3, cmp);
 	
-	assert(*bst_int_getptr(&bst, 3) == 3);
+	assert(*bst_int_ptr(&bst, 3) == 3);
 	assert(*bst_int_root(&bst) == 2);
 	assert(*bst_int_min(&bst) == 1);
 	assert(*bst_int_max(&bst) == 3);

@@ -139,7 +139,7 @@ ptr()
 	sll_int_push(&sll, 2);
 	sll_int_push(&sll, 3);
 
-	assert(*sll_int_getptr(&sll, 1) == 2);
+	assert(*sll_int_ptr(&sll, 1) == 2);
 	assert(*sll_int_head(&sll) == 1);
 	assert(*sll_int_tail(&sll) == 3);
 }
