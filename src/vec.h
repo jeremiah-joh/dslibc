@@ -44,7 +44,7 @@ int vec_##name##_shrink(struct vec_##name *, const size_t);                   \
 int vec_##name##_getnth(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_setnth(struct vec_##name *, const type, const size_t);       \
 int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
-type *vec_##name##_getptr(struct vec_##name *, const size_t);                 \
+type *vec_##name##_ptr(struct vec_##name *, const size_t);                    \
 type *vec_##name##_head(struct vec_##name *);                                 \
 type *vec_##name##_tail(struct vec_##name *);                                 \
 void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
@@ -274,7 +274,7 @@ vec_##name##_rmvnth(struct vec_##name *vec, type *val, const size_t idx)      \
 }                                                                             \
                                                                               \
 type *                                                                        \
-vec_##name##_getptr(struct vec_##name *vec, const size_t idx)                 \
+vec_##name##_ptr(struct vec_##name *vec, const size_t idx)                    \
 {                                                                             \
 	return (idx < vec->len) ? &vec->arr[idx] : NULL;                      \
 }                                                                             \

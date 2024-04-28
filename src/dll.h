@@ -48,7 +48,7 @@ int dll_##name##_shrink(struct dll_##name *, const size_t);                   \
 int dll_##name##_getnth(struct dll_##name *, type *, const size_t);           \
 int dll_##name##_setnth(struct dll_##name *, const type, const size_t);       \
 int dll_##name##_rmvnth(struct dll_##name *, type *, const size_t);           \
-type *dll_##name##_getptr(struct dll_##name *, const size_t);                 \
+type *dll_##name##_ptr(struct dll_##name *, const size_t);                    \
 type *dll_##name##_head(struct dll_##name *);                                 \
 type *dll_##name##_tail(struct dll_##name *);                                 \
 void dll_##name##_free(struct dll_##name *) /* to enforce semicolon */
@@ -332,7 +332,7 @@ dll_##name##_rmvnth(struct dll_##name *dll, type *val, const size_t idx)      \
 }                                                                             \
                                                                               \
 type *                                                                        \
-dll_##name##_getptr(struct dll_##name *dll, const size_t idx)                 \
+dll_##name##_ptr(struct dll_##name *dll, const size_t idx)                    \
 {                                                                             \
 	struct dll_##name##_node *tmp;                                        \
                                                                               \

@@ -43,7 +43,7 @@ struct rbt_##name rbt_##name##_from(const key_t [], const val_t [],           \
 int rbt_##name##_insert(struct rbt_##name *, const key_t, const val_t);       \
 int rbt_##name##_search(struct rbt_##name *, const key_t, val_t *);           \
 int rbt_##name##_remove(struct rbt_##name *, const key_t, val_t *);           \
-val_t *rbt_##name##_getptr(struct rbt_##name *, const key_t);                 \
+val_t *rbt_##name##_ptr(struct rbt_##name *, const key_t);                    \
 val_t *rbt_##name##_root(struct rbt_##name *);                                \
 val_t *rbt_##name##_max(struct rbt_##name *);                                 \
 val_t *rbt_##name##_min(struct rbt_##name *);                                 \

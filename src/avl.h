@@ -43,7 +43,7 @@ struct avl_##name avl_##name##_from(const key_t [], const val_t [],           \
 int avl_##name##_insert(struct avl_##name *, const key_t, const val_t);       \
 int avl_##name##_search(struct avl_##name *, const key_t, val_t *);           \
 int avl_##name##_remove(struct avl_##name *, const key_t, val_t *);           \
-val_t *avl_##name##_getptr(struct avl_##name *, const key_t);                 \
+val_t *avl_##name##_ptr(struct avl_##name *, const key_t);                    \
 val_t *avl_##name##_root(struct avl_##name *);                                \
 val_t *avl_##name##_max(struct avl_##name *);                                 \
 val_t *avl_##name##_min(struct avl_##name *);                                 \

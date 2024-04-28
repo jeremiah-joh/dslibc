@@ -46,7 +46,7 @@ int sll_##name##_shrink(struct sll_##name *, const size_t);                   \
 int sll_##name##_getnth(struct sll_##name *, type *, const size_t);           \
 int sll_##name##_setnth(struct sll_##name *, const type, const size_t);       \
 int sll_##name##_rmvnth(struct sll_##name *, type *, const size_t);           \
-type *sll_##name##_getptr(struct sll_##name *, const size_t);                 \
+type *sll_##name##_ptr(struct sll_##name *, const size_t);                    \
 type *sll_##name##_head(struct sll_##name *);                                 \
 type *sll_##name##_tail(struct sll_##name *);                                 \
 void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
@@ -272,7 +272,7 @@ sll_##name##_rmvnth(struct sll_##name *sll, type *val, const size_t idx)      \
 }                                                                             \
                                                                               \
 type *                                                                        \
-sll_##name##_getptr(struct sll_##name *sll, const size_t idx)                 \
+sll_##name##_ptr(struct sll_##name *sll, const size_t idx)                    \
 {                                                                             \
 	struct sll_##name##_node *tmp;                                        \
                                                                               \
