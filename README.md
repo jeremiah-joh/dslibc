@@ -12,6 +12,7 @@ Following data structures are implemented.
 Following data structures are planned.
 * AVL Tree
 * Red-Black Tree
+* B-Tree
 * Hash Table
 
 Usage
@@ -56,3 +57,4 @@ main()
 ```
 
 See [`docs/`](docs/) directory for details of each data structures.
+
