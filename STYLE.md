@@ -6,7 +6,7 @@ This is a coding style that I prefer.
 Basic
 -----
 
-Use C90(ISO/IEC 9899:1990) without extension.  
+Use ANSI C without extension.  
 Declare variables on top of block.  
 Use `for (;;)` instead of `while(1)` on infinite loop.  
 Try to avoid using `goto`.  
@@ -36,7 +36,7 @@ Here are some rules you have to follow when making a function.
 * Make function has up to 7 local variables.
 * Make function returns error when something went wrong.
 
-Only main function can violate these rules.
+Only the main function can violate these rules.
 
 Put return type and modifier on top of function name.
 
@@ -65,7 +65,7 @@ while (condition) {
     /* do something */
 }
 
-for (init; condition; incr) {
+for (initialization; condition; increasement) {
     /* do something */
 }
 
@@ -75,6 +75,13 @@ do {
 ```
 
 Don't use { and } when code inside of flow control is only one line.  
+```c
+if (condition)
+    do_this();
+else
+    do_that();
+```
+
 But use it when code looks like following:
 ```c
 if (condition) {
@@ -85,7 +92,7 @@ if (condition) {
 }
 ```
 
-Put switch and case on same column. And comment when case fall-through.
+Put switch and case on same column. And comment when case fall-throughes.
 ```c
 switch (value) {
 case 0: /* FALLTHOUGH */
