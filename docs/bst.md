@@ -9,13 +9,13 @@ Binary search tree map.
 | Search    | O(log n) | O(n)  |
 | Remove    | O(log n) | O(n)  |
 
-`struct bst_<name> bst_<name>_new(int (*cmp)(key_t, key_t))`
-------------------------------------------------------------
+`struct bst_<name> bst_<name>_new()`
+------------------------------------
 
 Creates an empty binary search tree.
 
 ```c
-INIT_BST(int, int, int);
+INIT_BST(int, int, int, cmp);
 
 int 
 cmp(int x, int y)
@@ -23,26 +23,26 @@ cmp(int x, int y)
 	return x - y; 
 }
 
-bst_int bst = bst_int_new(cmp);
+bst_int bst = bst_int_new();
 ```
 
-`struct bst_<name> bst_<name>_from(const key_t key[], const val_t val[], const size_t len, int (*cmp)(key_t, key_t))`
----------------------------------------------------------------------------------------------------------------------
+`struct bst_<name> bst_<name>_from(const key_t key[], const val_t val[], const size_t len)`
+-------------------------------------------------------------------------------------------
 
 Creates binary search tree from arrays of keys and values.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 assert(bst.len == 3);
 assert(bst.root->val == 2);
@@ -56,17 +56,17 @@ assert(bst.root->rch->val == 3);
 Creates deeply copied binary search tree.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int old = bst_int_from(key, val, 3, cmp);
+bst_int old = bst_int_from(key, val, 3);
 bst_int new = bst_int_copy(old);
 
 assert(new.root->val == old.root->val);
@@ -81,17 +81,17 @@ Inserts a key-value pair into binary search tree.
 Returns 0 on success, -1 when key is already exist or out of memory.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 bst_int_insert(&bst, 4, 4);
 
@@ -107,18 +107,18 @@ Finds value corresponding to the key.
 Returns 0 on success, -1 on failure.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int v;
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 bst_int_search(&bst, 1, &v);
 
@@ -132,18 +132,18 @@ Finds value corresponding to the key and remove it from tree.
 Returns 0 on success, -1 on failure.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int v;
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 bst_int_remove(&bst, 1, &v);
 
@@ -157,17 +157,17 @@ assert(bst.len == 2);
 Returns pointer of the value corresponding to the key, NULL when key does not exist.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 assert(*bst_int_getptr(&bst, 1) == 1);
 ```
@@ -178,17 +178,17 @@ assert(*bst_int_getptr(&bst, 1) == 1);
 Returns pointer of root value, NULL when tree is empty.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 assert(*bst_int_root(&bst) == 2);
 ```
@@ -199,17 +199,17 @@ assert(*bst_int_root(&bst) == 2);
 Returns pointer of value that its key is the greatest in tree, NULL when tree is empty.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 assert(*bst_int_max(&bst) == 3);
 ```
@@ -220,17 +220,17 @@ assert(*bst_int_max(&bst) == 3);
 Returns pointer of value that its key is the least in tree, NULL when tree is empty.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 assert(*bst_int_min(&bst) == 1);
 ```
@@ -241,17 +241,17 @@ assert(*bst_int_min(&bst) == 1);
 Deallocate tree from memory. Prevents dangling pointer.
 
 ```c
-INIT_BST(int, int, int);
-
 int 
 cmp(int x, int y)
 { 
 	return x - y; 
 }
 
+INIT_BST(int, int, int, cmp);
+
 int key[] = { 2, 1, 3 };
 int val[] = { 2, 1, 3 };
-bst_int bst = bst_int_from(key, val, 3, cmp);
+bst_int bst = bst_int_from(key, val, 3);
 
 bst_int_free(&bst);
 

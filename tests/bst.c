@@ -1,13 +1,13 @@
 #include "../src/bst.h"
 #include <assert.h>
 
-INIT_BST(int, int, int);
-
 int
 cmp(int x, int y)
 {
 	return x - y;
 }
+
+INIT_BST(int, int, int, cmp);
 
 void
 from()
@@ -16,7 +16,7 @@ from()
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 3, cmp);
+	bst = bst_int_from(key, val, 3);
 
 	assert(bst.len == 3);
 	assert(bst.root->val == 2);
@@ -31,7 +31,7 @@ copy()
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst, cpy;
 
-	bst = bst_int_from(key, val, 3, cmp);
+	bst = bst_int_from(key, val, 3);
 	cpy = bst_int_copy(bst);
 
 	assert(bst.root->val == cpy.root->val);
@@ -44,7 +44,7 @@ insert()
 {
 	struct bst_int bst;
 
-	bst = bst_int_new(cmp);
+	bst = bst_int_new();
 
 	bst_int_insert(&bst, 2, 2);
 	bst_int_insert(&bst, 1, 1);
@@ -64,7 +64,7 @@ search()
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 3, cmp);
+	bst = bst_int_from(key, val, 3);
 	
 	bst_int_search(&bst, 1, &v);
 
@@ -79,7 +79,7 @@ remove()
 	int val[] = { 2, 1, 4, 3, 5 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 5, cmp);
+	bst = bst_int_from(key, val, 5);
 	
 	bst_int_remove(&bst, 4, &v);
 
@@ -96,7 +96,7 @@ ptr()
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 3, cmp);
+	bst = bst_int_from(key, val, 3);
 	
 	assert(*bst_int_ptr(&bst, 3) == 3);
 	assert(*bst_int_root(&bst) == 2);
@@ -111,7 +111,7 @@ t_free()
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 3, cmp);
+	bst = bst_int_from(key, val, 3);
 
 	bst_int_free(&bst);
 
