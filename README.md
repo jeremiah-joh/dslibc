@@ -18,20 +18,7 @@ Following data structures are planned.
 Usage
 -----
 
-First, copy a header file into your project directory.
-
-There are three macros for each data structures.  
-These are for linear data structures.
-* `INIT_<struct>_TYPE(name, type)` - Initialize type and function prototypes.
-* `INIT_<struct>_FUNC(name, type)` - Initialize functions.
-* `INIT_<struct>(name, type)` - Initialize type and functions.
-
-These are for map data structures.
-* `INIT_<struct>_TYPE(name, key_t, val_t)` - Initialize type and function prototypes.
-* `INIT_<struct>_FUNC(name, key_t, val_t)` - Initialize functions.
-* `INIT_<struct>(name, key_t, val_t)` - Initialize type and functions.
-
-Use macro like follow.
+Here is a simple example code that uses `vec.h`.
 
 ```c
 #include "vec.h"
