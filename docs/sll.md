@@ -9,10 +9,12 @@ Stack singly linked list.
 | Search    | O(n)    | O(n)  |
 | Remove    | O(n)    | O(n)  |
 
-`struct sll_<name> sll_<name>_new()`
-------------------------------------
+new
+---
 
 Creates an empty linked list.
+
+`struct sll_##name## sll_##name##_new();`
 
 ```c
 INIT_SLL(int, int);
@@ -20,10 +22,12 @@ INIT_SLL(int, int);
 sll_int sll = sll_int_new();
 ```
 
-`struct sll_<name> sll_<name>_from(const type *arr, const size_t len)`
-----------------------------------------------------------------------
+from
+----
 
-Creates linked list from array.
+Creates linked list from array of keys and values.
+
+`struct sll_##name## sll_##name##_from(const type *arr, const size_t len);`
 
 ```c
 INIT_SLL(int, int);
@@ -36,10 +40,12 @@ assert(sll.head->nxt->val == 2);
 assert(sll.head->nxt->nxt->val == 3);
 ```
 
-`struct sll_<name> sll_<name>_copy(const struct sll_<name> sll)`
-----------------------------------------------------------------
+copy
+----
 
 Creates a deeply copied linked list.
+
+`struct sll_##name## sll_##name##_copy(const struct sll_##name## sll);`
 
 ```c
 INIT_SLL(int, int);
@@ -53,10 +59,12 @@ assert(new.head->nxt->val == old.head->nxt->val);
 assert(new.head->nxt->nxt->val == old.head->nxt->nxt->val);
 ```
 
-`struct sll_<name> sll_<name>_slice(const struct sll_<name> sll, const size_t head, const size_t tail)`
--------------------------------------------------------------------------------------------------------
+slice
+-----
 
 Creates a deeply copied slice from given linked list.
+
+`struct sll_##name## sll_##name##_slice(const struct sll_##name## sll, const size_t head, const size_t tail);`
 
 ```c
 INIT_SLL(int, int);
@@ -69,11 +77,13 @@ assert(sli.head->val == 2);
 assert(sli.head->nxt->val == 3);
 ```
 
-`int sll_<name>_push(struct sll_<name> *sll, const type val)`
-------------------------------------------------------------------
+push
+----
 
-Appends an element to the back of the linked list.  
+Appends an element to the back of the linked list.
 Returns 0 on success, -1 on failure.
+
+`int sll_##name##_push(struct sll_##name## *sll, const type val);`
 
 ```c
 INIT_SLL(int, int);
@@ -89,11 +99,13 @@ assert(sll.head->nxt->val == 2);
 assert(sll.head->nxt->nxt->val == 3);
 ```
 
-`int sll_<name>_pop(struct sll_<name> *sll, type *val)`
-------------------------------------------------------------
+pop
+---
 
-Removes an element from back of the linked list and put it in `val`.  
+Removes an element from back of the linked list and put it in `val`.
 Returns 0 on success, -1 on failure.
+
+`int sll_##name##_pop(struct sll_##name## *sll, type *val);`
 
 ```c
 INIT_SLL(int, int);
@@ -106,11 +118,13 @@ sll_int_pop(&sll, &val);
 assert(val == 3);
 ```
 
-`int sll_<name>_append(struct sll_<name> *des, const struct sll_<name> src)`
-----------------------------------------------------------------------------
+append
+------
 
-Appends two linked lists together. Note that `src` linked list is copied.  
+Appends two linked lists together. Note that `src` linked list is copied.
 Returns 0 on success, -1 on failure.
+
+`int sll_##name##_append(struct sll_##name## *des, const struct sll_##name## src);`
 
 ```c
 INIT_SLL(int, int);
@@ -126,11 +140,13 @@ assert(sll1.head->val == 1);
 assert(sll1.tail->val == 6);
 ```
 
-`int sll_<name>_insert(struct sll_<name> *sll, const type val, const size_t idx)`
----------------------------------------------------------------------------------
+insert
+------
 
-Inserts an element `val` at given index `idx`.  
+Inserts an element `val` at given index `idx`.
 Returns 0 on success, -1 on failure.
+
+`int sll_##name##_insert(struct sll_##name## *sll, const type val, const size_t idx);`
 
 ```c
 INIT_SLL(int, int);
@@ -143,11 +159,13 @@ sll_int_insert(&sll, 2, 1);
 assert(sll.head->nxt->val == 2);
 ```
 
-`int sll_<name>_shrink(struct sll_<name> *sll, const size_t len)`
------------------------------------------------------------------
+shrink
+------
 
-Shrinks linked list to be given length `len`.  
+Shrinks linked list to be given length `len`.
 Returns 0 on success, -1 on failure.
+
+`int sll_##name##_shrink(struct sll_##name## *sll, const size_t len);`
 
 ```c
 INIT_SLL(int, int);
@@ -161,11 +179,13 @@ assert(sll.len == 2);
 assert(sll.head->nxt->val == 2);
 ```
 
-`int sll_<name>_getnth(struct sll_<name> *sll, type *val, const size_t idx)`
-----------------------------------------------------------------------------
+getnth
+------
 
-Get an element `val` at index `idx` in linked list.  
+Get an element `val` at index `idx` in linked list.
 Returns 0 on success, -1 on out of range situation.
+
+`int sll_##name##_getnth(struct sll_##name## *sll, type *val, const size_t idx);`
 
 ```c
 INIT_SLL(int, int);
@@ -179,11 +199,13 @@ sll_int_getnth(&sll, &val, 1);
 assert(val == 2);
 ```
 
-`int sll_<name>_setnth(struct sll_<name> *sll, const type val, const size_t idx)`
----------------------------------------------------------------------------------
+setnth
+------
 
 Assigns an element `val` at index `idx` in linked list.
 Returns 0 on success, -1 on out of range situation.
+
+`int sll_##name##_setnth(struct sll_##name## *sll, const type val, const size_t idx);`
 
 ```c
 INIT_SLL(int, int);
@@ -196,11 +218,13 @@ sll_int_setnth(&sll, 4, 1);
 assert(val.head->nxt->val == 4);
 ```
 
-`int sll_<name>_rmvnth(struct sll_<name> *sll, type *val, const size_t idx)`
-----------------------------------------------------------------------------
+rmvnth
+------
 
-Removes an element `val` at index `idx` in linked list.  
+Removes an element `val` at index `idx` in linked list.
 Returns 0 on success, -1 on out of range situation.
+
+`int sll_##name##_rmvnth(struct sll_##name## *sll, type *val, const size_t idx);`
 
 ```c
 INIT_SLL(int, int);
@@ -215,54 +239,60 @@ assert(val == 2);
 assert(sll.len == 2);
 ```
 
-`type *sll_<name>_getptr(struct sll_<name> *sll, const size_t idx)`
--------------------------------------------------------------------
+ptr
+---
 
 Returns pointer of element in linked list, NULL pointer on out of range situation.
 
+`type *sll_##name##_ptr(struct sll_##name## *sll, const size_t idx);`
+
 ```c
 INIT_SLL(int, int);
 
 int arr[] = { 1, 2, 3 };
 sll_int sll = sll_int_from(arr, 3);
 
-assert(*sll_int_getptr(&sll, 1) == 2);
+assert(*sll_int_ptr(&sll, 1) == sll.head->nxt->val);
 ```
 
-`type *sll_<name>_head(struct sll_<name> *sll)`
------------------------------------------------
+head
+----
 
 Returns pointer of first element in linked list, NULL pointer when linked list is empty.
 
+`type *sll_##name##_head(struct sll_##name## *sll);`
+
 ```c
 INIT_SLL(int, int);
 
 int arr[] = { 1, 2, 3 };
 sll_int sll = sll_int_from(arr, 3);
 
-assert(*sll_<nam>_head(&sll) == 1);
+assert(*sll_int_head(&sll) == sll.head->val);
 ```
 
-`type *sll_<name>_tail(struct sll_<name> *sll)`
------------------------------------------------
+tail
+----
 
 Returns pointer of last element in linked list, NULL pointer when linked list is empty.
 
+`type *sll_##name##_tail(struct sll_##name## *sll);`
+
 ```c
 INIT_SLL(int, int);
 
 int arr[] = { 1, 2, 3 };
 sll_int sll = sll_int_from(arr, 3);
 
-assert(*sll_<nam>_tail(&sll) == 3);
+assert(*sll_int_tail(&sll) == sll.head->nxt->nxt->val);
 ```
 
-`void sll_<name>_free(struct sll_<name> *sll)`
-----------------------------------------------
+free
+----
 
-Deallocates linked list from memory.  
+Deallocates linked list from memory.
 
-Using this function is recommended because it prevents dangling pointer.
+`void sll_##name##_free(struct sll_##name## *sll);`
 
 ```c
 INIT_SLL(int, int);
@@ -272,7 +302,6 @@ sll_int sll = sll_int_from(arr, 3);
 
 sll_int_free(&sll);
 
-assert(sll.head == NULL && sll.tail == NULL);
+assert(sll.arr == NULL);
 assert(sll.len == 0);
 ```
-
