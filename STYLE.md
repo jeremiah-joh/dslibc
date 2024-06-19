@@ -65,7 +65,7 @@ while (condition) {
     /* do something */
 }
 
-for (initialization; condition; increasement) {
+for (initialization; condition; increment) {
     /* do something */
 }
 
