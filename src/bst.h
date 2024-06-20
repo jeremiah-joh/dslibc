@@ -49,7 +49,7 @@ bst_##name##_new_node(const key_t key, const val_t val)                       \
 {                                                                             \
         struct bst_##name##_node *new;                                        \
         if ((new = malloc(sizeof(struct bst_##name##_node))) == NULL)         \
-        	return NULL;                                                  \
+                return NULL;                                                  \
                                                                               \
         new->key = key;                                                       \
         new->val = val;                                                       \
@@ -61,19 +61,19 @@ bst_##name##_new_node(const key_t key, const val_t val)                       \
 static int                                                                    \
 bst_##name##_get(struct bst_##name##_node **par,                              \
                  struct bst_##name##_node **cur,                              \
-        	 const key_t key)                                             \
+                 const key_t key)                                             \
 {                                                                             \
         int res;                                                              \
                                                                               \
         for (*cur = *par; *cur != NULL; ) {                                   \
-        	*par = *cur;                                                  \
-        	res = cmp(key, (*cur)->key);                                  \
-        	if (res < 0)                                                  \
-        		*cur = (*cur)->lch;                                   \
-        	else if (res > 0)                                             \
-        		*cur = (*cur)->rch;                                   \
-        	else                                                          \
-        		return res;                                           \
+                *par = *cur;                                                  \
+                res = cmp(key, (*cur)->key);                                  \
+                if (res < 0)                                                  \
+                        *cur = (*cur)->lch;                                   \
+                else if (res > 0)                                             \
+                        *cur = (*cur)->rch;                                   \
+                else                                                          \
+                        return res;                                           \
         }                                                                     \
                                                                               \
         return res;                                                           \
@@ -85,18 +85,18 @@ bst_##name##_copy_node(struct bst_##name *cpy, struct bst_##name##_node *node)\
         bst_##name##_insert(cpy, node->key, node->val);                       \
                                                                               \
         if (node->lch != NULL)                                                \
-        	bst_##name##_copy_node(cpy, node->lch);                       \
+                bst_##name##_copy_node(cpy, node->lch);                       \
         if (node->rch != NULL)                                                \
-        	bst_##name##_copy_node(cpy, node->rch);                       \
+                bst_##name##_copy_node(cpy, node->rch);                       \
 }                                                                             \
                                                                               \
 static void                                                                   \
 bst_##name##_free_node(struct bst_##name##_node *node)                        \
 {                                                                             \
         if (node->lch != NULL)                                                \
-        	bst_##name##_free_node(node->lch);                            \
+                bst_##name##_free_node(node->lch);                            \
         if (node->rch != NULL)                                                \
-        	bst_##name##_free_node(node->rch);                            \
+                bst_##name##_free_node(node->rch);                            \
                                                                               \
         free(node);                                                           \
 }                                                                             \
@@ -107,7 +107,7 @@ bst_##name##_rmv1(struct bst_##name##_node **tmp)                             \
         struct bst_##name##_node *suc;                                        \
                                                                               \
         for (suc = (*tmp)->rch; suc->lch; suc = suc->lch)                     \
-        	;                                                             \
+                ;                                                             \
                                                                               \
         (*tmp)->key = suc->key;                                               \
         (*tmp)->val = suc->val;                                               \
@@ -120,9 +120,9 @@ bst_##name##_rmv2(struct bst_##name##_node *par,                              \
                   struct bst_##name##_node *tmp)                              \
 {                                                                             \
         if (par->lch == tmp)                                                  \
-        	par->lch = NULL;                                              \
+                par->lch = NULL;                                              \
         else                                                                  \
-        	par->rch = NULL;                                              \
+                par->rch = NULL;                                              \
                                                                               \
         free(tmp);                                                            \
 }                                                                             \
@@ -132,9 +132,9 @@ bst_##name##_rmv3(struct bst_##name##_node *par,                              \
                   struct bst_##name##_node *tmp)                              \
 {                                                                             \
         if (par->lch == tmp)                                                  \
-        	par->lch = tmp->lch ? tmp->lch : tmp->rch;                    \
+                par->lch = tmp->lch ? tmp->lch : tmp->rch;                    \
         else                                                                  \
-        	par->rch = tmp->rch ? tmp->rch : tmp->lch;                    \
+                par->rch = tmp->rch ? tmp->rch : tmp->lch;                    \
                                                                               \
         free(tmp);                                                            \
 }                                                                             \
@@ -165,7 +165,7 @@ bst_##name##_from(const key_t key[], const val_t val[],                       \
         struct bst_##name bst = { NULL, 0 };                                  \
                                                                               \
         for (i = 0; i < len; i++)                                             \
-        	bst_##name##_insert(&bst, key[i], val[i]);                    \
+                bst_##name##_insert(&bst, key[i], val[i]);                    \
                                                                               \
         return bst;                                                           \
 }                                                                             \
@@ -177,16 +177,16 @@ bst_##name##_insert(struct bst_##name *bst, const key_t key, const val_t val) \
         struct bst_##name##_node *tmp, *par;                                  \
                                                                               \
         if (bst->root == NULL || bst->len == 0) {                             \
-        	bst->root = bst_##name##_new_node(key, val);                  \
+                bst->root = bst_##name##_new_node(key, val);                  \
         } else {                                                              \
-        	par = bst->root;                                              \
-        	if ((res = bst_##name##_get(&par, &tmp, key)) == 0)           \
-        		return -1;                                            \
-        	                                                              \
-        	if (res < 0)                                                  \
-        		par->lch = bst_##name##_new_node(key, val);           \
-        	else                                                          \
-        		par->rch = bst_##name##_new_node(key, val);           \
+                par = bst->root;                                              \
+                if ((res = bst_##name##_get(&par, &tmp, key)) == 0)           \
+                        return -1;                                            \
+                                                                              \
+                if (res < 0)                                                  \
+                        par->lch = bst_##name##_new_node(key, val);           \
+                else                                                          \
+                        par->rch = bst_##name##_new_node(key, val);           \
         }                                                                     \
                                                                               \
         bst->len++;                                                           \
@@ -201,7 +201,7 @@ bst_##name##_search(struct bst_##name *bst, const key_t key, val_t *val)      \
                                                                               \
         par = bst->root;                                                      \
         if (bst_##name##_get(&par, &tmp, key) != 0)                           \
-        	return -1;                                                    \
+                return -1;                                                    \
                                                                               \
         *val = tmp->val;                                                      \
                                                                               \
@@ -215,16 +215,16 @@ bst_##name##_remove(struct bst_##name *bst, const key_t key, val_t *val)      \
                                                                               \
         par = bst->root;                                                      \
         if (bst_##name##_get(&par, &tmp, key) != 0)                           \
-        	return -1;                                                    \
+                return -1;                                                    \
                                                                               \
         *val = tmp->val;                                                      \
                                                                               \
         if (tmp->lch && tmp->rch)                                             \
-        	bst_##name##_rmv1(&tmp);                                      \
+                bst_##name##_rmv1(&tmp);                                      \
         if (tmp->lch == NULL && tmp->rch == NULL)                             \
-        	bst_##name##_rmv2(par, tmp);                                  \
+                bst_##name##_rmv2(par, tmp);                                  \
         else                                                                  \
-        	bst_##name##_rmv3(par, tmp);                                  \
+                bst_##name##_rmv3(par, tmp);                                  \
                                                                               \
         bst->len--;                                                           \
                                                                               \
@@ -239,7 +239,7 @@ bst_##name##_ptr(struct bst_##name *bst, const key_t key)                     \
         par = bst->root;                                                      \
                                                                               \
         if (bst_##name##_get(&par, &tmp, key) != 0)                           \
-        	return NULL;                                                  \
+                return NULL;                                                  \
                                                                               \
         return &tmp->val;                                                     \
 }                                                                             \
@@ -256,7 +256,7 @@ bst_##name##_max(struct bst_##name *bst)                                      \
         struct bst_##name##_node *max;                                        \
                                                                               \
         for (max = bst->root; max->rch != NULL; max = max->rch)               \
-        	;                                                             \
+                ;                                                             \
                                                                               \
         return &max->val;                                                     \
 }                                                                             \
@@ -267,7 +267,7 @@ bst_##name##_min(struct bst_##name *bst)                                      \
         struct bst_##name##_node *min;                                        \
                                                                               \
         for (min = bst->root; min->lch != NULL; min = min->lch)               \
-        	;                                                             \
+                ;                                                             \
                                                                               \
         return &min->val;                                                     \
 }                                                                             \
