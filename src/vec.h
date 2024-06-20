@@ -277,12 +277,12 @@ vec_##name##_retain(struct vec_##name *vec, int (*fn)(type))                  \
     size_t i, j;                                                          \
                                                                               \
     if (vec->arr == NULL || vec->len == 0)                                \
-    	return 0;                                                     \
+            return 0;                                                     \
                                                                           \
     for (i = 0, j = 0; i < vec->len; i++) {                               \
-    	if (!fn(vec->arr[i]))                                         \
-    		continue;                                             \
-    	vec->arr[j++] = vec->arr[i];                                  \
+            if (!fn(vec->arr[i]))                                         \
+                    continue;                                             \
+            vec->arr[j++] = vec->arr[i];                                  \
     }                                                                     \
                                                                               \
     vec->len = j;                                                         \
@@ -314,7 +314,7 @@ vec_##name##_foreach(struct vec_##name *vec, void (*fn)(type *))              \
     size_t i;                                                             \
                                                                               \
     for (i = 0; i < vec->len; i++)                                        \
-    	fn(&vec->arr[i]);                                             \
+            fn(&vec->arr[i]);                                             \
 }                                                                             \
                                                                               \
 void                                                                          \
