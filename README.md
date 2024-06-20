@@ -45,3 +45,7 @@ main()
 
 See [`docs/`](docs/) directory for details of each data structures.
 
+License
+-------
+
+dslibc by Woohyun Joh is marked with CC0 1.0
