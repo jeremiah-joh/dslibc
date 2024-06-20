@@ -14,7 +14,8 @@ Try to avoid using `goto`.
 Indentation
 -----------
 
-Indentation is Tab character, not spaces. Tab is 8 spaces width. No exception.
+Indentation is Tab character of 8 spaces width.
+But use spaces when you're writing a macro function with multiple lines of body.
 
 Naming
 ------
