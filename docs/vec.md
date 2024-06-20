@@ -83,7 +83,7 @@ push_back
 Appends an element to the back of the vector.
 Returns 0 on success, -1 on failure.
 
-`int vec_##name##_push_back(struct vec_##name## *vec, const type val);`
+`int vec_##name##_push_back(struct vec_##name *vec, const type val);`
 
 ```c
 INIT_VEC(int, int);
@@ -105,7 +105,7 @@ push_front
 Appends an element to the front of the vector.
 Returns 0 on success, -1 on failure.
 
-`int vec_##name##_push_front(struct vec_##name## *vec, const type val);`
+`int vec_##name##_push_front(struct vec_##name *vec, const type val);`
 
 ```c
 INIT_VEC(int, int);
@@ -127,7 +127,7 @@ pop_back
 Removes an element from back of the vector and put it in `val`.
 Returns 0 on success, -1 on failure.
 
-`int vec_##name##_pop_back(struct vec_##name## *vec, type *val);`
+`int vec_##name##_pop_back(struct vec_##name *vec, type *val);`
 
 ```c
 INIT_VEC(int, int);
@@ -146,7 +146,7 @@ pop_front
 Removes an element from front of the vector and put it in `val`.
 Returns 0 on success, -1 on failure.
 
-`int vec_##name##_pop_front(struct vec_##name## *vec, type *val);`
+`int vec_##name##_pop_front(struct vec_##name *vec, type *val);`
 
 ```c
 INIT_VEC(int, int);
@@ -187,7 +187,7 @@ insert
 Inserts an element `val` at given index `idx`.
 Returns 0 on success, -1 on failure.
 
-`int vec_##name##_insert(struct vec_##name## *vec, const type val, const size_t idx);`
+`int vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx);`
 
 ```c
 INIT_VEC(int, int);
@@ -206,7 +206,7 @@ shrink
 Shrinks vector to be given length `len`.
 Returns 0 on success, -1 on failure.
 
-`int vec_##name##_shrink(struct vec_##name## *vec, const size_t len);`
+`int vec_##name##_shrink(struct vec_##name *vec, const size_t len);`
 
 ```c
 INIT_VEC(int, int);
@@ -226,7 +226,7 @@ getnth
 Get an element `val` at index `idx` in vector.
 Returns 0 on success, -1 on out of range situation.
 
-`int vec_##name##_getnth(struct vec_##name## *vec, type *val, const size_t idx);`
+`int vec_##name##_getnth(struct vec_##name *vec, type *val, const size_t idx);`
 
 ```c
 INIT_VEC(int, int);
@@ -246,7 +246,7 @@ setnth
 Assigns an element `val` at index `idx` in vector.
 Returns 0 on success, -1 on out of range situation.
 
-`int vec_##name##_setnth(struct vec_##name## *vec, const type val, const size_t idx);`
+`int vec_##name##_setnth(struct vec_##name *vec, const type val, const size_t idx);`
 
 ```c
 INIT_VEC(int, int);
@@ -265,7 +265,7 @@ rmvnth
 Removes an element `val` at index `idx` in vector.
 Returns 0 on success, -1 on out of range situation.
 
-`int vec_##name##_rmvnth(struct vec_##name## *vec, type *val, const size_t idx);`
+`int vec_##name##_rmvnth(struct vec_##name *vec, type *val, const size_t idx);`
 
 ```c
 INIT_VEC(int, int);
@@ -280,12 +280,39 @@ assert(val == 2);
 assert(vec.len == 2);
 ```
 
+retain
+------
+
+Retains only elements which given function returns non-zero value.
+Returns 0 on success, -1 on failure.
+
+`int vec_##name##_retain(struct vec_##name *vec, int (*fn)(type));`
+
+```c
+INIT_VEC(int, int);
+
+int
+even(int x)
+{
+    return x % 2 == 0;
+}
+
+int val;
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+vec_int_retain(&vec, even);
+
+assert(vec.len == 1);
+assert(vec.arr[0] == 2);
+```
+
 ptr
 ---
 
 Returns pointer of element in vector, NULL pointer on out of range situation.
 
-`type *vec_##name##_ptr(struct vec_##name## *vec, const size_t idx);`
+`type *vec_##name##_ptr(struct vec_##name *vec, const size_t idx);`
 
 ```c
 INIT_VEC(int, int);
@@ -301,7 +328,7 @@ head
 
 Returns pointer of first element in vector, NULL pointer when vector is empty.
 
-`type *vec_##name##_head(struct vec_##name## *vec);`
+`type *vec_##name##_head(struct vec_##name *vec);`
 
 ```c
 INIT_VEC(int, int);
@@ -317,7 +344,7 @@ tail
 
 Returns pointer of last element in vector, NULL pointer when vector is empty.
 
-`type *vec_##name##_tail(struct vec_##name## *vec);`
+`type *vec_##name##_tail(struct vec_##name *vec);`
 
 ```c
 INIT_VEC(int, int);
@@ -328,12 +355,39 @@ vec_int vec = vec_int_from(arr, 3);
 assert(*vec_int_tail(&vec) == vec.head->nxt->nxt->val);
 ```
 
+foreach
+-------
+
+Calls a given function on each element in vector.
+
+`void vec_##name##_foreach(struct vec_##name *vec, void (*fn)(type *));`
+
+```c
+INIT_VEC(int, int);
+
+void
+square(int *x)
+{
+    *x *= *x;
+}
+
+int val;
+int arr[] = { 1, 2, 3 };
+vec_int vec = vec_int_from(arr, 3);
+
+vec_int_foreach(&vec, square);
+
+assert(vec.arr[0] == 1);
+assert(vec.arr[0] == 4);
+assert(vec.arr[0] == 9);
+```
+
 free
 ----
 
 Deallocates vector from memory.
 
-`void vec_##name##_free(struct vec_##name## *vec);`
+`void vec_##name##_free(struct vec_##name *vec);`
 
 ```c
 INIT_VEC(int, int);
