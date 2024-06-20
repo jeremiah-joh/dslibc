@@ -44,9 +44,11 @@ int dll_##name##_shrink(struct dll_##name *, const size_t);                   \
 int dll_##name##_getnth(struct dll_##name *, type *, const size_t);           \
 int dll_##name##_setnth(struct dll_##name *, const type, const size_t);       \
 int dll_##name##_rmvnth(struct dll_##name *, type *, const size_t);           \
+int dll_##name##_retain(struct dll_##name *, int (*)(type));                  \
 type *dll_##name##_ptr(struct dll_##name *, const size_t);                    \
 type *dll_##name##_head(struct dll_##name *);                                 \
 type *dll_##name##_tail(struct dll_##name *);                                 \
+void dll_##name##_foreach(struct dll_##name *, void (*)(type *));             \
 void dll_##name##_free(struct dll_##name *) /* to enforce semicolon */
 
 #define INIT_DLL_FUNC(name, type)                                             \
@@ -327,6 +329,29 @@ dll_##name##_rmvnth(struct dll_##name *dll, type *val, const size_t idx)      \
         return 0;                                                             \
 }                                                                             \
                                                                               \
+int                                                                           \
+dll_##name##_retain(struct dll_##name *dll, int (*fn)(type))                  \
+{                                                                             \
+        struct dll_##name##_node *tmp;                                        \
+        struct dll_##name cpy;                                                \
+                                                                              \
+        cpy = dll_##name##_new();                                             \
+                                                                              \
+        for (tmp = dll->head; tmp; tmp = tmp->nxt) {                          \
+                if (fn(tmp->val)) {                                           \
+                        if (dll_##name##_push_back(&cpy, tmp->val)) {         \
+                                dll_##name##_free(&cpy);                      \
+                                return -1;                                    \
+                        }                                                     \
+                }                                                             \
+        }                                                                     \
+                                                                              \
+	dll_##name##_free(dll);                                               \
+	*dll = cpy;                                                           \
+                                                                              \
+        return 0;                                                             \
+}                                                                             \
+                                                                              \
 type *                                                                        \
 dll_##name##_ptr(struct dll_##name *dll, const size_t idx)                    \
 {                                                                             \
@@ -345,6 +370,15 @@ type *                                                                        \
 dll_##name##_tail(struct dll_##name *dll)                                     \
 {                                                                             \
         return &dll->tail->val;                                               \
+}                                                                             \
+                                                                              \
+void                                                                          \
+dll_##name##_foreach(struct dll_##name *dll, void (*fn)(type *))              \
+{                                                                             \
+        struct dll_##name##_node *tmp;                                        \
+                                                                              \
+        for (tmp = dll->head; tmp; tmp = tmp->nxt)                            \
+                fn(&tmp->val);                                                \
 }                                                                             \
                                                                               \
 void                                                                          \

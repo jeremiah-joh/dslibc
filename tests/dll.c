@@ -160,6 +160,47 @@ ptr()
 }
 
 void
+foreach_square(int *x)
+{
+	*x *= *x;
+}
+
+void
+foreach()
+{
+	int arr[] = { 1, 2, 3 };
+	struct dll_int dll;
+
+	dll = dll_int_from(arr, 3);
+
+	dll_int_foreach(&dll, foreach_square);
+
+	assert(dll.head->val == 1);
+	assert(dll.head->nxt->val == 4);
+	assert(dll.head->nxt->nxt->val == 9);
+}
+
+int
+retain_even(int x)
+{
+	return x % 2 == 0;
+}
+
+void
+retain()
+{
+	int arr[] = { 1, 2, 3 };
+	struct dll_int dll;
+
+	dll = dll_int_from(arr, 3);
+
+	dll_int_retain(&dll, retain_even);
+
+	assert(dll.len == 1);
+	assert(dll.head->val == 2);
+}
+
+void
 t_free()
 {
 	struct dll_int dll;
