@@ -43,6 +43,7 @@ int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
 type *vec_##name##_ptr(struct vec_##name *, const size_t);                    \
 type *vec_##name##_head(struct vec_##name *);                                 \
 type *vec_##name##_tail(struct vec_##name *);                                 \
+void vec_##name##_foreach(struct vec_##name *, void (*)(type *));             \
 void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
 
 #define INIT_VEC_FUNC(name, type)                                             \
@@ -285,6 +286,15 @@ type *                                                                        \
 vec_##name##_tail(struct vec_##name *vec)                                     \
 {                                                                             \
         return vec->arr ? &vec->arr[vec->len - 1] : NULL;                     \
+}                                                                             \
+                                                                              \
+void                                                                          \
+vec_##name##_foreach(struct vec_##name *vec, void (*fn)(type *))              \
+{                                                                             \
+	size_t i;                                                             \
+                                                                              \
+	for (i = 0; i < vec->len; i++)                                        \
+		fn(&vec->arr[i]);                                             \
 }                                                                             \
                                                                               \
 void                                                                          \
