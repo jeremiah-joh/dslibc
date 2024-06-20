@@ -37,10 +37,12 @@ struct bst_##name bst_##name##_from(const key_t [], const val_t [],           \
 int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
 int bst_##name##_search(struct bst_##name *, const key_t, val_t *);           \
 int bst_##name##_remove(struct bst_##name *, const key_t, val_t *);           \
+int bst_##name##_retain(struct bst_##name *, int (*)(val_t));                 \
 val_t *bst_##name##_ptr(struct bst_##name *, const key_t);                    \
 val_t *bst_##name##_root(struct bst_##name *);                                \
 val_t *bst_##name##_max(struct bst_##name *);                                 \
 val_t *bst_##name##_min(struct bst_##name *);                                 \
+void bst_##name##_foreach(struct bst_##name *, void (*)(val_t *));            \
 void bst_##name##_free(struct bst_##name *) /* to enforce semicolon */
 
 #define INIT_BST_FUNC(name, key_t, val_t, cmp)                                \
@@ -139,6 +141,38 @@ bst_##name##_rmv3(struct bst_##name##_node *par,                              \
         free(tmp);                                                            \
 }                                                                             \
                                                                               \
+static int                                                                    \
+bst_##name##_retain_rec(struct bst_##name *bst,                               \
+                        struct bst_##name##_node *cur,                        \
+                        int (*fn)(val_t))                                     \
+{                                                                             \
+	if (fn(cur->val))                                                     \
+		if (bst_##name##_insert(bst, cur->key, cur->val))             \
+			return -1;                                            \
+                                                                              \
+	if (cur->lch)                                                         \
+		if (bst_##name##_retain_rec(bst, cur->lch, fn))               \
+			return -1;                                            \
+	if (cur->rch)                                                         \
+		if (bst_##name##_retain_rec(bst, cur->rch, fn))               \
+			return -1;                                            \
+	                                                                      \
+	return 0;                                                             \
+}                                                                             \
+                                                                              \
+static void                                                                   \
+bst_##name##_foreach_rec(struct bst_##name *bst,                              \
+                         struct bst_##name##_node *cur,                       \
+			 void (*fn)(val_t *))                                 \
+{                                                                             \
+	fn(&cur->val);                                                        \
+                                                                              \
+	if (cur->lch)                                                         \
+		bst_##name##_foreach_rec(bst, cur->lch, fn);                  \
+	if (cur->rch)                                                         \
+		bst_##name##_foreach_rec(bst, cur->rch, fn);                  \
+}                                                                             \
+                                                                              \
 struct bst_##name                                                             \
 bst_##name##_new()                                                            \
 {                                                                             \
@@ -231,6 +265,22 @@ bst_##name##_remove(struct bst_##name *bst, const key_t key, val_t *val)      \
         return 0;                                                             \
 }                                                                             \
                                                                               \
+int                                                                           \
+bst_##name##_retain(struct bst_##name *bst, int (*fn)(val_t))                 \
+{                                                                             \
+	struct bst_##name cpy;                                                \
+                                                                              \
+	cpy = bst_##name##_new();                                             \
+                                                                              \
+	if (bst_##name##_retain_rec(&cpy, bst->root, fn))                     \
+		return -1;                                                    \
+                                                                              \
+	bst_##name##_free(bst);                                               \
+	*bst = cpy;                                                           \
+                                                                              \
+	return 0;                                                             \
+}                                                                             \
+                                                                              \
 val_t *                                                                       \
 bst_##name##_ptr(struct bst_##name *bst, const key_t key)                     \
 {                                                                             \
@@ -270,6 +320,12 @@ bst_##name##_min(struct bst_##name *bst)                                      \
                 ;                                                             \
                                                                               \
         return &min->val;                                                     \
+}                                                                             \
+                                                                              \
+void                                                                          \
+bst_##name##_foreach(struct bst_##name *bst, void (*fn)(val_t *))             \
+{                                                                             \
+	bst_##name##_foreach_rec(bst, bst->root, fn);                         \
 }                                                                             \
                                                                               \
 void                                                                          \

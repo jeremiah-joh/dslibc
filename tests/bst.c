@@ -105,6 +105,49 @@ ptr()
 }
 
 void
+foreach_square(int *x)
+{
+	*x *= *x;
+}
+
+void
+foreach()
+{
+	int key[] = { 2, 1, 3 };
+	int val[] = { 2, 1, 3 };
+	struct bst_int bst;
+
+	bst = bst_int_from(key, val, 3);
+
+	bst_int_foreach(&bst, foreach_square);
+
+	assert(bst.root->val == 4);
+	assert(bst.root->lch->val == 1);
+	assert(bst.root->rch->val == 9);
+}
+
+int
+retain_even(int x)
+{
+	return x % 2 == 0;
+}
+
+void
+retain()
+{
+	int key[] = { 1, 2, 3 };
+	int val[] = { 1, 2, 3 };
+	struct bst_int bst;
+
+	bst = bst_int_from(key, val, 3);
+
+	bst_int_retain(&bst, retain_even);
+
+	assert(bst.len == 1);
+	assert(bst.root->val == 2);
+}
+
+void
 t_free()
 {
 	int key[] = { 2, 1, 3 };
@@ -128,6 +171,8 @@ main()
 	search();
 	remove();
 	ptr();
+	foreach();
+	retain();
 	t_free();
 
 	return 0;
