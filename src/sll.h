@@ -286,8 +286,8 @@ sll_##name##_retain(struct sll_##name *sll, int (*fn)(type))                  \
                 }                                                             \
         }                                                                     \
                                                                               \
-	sll_##name##_free(sll);                                               \
-	*sll = cpy;                                                           \
+        sll_##name##_free(sll);                                               \
+        *sll = cpy;                                                           \
                                                                               \
         return 0;                                                             \
 }                                                                             \

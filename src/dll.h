@@ -346,8 +346,8 @@ dll_##name##_retain(struct dll_##name *dll, int (*fn)(type))                  \
                 }                                                             \
         }                                                                     \
                                                                               \
-	dll_##name##_free(dll);                                               \
-	*dll = cpy;                                                           \
+        dll_##name##_free(dll);                                               \
+        *dll = cpy;                                                           \
                                                                               \
         return 0;                                                             \
 }                                                                             \
