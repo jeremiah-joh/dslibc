@@ -145,6 +145,47 @@ ptr()
 }
 
 void
+foreach_square(int *x)
+{
+	*x *= *x;
+}
+
+void
+foreach()
+{
+	int arr[] = { 1, 2, 3 };
+	struct sll_int sll;
+
+	sll = sll_int_from(arr, 3);
+
+	sll_int_foreach(&sll, foreach_square);
+
+	assert(sll.head->val == 1);
+	assert(sll.head->nxt->val == 4);
+	assert(sll.head->nxt->nxt->val == 9);
+}
+
+int
+retain_even(int x)
+{
+	return x % 2 == 0;
+}
+
+void
+retain()
+{
+	int arr[] = { 1, 2, 3 };
+	struct sll_int sll;
+
+	sll = sll_int_from(arr, 3);
+
+	sll_int_retain(&sll, retain_even);
+
+	assert(sll.len == 1);
+	assert(sll.head->val == 2);
+}
+
+void
 t_free()
 {
 	struct sll_int sll;
@@ -170,6 +211,9 @@ main()
 	shrink();
 	nth();
 	ptr();
+	foreach();
+	retain();
+	t_free();
 
 	return 0;
 }

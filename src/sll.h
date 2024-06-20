@@ -42,9 +42,11 @@ int sll_##name##_shrink(struct sll_##name *, const size_t);                   \
 int sll_##name##_getnth(struct sll_##name *, type *, const size_t);           \
 int sll_##name##_setnth(struct sll_##name *, const type, const size_t);       \
 int sll_##name##_rmvnth(struct sll_##name *, type *, const size_t);           \
+int sll_##name##_retain(struct sll_##name *, int (*)(type));                  \
 type *sll_##name##_ptr(struct sll_##name *, const size_t);                    \
 type *sll_##name##_head(struct sll_##name *);                                 \
 type *sll_##name##_tail(struct sll_##name *);                                 \
+void sll_##name##_foreach(struct sll_##name *, void (*)(type *));             \
 void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
 
 #define INIT_SLL_FUNC(name, type)                                             \
@@ -267,6 +269,29 @@ sll_##name##_rmvnth(struct sll_##name *sll, type *val, const size_t idx)      \
         return 0;                                                             \
 }                                                                             \
                                                                               \
+int                                                                           \
+sll_##name##_retain(struct sll_##name *sll, int (*fn)(type))                  \
+{                                                                             \
+        struct sll_##name##_node *tmp;                                        \
+        struct sll_##name cpy;                                                \
+                                                                              \
+        cpy = sll_##name##_new();                                             \
+                                                                              \
+        for (tmp = sll->head; tmp; tmp = tmp->nxt) {                          \
+                if (fn(tmp->val)) {                                           \
+                        if (sll_##name##_push(&cpy, tmp->val)) {              \
+                                sll_##name##_free(&cpy);                      \
+                                return -1;                                    \
+                        }                                                     \
+                }                                                             \
+        }                                                                     \
+                                                                              \
+	sll_##name##_free(sll);                                               \
+	*sll = cpy;                                                           \
+                                                                              \
+        return 0;                                                             \
+}                                                                             \
+                                                                              \
 type *                                                                        \
 sll_##name##_ptr(struct sll_##name *sll, const size_t idx)                    \
 {                                                                             \
@@ -285,6 +310,15 @@ type *                                                                        \
 sll_##name##_tail(struct sll_##name *sll)                                     \
 {                                                                             \
         return &sll->tail->val;                                               \
+}                                                                             \
+                                                                              \
+void                                                                          \
+sll_##name##_foreach(struct sll_##name *sll, void (*fn)(type *))              \
+{                                                                             \
+        struct sll_##name##_node *tmp;                                        \
+                                                                              \
+        for (tmp = sll->head; tmp; tmp = tmp->nxt)                            \
+                fn(&tmp->val);                                                \
 }                                                                             \
                                                                               \
 void                                                                          \
