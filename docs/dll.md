@@ -280,6 +280,32 @@ assert(val == 2);
 assert(dll.len == 2);
 ```
 
+retain
+------
+
+Retains only elements which given function returns non-zero value.
+Returns 0 on success, -1 on failure.
+
+`int dll_##name##_retain(struct dll_##name *dll, int (*fn)(type));`
+
+```c
+INIT_DLL(int, int);
+
+int
+even(int x)
+{
+    return x % 2 == 0;
+}
+
+int arr[] = { 1, 2, 3 };
+dll_int dll = dll_int_from(arr, 3);
+
+dll_int_retain(&dll, even);
+
+assert(dll.len == 1);
+assert(dll.head->val == 2);
+```
+
 ptr
 ---
 
@@ -326,6 +352,33 @@ int arr[] = { 1, 2, 3 };
 dll_int dll = dll_int_from(arr, 3);
 
 assert(*dll_int_tail(&dll) == dll.head->nxt->nxt->val);
+```
+
+foreach
+-------
+
+Calls a given function on each element in dlltor.
+
+`void dll_##name##_foreach(struct dll_##name *dll, void (*fn)(type *));`
+
+```c
+INIT_DLL(int, int);
+
+void
+square(int *x)
+{
+    *x *= *x;
+}
+
+int val;
+int arr[] = { 1, 2, 3 };
+dll_int dll = dll_int_from(arr, 3);
+
+dll_int_foreach(&dll, square);
+
+assert(dll.head->val == 1);
+assert(dll.head->nxt->val == 4);
+assert(dll.head->nxt->nxt->val == 9);
 ```
 
 free

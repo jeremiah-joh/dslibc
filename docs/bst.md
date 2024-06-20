@@ -159,6 +159,33 @@ bst_int_remove(&bst, 2, &val);
 assert(val == 2);
 ```
 
+retain
+------
+
+Retains only elements which given function returns non-zero value.
+Returns 0 on success, -1 on failure.
+
+`int bst_##name##_retain(struct bst_##name *bst, int (*fn)(type));`
+
+```c
+INIT_VEC(int, int);
+
+int
+even(int x)
+{
+    return x % 2 == 0;
+}
+
+int key[] = { 1, 2, 3 };
+int val[] = { 1, 2, 3 };
+bst_int bst = bst_int_from(arr, 3);
+
+bst_int_retain(&bst, even);
+
+assert(bst.len == 1);
+assert(bst.root->val == 2);
+```
+
 ptr
 ---
 
@@ -277,6 +304,33 @@ bst = bst_int_from(key, val, len);
 val = bst_int_min(&bst);
 
 assert(*val == 3);
+```
+
+foreach
+-------
+
+Calls a given function on each element in bsttor.
+
+`void bst_##name##_foreach(struct bst_##name *bst, void (*fn)(type *));`
+
+```c
+INIT_VEC(int, int);
+
+void
+square(int *x)
+{
+    *x *= *x;
+}
+
+int key[] = { 1, 2, 3 };
+int val[] = { 1, 2, 3 };
+bst_int bst = bst_int_from(arr, 3);
+
+bst_int_foreach(&bst, square);
+
+assert(bst.root->val == 1);
+assert(bst.root->lch->val == 4);
+assert(bst.root->rch->val == 9);
 ```
 
 free

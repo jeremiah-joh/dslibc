@@ -378,8 +378,8 @@ vec_int vec = vec_int_from(arr, 3);
 vec_int_foreach(&vec, square);
 
 assert(vec.arr[0] == 1);
-assert(vec.arr[0] == 4);
-assert(vec.arr[0] == 9);
+assert(vec.arr[1] == 4);
+assert(vec.arr[2] == 9);
 ```
 
 free

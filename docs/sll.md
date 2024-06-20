@@ -239,6 +239,32 @@ assert(val == 2);
 assert(sll.len == 2);
 ```
 
+retain
+------
+
+Retains only elements which given function returns non-zero value.
+Returns 0 on success, -1 on failure.
+
+`int sll_##name##_retain(struct sll_##name *sll, int (*fn)(type));`
+
+```c
+INIT_SLL(int, int);
+
+int
+even(int x)
+{
+    return x % 2 == 0;
+}
+
+int arr[] = { 1, 2, 3 };
+sll_int sll = sll_int_from(arr, 3);
+
+sll_int_retain(&sll, even);
+
+assert(sll.len == 1);
+assert(sll.head->val == 2);
+```
+
 ptr
 ---
 
@@ -285,6 +311,33 @@ int arr[] = { 1, 2, 3 };
 sll_int sll = sll_int_from(arr, 3);
 
 assert(*sll_int_tail(&sll) == sll.head->nxt->nxt->val);
+```
+
+foreach
+-------
+
+Calls a given function on each element in slltor.
+
+`void sll_##name##_foreach(struct sll_##name *sll, void (*fn)(type *));`
+
+```c
+INIT_SLL(int, int);
+
+void
+square(int *x)
+{
+    *x *= *x;
+}
+
+int val;
+int arr[] = { 1, 2, 3 };
+sll_int sll = sll_int_from(arr, 3);
+
+sll_int_foreach(&sll, square);
+
+assert(sll.head->val == 1);
+assert(sll.head->nxt->val == 4);
+assert(sll.head->nxt->nxt->val == 9);
 ```
 
 free
