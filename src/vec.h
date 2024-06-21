@@ -290,20 +290,20 @@ vec_##name##_rmvnth(struct vec_##name *vec, type *val, const size_t idx)      \
 int                                                                           \
 vec_##name##_retain(struct vec_##name *vec, int (*fn)(type))                  \
 {                                                                             \
-    size_t i, j;                                                          \
+        size_t i, j;                                                          \
                                                                               \
-    if (vec->arr == NULL || vec->len == 0)                                \
-            return 0;                                                     \
-                                                                          \
-    for (i = 0, j = 0; i < vec->len; i++) {                               \
-            if (!fn(vec->arr[i]))                                         \
-                    continue;                                             \
-            vec->arr[j++] = vec->arr[i];                                  \
-    }                                                                     \
+        if (vec->arr == NULL || vec->len == 0)                                \
+                return 0;                                                     \
                                                                               \
-    vec->len = j;                                                         \
-    vec->cap = vec_##name##_new_cap(j);                                   \
-    return (vec->arr = realloc(vec->arr, vec->cap)) ? 0 : -1;             \
+        for (i = 0, j = 0; i < vec->len; i++) {                               \
+                if (!fn(vec->arr[i]))                                         \
+                        continue;                                             \
+                vec->arr[j++] = vec->arr[i];                                  \
+        }                                                                     \
+                                                                              \
+        vec->len = j;                                                         \
+        vec->cap = vec_##name##_new_cap(j);                                   \
+        return (vec->arr = realloc(vec->arr, vec->cap)) ? 0 : -1;             \
 }                                                                             \
                                                                               \
 type *                                                                        \
@@ -327,10 +327,10 @@ vec_##name##_tail(struct vec_##name *vec)                                     \
 void                                                                          \
 vec_##name##_foreach(struct vec_##name *vec, void (*fn)(type *))              \
 {                                                                             \
-    size_t i;                                                             \
+        size_t i;                                                             \
                                                                               \
-    for (i = 0; i < vec->len; i++)                                        \
-            fn(&vec->arr[i]);                                             \
+        for (i = 0; i < vec->len; i++)                                        \
+                fn(&vec->arr[i]);                                             \
 }                                                                             \
                                                                               \
 void                                                                          \
