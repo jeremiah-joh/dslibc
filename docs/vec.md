@@ -25,6 +25,10 @@ vec_int vec = vec_int_new();
 map
 ---
 
+Returns a new vector of return value from function for each elment.
+
+`struct vec_##name vec_##name##_map(struct vec_##name, type (*)(type));`
+
 ```c
 INIT_VEC(int, int);
 

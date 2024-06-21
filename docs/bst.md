@@ -33,6 +33,10 @@ bst = bst_int_new();
 map
 ---
 
+Returns a new binary search tree of return value from function for each elment.
+
+`struct bst_##name bst_##name##_map(struct bst_##name, val_t (*)(val_t));`
+
 ```c
 int
 cmp(int x, int y)

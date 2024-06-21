@@ -25,6 +25,10 @@ dll_int dll = dll_int_new();
 map
 ---
 
+Returns a new linked list of return value from function for each elment.
+
+`struct dll_##name dll_##name##_map(struct dll_##name, type (*)(type));`
+
 ```c
 INIT_DLL(int, int);
 

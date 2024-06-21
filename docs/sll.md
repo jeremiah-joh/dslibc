@@ -25,6 +25,10 @@ sll_int sll = sll_int_new();
 map
 ---
 
+Returns a new linked list of return value from function for each elment.
+
+`struct sll_##name sll_##name##_map(struct sll_##name, type (*)(type));`
+
 ```c
 INIT_SLL(int, int);
 
