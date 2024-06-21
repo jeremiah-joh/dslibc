@@ -106,16 +106,16 @@ dll_##name##_new()                                                            \
 struct dll_##name                                                             \
 dll_##name##_map(struct dll_##name dll, type (*fn)(type))                     \
 {                                                                             \
-	struct dll_##name map;                                                \
-	struct dll_##name##_node *tmp;                                        \
+        struct dll_##name map;                                                \
+        struct dll_##name##_node *tmp;                                        \
                                                                               \
-	map = dll_##name##_new();                                             \
+        map = dll_##name##_new();                                             \
                                                                               \
-	for (tmp = dll.head; tmp; tmp = tmp->nxt)                             \
-		if (dll_##name##_push_back(&map, fn(tmp->val)))               \
-			break;                                                \
+        for (tmp = dll.head; tmp; tmp = tmp->nxt)                             \
+        	if (dll_##name##_push_back(&map, fn(tmp->val)))               \
+        		break;                                                \
                                                                               \
-	return map;                                                           \
+        return map;                                                           \
 }                                                                             \
                                                                               \
 struct dll_##name                                                             \

@@ -69,16 +69,16 @@ vec_##name##_new()                                                            \
 struct vec_##name                                                             \
 vec_##name##_map(const struct vec_##name vec, type (*fn)(type))               \
 {                                                                             \
-	struct vec_##name map;                                                \
-	size_t i;                                                             \
+        struct vec_##name map;                                                \
+        size_t i;                                                             \
                                                                               \
-	map = vec_##name##_new();                                             \
+        map = vec_##name##_new();                                             \
                                                                               \
-	for (i = 0; i < vec.len; i++)                                         \
-		if (vec_##name##_push_back(&map, fn(vec.arr[i])))             \
-			break;                                                \
+        for (i = 0; i < vec.len; i++)                                         \
+        	if (vec_##name##_push_back(&map, fn(vec.arr[i])))             \
+        		break;                                                \
                                                                               \
-	return map;                                                           \
+        return map;                                                           \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \

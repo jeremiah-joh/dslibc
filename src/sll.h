@@ -87,16 +87,16 @@ sll_##name##_new()                                                            \
 struct sll_##name                                                             \
 sll_##name##_map(struct sll_##name sll, type (*fn)(type))                     \
 {                                                                             \
-	struct sll_##name map;                                                \
-	struct sll_##name##_node *tmp;                                        \
+        struct sll_##name map;                                                \
+        struct sll_##name##_node *tmp;                                        \
                                                                               \
-	map = sll_##name##_new();                                             \
+        map = sll_##name##_new();                                             \
                                                                               \
-	for (tmp = sll.head; tmp; tmp = tmp->nxt)                             \
-		if (sll_##name##_push(&map, fn(tmp->val)))                    \
-			break;                                                \
+        for (tmp = sll.head; tmp; tmp = tmp->nxt)                             \
+        	if (sll_##name##_push(&map, fn(tmp->val)))                    \
+        		break;                                                \
                                                                               \
-	return map;                                                           \
+        return map;                                                           \
 }                                                                             \
                                                                               \
 struct sll_##name                                                             \

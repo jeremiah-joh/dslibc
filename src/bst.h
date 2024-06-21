@@ -202,15 +202,15 @@ bst_##name##_new()                                                            \
 struct bst_##name                                                             \
 bst_##name##_map(const struct bst_##name bst, val_t (*fn)(val_t))             \
 {                                                                             \
-	struct bst_##name map;                                                \
+        struct bst_##name map;                                                \
                                                                               \
-	map = bst_##name##_new();                                             \
-	if (bst_##name##_map_rec(&map, bst.root, fn)) {                       \
-		bst_##name##_free(&map);                                      \
-		return bst_##name##_new();                                    \
-	}                                                                     \
+        map = bst_##name##_new();                                             \
+        if (bst_##name##_map_rec(&map, bst.root, fn)) {                       \
+        	bst_##name##_free(&map);                                      \
+        	return bst_##name##_new();                                    \
+        }                                                                     \
                                                                               \
-	return map;                                                           \
+        return map;                                                           \
 }                                                                             \
                                                                               \
 struct bst_##name                                                             \
