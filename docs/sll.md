@@ -22,6 +22,29 @@ INIT_SLL(int, int);
 sll_int sll = sll_int_new();
 ```
 
+map
+---
+
+```c
+INIT_SLL(int, int);
+
+int
+increase(int x)
+{
+    return ++x;
+}
+
+int arr[] = { 1, 2, 3 };
+struct sll_int sll, map;
+
+sll = sll_int_from(arr, 3);
+map = sll_int_map(sll, increase);
+
+assert(map.head->val == 2);
+assert(map.head->nxt->val == 3);
+assert(map.head->nxt->nxt->val == 4);
+```
+
 from
 ----
 

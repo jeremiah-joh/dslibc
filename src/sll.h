@@ -30,6 +30,7 @@ struct sll_##name {                                                           \
 };                                                                            \
                                                                               \
 struct sll_##name sll_##name##_new();                                         \
+struct sll_##name sll_##name##_map(struct sll_##name, type (*)(type));        \
 struct sll_##name sll_##name##_from(const type *, const size_t);              \
 struct sll_##name sll_##name##_copy(const struct sll_##name);                 \
 struct sll_##name sll_##name##_slice(const struct sll_##name,                 \
@@ -81,6 +82,21 @@ sll_##name##_new()                                                            \
 {                                                                             \
         struct sll_##name sll = { NULL, NULL, 0 };                            \
         return sll;                                                           \
+}                                                                             \
+                                                                              \
+struct sll_##name                                                             \
+sll_##name##_map(struct sll_##name sll, type (*fn)(type))                     \
+{                                                                             \
+	struct sll_##name map;                                                \
+	struct sll_##name##_node *tmp;                                        \
+                                                                              \
+	map = sll_##name##_new();                                             \
+                                                                              \
+	for (tmp = sll.head; tmp; tmp = tmp->nxt)                             \
+		if (sll_##name##_push(&map, fn(tmp->val)))                    \
+			break;                                                \
+                                                                              \
+	return map;                                                           \
 }                                                                             \
                                                                               \
 struct sll_##name                                                             \

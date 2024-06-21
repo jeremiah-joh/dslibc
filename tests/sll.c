@@ -3,6 +3,24 @@
 
 INIT_SLL(int, int);
 
+static void
+square(int *x)
+{
+	*x *= *x;
+}
+
+static int
+even(int x)
+{
+	return x % 2 == 0;
+}
+
+static int
+increase(int x)
+{
+	return ++x;
+}
+
 void
 from()
 {
@@ -145,12 +163,6 @@ ptr()
 }
 
 void
-square(int *x)
-{
-	*x *= *x;
-}
-
-void
 foreach()
 {
 	int arr[] = { 1, 2, 3 };
@@ -163,12 +175,6 @@ foreach()
 	assert(sll.head->val == 1);
 	assert(sll.head->nxt->val == 4);
 	assert(sll.head->nxt->nxt->val == 9);
-}
-
-int
-even(int x)
-{
-	return x % 2 == 0;
 }
 
 void
@@ -185,6 +191,20 @@ retain()
 	assert(sll.head->val == 2);
 }
 
+void
+map()
+{
+	int arr[] = { 1, 2, 3 };
+	struct sll_int sll, map;
+
+	sll = sll_int_from(arr, 3);
+	map = sll_int_map(sll, increase);
+
+	assert(map.head->val == 2);
+	assert(map.head->nxt->val == 3);
+	assert(map.head->nxt->nxt->val == 4);
+}
+
 int
 main()
 {
@@ -199,6 +219,7 @@ main()
 	ptr();
 	foreach();
 	retain();
+	map();
 
 	return 0;
 }
