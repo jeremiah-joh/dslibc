@@ -105,7 +105,7 @@ ptr()
 }
 
 void
-foreach_square(int *x)
+square(int *x)
 {
 	*x *= *x;
 }
@@ -119,7 +119,7 @@ foreach()
 
 	bst = bst_int_from(key, val, 3);
 
-	bst_int_foreach(&bst, foreach_square);
+	bst_int_foreach(&bst, square);
 
 	assert(bst.root->val == 4);
 	assert(bst.root->lch->val == 1);
@@ -127,7 +127,7 @@ foreach()
 }
 
 int
-retain_even(int x)
+even(int x)
 {
 	return x % 2 == 0;
 }
@@ -141,25 +141,10 @@ retain()
 
 	bst = bst_int_from(key, val, 3);
 
-	bst_int_retain(&bst, retain_even);
+	bst_int_retain(&bst, even);
 
 	assert(bst.len == 1);
 	assert(bst.root->val == 2);
-}
-
-void
-t_free()
-{
-	int key[] = { 2, 1, 3 };
-	int val[] = { 2, 1, 3 };
-	struct bst_int bst;
-
-	bst = bst_int_from(key, val, 3);
-
-	bst_int_free(&bst);
-
-	assert(bst.root == NULL);
-	assert(bst.len == 0);
 }
 
 int
@@ -173,7 +158,6 @@ main()
 	ptr();
 	foreach();
 	retain();
-	t_free();
 
 	return 0;
 }

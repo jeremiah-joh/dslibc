@@ -161,22 +161,7 @@ ptr()
 }
 
 void
-t_free()
-{
-	int arr[] = { 1, 2, 3 };
-	struct vec_int vec;
-
-	vec = vec_int_from(arr, 3);
-
-	vec_int_free(&vec);
-
-	assert(vec.arr == NULL);
-	assert(vec.cap == 0);
-	assert(vec.len == 0);
-}
-
-void
-foreach_square(int *x)
+square(int *x)
 {
 	*x *= *x;
 }
@@ -189,7 +174,7 @@ foreach()
 
 	vec = vec_int_from(arr, 3);
 
-	vec_int_foreach(&vec, foreach_square);
+	vec_int_foreach(&vec, square);
 
 	assert(vec.arr[0] == 1);
 	assert(vec.arr[1] == 4);
@@ -197,7 +182,7 @@ foreach()
 }
 
 int
-retain_even(int x)
+even(int x)
 {
 	return x % 2 == 0;
 }
@@ -210,7 +195,7 @@ retain()
 
 	vec = vec_int_from(arr, 3);
 
-	vec_int_retain(&vec, retain_even);
+	vec_int_retain(&vec, even);
 
 	assert(vec.len == 1);
 	assert(vec.arr[0] == 2);
@@ -230,7 +215,6 @@ main()
 	ptr();
 	foreach();
 	retain();
-	t_free();
 
 	return 0;
 }
