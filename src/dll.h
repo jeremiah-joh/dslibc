@@ -30,6 +30,7 @@ struct dll_##name {                                                           \
 };                                                                            \
                                                                               \
 struct dll_##name dll_##name##_new();                                         \
+struct dll_##name dll_##name##_map(struct dll_##name, type (*)(type));        \
 struct dll_##name dll_##name##_from(const type *, const size_t);              \
 struct dll_##name dll_##name##_copy(const struct dll_##name);                 \
 struct dll_##name dll_##name##_slice(const struct dll_##name,                 \
@@ -100,6 +101,21 @@ dll_##name##_new()                                                            \
 {                                                                             \
         struct dll_##name dll = { NULL, NULL, 0 };                            \
         return dll;                                                           \
+}                                                                             \
+                                                                              \
+struct dll_##name                                                             \
+dll_##name##_map(struct dll_##name dll, type (*fn)(type))                     \
+{                                                                             \
+	struct dll_##name map;                                                \
+	struct dll_##name##_node *tmp;                                        \
+                                                                              \
+	map = dll_##name##_new();                                             \
+                                                                              \
+	for (tmp = dll.head; tmp; tmp = tmp->nxt)                             \
+		if (dll_##name##_push_back(&map, fn(tmp->val)))               \
+			break;                                                \
+                                                                              \
+	return map;                                                           \
 }                                                                             \
                                                                               \
 struct dll_##name                                                             \

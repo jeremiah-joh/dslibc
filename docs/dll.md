@@ -22,6 +22,29 @@ INIT_DLL(int, int);
 dll_int dll = dll_int_new();
 ```
 
+map
+---
+
+```c
+INIT_DLL(int, int);
+
+int
+increase(int x)
+{
+    return ++x;
+}
+
+int arr[] = { 1, 2, 3 };
+struct dll_int dll, map;
+
+dll = dll_int_from(arr, 3);
+map = dll_int_map(dll, increase);
+
+assert(map.head->val == 2);
+assert(map.head->nxt->val == 3);
+assert(map.head->nxt->nxt->val == 4);
+```
+
 from
 ----
 
