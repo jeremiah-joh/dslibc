@@ -22,6 +22,29 @@ INIT_VEC(int, int);
 vec_int vec = vec_int_new();
 ```
 
+map
+---
+
+```c
+INIT_VEC(int, int);
+
+int
+increase(int x)
+{
+    return ++x;
+}
+
+int arr[] = { 1, 2, 3 };
+struct vec_int vec, map;
+
+vec = vec_int_from(arr, 3);
+map = vec_int_map(vec, increase);
+
+assert(map.arr[0] == 2);
+assert(map.arr[1] == 3);
+assert(map.arr[2] == 4);
+```
+
 from
 ----
 

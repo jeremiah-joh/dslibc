@@ -26,6 +26,7 @@ struct vec_##name {                                                           \
 };                                                                            \
                                                                               \
 struct vec_##name vec_##name##_new();                                         \
+struct vec_##name vec_##name##_map(const struct vec_##name, type (*)(type));  \
 struct vec_##name vec_##name##_from(const type *, const size_t);              \
 struct vec_##name vec_##name##_copy(const struct vec_##name);                 \
 struct vec_##name vec_##name##_slice(const struct vec_##name,                 \
@@ -63,6 +64,21 @@ vec_##name##_new()                                                            \
 {                                                                             \
         struct vec_##name vec = { malloc(0), 0, 0 };                          \
         return vec;                                                           \
+}                                                                             \
+                                                                              \
+struct vec_##name                                                             \
+vec_##name##_map(const struct vec_##name vec, type (*fn)(type))               \
+{                                                                             \
+	struct vec_##name map;                                                \
+	size_t i;                                                             \
+                                                                              \
+	map = vec_##name##_new();                                             \
+                                                                              \
+	for (i = 0; i < vec.len; i++)                                         \
+		if (vec_##name##_push_back(&map, fn(vec.arr[i])))             \
+			break;                                                \
+                                                                              \
+	return map;                                                           \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \
