@@ -30,6 +30,36 @@ struct bst_int bst;
 bst = bst_int_new();
 ```
 
+map
+---
+
+```c
+int
+cmp(int x, int y)
+{
+    return y - x;
+}
+
+INIT_BST(int, int, int);
+
+int
+increase(int x)
+{
+    return ++x;
+}
+
+int key[] = { 2, 1, 3 };
+int val[] = { 2, 1, 3 };
+struct bst_int bst, map;
+
+bst = bst_int_from(key, val, 3);
+map = bst_int_map(bst, increase);
+
+assert(map.root->val == 3);
+assert(map.root->lch->val == 2);
+assert(map.root->rch->val == 4);
+```
+
 copy
 ----
 

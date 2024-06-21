@@ -31,6 +31,7 @@ struct bst_##name {                                                           \
 };                                                                            \
                                                                               \
 struct bst_##name bst_##name##_new();                                         \
+struct bst_##name bst_##name##_map(const struct bst_##name, val_t (*)(val_t));\
 struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
 struct bst_##name bst_##name##_from(const key_t [], const val_t [],           \
                                     const size_t);                            \
@@ -142,6 +143,24 @@ bst_##name##_rmv3(struct bst_##name##_node *par,                              \
 }                                                                             \
                                                                               \
 static int                                                                    \
+bst_##name##_map_rec(struct bst_##name *bst,                                  \
+                     struct bst_##name##_node *cur,                           \
+                     val_t (*fn)(val_t))                                      \
+{                                                                             \
+        if (bst_##name##_insert(bst, cur->key, fn(cur->val)))                 \
+                return -1;                                                    \
+                                                                              \
+        if (cur->lch)                                                         \
+                if (bst_##name##_map_rec(bst, cur->lch, fn))                  \
+                        return -1;                                            \
+        if (cur->rch)                                                         \
+                if (bst_##name##_map_rec(bst, cur->rch, fn))                  \
+                        return -1;                                            \
+                                                                              \
+        return 0;                                                             \
+}                                                                             \
+                                                                              \
+static int                                                                    \
 bst_##name##_retain_rec(struct bst_##name *bst,                               \
                         struct bst_##name##_node *cur,                        \
                         int (*fn)(val_t))                                     \
@@ -178,6 +197,20 @@ bst_##name##_new()                                                            \
 {                                                                             \
         struct bst_##name bst = { NULL, 0 };                                  \
         return bst;                                                           \
+}                                                                             \
+                                                                              \
+struct bst_##name                                                             \
+bst_##name##_map(const struct bst_##name bst, val_t (*fn)(val_t))             \
+{                                                                             \
+	struct bst_##name map;                                                \
+                                                                              \
+	map = bst_##name##_new();                                             \
+	if (bst_##name##_map_rec(&map, bst.root, fn)) {                       \
+		bst_##name##_free(&map);                                      \
+		return bst_##name##_new();                                    \
+	}                                                                     \
+                                                                              \
+	return map;                                                           \
 }                                                                             \
                                                                               \
 struct bst_##name                                                             \
