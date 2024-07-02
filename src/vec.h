@@ -75,8 +75,8 @@ vec_##name##_map(const struct vec_##name vec, type (*fn)(type))               \
         map = vec_##name##_new();                                             \
                                                                               \
         for (i = 0; i < vec.len; i++)                                         \
-        	if (vec_##name##_push_back(&map, fn(vec.arr[i])))             \
-        		break;                                                \
+                if (vec_##name##_push_back(&map, fn(vec.arr[i])))             \
+                        break;                                                \
                                                                               \
         return map;                                                           \
 }                                                                             \

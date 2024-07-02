@@ -93,8 +93,8 @@ sll_##name##_map(struct sll_##name sll, type (*fn)(type))                     \
         map = sll_##name##_new();                                             \
                                                                               \
         for (tmp = sll.head; tmp; tmp = tmp->nxt)                             \
-        	if (sll_##name##_push(&map, fn(tmp->val)))                    \
-        		break;                                                \
+                if (sll_##name##_push(&map, fn(tmp->val)))                    \
+                        break;                                                \
                                                                               \
         return map;                                                           \
 }                                                                             \

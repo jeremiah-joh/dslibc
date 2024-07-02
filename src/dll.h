@@ -112,8 +112,8 @@ dll_##name##_map(struct dll_##name dll, type (*fn)(type))                     \
         map = dll_##name##_new();                                             \
                                                                               \
         for (tmp = dll.head; tmp; tmp = tmp->nxt)                             \
-        	if (dll_##name##_push_back(&map, fn(tmp->val)))               \
-        		break;                                                \
+                if (dll_##name##_push_back(&map, fn(tmp->val)))               \
+                        break;                                                \
                                                                               \
         return map;                                                           \
 }                                                                             \
