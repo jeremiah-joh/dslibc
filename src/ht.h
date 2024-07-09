@@ -30,6 +30,7 @@ struct ht_##name {                                                            \
         size_t len, cap;                                                      \
 };                                                                            \
                                                                               \
+size_t hash_##name(key_t);      					      \
 struct ht_##name ht_##name##_new();                                           \
 struct ht_##name ht_##name##_map(const struct ht_##name, val_t (*)(val_t));   \
 struct ht_##name ht_##name##_copy(const struct ht_##name);                    \
@@ -44,6 +45,48 @@ void ht_##name##_foreach(struct ht_##name *, void (*)(val_t *));              \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
 #define INIT_HT_FUNC(name, key_t, val_t, hash, cmp)                           \
+/* FNV-1a hash function for data with fixed size */                           \
+static size_t                                                                 \
+hash_##name##_64(const void *data, const size_t size)                         \
+{                                                                             \
+        size_t i, h;                                                          \
+                                                                              \
+        h = 0xcbf29ce484222325;                                               \
+        for (i = 0; i < size; i++) {                                          \
+                h ^= ((size_t *)data)[i];                                     \
+                h *= 0x00000100000001B3;                                      \
+        }                                                                     \
+                                                                              \
+        return h;                                                             \
+}                                                                             \
+                                                                              \
+static size_t                                                                 \
+hash_##name##_32(const void *data, const size_t size)                         \
+{                                                                             \
+        size_t i, h;                                                          \
+                                                                              \
+        h = 0x811c9dc5;                                                       \
+        for (i = 0; i < size; i++) {                                          \
+                h ^= ((size_t *)data)[i];                                     \
+                h *= 0x01000193;                                              \
+        }                                                                     \
+                                                                              \
+        return h;                                                             \
+}                                                                             \
+                                                                              \
+size_t                                                                        \
+hash_##name(key_t key)                                                        \
+{                                                                             \
+        /* compiler would optimize it */                                      \
+        if (sizeof(size_t) == 8)                                              \
+                return hash_##name##_64(&key, sizeof(key_t));                 \
+        if (sizeof(size_t) == 4)                                              \
+                return hash_##name##_32(&key, sizeof(key_t));                 \
+                                                                              \
+        /* unreachable unless cpu is neither 64 nor 32 bit */                 \
+        return 0;                                                             \
+}                                                                             \
+                                                                              \
 static size_t                                                                 \
 ht_##name##_cap(const size_t len)                                             \
 {                                                                             \
@@ -146,7 +189,7 @@ ht_##name##_insert(struct ht_##name *ht, const key_t key, const val_t val)    \
                 if (ht_##name##_resize(ht, ht->len + 1))                      \
                         return -1;                                            \
                                                                               \
-        h = hash(key) % ht->cap;                                              \
+        h = hash(key) & (ht->cap - 1);                                        \
         for (i = h; ht->arr[i].state == SOME; i = (i + 1) % ht->cap)          \
                 if (cmp(key, ht->arr[i].key) == 0 || i + 1 == h)              \
                         return -1;                                            \
@@ -164,11 +207,11 @@ ht_##name##_search(struct ht_##name *ht, const key_t key, val_t *val)         \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
-        h = hash(key) % ht->cap;                                              \
+        h = hash(key) & (ht->cap - 1);                                        \
         for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
                 if (cmp(key, ht->arr[i].key) == 0)                            \
                         break;                                                \
-                if (i + i == h)                                               \
+                if (i + 1 == h)                                               \
                         return -1;                                            \
         }                                                                     \
                                                                               \
@@ -186,11 +229,11 @@ ht_##name##_remove(struct ht_##name *ht, const key_t key, val_t *val)         \
                 if (ht_##name##_resize(ht, ht->len))                          \
                         return -1;                                            \
                                                                               \
-        h = hash(key) % ht->cap;                                              \
+        h = hash(key) & (ht->cap - 1);                                        \
         for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
                 if (cmp(key, ht->arr[i].key) == 0)                            \
                         break;                                                \
-                if (i + i == h)                                               \
+                if (i + 1 == h)                                               \
                         return -1;                                            \
         }                                                                     \
                                                                               \
@@ -206,7 +249,7 @@ ht_##name##_ptr(struct ht_##name *ht, const key_t key)                        \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
-        h = hash(key) % ht->cap;                                              \
+        h = hash(key) & (ht->cap - 1);                                        \
         for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
                 if (cmp(key, ht->arr[i].key) == 0)                            \
                         break;                                                \
@@ -230,5 +273,47 @@ struct ht_##name##_semi { /* to enforce semicolon */ }
 #define INIT_HT(name, key_t, val_t, hash, cmp)                                \
 INIT_HT_TYPE(name, key_t, val_t);                                             \
 INIT_HT_FUNC(name, key_t, val_t, hash, cmp)
+
+/* FNV-1a hash function for string */
+static size_t
+hash_str_64(const char *str)
+{
+	size_t h;
+
+	h = 0xcbf29ce484222325;
+	for (; *str; str++) {
+		h ^= *str;
+		h *= 0x00000100000001B3;
+	}
+
+	return h;
+}
+
+static size_t
+hash_str_32(const char *str)
+{
+	size_t h;
+
+	h = 0x811c9dc5;
+	for (; *str; str++) {
+		h ^= *str;
+		h *= 0x01000193;
+	}
+
+	return h;
+}
+
+size_t
+hash_str(const char *str)
+{
+	/* compiler would optimize it */
+	if (sizeof(size_t) == 8)
+		return hash_str_64(str);
+	if (sizeof(size_t) == 4)
+		return hash_str_32(str);
+
+	/* unreachable unless cpu is neither 64 nor 32 bit */
+	return 0;
+}
 
 #endif
