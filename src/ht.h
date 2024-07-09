@@ -30,7 +30,7 @@ struct ht_##name {                                                            \
         size_t len, cap;                                                      \
 };                                                                            \
                                                                               \
-size_t hash_##name(key_t);      					      \
+size_t hash_##key_t(key_t);      					      \
 struct ht_##name ht_##name##_new();                                           \
 struct ht_##name ht_##name##_map(const struct ht_##name, val_t (*)(val_t));   \
 struct ht_##name ht_##name##_copy(const struct ht_##name);                    \
@@ -47,7 +47,7 @@ void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 #define INIT_HT_FUNC(name, key_t, val_t, hash, cmp)                           \
 /* FNV-1a hash function for data with fixed size */                           \
 static size_t                                                                 \
-hash_##name##_64(const void *data, const size_t size)                         \
+hash_##key_t##_64(const void *data, const size_t size)                        \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
@@ -61,7 +61,7 @@ hash_##name##_64(const void *data, const size_t size)                         \
 }                                                                             \
                                                                               \
 static size_t                                                                 \
-hash_##name##_32(const void *data, const size_t size)                         \
+hash_##key_t##_32(const void *data, const size_t size)                        \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
@@ -75,13 +75,13 @@ hash_##name##_32(const void *data, const size_t size)                         \
 }                                                                             \
                                                                               \
 size_t                                                                        \
-hash_##name(key_t key)                                                        \
+hash_##key_t(key_t key)                                                       \
 {                                                                             \
         /* compiler would optimize it */                                      \
         if (sizeof(size_t) == 8)                                              \
-                return hash_##name##_64(&key, sizeof(key_t));                 \
+                return hash_##key_t##_64(&key, sizeof(key_t));                \
         if (sizeof(size_t) == 4)                                              \
-                return hash_##name##_32(&key, sizeof(key_t));                 \
+                return hash_##key_t##_32(&key, sizeof(key_t));                \
                                                                               \
         /* unreachable unless cpu is neither 64 nor 32 bit */                 \
         return 0;                                                             \
