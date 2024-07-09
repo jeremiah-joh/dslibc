@@ -3,7 +3,7 @@
 #include <string.h>
 
 static size_t
-hash_int(int x)
+hash_int_t(int x)
 {
 	return x;
 }
@@ -14,7 +14,7 @@ cmp_int(int x, int y)
 	return y - x;
 }
 
-INIT_HT(int, int, int, hash_int, cmp_int);
+INIT_HT(int, int, int, hash_int_t, cmp_int);
 
 void
 from()
