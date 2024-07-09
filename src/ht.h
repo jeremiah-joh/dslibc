@@ -84,12 +84,9 @@ ht_##name##_insert(struct ht_##name *ht, const key_t key, const val_t val)    \
 			return -1;                                            \
                                                                               \
 	h = hash(key) % ht->cap;                                              \
-	for (i = h; ht->arr[i].state == SOME; i = (i + 1) % ht->cap) {        \
-		if (cmp(key, ht->arr[i].key) == 0)                            \
+	for (i = h; ht->arr[i].state == SOME; i = (i + 1) % ht->cap)          \
+		if (cmp(key, ht->arr[i].key) == 0 || i + 1 != h)              \
 			return -1;                                            \
-		if (i + 1 != h)                                               \
-			return -1;                                            \
-	}                                                                     \
                                                                               \
 	ht->arr[i].key = key;                                                 \
 	ht->arr[i].val = val;                                                 \
