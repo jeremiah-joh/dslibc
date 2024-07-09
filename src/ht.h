@@ -93,48 +93,48 @@ ht_##name##_new()                                                             \
 struct ht_##name                                                              \
 ht_##name##_map(const struct ht_##name ht, int (*fn)(key_t))                  \
 {                                                                             \
-	size_t i;                                                             \
-	struct ht_##name cp;                                                  \
+        size_t i;                                                             \
+        struct ht_##name cp;                                                  \
                                                                               \
-	cp = ht_##name##_new();                                               \
+        cp = ht_##name##_new();                                               \
                                                                               \
-	for (i = 0; i < ht.cap; i++) {                                        \
-		if (ht.arr[i].state != SOME || !fn(ht.arr[i].key))            \
-			continue;                                             \
-		if (ht_##name##_insert(&cp, ht.arr[i].key, ht.arr[i].val))    \
-			return cp;                                            \
-	}                                                                     \
+        for (i = 0; i < ht.cap; i++) {                                        \
+                if (ht.arr[i].state != SOME || !fn(ht.arr[i].key))            \
+                        continue;                                             \
+                if (ht_##name##_insert(&cp, ht.arr[i].key, ht.arr[i].val))    \
+                        return cp;                                            \
+        }                                                                     \
                                                                               \
-	return cp;                                                            \
+        return cp;                                                            \
 }                                                                             \
                                                                               \
 struct ht_##name                                                              \
 ht_##name##_copy(const struct ht_##name ht)                                   \
 {                                                                             \
-	struct ht_##name cp;                                                  \
+        struct ht_##name cp;                                                  \
                                                                               \
-	cp.len = ht.len;                                                      \
-	cp.cap = ht.cap;                                                      \
-	cp.arr = calloc(cp.cap, sizeof(struct ht_##name##_node));             \
+        cp.len = ht.len;                                                      \
+        cp.cap = ht.cap;                                                      \
+        cp.arr = calloc(cp.cap, sizeof(struct ht_##name##_node));             \
                                                                               \
-	memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
+        memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
                                                                               \
-	return cp;                                                            \
+        return cp;                                                            \
 }                                                                             \
                                                                               \
 struct ht_##name                                                              \
 ht_##name##_from(const key_t key[], const val_t val[], const size_t len)      \
 {                                                                             \
-	size_t i;                                                             \
-	struct ht_##name ht;                                                  \
+        size_t i;                                                             \
+        struct ht_##name ht;                                                  \
                                                                               \
-	ht = ht_##name##_new();                                               \
+        ht = ht_##name##_new();                                               \
                                                                               \
-	for (i = 0; i < len; i++)                                             \
-		if (ht_##name##_insert(&ht, key[i], val[i]))                  \
-			return ht;                                            \
-	                                                                      \
-	return ht;                                                            \
+        for (i = 0; i < len; i++)                                             \
+                if (ht_##name##_insert(&ht, key[i], val[i]))                  \
+                        return ht;                                            \
+                                                                              \
+        return ht;                                                            \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -149,7 +149,7 @@ ht_##name##_insert(struct ht_##name *ht, const key_t key, const val_t val)    \
         h = hash(key) % ht->cap;                                              \
         for (i = h; ht->arr[i].state == SOME; i = (i + 1) % ht->cap)          \
                 if (cmp(key, ht->arr[i].key) == 0 || i + 1 == h)              \
-			return -1;                                            \
+                        return -1;                                            \
                                                                               \
         ht->arr[i].key = key;                                                 \
         ht->arr[i].val = val;                                                 \
@@ -162,59 +162,59 @@ ht_##name##_insert(struct ht_##name *ht, const key_t key, const val_t val)    \
 int                                                                           \
 ht_##name##_search(struct ht_##name *ht, const key_t key, val_t *val)         \
 {                                                                             \
-	size_t i, h;                                                          \
+        size_t i, h;                                                          \
                                                                               \
         h = hash(key) % ht->cap;                                              \
         for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
                 if (cmp(key, ht->arr[i].key) == 0)                            \
-			break;                                                \
-		if (i + i == h)                                               \
-			return -1;                                            \
-	}                                                                     \
-	                                                                      \
-	*val = ht->arr[i].val;                                                \
+                        break;                                                \
+                if (i + i == h)                                               \
+                        return -1;                                            \
+        }                                                                     \
                                                                               \
-	return 0;                                                             \
+        *val = ht->arr[i].val;                                                \
+                                                                              \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
 ht_##name##_remove(struct ht_##name *ht, const key_t key, val_t *val)         \
 {                                                                             \
-	size_t i, h;                                                          \
+        size_t i, h;                                                          \
                                                                               \
-	if (ht->len < ht->cap / 2)                                            \
-		if (ht_##name##_resize(ht, ht->len))                          \
-			return -1;                                            \
+        if (ht->len < ht->cap / 2)                                            \
+                if (ht_##name##_resize(ht, ht->len))                          \
+                        return -1;                                            \
                                                                               \
         h = hash(key) % ht->cap;                                              \
         for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
                 if (cmp(key, ht->arr[i].key) == 0)                            \
-			break;                                                \
-		if (i + i == h)                                               \
-			return -1;                                            \
-	}                                                                     \
-	                                                                      \
-	*val = ht->arr[i].val;                                                \
-	ht->arr[i].state = TOMB;                                              \
-	ht->len--;                                                            \
+                        break;                                                \
+                if (i + i == h)                                               \
+                        return -1;                                            \
+        }                                                                     \
                                                                               \
-	return 0;                                                             \
+        *val = ht->arr[i].val;                                                \
+        ht->arr[i].state = TOMB;                                              \
+        ht->len--;                                                            \
+                                                                              \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 val_t *                                                                       \
 ht_##name##_ptr(struct ht_##name *ht, const key_t key)                        \
 {                                                                             \
-	size_t i, h;                                                          \
+        size_t i, h;                                                          \
                                                                               \
         h = hash(key) % ht->cap;                                              \
         for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
                 if (cmp(key, ht->arr[i].key) == 0)                            \
-			break;                                                \
-		if (i + i == h)                                               \
-			return NULL;                                          \
-	}                                                                     \
-	                                                                      \
-	return &ht->arr[i].val;                                               \
+                        break;                                                \
+                if (i + i == h)                                               \
+                        return NULL;                                          \
+        }                                                                     \
+                                                                              \
+        return &ht->arr[i].val;                                               \
 }                                                                             \
                                                                               \
 void                                                                          \
