@@ -8,17 +8,18 @@ Following data structures are implemented.
 * Singly Linked List
 * Doubly Linked List
 * Binary Search Tree
+* Hash Table
 
 Following data structures are planned.
 * AVL Tree
 * Red-Black Tree
 * B-Tree
-* Hash Table
 
 Usage
 -----
 
 Here is a simple example code that uses `vec.h`.
+First you have to copy the file into your project directory.
 
 ```c
 #include "vec.h"
