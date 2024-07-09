@@ -14,3 +14,6 @@ test:
 	$(CC) $(CFLAGS) tests/vec.c
 	./a.out
 	rm -f a.out
+	$(CC) $(CFLAGS) tests/ht.c
+	./a.out
+	rm -f a.out
