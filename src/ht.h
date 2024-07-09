@@ -74,6 +74,35 @@ ht_##name##_new()                                                             \
         return ht;                                                            \
 }                                                                             \
                                                                               \
+struct ht_##name                                                              \
+ht_##name##_copy(const struct ht_##name ht)                                   \
+{                                                                             \
+	struct ht_##name cp;                                                  \
+                                                                              \
+	cp.len = ht.len;                                                      \
+	cp.cap = ht.cap;                                                      \
+	cp.arr = calloc(cp.cap, sizeof(struct ht_##name##_node));             \
+                                                                              \
+	memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
+                                                                              \
+	return cp;                                                            \
+}                                                                             \
+                                                                              \
+struct ht_##name                                                              \
+ht_##name##_from(const key_t key[], const val_t val[], const size_t len)      \
+{                                                                             \
+	size_t i;                                                             \
+	struct ht_##name ht;                                                  \
+                                                                              \
+	ht = ht_##name##_new();                                               \
+                                                                              \
+	for (i = 0; i < len; i++)                                             \
+		if (ht_##name##_insert(&ht, key[i], val[i]))                  \
+			return ht;                                            \
+	                                                                      \
+	return ht;                                                            \
+}                                                                             \
+                                                                              \
 int                                                                           \
 ht_##name##_insert(struct ht_##name *ht, const key_t key, const val_t val)    \
 {                                                                             \
