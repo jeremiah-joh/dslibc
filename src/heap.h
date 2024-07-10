@@ -1,3 +1,20 @@
+/*
+ * dslibc - collection of useful data structures written in ANSI C
+ *
+ * Written in 2024 by Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
+ *
+ * To the extent possible under law, the author(s) have dedicated all copyright
+ * and related and neighboring rights to this software to the public domain
+ * worldwide. This software is distributed without any warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication along
+ * with this software.
+ * If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+
+#ifndef _HEAP_H
+#define _HEAP_H
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -156,3 +173,5 @@ INIT_MIN_HEAP_FUNC(name, type, cmp)
 #define INIT_MAX_HEAP(name, type, cmp)                                        \
 INIT_HEAP_TYPE(name, type);                                                   \
 INIT_MAX_HEAP_FUNC(name, type, cmp)
+
+#endif
