@@ -9,7 +9,7 @@
  *
  * You should have received a copy of the CC0 Public Domain Dedication along
  * with this software.
- * If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ * If not, see <http://creatiheapommons.org/publicdomain/zero/1.0/>.
  */
 
 #ifndef _HEAP_H
@@ -30,12 +30,10 @@ struct heap_##name {                                                          \
 };                                                                            \
                                                                               \
 struct heap_##name heap_##name##_new();                                       \
-struct heap_##name heap_##name##_map(struct heap_##name, type (*)(type));     \
 struct heap_##name heap_##name##_from(const type *, const size_t);            \
 struct heap_##name heap_##name##_copy(const struct heap_##name);              \
 int heap_##name##_push(struct heap_##name *, const type);                     \
 int heap_##name##_pop(struct heap_##name *, type *);                          \
-int heap_##name##_retain(struct heap_##name *, int (*)(type));                \
 type *heap_##name##_root(struct heap_##name *);                               \
 void heap_##name##_free(struct heap_##name *) /* to enforce semicolon */
 
@@ -161,7 +159,23 @@ heap_##name##_free(struct heap_##name *heap)                                  \
         free(heap->arr);                                                      \
         heap->arr = NULL;                                                     \
         heap->cap = heap->len = 0;                                            \
-}
+}                                                                             \
+                                                                              \
+struct heap_##name##_semi { /* to enforce semicolon */ }
+
+#define FOR_EACH(type, _i, heap)                                              \
+type _i;                                                                      \
+size_t _i_##type = 0;                                                         \
+for (_i = heap.arr[_i_##type];                                                \
+     _i_##type < heap.len;                                                    \
+     _i = heap.arr[++_i_##type])
+
+#define FOR_EACH_PTR(type, _p, heap)                                          \
+type *_p;                                                                     \
+size_t _i_##type = 0;                                                         \
+for (_p = &heap.arr[_i_##type];                                               \
+     _i_##type < heap.len;                                                    \
+     _p = &heap.arr[++_i_##type])
 
 #define INIT_MIN_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, <);
 #define INIT_MAX_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, >);
