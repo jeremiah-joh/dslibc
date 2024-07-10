@@ -18,6 +18,11 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+#define FNV1_32_BASIS 0x811c9dc5
+#define FNV1_32_PRIME 0x01000193
+#define FNV1_64_BASIS 0xcbf29ce484222325
+#define FNV1_64_PRIME 0x00000100000001B3
+
 #define INIT_HT_TYPE(name, key_t, val_t)                                      \
 struct ht_##name##_node {                                                     \
         key_t key;                                                            \
@@ -51,10 +56,10 @@ hash_##key_t##_64(const void *data, const size_t size)                        \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
-        h = 0xcbf29ce484222325;                                               \
+        h = FNV1_64_BASIS;                                                    \
         for (i = 0; i < size; i++) {                                          \
                 h ^= ((size_t *)data)[i];                                     \
-                h *= 0x00000100000001B3;                                      \
+                h *= FNV1_64_PRIME;                                           \
         }                                                                     \
                                                                               \
         return h;                                                             \
@@ -65,10 +70,10 @@ hash_##key_t##_32(const void *data, const size_t size)                        \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
-        h = 0x811c9dc5;                                                       \
+        h = FNV1_32_BASIS;                                                    \
         for (i = 0; i < size; i++) {                                          \
                 h ^= ((size_t *)data)[i];                                     \
-                h *= 0x01000193;                                              \
+                h *= FNV1_32_PRIME;                                           \
         }                                                                     \
                                                                               \
         return h;                                                             \
@@ -280,10 +285,10 @@ hash_str_64(const char *str)
 {
 	size_t h;
 
-	h = 0xcbf29ce484222325;
+	h = FNV1_64_BASIS;
 	for (; *str; str++) {
 		h ^= *str;
-		h *= 0x00000100000001B3;
+		h *= FNV1_64_PRIME;
 	}
 
 	return h;
@@ -294,10 +299,10 @@ hash_str_32(const char *str)
 {
 	size_t h;
 
-	h = 0x811c9dc5;
+	h = FNV1_32_BASIS;
 	for (; *str; str++) {
 		h ^= *str;
-		h *= 0x01000193;
+		h *= FNV1_32_PRIME;
 	}
 
 	return h;
