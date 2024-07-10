@@ -3,12 +3,6 @@
 
 INIT_VEC(int, int);
 
-static void
-square(int *x)
-{
-	*x *= *x;
-}
-
 static int
 even(int x)
 {
@@ -186,7 +180,9 @@ foreach()
 
 	vec = vec_int_from(arr, 3);
 
-	vec_int_foreach(&vec, square);
+	FOR_EACH_PTR(int, i, vec) {
+		*i *= *i;
+	}
 
 	assert(vec.arr[0] == 1);
 	assert(vec.arr[1] == 4);

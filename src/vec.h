@@ -26,7 +26,6 @@ struct vec_##name {                                                           \
 };                                                                            \
                                                                               \
 struct vec_##name vec_##name##_new();                                         \
-struct vec_##name vec_##name##_map(const struct vec_##name, type (*)(type));  \
 struct vec_##name vec_##name##_from(const type *, const size_t);              \
 struct vec_##name vec_##name##_copy(const struct vec_##name);                 \
 struct vec_##name vec_##name##_slice(const struct vec_##name,                 \
@@ -41,11 +40,9 @@ int vec_##name##_shrink(struct vec_##name *, const size_t);                   \
 int vec_##name##_getnth(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_setnth(struct vec_##name *, const type, const size_t);       \
 int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
-int vec_##name##_retain(struct vec_##name *, int (*)(type));                  \
 type *vec_##name##_ptr(struct vec_##name *, const size_t);                    \
 type *vec_##name##_head(struct vec_##name *);                                 \
 type *vec_##name##_tail(struct vec_##name *);                                 \
-void vec_##name##_foreach(struct vec_##name *, void (*)(type *));             \
 void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
 
 #define INIT_VEC_FUNC(name, type)                                             \
@@ -64,21 +61,6 @@ vec_##name##_new()                                                            \
 {                                                                             \
         struct vec_##name vec = { malloc(0), 0, 0 };                          \
         return vec;                                                           \
-}                                                                             \
-                                                                              \
-struct vec_##name                                                             \
-vec_##name##_map(const struct vec_##name vec, type (*fn)(type))               \
-{                                                                             \
-        struct vec_##name map;                                                \
-        size_t i;                                                             \
-                                                                              \
-        map = vec_##name##_new();                                             \
-                                                                              \
-        for (i = 0; i < vec.len; i++)                                         \
-                if (vec_##name##_push_back(&map, fn(vec.arr[i])))             \
-                        break;                                                \
-                                                                              \
-        return map;                                                           \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \
@@ -287,25 +269,6 @@ vec_##name##_rmvnth(struct vec_##name *vec, type *val, const size_t idx)      \
         return 0;                                                             \
 }                                                                             \
                                                                               \
-int                                                                           \
-vec_##name##_retain(struct vec_##name *vec, int (*fn)(type))                  \
-{                                                                             \
-        size_t i, j;                                                          \
-                                                                              \
-        if (vec->arr == NULL || vec->len == 0)                                \
-                return 0;                                                     \
-                                                                              \
-        for (i = 0, j = 0; i < vec->len; i++) {                               \
-                if (!fn(vec->arr[i]))                                         \
-                        continue;                                             \
-                vec->arr[j++] = vec->arr[i];                                  \
-        }                                                                     \
-                                                                              \
-        vec->len = j;                                                         \
-        vec->cap = vec_##name##_new_cap(j);                                   \
-        return (vec->arr = realloc(vec->arr, vec->cap)) ? 0 : -1;             \
-}                                                                             \
-                                                                              \
 type *                                                                        \
 vec_##name##_ptr(struct vec_##name *vec, const size_t idx)                    \
 {                                                                             \
@@ -325,15 +288,6 @@ vec_##name##_tail(struct vec_##name *vec)                                     \
 }                                                                             \
                                                                               \
 void                                                                          \
-vec_##name##_foreach(struct vec_##name *vec, void (*fn)(type *))              \
-{                                                                             \
-        size_t i;                                                             \
-                                                                              \
-        for (i = 0; i < vec->len; i++)                                        \
-                fn(&vec->arr[i]);                                             \
-}                                                                             \
-                                                                              \
-void                                                                          \
 vec_##name##_free(struct vec_##name *vec)                                     \
 {                                                                             \
         free(vec->arr);                                                       \
@@ -346,5 +300,15 @@ struct vec_##name##_semi { /* to enforce semicolon */ }
 #define INIT_VEC(name, type)                                                  \
 INIT_VEC_TYPE(name, type);                                                    \
 INIT_VEC_FUNC(name, type)
+
+#define FOR_EACH(type, _i, vec)                                               \
+type _i;                                                                      \
+size_t i_##type = 0;                                                          \
+for (_i = vec.arr[i_##type]; i_##type < vec.len; _i = vec.arr[++i_##type])
+
+#define FOR_EACH_PTR(type, _p, vec)                                           \
+type *_p;                                                                     \
+size_t i_##type = 0;                                                          \
+for (_p = &vec.arr[i_##type]; i_##type < vec.len; _p = &vec.arr[++i_##type])
 
 #endif
