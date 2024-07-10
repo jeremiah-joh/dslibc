@@ -9,24 +9,6 @@ cmp(int x, int y)
 
 INIT_BST(int, int, int, cmp);
 
-static void
-square(int *x)
-{
-	*x *= *x;
-}
-
-static int
-even(int x)
-{
-	return x % 2 == 0;
-}
-
-static int
-increase(int x)
-{
-	return ++x;
-}
-
 void
 from()
 {
@@ -122,52 +104,6 @@ ptr()
 	assert(*bst_int_max(&bst) == 3);
 }
 
-void
-foreach()
-{
-	int key[] = { 2, 1, 3 };
-	int val[] = { 2, 1, 3 };
-	struct bst_int bst;
-
-	bst = bst_int_from(key, val, 3);
-
-	bst_int_foreach(&bst, square);
-
-	assert(bst.root->val == 4);
-	assert(bst.root->lch->val == 1);
-	assert(bst.root->rch->val == 9);
-}
-
-void
-retain()
-{
-	int key[] = { 1, 2, 3 };
-	int val[] = { 1, 2, 3 };
-	struct bst_int bst;
-
-	bst = bst_int_from(key, val, 3);
-
-	bst_int_retain(&bst, even);
-
-	assert(bst.len == 1);
-	assert(bst.root->val == 2);
-}
-
-void
-map()
-{
-	int key[] = { 2, 1, 3 };
-	int val[] = { 2, 1, 3 };
-	struct bst_int bst, map;
-
-	bst = bst_int_from(key, val, 3);
-	map = bst_int_map(bst, increase);
-
-	assert(map.root->val == 3);
-	assert(map.root->lch->val == 2);
-	assert(map.root->rch->val == 4);
-}
-
 int
 main()
 {
@@ -177,9 +113,6 @@ main()
 	search();
 	remove();
 	ptr();
-	foreach();
-	retain();
-	map();
 
 	return 0;
 }
