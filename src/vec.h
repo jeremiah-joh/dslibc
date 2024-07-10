@@ -297,18 +297,18 @@ vec_##name##_free(struct vec_##name *vec)                                     \
                                                                               \
 struct vec_##name##_semi { /* to enforce semicolon */ }
 
-#define INIT_VEC(name, type)                                                  \
-INIT_VEC_TYPE(name, type);                                                    \
-INIT_VEC_FUNC(name, type)
-
 #define FOR_EACH(type, _i, vec)                                               \
 type _i;                                                                      \
-size_t i_##type = 0;                                                          \
-for (_i = vec.arr[i_##type]; i_##type < vec.len; _i = vec.arr[++i_##type])
+size_t _i_##type = 0;                                                         \
+for (_i = vec.arr[_i_##type]; _i_##type < vec.len; _i = vec.arr[++_i_##type])
 
 #define FOR_EACH_PTR(type, _p, vec)                                           \
 type *_p;                                                                     \
-size_t i_##type = 0;                                                          \
-for (_p = &vec.arr[i_##type]; i_##type < vec.len; _p = &vec.arr[++i_##type])
+size_t _i_##type = 0;                                                         \
+for (_p = &vec.arr[_i_##type]; _i_##type < vec.len; _p = &vec.arr[++_i_##type])
+
+#define INIT_VEC(name, type)                                                  \
+INIT_VEC_TYPE(name, type);                                                    \
+INIT_VEC_FUNC(name, type)
 
 #endif
