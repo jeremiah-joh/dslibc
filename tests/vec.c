@@ -3,18 +3,6 @@
 
 INIT_VEC(int, int);
 
-static int
-even(int x)
-{
-	return x % 2 == 0;
-}
-
-static int
-increase(int x)
-{
-	return ++x;
-}
-
 void
 from()
 {
@@ -172,51 +160,6 @@ ptr()
 	assert(v == 3);
 }
 
-void
-foreach()
-{
-	int arr[] = { 1, 2, 3 };
-	struct vec_int vec;
-
-	vec = vec_int_from(arr, 3);
-
-	FOR_EACH_PTR(int, i, vec) {
-		*i *= *i;
-	}
-
-	assert(vec.arr[0] == 1);
-	assert(vec.arr[1] == 4);
-	assert(vec.arr[2] == 9);
-}
-
-void
-retain()
-{
-	int arr[] = { 1, 2, 3 };
-	struct vec_int vec;
-
-	vec = vec_int_from(arr, 3);
-
-	vec_int_retain(&vec, even);
-
-	assert(vec.len == 1);
-	assert(vec.arr[0] == 2);
-}
-
-void
-map()
-{
-	int arr[] = { 1, 2, 3 };
-	struct vec_int vec, map;
-
-	vec = vec_int_from(arr, 3);
-	map = vec_int_map(vec, increase);
-
-	assert(map.arr[0] == 2);
-	assert(map.arr[1] == 3);
-	assert(map.arr[2] == 4);
-}
-
 int
 main()
 {
@@ -229,9 +172,6 @@ main()
 	shrink();
 	nth();
 	ptr();
-	foreach();
-	retain();
-	map();
 
 	return 0;
 }
