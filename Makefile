@@ -17,3 +17,6 @@ test:
 	$(CC) $(CFLAGS) tests/ht.c
 	./a.out
 	rm -f a.out
+	$(CC) $(CFLAGS) tests/heap.c
+	./a.out
+	rm -f a.out
