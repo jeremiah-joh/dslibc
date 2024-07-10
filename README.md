@@ -9,6 +9,7 @@ Following data structures are implemented.
 * Doubly Linked List
 * Binary Search Tree
 * Hash Table
+* Heap
 
 Following data structures are planned.
 * AVL Tree
