@@ -25,7 +25,7 @@ struct sll_##name##_node {                                                    \
 };                                                                            \
                                                                               \
 struct sll_##name {                                                           \
-        struct sll_##name##_node *head, *tail, *next;                         \
+        struct sll_##name##_node *head, *tail;                                \
         size_t len;                                                           \
 };                                                                            \
                                                                               \

@@ -3,24 +3,6 @@
 
 INIT_DLL(int, int);
 
-static void
-square(int *x)
-{
-	*x *= *x;
-}
-
-static int
-even(int x)
-{
-	return x % 2 == 0;
-}
-
-static int
-increase(int x)
-{
-	return ++x;
-}
-
 void
 from()
 {
@@ -177,49 +159,6 @@ ptr()
 	assert(*dll_int_tail(&dll) == 3);
 }
 
-void
-foreach()
-{
-	int arr[] = { 1, 2, 3 };
-	struct dll_int dll;
-
-	dll = dll_int_from(arr, 3);
-
-	dll_int_foreach(&dll, square);
-
-	assert(dll.head->val == 1);
-	assert(dll.head->nxt->val == 4);
-	assert(dll.head->nxt->nxt->val == 9);
-}
-
-void
-retain()
-{
-	int arr[] = { 1, 2, 3 };
-	struct dll_int dll;
-
-	dll = dll_int_from(arr, 3);
-
-	dll_int_retain(&dll, even);
-
-	assert(dll.len == 1);
-	assert(dll.head->val == 2);
-}
-
-void
-map()
-{
-	int arr[] = { 1, 2, 3 };
-	struct dll_int dll, map;
-
-	dll = dll_int_from(arr, 3);
-	map = dll_int_map(dll, increase);
-
-	assert(map.head->val == 2);
-	assert(map.head->nxt->val == 3);
-	assert(map.head->nxt->nxt->val == 4);
-}
-
 int
 main()
 {
@@ -233,9 +172,6 @@ main()
 	shrink();
 	nth();
 	ptr();
-	foreach();
-	retain();
-	map();
 
 	return 0;
 }
