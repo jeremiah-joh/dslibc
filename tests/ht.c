@@ -115,6 +115,26 @@ ptr()
 	assert(*ht_int_ptr(&ht, 2) == 2);
 }
 
+void
+foreach()
+{
+	struct ht_int ht;
+	int key[] = { 0, 1, 2, 3, 4 };
+	int val[] = { 0, 1, 2, 3, 4 };
+	int i, j, *p;
+
+	ht = ht_int_from(key, val, 5);
+
+	FOR_EACH_PTR(int, p, ht)
+		*p *= *p;
+	
+	j = 0;
+	FOR_EACH(int, i, ht) {
+		assert(i == j * j);
+		j++;
+	}
+}
+
 int
 main()
 {
@@ -124,6 +144,7 @@ main()
 	search();
 	remove();
 	ptr();
+	foreach();
 
 	return 0;
 }

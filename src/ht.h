@@ -32,7 +32,7 @@ struct ht_##name##_node {                                                     \
                                                                               \
 struct ht_##name {                                                            \
         struct ht_##name##_node *arr;                                         \
-        size_t len, cap;                                                      \
+        size_t len, cap, nxt;                                                 \
 };                                                                            \
                                                                               \
 size_t hash_##key_t(key_t);      					      \
@@ -44,6 +44,7 @@ int ht_##name##_insert(struct ht_##name *, const key_t, const val_t);         \
 int ht_##name##_search(struct ht_##name *, const key_t, val_t *);             \
 int ht_##name##_remove(struct ht_##name *, const key_t, val_t *);             \
 val_t *ht_##name##_ptr(struct ht_##name *, const key_t);                      \
+val_t *ht_##name##_next(struct ht_##name *);                                  \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
 #define INIT_HT_FUNC(name, key_t, val_t, hash, cmp)                           \
@@ -106,9 +107,10 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                    \
         struct ht_##name new, old;                                            \
         size_t i;                                                             \
                                                                               \
-        new.len = 0;                                                          \
         new.cap = ht_##name##_cap(ht_##name##_cap(len));                      \
         new.arr = calloc(new.cap, sizeof(struct ht_##name##_node));           \
+        new.len = 0;                                                          \
+	new.nxt = 0;                                                          \
                                                                               \
         for (i = 0; i < ht->cap; i++) {                                       \
                 if (ht->arr[i].state != SOME)                                 \
@@ -130,7 +132,7 @@ ht_##name##_new()                                                             \
         struct ht_##name ht;                                                  \
                                                                               \
         ht.arr = malloc(0);                                                   \
-        ht.len = ht.cap = 0;                                                  \
+        ht.len = ht.cap = ht.nxt = 0;                                         \
                                                                               \
         return ht;                                                            \
 }                                                                             \
@@ -142,6 +144,7 @@ ht_##name##_copy(const struct ht_##name ht)                                   \
                                                                               \
         cp.len = ht.len;                                                      \
         cp.cap = ht.cap;                                                      \
+	cp.nxt = ht.nxt;                                                      \
         cp.arr = calloc(cp.cap, sizeof(struct ht_##name##_node));             \
                                                                               \
         memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
@@ -244,6 +247,17 @@ ht_##name##_ptr(struct ht_##name *ht, const key_t key)                        \
         return &ht->arr[i].val;                                               \
 }                                                                             \
                                                                               \
+val_t *                                                                       \
+ht_##name##_next(struct ht_##name *ht)                                        \
+{                                                                             \
+	if (ht->nxt == ht->cap)                                               \
+		ht->nxt = 0;                                                  \
+	while (ht->arr[ht->nxt].state != SOME && ht->nxt < ht->cap)           \
+		ht->nxt++;                                                    \
+                                                                              \
+	return (ht->nxt == ht->cap) ? NULL : &ht->arr[ht->nxt++].val;         \
+}                                                                             \
+                                                                              \
 void                                                                          \
 ht_##name##_free(struct ht_##name *ht)                                        \
 {                                                                             \
@@ -253,6 +267,16 @@ ht_##name##_free(struct ht_##name *ht)                                        \
 }                                                                             \
                                                                               \
 struct ht_##name##_semi { /* to enforce semicolon */ }
+
+#define FOR_EACH(name, _i, ht)                                                \
+for (_i = *ht_##name##_next(&ht);                                             \
+     ht.arr[ht.nxt].state == SOME && ht.nxt < ht.cap;                         \
+     _i = *ht_##name##_next(&ht))
+
+#define FOR_EACH_PTR(name, _p, ht)                                            \
+for (_p = ht_##name##_next(&ht);                                              \
+     ht.nxt < ht.cap;                                                         \
+     _p = ht_##name##_next(&ht))
 
 #define INIT_HT(name, key_t, val_t, hash, cmp)                                \
 INIT_HT_TYPE(name, key_t, val_t);                                             \
