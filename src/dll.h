@@ -25,7 +25,7 @@ struct dll_##name##_node {                                                    \
 };                                                                            \
                                                                               \
 struct dll_##name {                                                           \
-        struct dll_##name##_node *head, *tail;                                \
+        struct dll_##name##_node *head, *tail, *next;                         \
         size_t len;                                                           \
 };                                                                            \
                                                                               \
@@ -47,6 +47,7 @@ int dll_##name##_rmvnth(struct dll_##name *, type *, const size_t);           \
 type *dll_##name##_ptr(struct dll_##name *, const size_t);                    \
 type *dll_##name##_head(struct dll_##name *);                                 \
 type *dll_##name##_tail(struct dll_##name *);                                 \
+type *dll_##name##_next(struct dll_##name *);                                 \
 void dll_##name##_free(struct dll_##name *) /* to enforce semicolon */
 
 #define INIT_DLL_FUNC(name, type)                                             \
@@ -96,7 +97,7 @@ dll_##name##_nth(const struct dll_##name *dll, const size_t idx)              \
 struct dll_##name                                                             \
 dll_##name##_new()                                                            \
 {                                                                             \
-        struct dll_##name dll = { NULL, NULL, 0 };                            \
+        struct dll_##name dll = { NULL, NULL, NULL, 0 };                      \
         return dll;                                                           \
 }                                                                             \
                                                                               \
@@ -347,6 +348,20 @@ dll_##name##_tail(struct dll_##name *dll)                                     \
         return &dll->tail->val;                                               \
 }                                                                             \
                                                                               \
+type *                                                                        \
+dll_##name##_next(struct dll_##name *dll)                                     \
+{                                                                             \
+	type *ptr;                                                            \
+                                                                              \
+	if (dll->next == NULL)                                                \
+		dll->next = dll->head;                                        \
+	                                                                      \
+	ptr = &dll->next->val;                                                \
+	dll->next = dll->next->nxt;                                           \
+                                                                              \
+	return ptr;                                                           \
+}                                                                             \
+                                                                              \
 void                                                                          \
 dll_##name##_free(struct dll_##name *dll)                                     \
 {                                                                             \
@@ -362,6 +377,16 @@ dll_##name##_free(struct dll_##name *dll)                                     \
 }                                                                             \
                                                                               \
 struct dll_##name##_semi { /* to enforce semicolon */ }
+
+#define FOR_EACH(name, _i, dll)                                               \
+for (_i = *dll_##name##_next(&dll);                                           \
+     dll.next;                                                                \
+     _i = *dll_##name##_next(&dll))
+
+#define FOR_EACH_PTR(name, _p, dll)                                           \
+for (_p = dll_##name##_next(&dll);                                            \
+     dll.next;                                                                \
+     _p = dll_##name##_next(&dll))
 
 #define INIT_DLL(name, type)                                                  \
 INIT_DLL_TYPE(name, type);                                                    \

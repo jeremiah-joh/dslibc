@@ -25,7 +25,7 @@ struct sll_##name##_node {                                                    \
 };                                                                            \
                                                                               \
 struct sll_##name {                                                           \
-        struct sll_##name##_node *head, *tail;                                \
+        struct sll_##name##_node *head, *tail, *next;                         \
         size_t len;                                                           \
 };                                                                            \
                                                                               \
@@ -45,6 +45,7 @@ int sll_##name##_rmvnth(struct sll_##name *, type *, const size_t);           \
 type *sll_##name##_ptr(struct sll_##name *, const size_t);                    \
 type *sll_##name##_head(struct sll_##name *);                                 \
 type *sll_##name##_tail(struct sll_##name *);                                 \
+type *sll_##name##_next(struct sll_##name *);                                 \
 void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
 
 #define INIT_SLL_FUNC(name, type)                                             \
@@ -77,7 +78,7 @@ sll_##name##_nth(const struct sll_##name *sll, const size_t idx)              \
 struct sll_##name                                                             \
 sll_##name##_new()                                                            \
 {                                                                             \
-        struct sll_##name sll = { NULL, NULL, 0 };                            \
+        struct sll_##name sll = { NULL, NULL, NULL, 0 };                      \
         return sll;                                                           \
 }                                                                             \
                                                                               \
@@ -287,6 +288,20 @@ sll_##name##_tail(struct sll_##name *sll)                                     \
         return &sll->tail->val;                                               \
 }                                                                             \
                                                                               \
+type *                                                                        \
+sll_##name##_next(struct sll_##name *sll)                                     \
+{                                                                             \
+	type *ptr;                                                            \
+                                                                              \
+	if (sll->next == NULL)                                                \
+		sll->next = sll->head;                                        \
+	                                                                      \
+	ptr = &sll->next->val;                                                \
+	sll->next = sll->next->nxt;                                           \
+                                                                              \
+	return ptr;                                                           \
+}                                                                             \
+                                                                              \
 void                                                                          \
 sll_##name##_free(struct sll_##name *sll)                                     \
 {                                                                             \
@@ -302,6 +317,16 @@ sll_##name##_free(struct sll_##name *sll)                                     \
 }                                                                             \
                                                                               \
 struct sll_##name##_semi { /* to enforce semicolon */ }
+
+#define FOR_EACH(name, _i, sll)                                               \
+for (_i = *sll_##name##_next(&sll);                                           \
+     sll.next;                                                                \
+     _i = *sll_##name##_next(&sll))
+
+#define FOR_EACH_PTR(name, _p, sll)                                           \
+for (_p = sll_##name##_next(&sll);                                            \
+     sll.next;                                                                \
+     _p = sll_##name##_next(&sll))
 
 #define INIT_SLL(name, type)                                                  \
 INIT_SLL_TYPE(name, type);                                                    \

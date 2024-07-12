@@ -144,6 +144,20 @@ ptr()
 	assert(*sll_int_tail(&sll) == 3);
 }
 
+void
+foreach()
+{
+	int i, j, val[] = { 1, 2, 3, 4, 5 };
+	struct sll_int sll;
+
+	sll = sll_int_from(val, 5);
+
+	j = 1;
+	FOR_EACH(int, i, sll) {
+		assert(i == j++);
+	}
+}
+
 int
 main()
 {
@@ -156,6 +170,7 @@ main()
 	shrink();
 	nth();
 	ptr();
+	foreach();
 
 	return 0;
 }

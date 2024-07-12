@@ -26,7 +26,7 @@
 #define INIT_HEAP_TYPE(name, type)                                            \
 struct heap_##name {                                                          \
         type *arr;                                                            \
-        size_t cap, len;                                                      \
+        size_t cap, len, nxt;                                                 \
 };                                                                            \
                                                                               \
 struct heap_##name heap_##name##_new();                                       \
@@ -35,6 +35,7 @@ struct heap_##name heap_##name##_copy(const struct heap_##name);              \
 int heap_##name##_push(struct heap_##name *, const type);                     \
 int heap_##name##_pop(struct heap_##name *, type *);                          \
 type *heap_##name##_root(struct heap_##name *);                               \
+type *heap_##name##_next(struct heap_##name *);                               \
 void heap_##name##_free(struct heap_##name *) /* to enforce semicolon */
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord)                                  \
@@ -84,7 +85,7 @@ heap_##name##_new()                                                           \
         struct heap_##name heap;                                              \
                                                                               \
         heap.arr = malloc(0);                                                 \
-        heap.cap = heap.len = 0;                                              \
+        heap.cap = heap.len = heap.nxt = 0;                                   \
                                                                               \
         return heap;                                                          \
 }                                                                             \
@@ -112,6 +113,7 @@ heap_##name##_copy(const struct heap_##name heap)                             \
 	copy.arr = malloc(sizeof(type) * heap.cap);                           \
         copy.cap = heap.cap;                                                  \
         copy.len = heap.len;                                                  \
+	copy.nxt = heap.nxt;                                                  \
                                                                               \
         memcpy(copy.arr, heap.arr, sizeof(type) * heap.cap);                  \
                                                                               \
@@ -153,6 +155,17 @@ heap_##name##_root(struct heap_##name *heap)                                  \
         return &heap->arr[0];                                                 \
 }                                                                             \
                                                                               \
+type *                                                                        \
+heap_##name##_next(struct heap_##name *heap)                                  \
+{                                                                             \
+	if (heap->nxt < heap->len)                                            \
+		return &heap->arr[heap->nxt++];                               \
+	                                                                      \
+	heap->nxt = 0;                                                        \
+                                                                              \
+	return NULL;                                                          \
+}                                                                             \
+                                                                              \
 void                                                                          \
 heap_##name##_free(struct heap_##name *heap)                                  \
 {                                                                             \
@@ -163,19 +176,15 @@ heap_##name##_free(struct heap_##name *heap)                                  \
                                                                               \
 struct heap_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(type, _i, heap)                                              \
-type _i;                                                                      \
-size_t _i_##type = 0;                                                         \
-for (_i = heap.arr[_i_##type];                                                \
-     _i_##type < heap.len;                                                    \
-     _i = heap.arr[++_i_##type])
+#define FOR_EACH(name, _i, heap)                                               \
+for (_i = *heap_##name##_next(&heap);                                          \
+     heap.nxt < heap.len;                                                      \
+     _i = *heap_##name##_next(&heap))
 
-#define FOR_EACH_PTR(type, _p, heap)                                          \
-type *_p;                                                                     \
-size_t _i_##type = 0;                                                         \
-for (_p = &heap.arr[_i_##type];                                               \
-     _i_##type < heap.len;                                                    \
-     _p = &heap.arr[++_i_##type])
+#define FOR_EACH_PTR(name, _p, heap)                                           \
+for (_p = heap_##name##_next(&heap);                                           \
+     heap.nxt < heap.len;                                                      \
+     _p = heap_##name##_next(&heap))
 
 #define INIT_MIN_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, <);
 #define INIT_MAX_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, >);

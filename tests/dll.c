@@ -159,6 +159,20 @@ ptr()
 	assert(*dll_int_tail(&dll) == 3);
 }
 
+void
+foreach()
+{
+	int i, j, val[] = { 1, 2, 3, 4, 5 };
+	struct dll_int dll;
+
+	dll = dll_int_from(val, 5);
+
+	j = 1;
+	FOR_EACH(int, i, dll) {
+		assert(i == j++);
+	}
+}
+
 int
 main()
 {
@@ -172,6 +186,7 @@ main()
 	shrink();
 	nth();
 	ptr();
+	foreach();
 
 	return 0;
 }
