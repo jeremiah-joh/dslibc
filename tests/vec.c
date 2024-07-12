@@ -160,6 +160,20 @@ ptr()
 	assert(v == 3);
 }
 
+void
+foreach()
+{
+	int i, j, val[] = { 1, 2, 3, 4, 5 };
+	struct vec_int vec;
+
+	vec = vec_int_from(val, 5);
+
+	j = 1;
+	FOR_EACH(int, i, vec) {
+		assert(i == j++);
+	}
+}
+
 int
 main()
 {
@@ -172,6 +186,7 @@ main()
 	shrink();
 	nth();
 	ptr();
+	foreach();
 
 	return 0;
 }

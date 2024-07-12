@@ -22,7 +22,7 @@
 #define INIT_VEC_TYPE(name, type)                                             \
 struct vec_##name {                                                           \
         type *arr;                                                            \
-        size_t cap, len;                                                      \
+        size_t cap, len, nxt;                                                 \
 };                                                                            \
                                                                               \
 struct vec_##name vec_##name##_new();                                         \
@@ -73,7 +73,7 @@ vec_##name##_resize(struct vec_##name *vec, const size_t len)                 \
 struct vec_##name                                                             \
 vec_##name##_new()                                                            \
 {                                                                             \
-        struct vec_##name vec = { malloc(0), 0, 0 };                          \
+        struct vec_##name vec = { malloc(0), 0, 0, 0 };                       \
         return vec;                                                           \
 }                                                                             \
                                                                               \
@@ -81,7 +81,7 @@ struct vec_##name                                                             \
 vec_##name##_from(const type *arr, const size_t len)                          \
 {                                                                             \
         size_t cap = vec_##name##_new_cap(len);                               \
-        struct vec_##name vec = { malloc(cap), cap, len };                    \
+        struct vec_##name vec = { malloc(cap), cap, len, 0 };                 \
                                                                               \
         memcpy(vec.arr, arr, sizeof(*arr) * len);                             \
                                                                               \
@@ -91,7 +91,7 @@ vec_##name##_from(const type *arr, const size_t len)                          \
 struct vec_##name                                                             \
 vec_##name##_copy(const struct vec_##name vec)                                \
 {                                                                             \
-        struct vec_##name cpy = { malloc(vec.cap), vec.cap, vec.len };        \
+        struct vec_##name cpy = { malloc(vec.cap), vec.cap, vec.len, 0 };     \
         memcpy(cpy.arr, vec.arr, vec.cap);                                    \
                                                                               \
         return cpy;                                                           \
@@ -109,6 +109,7 @@ vec_##name##_slice(const struct vec_##name vec,                               \
         sli.cap = vec_##name##_new_cap(tail - head);                          \
         sli.arr = malloc(sli.cap);                                            \
         sli.len = tail - head;                                                \
+	sli.nxt = 0;                                                          \
                                                                               \
         memcpy(sli.arr, vec.arr + head, sizeof(type) * sli.len);              \
                                                                               \
@@ -289,6 +290,17 @@ vec_##name##_tail(struct vec_##name *vec)                                     \
         return vec->arr ? &vec->arr[vec->len - 1] : NULL;                     \
 }                                                                             \
                                                                               \
+type *                                                                        \
+vec_##name##_next(struct vec_##name *vec)                                     \
+{                                                                             \
+	if (vec->nxt < vec->len)                                              \
+		return &vec->arr[vec->nxt++];                                 \
+                                                                              \
+	vec->nxt = 0;                                                         \
+                                                                              \
+	return NULL;                                                          \
+}                                                                             \
+                                                                              \
 void                                                                          \
 vec_##name##_free(struct vec_##name *vec)                                     \
 {                                                                             \
@@ -299,15 +311,15 @@ vec_##name##_free(struct vec_##name *vec)                                     \
                                                                               \
 struct vec_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(type, _i, vec)                                               \
-type _i;                                                                      \
-size_t _i_##type = 0;                                                         \
-for (_i = vec.arr[_i_##type]; _i_##type < vec.len; _i = vec.arr[++_i_##type])
+#define FOR_EACH(name, _i, vec)                                               \
+for (_i = *vec_##name##_next(&vec);                                           \
+     vec.nxt < vec.len;                                                       \
+     _i = *vec_##name##_next(&vec))
 
-#define FOR_EACH_PTR(type, _p, vec)                                           \
-type *_p;                                                                     \
-size_t _i_##type = 0;                                                         \
-for (_p = &vec.arr[_i_##type]; _i_##type < vec.len; _p = &vec.arr[++_i_##type])
+#define FOR_EACH_PTR(name, _p, vec)                                           \
+for (_p = vec_##name##_next(&vec);                                            \
+     vec.nxt < vec.len;                                                       \
+     _p = vec_##name##_next(&vec))
 
 #define INIT_VEC(name, type)                                                  \
 INIT_VEC_TYPE(name, type);                                                    \
