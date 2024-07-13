@@ -312,15 +312,13 @@ vec_##name##_free(struct vec_##name *vec)                                     \
                                                                               \
 struct vec_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, _i, vec)                                               \
-for (_i = *vec_##name##_next(&vec);                                           \
+#define FOR_EACH(name, i, vec)                                                \
+for ((i) = *vec_##name##_next(&vec);                                          \
      vec.nxt < vec.len;                                                       \
-     _i = *vec_##name##_next(&vec))
+     (i) = *vec_##name##_next(&vec))
 
-#define FOR_EACH_PTR(name, _p, vec)                                           \
-for (_p = vec_##name##_next(&vec);                                            \
-     vec.nxt < vec.len;                                                       \
-     _p = vec_##name##_next(&vec))
+#define FOR_EACH_PTR(name, p, vec)                                            \
+while (((p) = vec_##name##_next(&vec)))
 
 #define INIT_VEC(name, type)                                                  \
 INIT_VEC_TYPE(name, type);                                                    \
