@@ -163,14 +163,15 @@ ptr()
 void
 foreach()
 {
-	int i, j, val[] = { 1, 2, 3, 4, 5 };
+	int *i, j;
+	int val[] = { 1, 2, 3, 4, 5 };
 	struct vec_int vec;
 
 	vec = vec_int_from(val, 5);
 
 	j = 1;
 	FOR_EACH(int, i, vec) {
-		assert(i == j++);
+		assert(*i == j++);
 	}
 }
 

@@ -326,13 +326,7 @@ vec_##name##_free(struct vec_##name *vec)                                     \
                                                                               \
 struct vec_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, i, vec)                                                \
-for ((i) = *vec_##name##_next(&vec);                                          \
-     vec.nxt < vec.len;                                                       \
-     (i) = *vec_##name##_next(&vec))
-
-#define FOR_EACH_PTR(name, p, vec)                                            \
-while (((p) = vec_##name##_next(&vec)))
+#define FOR_EACH(name, p, vec) while (((p) = vec_##name##_next(&vec)))
 
 #define INIT_VEC(name, type)                                                  \
 INIT_VEC_TYPE(name, type);                                                    \
