@@ -378,15 +378,10 @@ dll_##name##_free(struct dll_##name *dll)                                     \
                                                                               \
 struct dll_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, _i, dll)                                               \
-for (_i = *dll_##name##_next(&dll);                                           \
+#define FOR_EACH(name, p, dll)                                                \
+for ((p) = dll_##name##_next(&dll);                                           \
      dll.next;                                                                \
-     _i = *dll_##name##_next(&dll))
-
-#define FOR_EACH_PTR(name, _p, dll)                                           \
-for (_p = dll_##name##_next(&dll);                                            \
-     dll.next;                                                                \
-     _p = dll_##name##_next(&dll))
+     (p) = dll_##name##_next(&dll))
 
 #define INIT_DLL(name, type)                                                  \
 INIT_DLL_TYPE(name, type);                                                    \

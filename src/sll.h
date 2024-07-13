@@ -318,15 +318,10 @@ sll_##name##_free(struct sll_##name *sll)                                     \
                                                                               \
 struct sll_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, _i, sll)                                               \
-for (_i = *sll_##name##_next(&sll);                                           \
+#define FOR_EACH(name, p, sll)                                                \
+for ((p) = sll_##name##_next(&sll);                                           \
      sll.next;                                                                \
-     _i = *sll_##name##_next(&sll))
-
-#define FOR_EACH_PTR(name, _p, sll)                                           \
-for (_p = sll_##name##_next(&sll);                                            \
-     sll.next;                                                                \
-     _p = sll_##name##_next(&sll))
+     (p) = sll_##name##_next(&sll))
 
 #define INIT_SLL(name, type)                                                  \
 INIT_SLL_TYPE(name, type);                                                    \
