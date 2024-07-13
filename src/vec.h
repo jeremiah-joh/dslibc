@@ -43,6 +43,7 @@ int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
 type *vec_##name##_ptr(struct vec_##name *, const size_t);                    \
 type *vec_##name##_head(struct vec_##name *);                                 \
 type *vec_##name##_tail(struct vec_##name *);                                 \
+type *vec_##name##_next(struct vec_##name *);                                 \
 void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
 
 #define INIT_VEC_FUNC(name, type)                                             \
