@@ -208,12 +208,14 @@ ht_##name##_ptr(struct ht_##name *ht, const key_t key)                        \
 val_t *                                                                       \
 ht_##name##_next(struct ht_##name *ht)                                        \
 {                                                                             \
-	if (ht->nxt == ht->cap)                                               \
-		ht->nxt = 0;                                                  \
 	while (ht->arr[ht->nxt].state != SOME && ht->nxt < ht->cap)           \
 		ht->nxt++;                                                    \
+	if (ht->nxt < ht->cap)                                                \
+		return &ht->arr[ht->nxt++].val;                               \
                                                                               \
-	return (ht->nxt == ht->cap) ? NULL : &ht->arr[ht->nxt++].val;         \
+	ht->nxt = 0;                                                          \
+	                                                                      \
+	return NULL;                                                          \
 }                                                                             \
                                                                               \
 void                                                                          \
