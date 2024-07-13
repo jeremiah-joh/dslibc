@@ -154,7 +154,7 @@ vec_##name##_pop_back(struct vec_##name *vec, type *val)                      \
         *val = vec->arr[vec->len - 1];                                        \
         vec->len--;                                                           \
                                                                               \
-        return vec_##name##_resize(vec, vec->len - 1);                        \
+        return vec_##name##_resize(vec, vec->len);                            \
 }                                                                             \
                                                                               \
 int                                                                           \
