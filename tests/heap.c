@@ -68,14 +68,14 @@ pop()
 void
 foreach()
 {
-	int i, j, val[] = { 1, 2, 3, 4, 5 };
+	int *i, j, val[] = { 1, 2, 3, 4, 5 };
 	struct heap_int heap;
 
 	heap = heap_int_from(val, 5);
 
 	j = 1;
 	FOR_EACH(int, i, heap) {
-		assert(i == j++);
+		assert(*i == j++);
 	}
 }
 

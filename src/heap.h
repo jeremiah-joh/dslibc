@@ -176,15 +176,7 @@ heap_##name##_free(struct heap_##name *heap)                                  \
                                                                               \
 struct heap_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, _i, heap)                                               \
-for (_i = *heap_##name##_next(&heap);                                          \
-     heap.nxt < heap.len;                                                      \
-     _i = *heap_##name##_next(&heap))
-
-#define FOR_EACH_PTR(name, _p, heap)                                           \
-for (_p = heap_##name##_next(&heap);                                           \
-     heap.nxt < heap.len;                                                      \
-     _p = heap_##name##_next(&heap))
+#define FOR_EACH(name, p, heap) while (((p) = heap_##name##_next(&heap)))
 
 #define INIT_MIN_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, <);
 #define INIT_MAX_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, >);
