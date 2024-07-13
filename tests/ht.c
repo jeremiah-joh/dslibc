@@ -121,17 +121,13 @@ foreach()
 	struct ht_int ht;
 	int key[] = { 0, 1, 2, 3, 4 };
 	int val[] = { 0, 1, 2, 3, 4 };
-	int i, j, *p;
+	int *i, j;
 
 	ht = ht_int_from(key, val, 5);
 
-	FOR_EACH_PTR(int, p, ht)
-		*p *= *p;
-	
 	j = 0;
 	FOR_EACH(int, i, ht) {
-		assert(i == j * j);
-		j++;
+		assert(*i == j++);
 	}
 }
 

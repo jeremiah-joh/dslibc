@@ -268,15 +268,7 @@ ht_##name##_free(struct ht_##name *ht)                                        \
                                                                               \
 struct ht_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, _i, ht)                                                \
-for (_i = *ht_##name##_next(&ht);                                             \
-     ht.arr[ht.nxt].state == SOME && ht.nxt < ht.cap;                         \
-     _i = *ht_##name##_next(&ht))
-
-#define FOR_EACH_PTR(name, _p, ht)                                            \
-for (_p = ht_##name##_next(&ht);                                              \
-     ht.nxt < ht.cap;                                                         \
-     _p = ht_##name##_next(&ht))
+#define FOR_EACH(name, p, ht) while (((p) = ht_##name##_next(&ht)))
 
 #define INIT_HT(name, key_t, val_t, hash, cmp)                                \
 INIT_HT_TYPE(name, key_t, val_t);                                             \
