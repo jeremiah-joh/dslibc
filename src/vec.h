@@ -135,7 +135,7 @@ vec_##name##_push_front(struct vec_##name *vec, const type val)               \
 {                                                                             \
         if (vec->arr == NULL)                                                 \
                 return -1;                                                    \
-	if (vec_##name##_resize(vec, vec->len - 1))                           \
+	if (vec_##name##_resize(vec, vec->len + 1))                           \
 		return -1;                                                    \
                                                                               \
         memmove(vec->arr + 1, vec->arr, sizeof(type) * vec->len);             \
