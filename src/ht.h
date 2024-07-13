@@ -48,48 +48,6 @@ val_t *ht_##name##_next(struct ht_##name *);                                  \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
 #define INIT_HT_FUNC(name, key_t, val_t, hash, cmp)                           \
-/* FNV-1a hash function for data with fixed size */                           \
-static size_t                                                                 \
-hash_##key_t##_64(const void *data, const size_t size)                        \
-{                                                                             \
-        size_t i, h;                                                          \
-                                                                              \
-        h = FNV1_64_BASIS;                                                    \
-        for (i = 0; i < size; i++) {                                          \
-                h ^= ((size_t *)data)[i];                                     \
-                h *= FNV1_64_PRIME;                                           \
-        }                                                                     \
-                                                                              \
-        return h;                                                             \
-}                                                                             \
-                                                                              \
-static size_t                                                                 \
-hash_##key_t##_32(const void *data, const size_t size)                        \
-{                                                                             \
-        size_t i, h;                                                          \
-                                                                              \
-        h = FNV1_32_BASIS;                                                    \
-        for (i = 0; i < size; i++) {                                          \
-                h ^= ((size_t *)data)[i];                                     \
-                h *= FNV1_32_PRIME;                                           \
-        }                                                                     \
-                                                                              \
-        return h;                                                             \
-}                                                                             \
-                                                                              \
-size_t                                                                        \
-hash_##key_t(key_t key)                                                       \
-{                                                                             \
-        /* compiler would optimize it */                                      \
-        if (sizeof(size_t) == 8)                                              \
-                return hash_##key_t##_64(&key, sizeof(key_t));                \
-        if (sizeof(size_t) == 4)                                              \
-                return hash_##key_t##_32(&key, sizeof(key_t));                \
-                                                                              \
-        /* unreachable unless cpu is neither 64 nor 32 bit */                 \
-        return 0;                                                             \
-}                                                                             \
-                                                                              \
 static size_t                                                                 \
 ht_##name##_cap(const size_t len)                                             \
 {                                                                             \
