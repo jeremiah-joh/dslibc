@@ -379,7 +379,7 @@ dll_##name##_free(struct dll_##name *dll)                                     \
 struct dll_##name##_semi { /* to enforce semicolon */ }
 
 #define FOR_EACH(name, p, dll)                                                \
-for ((p) = dll_##name##_next(&dll);                                           \
+for (dll.next = NULL, (p) = dll_##name##_next(&dll);                          \
      dll.next;                                                                \
      (p) = dll_##name##_next(&dll))
 

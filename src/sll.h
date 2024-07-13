@@ -319,7 +319,7 @@ sll_##name##_free(struct sll_##name *sll)                                     \
 struct sll_##name##_semi { /* to enforce semicolon */ }
 
 #define FOR_EACH(name, p, sll)                                                \
-for ((p) = sll_##name##_next(&sll);                                           \
+for (sll.next = NULL, (p) = sll_##name##_next(&sll);                          \
      sll.next;                                                                \
      (p) = sll_##name##_next(&sll))
 
