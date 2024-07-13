@@ -222,7 +222,7 @@ ht_##name##_free(struct ht_##name *ht)                                        \
 {                                                                             \
         free(ht->arr);                                                        \
         ht->arr = NULL;                                                       \
-        ht->cap = ht->len = 0;                                                \
+        ht->cap = ht->len = ht->nxt = 0;                                      \
 }                                                                             \
                                                                               \
 struct ht_##name##_semi { /* to enforce semicolon */ }

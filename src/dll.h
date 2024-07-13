@@ -372,7 +372,7 @@ dll_##name##_free(struct dll_##name *dll)                                     \
                 free(tmp);                                                    \
         }                                                                     \
                                                                               \
-        dll->head = dll->tail = NULL;                                         \
+        dll->head = dll->tail = dll->next = NULL;                             \
         dll->len = 0;                                                         \
 }                                                                             \
                                                                               \

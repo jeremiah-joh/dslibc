@@ -312,7 +312,7 @@ sll_##name##_free(struct sll_##name *sll)                                     \
                 free(tmp);                                                    \
         }                                                                     \
                                                                               \
-        sll->head = sll->tail = NULL;                                         \
+        sll->head = sll->tail = sll->next = NULL;                             \
         sll->len = 0;                                                         \
 }                                                                             \
                                                                               \
