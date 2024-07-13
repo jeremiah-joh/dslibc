@@ -35,7 +35,6 @@ struct ht_##name {                                                            \
         size_t len, cap, nxt;                                                 \
 };                                                                            \
                                                                               \
-size_t hash_##key_t(key_t);      					      \
 struct ht_##name ht_##name##_new();                                           \
 struct ht_##name ht_##name##_copy(const struct ht_##name);                    \
 struct ht_##name ht_##name##_from(const key_t [], const val_t [],             \
@@ -68,7 +67,7 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                    \
         new.cap = ht_##name##_cap(ht_##name##_cap(len));                      \
         new.arr = calloc(new.cap, sizeof(struct ht_##name##_node));           \
         new.len = 0;                                                          \
-	new.nxt = 0;                                                          \
+        new.nxt = 0;                                                          \
                                                                               \
         for (i = 0; i < ht->cap; i++) {                                       \
                 if (ht->arr[i].state != SOME)                                 \
@@ -102,7 +101,7 @@ ht_##name##_copy(const struct ht_##name ht)                                   \
                                                                               \
         cp.len = ht.len;                                                      \
         cp.cap = ht.cap;                                                      \
-	cp.nxt = ht.nxt;                                                      \
+        cp.nxt = ht.nxt;                                                      \
         cp.arr = calloc(cp.cap, sizeof(struct ht_##name##_node));             \
                                                                               \
         memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
@@ -208,14 +207,14 @@ ht_##name##_ptr(struct ht_##name *ht, const key_t key)                        \
 val_t *                                                                       \
 ht_##name##_next(struct ht_##name *ht)                                        \
 {                                                                             \
-	while (ht->arr[ht->nxt].state != SOME && ht->nxt < ht->cap)           \
-		ht->nxt++;                                                    \
-	if (ht->nxt < ht->cap)                                                \
-		return &ht->arr[ht->nxt++].val;                               \
+        while (ht->arr[ht->nxt].state != SOME && ht->nxt < ht->cap)           \
+                ht->nxt++;                                                    \
+        if (ht->nxt < ht->cap)                                                \
+                return &ht->arr[ht->nxt++].val;                               \
                                                                               \
-	ht->nxt = 0;                                                          \
-	                                                                      \
-	return NULL;                                                          \
+        ht->nxt = 0;                                                          \
+                                                                              \
+        return NULL;                                                          \
 }                                                                             \
                                                                               \
 void                                                                          \
@@ -238,42 +237,42 @@ INIT_HT_FUNC(name, key_t, val_t, hash, cmp)
 static size_t
 hash_str_64(const char *str)
 {
-	size_t h;
+        size_t h;
 
-	h = FNV1_64_BASIS;
-	for (; *str; str++) {
-		h ^= *str;
-		h *= FNV1_64_PRIME;
-	}
+        h = FNV1_64_BASIS;
+        for (; *str; str++) {
+                h ^= *str;
+                h *= FNV1_64_PRIME;
+        }
 
-	return h;
+        return h;
 }
 
 static size_t
 hash_str_32(const char *str)
 {
-	size_t h;
+        size_t h;
 
-	h = FNV1_32_BASIS;
-	for (; *str; str++) {
-		h ^= *str;
-		h *= FNV1_32_PRIME;
-	}
+        h = FNV1_32_BASIS;
+        for (; *str; str++) {
+                h ^= *str;
+                h *= FNV1_32_PRIME;
+        }
 
-	return h;
+        return h;
 }
 
 size_t
 hash_str(const char *str)
 {
-	/* compiler would optimize it */
-	if (sizeof(size_t) == 8)
-		return hash_str_64(str);
-	if (sizeof(size_t) == 4)
-		return hash_str_32(str);
+        /* compiler would optimize it */
+        if (sizeof(size_t) == 8)
+                return hash_str_64(str);
+        if (sizeof(size_t) == 4)
+                return hash_str_32(str);
 
-	/* unreachable unless cpu is neither 64 nor 32 bit */
-	return 0;
+        /* unreachable unless cpu is neither 64 nor 32 bit */
+        return 0;
 }
 
 #endif
