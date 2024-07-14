@@ -63,15 +63,15 @@ static void                                                                   \
 heap_##name##_heapify(struct heap_##name *heap)                               \
 {                                                                             \
         size_t i;                                                             \
-	type tmp;                                                             \
+        type tmp;                                                             \
                                                                               \
         for (i = heap->len - 1; i; i = PAR(i)) {                              \
                 if (cmp(heap->arr[i], heap->arr[PAR(i)]) ord 0) {             \
-			tmp = heap->arr[i];                                   \
-			heap->arr[i] = heap->arr[PAR(i)];                     \
-			heap->arr[PAR(i)] = tmp;                              \
-		}                                                             \
-	}                                                                     \
+                        tmp = heap->arr[i];                                   \
+                        heap->arr[i] = heap->arr[PAR(i)];                     \
+                        heap->arr[PAR(i)] = tmp;                              \
+                }                                                             \
+        }                                                                     \
 }                                                                             \
                                                                               \
 struct heap_##name                                                            \
@@ -105,10 +105,10 @@ heap_##name##_copy(const struct heap_##name heap)                             \
 {                                                                             \
         struct heap_##name copy;                                              \
                                                                               \
-	copy.arr = malloc(sizeof(type) * heap.cap);                           \
+        copy.arr = malloc(sizeof(type) * heap.cap);                           \
         copy.cap = heap.cap;                                                  \
         copy.len = heap.len;                                                  \
-	copy.nxt = heap.nxt;                                                  \
+        copy.nxt = heap.nxt;                                                  \
                                                                               \
         memcpy(copy.arr, heap.arr, sizeof(type) * heap.cap);                  \
                                                                               \
@@ -155,12 +155,12 @@ heap_##name##_root(struct heap_##name *heap)                                  \
 type *                                                                        \
 heap_##name##_next(struct heap_##name *heap)                                  \
 {                                                                             \
-	if (heap->nxt < heap->len)                                            \
-		return &heap->arr[heap->nxt++];                               \
-	                                                                      \
-	heap->nxt = 0;                                                        \
+        if (heap->nxt < heap->len)                                            \
+                return &heap->arr[heap->nxt++];                               \
                                                                               \
-	return NULL;                                                          \
+        heap->nxt = 0;                                                        \
+                                                                              \
+        return NULL;                                                          \
 }                                                                             \
                                                                               \
 void                                                                          \
