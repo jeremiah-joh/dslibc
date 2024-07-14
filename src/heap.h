@@ -60,23 +60,18 @@ heap_##name##_resize(struct heap_##name *heap, const size_t len)              \
 }                                                                             \
                                                                               \
 static void                                                                   \
-heap_##name##_swap(struct heap_##name *heap, const size_t i, const size_t j)  \
-{                                                                             \
-        type tmp;                                                             \
-                                                                              \
-        tmp = heap->arr[i];                                                   \
-        heap->arr[i] = heap->arr[j];                                          \
-        heap->arr[j] = tmp;                                                   \
-}                                                                             \
-                                                                              \
-static void                                                                   \
 heap_##name##_heapify(struct heap_##name *heap)                               \
 {                                                                             \
         size_t i;                                                             \
+	type tmp;                                                             \
                                                                               \
-        for (i = heap->len - 1; i; i = PAR(i))                                \
-                if (cmp(heap->arr[i], heap->arr[PAR(i)]) ord 0)               \
-                        heap_##name##_swap(heap, i, PAR(i));                  \
+        for (i = heap->len - 1; i; i = PAR(i)) {                              \
+                if (cmp(heap->arr[i], heap->arr[PAR(i)]) ord 0) {             \
+			tmp = heap->arr[i];                                   \
+			heap->arr[i] = heap->arr[PAR(i)];                     \
+			heap->arr[PAR(i)] = tmp;                              \
+		}                                                             \
+	}                                                                     \
 }                                                                             \
                                                                               \
 struct heap_##name                                                            \
