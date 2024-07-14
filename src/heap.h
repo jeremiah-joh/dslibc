@@ -124,6 +124,7 @@ heap_##name##_push(struct heap_##name *heap, type val)                        \
                                                                               \
         heap->arr[heap->len] = val;                                           \
         heap->len++;                                                          \
+                                                                              \
         heap_##name##_heapify(heap);                                          \
                                                                               \
         return 0;                                                             \
@@ -139,6 +140,7 @@ heap_##name##_pop(struct heap_##name *heap, type *val)                        \
         *val = heap->arr[0];                                                  \
         heap->arr[0] = heap->arr[heap->len - 1];                              \
         heap->len--;                                                          \
+                                                                              \
         heap_##name##_heapify(heap);                                          \
                                                                               \
         return 0;                                                             \
