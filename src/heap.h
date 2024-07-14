@@ -20,8 +20,6 @@
 #include <string.h>
 
 #define PAR(i) (((i) - 1) >> 1)
-#define LCH(i) ((i) << 1 + 1)
-#define RCH(i) ((i) << 1 + 2)
 
 #define INIT_HEAP_TYPE(name, type)                                            \
 struct heap_##name {                                                          \
