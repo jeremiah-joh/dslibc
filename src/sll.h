@@ -25,8 +25,13 @@ struct sll_##name##_node {                                                    \
 };                                                                            \
                                                                               \
 struct sll_##name {                                                           \
-        struct sll_##name##_node *head, *tail, *next;                         \
+        struct sll_##name##_node *head, *tail;                                \
         size_t len;                                                           \
+};                                                                            \
+                                                                              \
+struct sll_##name##_iter {                                                    \
+	struct sll_##name *sll;                                               \
+	struct sll_##name##_node *nxt;                                        \
 };                                                                            \
                                                                               \
 struct sll_##name sll_##name##_new();                                         \
@@ -34,6 +39,7 @@ struct sll_##name sll_##name##_from(const type *, const size_t);              \
 struct sll_##name sll_##name##_copy(const struct sll_##name);                 \
 struct sll_##name sll_##name##_slice(const struct sll_##name,                 \
                                      const size_t, const size_t);             \
+struct sll_##name##_iter sll_##name##_iter(struct sll_##name *);              \
 int sll_##name##_push(struct sll_##name *, const type);                       \
 int sll_##name##_pop(struct sll_##name *, type *);                            \
 int sll_##name##_append(struct sll_##name *, const struct sll_##name);        \
@@ -45,7 +51,7 @@ int sll_##name##_rmvnth(struct sll_##name *, type *, const size_t);           \
 type *sll_##name##_ptr(struct sll_##name *, const size_t);                    \
 type *sll_##name##_head(struct sll_##name *);                                 \
 type *sll_##name##_tail(struct sll_##name *);                                 \
-type *sll_##name##_next(struct sll_##name *);                                 \
+type *sll_##name##_nxt(struct sll_##name##_iter *);                          \
 void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
 
 #define INIT_SLL_FUNC(name, type)                                             \
@@ -78,7 +84,12 @@ sll_##name##_nth(const struct sll_##name *sll, const size_t idx)              \
 struct sll_##name                                                             \
 sll_##name##_new()                                                            \
 {                                                                             \
-        struct sll_##name sll = { NULL, NULL, NULL, 0 };                      \
+        struct sll_##name sll;                                                \
+                                                                              \
+	sll.head = NULL;                                                      \
+	sll.tail = NULL;                                                      \
+	sll.len = 0;                                                          \
+                                                                              \
         return sll;                                                           \
 }                                                                             \
                                                                               \
@@ -135,6 +146,17 @@ sll_##name##_slice(const struct sll_##name sll,                               \
         }                                                                     \
                                                                               \
         return sli;                                                           \
+}                                                                             \
+                                                                              \
+struct sll_##name##_iter                                                      \
+sll_##name##_iter(struct sll_##name *sll)                                     \
+{                                                                             \
+	struct sll_##name##_iter iter;                                        \
+                                                                              \
+	iter.sll = sll;                                                       \
+	iter.nxt = NULL;                                                      \
+                                                                              \
+	return iter;                                                          \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -289,15 +311,15 @@ sll_##name##_tail(struct sll_##name *sll)                                     \
 }                                                                             \
                                                                               \
 type *                                                                        \
-sll_##name##_next(struct sll_##name *sll)                                     \
+sll_##name##_next(struct sll_##name##_iter *iter)                             \
 {                                                                             \
 	type *ptr;                                                            \
                                                                               \
-	if (sll->next == NULL)                                                \
-		sll->next = sll->head;                                        \
+	if (iter->nxt == NULL)                                                \
+		iter->nxt = iter->sll->head;                                  \
 	                                                                      \
-	ptr = &sll->next->val;                                                \
-	sll->next = sll->next->nxt;                                           \
+	ptr = &iter->nxt->val;                                                \
+	iter->nxt = iter->nxt->nxt;                                           \
                                                                               \
 	return ptr;                                                           \
 }                                                                             \
@@ -312,16 +334,16 @@ sll_##name##_free(struct sll_##name *sll)                                     \
                 free(tmp);                                                    \
         }                                                                     \
                                                                               \
-        sll->head = sll->tail = sll->next = NULL;                             \
+        sll->head = sll->tail = NULL;                                         \
         sll->len = 0;                                                         \
 }                                                                             \
                                                                               \
 struct sll_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, sll)                                                \
-for (sll.next = NULL, (p) = sll_##name##_next(&sll);                          \
-     sll.next;                                                                \
-     (p) = sll_##name##_next(&sll))
+#define FOR_EACH(name, p, iter)                                               \
+for (iter.nxt = NULL, (p) = sll_##name##_next(&iter);                         \
+     iter.nxt;                                                                \
+     (p) = sll_##name##_next(&iter))
 
 #define INIT_SLL(name, type)                                                  \
 INIT_SLL_TYPE(name, type);                                                    \
