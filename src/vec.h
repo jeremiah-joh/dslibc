@@ -26,8 +26,8 @@ struct vec_##name {                                                           \
 };                                                                            \
                                                                               \
 struct vec_##name##_iter {                                                    \
-	struct vec_##name *vec;                                               \
-	size_t nxt;                                                           \
+        struct vec_##name *vec;                                               \
+        size_t nxt;                                                           \
 };                                                                            \
                                                                               \
 struct vec_##name vec_##name##_new();                                         \
@@ -137,12 +137,12 @@ vec_##name##_slice(const struct vec_##name vec,                               \
 struct vec_##name##_iter                                                      \
 vec_##name##_iter(struct vec_##name *vec)                                     \
 {                                                                             \
-	struct vec_##name##_iter iter;                                        \
+        struct vec_##name##_iter iter;                                        \
                                                                               \
-	iter.vec = vec;                                                       \
-	iter.nxt = 0;                                                         \
+        iter.vec = vec;                                                       \
+        iter.nxt = 0;                                                         \
                                                                               \
-	return iter;                                                          \
+        return iter;                                                          \
 }                                                                             \
                                                                               \
 int                                                                           \

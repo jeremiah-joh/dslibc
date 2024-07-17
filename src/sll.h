@@ -30,8 +30,8 @@ struct sll_##name {                                                           \
 };                                                                            \
                                                                               \
 struct sll_##name##_iter {                                                    \
-	struct sll_##name *sll;                                               \
-	struct sll_##name##_node *nxt;                                        \
+        struct sll_##name *sll;                                               \
+        struct sll_##name##_node *nxt;                                        \
 };                                                                            \
                                                                               \
 struct sll_##name sll_##name##_new();                                         \
@@ -86,9 +86,9 @@ sll_##name##_new()                                                            \
 {                                                                             \
         struct sll_##name sll;                                                \
                                                                               \
-	sll.head = NULL;                                                      \
-	sll.tail = NULL;                                                      \
-	sll.len = 0;                                                          \
+        sll.head = NULL;                                                      \
+        sll.tail = NULL;                                                      \
+        sll.len = 0;                                                          \
                                                                               \
         return sll;                                                           \
 }                                                                             \
@@ -151,12 +151,12 @@ sll_##name##_slice(const struct sll_##name sll,                               \
 struct sll_##name##_iter                                                      \
 sll_##name##_iter(struct sll_##name *sll)                                     \
 {                                                                             \
-	struct sll_##name##_iter iter;                                        \
+        struct sll_##name##_iter iter;                                        \
                                                                               \
-	iter.sll = sll;                                                       \
-	iter.nxt = NULL;                                                      \
+        iter.sll = sll;                                                       \
+        iter.nxt = NULL;                                                      \
                                                                               \
-	return iter;                                                          \
+        return iter;                                                          \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -313,15 +313,15 @@ sll_##name##_tail(struct sll_##name *sll)                                     \
 type *                                                                        \
 sll_##name##_next(struct sll_##name##_iter *iter)                             \
 {                                                                             \
-	type *ptr;                                                            \
+        type *ptr;                                                            \
                                                                               \
-	if (iter->nxt == NULL)                                                \
-		iter->nxt = iter->sll->head;                                  \
-	                                                                      \
-	ptr = &iter->nxt->val;                                                \
-	iter->nxt = iter->nxt->nxt;                                           \
+        if (iter->nxt == NULL)                                                \
+                iter->nxt = iter->sll->head;                                  \
                                                                               \
-	return ptr;                                                           \
+        ptr = &iter->nxt->val;                                                \
+        iter->nxt = iter->nxt->nxt;                                           \
+                                                                              \
+        return ptr;                                                           \
 }                                                                             \
                                                                               \
 void                                                                          \
