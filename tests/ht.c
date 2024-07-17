@@ -119,14 +119,16 @@ void
 foreach()
 {
 	struct ht_int ht;
+	struct ht_int_iter iter;
 	int key[] = { 0, 1, 2, 3, 4 };
 	int val[] = { 0, 1, 2, 3, 4 };
 	int *i, j;
 
 	ht = ht_int_from(key, val, 5);
+	iter = ht_int_iter(&ht);
 
 	j = 0;
-	FOR_EACH(int, i, ht) {
+	FOR_EACH(int, i, iter) {
 		assert(*i == j++);
 	}
 }

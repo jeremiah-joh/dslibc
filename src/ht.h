@@ -32,18 +32,24 @@ struct ht_##name##_node {                                                     \
                                                                               \
 struct ht_##name {                                                            \
         struct ht_##name##_node *arr;                                         \
-        size_t len, cap, nxt;                                                 \
+        size_t len, cap;                                                      \
+};                                                                            \
+                                                                              \
+struct ht_##name##_iter {                                                     \
+        struct ht_##name *ht;                                                 \
+        size_t nxt;                                                           \
 };                                                                            \
                                                                               \
 struct ht_##name ht_##name##_new();                                           \
 struct ht_##name ht_##name##_copy(const struct ht_##name);                    \
 struct ht_##name ht_##name##_from(const key_t [], const val_t [],             \
                                   const size_t);                              \
+struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                 \
 int ht_##name##_insert(struct ht_##name *, const key_t, const val_t);         \
 int ht_##name##_search(struct ht_##name *, const key_t, val_t *);             \
 int ht_##name##_remove(struct ht_##name *, const key_t, val_t *);             \
 val_t *ht_##name##_ptr(struct ht_##name *, const key_t);                      \
-val_t *ht_##name##_next(struct ht_##name *);                                  \
+val_t *ht_##name##_next(struct ht_##name##_iter *);                           \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
 #define INIT_HT_FUNC(name, key_t, val_t, hash, cmp)                           \
@@ -67,7 +73,6 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                    \
         new.cap = ht_##name##_cap(ht_##name##_cap(len));                      \
         new.arr = calloc(new.cap, sizeof(struct ht_##name##_node));           \
         new.len = 0;                                                          \
-        new.nxt = 0;                                                          \
                                                                               \
         for (i = 0; i < ht->cap; i++) {                                       \
                 if (ht->arr[i].state != SOME)                                 \
@@ -89,7 +94,7 @@ ht_##name##_new()                                                             \
         struct ht_##name ht;                                                  \
                                                                               \
         ht.arr = malloc(0);                                                   \
-        ht.len = ht.cap = ht.nxt = 0;                                         \
+        ht.len = ht.cap = 0;                                                  \
                                                                               \
         return ht;                                                            \
 }                                                                             \
@@ -101,7 +106,6 @@ ht_##name##_copy(const struct ht_##name ht)                                   \
                                                                               \
         cp.len = ht.len;                                                      \
         cp.cap = ht.cap;                                                      \
-        cp.nxt = ht.nxt;                                                      \
         cp.arr = calloc(cp.cap, sizeof(struct ht_##name##_node));             \
                                                                               \
         memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
@@ -122,6 +126,17 @@ ht_##name##_from(const key_t key[], const val_t val[], const size_t len)      \
                         return ht;                                            \
                                                                               \
         return ht;                                                            \
+}                                                                             \
+                                                                              \
+struct ht_##name##_iter                                                       \
+ht_##name##_iter(struct ht_##name *ht)                                        \
+{                                                                             \
+        struct ht_##name##_iter iter;                                         \
+                                                                              \
+        iter.ht = ht;                                                         \
+        iter.nxt = 0;                                                         \
+                                                                              \
+        return iter;                                                          \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -205,14 +220,15 @@ ht_##name##_ptr(struct ht_##name *ht, const key_t key)                        \
 }                                                                             \
                                                                               \
 val_t *                                                                       \
-ht_##name##_next(struct ht_##name *ht)                                        \
+ht_##name##_next(struct ht_##name##_iter *iter)                               \
 {                                                                             \
-        while (ht->arr[ht->nxt].state != SOME && ht->nxt < ht->cap)           \
-                ht->nxt++;                                                    \
-        if (ht->nxt < ht->cap)                                                \
-                return &ht->arr[ht->nxt++].val;                               \
+        while (iter->ht->arr[iter->nxt].state != SOME                         \
+               && iter->nxt < iter->ht->cap)                                  \
+                iter->nxt++;                                                  \
+        if (iter->nxt < iter->ht->cap)                                        \
+                return &iter->ht->arr[iter->nxt++].val;                       \
                                                                               \
-        ht->nxt = 0;                                                          \
+        iter->nxt = 0;                                                        \
                                                                               \
         return NULL;                                                          \
 }                                                                             \
@@ -222,7 +238,7 @@ ht_##name##_free(struct ht_##name *ht)                                        \
 {                                                                             \
         free(ht->arr);                                                        \
         ht->arr = NULL;                                                       \
-        ht->cap = ht->len = ht->nxt = 0;                                      \
+        ht->cap = ht->len = 0;                                                \
 }                                                                             \
                                                                               \
 struct ht_##name##_semi { /* to enforce semicolon */ }
