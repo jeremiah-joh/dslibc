@@ -164,11 +164,13 @@ foreach()
 {
 	int *i, j, val[] = { 1, 2, 3, 4, 5 };
 	struct dll_int dll;
+	struct dll_int_iter iter;
 
 	dll = dll_int_from(val, 5);
+	iter = dll_int_iter(&dll);
 
 	j = 1;
-	FOR_EACH(int, i, dll) {
+	FOR_EACH(int, i, iter) {
 		assert(*i == j++);
 	}
 }
