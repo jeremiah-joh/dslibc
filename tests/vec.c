@@ -166,11 +166,13 @@ foreach()
 	int *i, j;
 	int val[] = { 1, 2, 3, 4, 5 };
 	struct vec_int vec;
+	struct vec_int_iter iter;
 
 	vec = vec_int_from(val, 5);
+	iter = vec_int_iter(&vec);
 
 	j = 1;
-	FOR_EACH(int, i, vec) {
+	FOR_EACH(int, i, iter) {
 		assert(*i == j++);
 	}
 }
