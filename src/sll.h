@@ -321,6 +321,9 @@ sll_##name##_next(struct sll_##name##_iter *iter)                             \
         ptr = &iter->nxt->val;                                                \
         iter->nxt = iter->nxt->nxt;                                           \
                                                                               \
+        if (iter->nxt == NULL)                                                \
+                return NULL;                                                  \
+                                                                              \
         return ptr;                                                           \
 }                                                                             \
                                                                               \
@@ -340,10 +343,7 @@ sll_##name##_free(struct sll_##name *sll)                                     \
                                                                               \
 struct sll_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, iter)                                               \
-for (iter.nxt = NULL, (p) = sll_##name##_next(&iter);                         \
-     iter.nxt;                                                                \
-     (p) = sll_##name##_next(&iter))
+#define FOR_EACH(name, p, iter) while (((p) = sll_##name##_next(&iter)))
 
 #define INIT_SLL(name, type)                                                  \
 INIT_SLL_TYPE(name, type);                                                    \

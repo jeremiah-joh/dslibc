@@ -340,8 +340,7 @@ vec_##name##_free(struct vec_##name *vec)                                     \
                                                                               \
 struct vec_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, iter)                                               \
-for (iter.nxt = 0; ((p) = vec_##name##_next(&iter)); )
+#define FOR_EACH(name, p, iter) while (((p) = vec_##name##_next(&iter)))
 
 #define INIT_VEC(name, type)                                                  \
 INIT_VEC_TYPE(name, type);                                                    \

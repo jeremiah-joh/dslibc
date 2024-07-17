@@ -381,6 +381,9 @@ dll_##name##_next(struct dll_##name##_iter *iter)                             \
         ptr = &iter->nxt->val;                                                \
         iter->nxt = iter->nxt->nxt;                                           \
                                                                               \
+        if (iter->nxt == NULL)                                                \
+                return NULL;                                                  \
+                                                                              \
         return ptr;                                                           \
 }                                                                             \
                                                                               \
@@ -400,10 +403,7 @@ dll_##name##_free(struct dll_##name *dll)                                     \
                                                                               \
 struct dll_##name##_semi { /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, iter)                                               \
-for (iter.nxt = NULL, (p) = dll_##name##_next(&iter);                         \
-     iter.nxt;                                                                \
-     (p) = dll_##name##_next(&iter))
+#define FOR_EACH(name, p, iter) while (((p) = dll_##name##_next(&iter)))
 
 #define INIT_DLL(name, type)                                                  \
 INIT_DLL_TYPE(name, type);                                                    \
