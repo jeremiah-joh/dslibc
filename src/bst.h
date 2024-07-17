@@ -18,6 +18,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+#define MAX_DEPTH 64
+
 #define INIT_BST_TYPE(name, key_t, val_t)                                     \
 struct bst_##name##_node {                                                    \
         key_t key;                                                            \
@@ -30,10 +32,16 @@ struct bst_##name {                                                           \
         size_t len;                                                           \
 };                                                                            \
                                                                               \
+struct bst_##name##_iter {                                                    \
+        struct bst_##name##_node **arr;                                       \
+        size_t len, nxt;                                                      \
+};                                                                            \
+                                                                              \
 struct bst_##name bst_##name##_new();                                         \
 struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
 struct bst_##name bst_##name##_from(const key_t [], const val_t [],           \
                                     const size_t);                            \
+struct bst_##name##_iter bst_##name##_iter(struct bst_##name *);              \
 int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
 int bst_##name##_search(struct bst_##name *, const key_t, val_t *);           \
 int bst_##name##_remove(struct bst_##name *, const key_t, val_t *);           \
@@ -41,6 +49,7 @@ val_t *bst_##name##_ptr(struct bst_##name *, const key_t);                    \
 val_t *bst_##name##_root(struct bst_##name *);                                \
 val_t *bst_##name##_max(struct bst_##name *);                                 \
 val_t *bst_##name##_min(struct bst_##name *);                                 \
+val_t *bst_##name##_next(struct bst_##name##_iter *);                         \
 void bst_##name##_free(struct bst_##name *) /* to enforce semicolon */
 
 #define INIT_BST_FUNC(name, key_t, val_t, cmp)                                \
@@ -99,6 +108,18 @@ bst_##name##_free_node(struct bst_##name##_node *node)                        \
                 bst_##name##_free_node(node->rch);                            \
                                                                               \
         free(node);                                                           \
+}                                                                             \
+                                                                              \
+static void                                                                   \
+bst_##name##_iter_node(struct bst_##name##_node *node,                        \
+                       struct bst_##name##_node **arr, size_t i)              \
+{                                                                             \
+	arr[i] = node;                                                        \
+                                                                              \
+	if (node->lch != NULL)                                                \
+		bst_##name##_iter_node(node->lch, arr, (i << 1) + 1);         \
+	if (node->rch != NULL)                                                \
+		bst_##name##_iter_node(node->rch, arr, (i << 1) + 2);         \
 }                                                                             \
                                                                               \
 static void                                                                   \
@@ -168,6 +189,21 @@ bst_##name##_from(const key_t key[], const val_t val[],                       \
                 bst_##name##_insert(&bst, key[i], val[i]);                    \
                                                                               \
         return bst;                                                           \
+}                                                                             \
+                                                                              \
+/* i know this is not a good way to implement iterator on binary tree */
+struct bst_##name##_iter                                                      \
+bst_##name##_iter(struct bst_##name *bst)                                     \
+{                                                                             \
+        struct bst_##name##_iter iter;                                        \
+                                                                              \
+	iter.arr = malloc(bst->len * sizeof(struct bst_##name##_node *));     \
+	iter.len = bst->len;                                                  \
+	iter.nxt = 0;                                                         \
+                                                                              \
+	bst_##name##_iter_node(bst->root, iter.arr, 0);                       \
+                                                                              \
+        return iter;                                                          \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -272,6 +308,12 @@ bst_##name##_min(struct bst_##name *bst)                                      \
         return &min->val;                                                     \
 }                                                                             \
                                                                               \
+val_t *                                                                       \
+bst_##name##_next(struct bst_##name##_iter *iter)                             \
+{                                                                             \
+	return (iter->nxt < iter->len) ? &iter->arr[iter->nxt++]->val : NULL; \
+}                                                                             \
+                                                                              \
 void                                                                          \
 bst_##name##_free(struct bst_##name *bst)                                     \
 {                                                                             \
@@ -281,6 +323,8 @@ bst_##name##_free(struct bst_##name *bst)                                     \
 }                                                                             \
                                                                               \
 struct bst_##name##_semi { /* to enforce semicolon */ }
+
+#define FOR_EACH(name, p, iter) while (((p) = bst_##name##_next(&iter)))
 
 #define INIT_BST(name, key_t, val_t, cmp)                                     \
 INIT_BST_TYPE(name, key_t, val_t);                                            \

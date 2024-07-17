@@ -104,6 +104,28 @@ ptr()
 	assert(*bst_int_max(&bst) == 3);
 }
 
+void
+foreach()
+{
+	int *i, j, arr[3];
+	int key[] = { 2, 1, 3 };
+	int val[] = { 2, 1, 3 };
+	struct bst_int bst;
+	struct bst_int_iter iter;
+
+	bst = bst_int_from(key, val, 3);
+	iter = bst_int_iter(&bst);
+
+	j = 0;
+	FOR_EACH(int, i, iter) {
+		arr[j++] = *i;
+	}
+
+	assert(arr[0] == 2);
+	assert(arr[1] == 1);
+	assert(arr[2] == 3);
+}
+
 int
 main()
 {
@@ -113,6 +135,7 @@ main()
 	search();
 	remove();
 	ptr();
+	foreach();
 
 	return 0;
 }
