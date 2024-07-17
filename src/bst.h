@@ -191,7 +191,7 @@ bst_##name##_from(const key_t key[], const val_t val[],                       \
         return bst;                                                           \
 }                                                                             \
                                                                               \
-/* i know this is not a good way to implement iterator on binary tree */
+/* i know this is not a good way to implement iterator on binary tree */      \
 struct bst_##name##_iter                                                      \
 bst_##name##_iter(struct bst_##name *bst)                                     \
 {                                                                             \
