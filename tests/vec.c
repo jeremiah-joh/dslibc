@@ -163,7 +163,7 @@ ptr()
 void
 foreach()
 {
-	int *i, j;
+	int i, j;
 	int val[] = { 1, 2, 3, 4, 5 };
 	struct vec_int vec;
 	struct vec_int_iter iter;
@@ -173,7 +173,7 @@ foreach()
 
 	j = 1;
 	FOR_EACH(int, i, iter) {
-		assert(*i == j++);
+		assert(i == j++);
 	}
 }
 

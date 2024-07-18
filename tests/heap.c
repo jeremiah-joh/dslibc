@@ -68,7 +68,7 @@ pop()
 void
 foreach()
 {
-	int *i, j, val[] = { 1, 2, 3, 4, 5 };
+	int i, j, val[] = { 1, 2, 3, 4, 5 };
 	struct heap_int heap;
 	struct heap_int_iter iter;
 
@@ -77,7 +77,7 @@ foreach()
 
 	j = 1;
 	FOR_EACH(int, i, iter) {
-		assert(*i == j++);
+		assert(i == j++);
 	}
 }
 

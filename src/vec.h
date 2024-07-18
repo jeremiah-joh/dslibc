@@ -46,10 +46,10 @@ int vec_##name##_shrink(struct vec_##name *, const size_t);                   \
 int vec_##name##_getnth(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_setnth(struct vec_##name *, const type, const size_t);       \
 int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
+int vec_##name##_getnxt(struct vec_##name##_iter *, type *);                  \
 type *vec_##name##_ptr(struct vec_##name *, const size_t);                    \
 type *vec_##name##_head(struct vec_##name *);                                 \
 type *vec_##name##_tail(struct vec_##name *);                                 \
-type *vec_##name##_next(struct vec_##name##_iter *);                          \
 void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
 
 #define INIT_VEC_FUNC(name, type)                                             \
@@ -301,6 +301,19 @@ vec_##name##_rmvnth(struct vec_##name *vec, type *val, const size_t idx)      \
         return 0;                                                             \
 }                                                                             \
                                                                               \
+int                                                                           \
+vec_##name##_getnxt(struct vec_##name##_iter *iter, type *val)                \
+{                                                                             \
+        if (iter->nxt < iter->vec->len) {                                     \
+                *val = iter->vec->arr[iter->nxt++];                           \
+		return 0;                                                     \
+	}                                                                     \
+                                                                              \
+        iter->nxt = 0;                                                        \
+                                                                              \
+        return -1;                                                            \
+}                                                                             \
+                                                                              \
 type *                                                                        \
 vec_##name##_ptr(struct vec_##name *vec, const size_t idx)                    \
 {                                                                             \
@@ -319,17 +332,6 @@ vec_##name##_tail(struct vec_##name *vec)                                     \
         return vec->arr ? &vec->arr[vec->len - 1] : NULL;                     \
 }                                                                             \
                                                                               \
-type *                                                                        \
-vec_##name##_next(struct vec_##name##_iter *iter)                             \
-{                                                                             \
-        if (iter->nxt < iter->vec->len)                                       \
-                return &iter->vec->arr[iter->nxt++];                          \
-                                                                              \
-        iter->nxt = 0;                                                        \
-                                                                              \
-        return NULL;                                                          \
-}                                                                             \
-                                                                              \
 void                                                                          \
 vec_##name##_free(struct vec_##name *vec)                                     \
 {                                                                             \
@@ -340,7 +342,7 @@ vec_##name##_free(struct vec_##name *vec)                                     \
                                                                               \
 struct vec_##name##_semi { char _; /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, iter) while (((p) = vec_##name##_next(&iter)))
+#define FOR_EACH(name, i, iter) while (!vec_##name##_getnxt(&iter, &i))
 
 #define INIT_VEC(name, type)                                                  \
 INIT_VEC_TYPE(name, type);                                                    \

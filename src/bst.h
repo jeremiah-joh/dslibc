@@ -48,11 +48,11 @@ struct bst_##name##_iter bst_##name##_iter(struct bst_##name *);              \
 int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
 int bst_##name##_search(struct bst_##name *, const key_t, val_t *);           \
 int bst_##name##_remove(struct bst_##name *, const key_t, val_t *);           \
+int bst_##name##_getnxt(struct bst_##name##_iter *, val_t *);                 \
 val_t *bst_##name##_ptr(struct bst_##name *, const key_t);                    \
 val_t *bst_##name##_root(struct bst_##name *);                                \
 val_t *bst_##name##_max(struct bst_##name *);                                 \
 val_t *bst_##name##_min(struct bst_##name *);                                 \
-val_t *bst_##name##_next(struct bst_##name##_iter *);                         \
 void bst_##name##_free(struct bst_##name *) /* to enforce semicolon */
 
 #define INIT_BST_FUNC(name, key_t, val_t, cmp)                                \
@@ -302,24 +302,22 @@ bst_##name##_min(struct bst_##name *bst)                                      \
         return &min->val;                                                     \
 }                                                                             \
                                                                               \
-val_t *                                                                       \
-bst_##name##_next(struct bst_##name##_iter *iter)                             \
+int                                                                           \
+bst_##name##_getnxt(struct bst_##name##_iter *iter, val_t *val)               \
 {                                                                             \
-        val_t *ptr;                                                           \
-                                                                              \
         while (iter->cur) {                                                   \
                 PUSH(iter, iter->cur);                                        \
                 iter->cur = iter->cur->lch;                                   \
         }                                                                     \
                                                                               \
         if (iter->top == 0)                                                   \
-                return NULL;                                                  \
+                return -1;                                                    \
                                                                               \
         iter->cur = POP(iter);                                                \
-        ptr = &iter->cur->val;                                                \
+        *val = iter->cur->val;                                                \
         iter->cur = iter->cur->rch;                                           \
                                                                               \
-        return ptr;                                                           \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 void                                                                          \
@@ -332,7 +330,7 @@ bst_##name##_free(struct bst_##name *bst)                                     \
                                                                               \
 struct bst_##name##_semi { char _; /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, iter) while (((p) = bst_##name##_next(&iter)))
+#define FOR_EACH(name, i, iter) while (!bst_##name##_getnxt(&iter, &i))
 
 #define INIT_BST(name, key_t, val_t, cmp)                                     \
 INIT_BST_TYPE(name, key_t, val_t);                                            \

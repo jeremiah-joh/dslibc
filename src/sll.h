@@ -48,10 +48,10 @@ int sll_##name##_shrink(struct sll_##name *, const size_t);                   \
 int sll_##name##_getnth(struct sll_##name *, type *, const size_t);           \
 int sll_##name##_setnth(struct sll_##name *, const type, const size_t);       \
 int sll_##name##_rmvnth(struct sll_##name *, type *, const size_t);           \
+int sll_##name##_getnxt(struct sll_##name##_iter *, type *);                  \
 type *sll_##name##_ptr(struct sll_##name *, const size_t);                    \
 type *sll_##name##_head(struct sll_##name *);                                 \
 type *sll_##name##_tail(struct sll_##name *);                                 \
-type *sll_##name##_nxt(struct sll_##name##_iter *);                          \
 void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
 
 #define INIT_SLL_FUNC(name, type)                                             \
@@ -290,6 +290,21 @@ sll_##name##_rmvnth(struct sll_##name *sll, type *val, const size_t idx)      \
         return 0;                                                             \
 }                                                                             \
                                                                               \
+int                                                                           \
+sll_##name##_getnxt(struct sll_##name##_iter *iter, type *val)                \
+{                                                                             \
+        if (iter->nxt == NULL)                                                \
+                iter->nxt = iter->sll->head;                                  \
+                                                                              \
+        *val = iter->nxt->val;                                                \
+        iter->nxt = iter->nxt->nxt;                                           \
+                                                                              \
+        if (iter->nxt == NULL)                                                \
+                return -1;                                                    \
+                                                                              \
+        return 0;                                                             \
+}                                                                             \
+                                                                              \
 type *                                                                        \
 sll_##name##_ptr(struct sll_##name *sll, const size_t idx)                    \
 {                                                                             \
@@ -310,23 +325,6 @@ sll_##name##_tail(struct sll_##name *sll)                                     \
         return &sll->tail->val;                                               \
 }                                                                             \
                                                                               \
-type *                                                                        \
-sll_##name##_next(struct sll_##name##_iter *iter)                             \
-{                                                                             \
-        type *ptr;                                                            \
-                                                                              \
-        if (iter->nxt == NULL)                                                \
-                iter->nxt = iter->sll->head;                                  \
-                                                                              \
-        ptr = &iter->nxt->val;                                                \
-        iter->nxt = iter->nxt->nxt;                                           \
-                                                                              \
-        if (iter->nxt == NULL)                                                \
-                return NULL;                                                  \
-                                                                              \
-        return ptr;                                                           \
-}                                                                             \
-                                                                              \
 void                                                                          \
 sll_##name##_free(struct sll_##name *sll)                                     \
 {                                                                             \
@@ -343,7 +341,7 @@ sll_##name##_free(struct sll_##name *sll)                                     \
                                                                               \
 struct sll_##name##_semi { char _; /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, iter) while (((p) = sll_##name##_next(&iter)))
+#define FOR_EACH(name, i, iter) while (!sll_##name##_getnxt(&iter, &i))
 
 #define INIT_SLL(name, type)                                                  \
 INIT_SLL_TYPE(name, type);                                                    \

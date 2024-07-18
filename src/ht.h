@@ -48,8 +48,8 @@ struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                 \
 int ht_##name##_insert(struct ht_##name *, const key_t, const val_t);         \
 int ht_##name##_search(struct ht_##name *, const key_t, val_t *);             \
 int ht_##name##_remove(struct ht_##name *, const key_t, val_t *);             \
+int ht_##name##_getnxt(struct ht_##name##_iter *, val_t *);                   \
 val_t *ht_##name##_ptr(struct ht_##name *, const key_t);                      \
-val_t *ht_##name##_next(struct ht_##name##_iter *);                           \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
 #define INIT_HT_FUNC(name, key_t, val_t, hash, cmp)                           \
@@ -219,18 +219,20 @@ ht_##name##_ptr(struct ht_##name *ht, const key_t key)                        \
         return &ht->arr[i].val;                                               \
 }                                                                             \
                                                                               \
-val_t *                                                                       \
-ht_##name##_next(struct ht_##name##_iter *iter)                               \
+int                                                                           \
+ht_##name##_getnxt(struct ht_##name##_iter *iter, val_t *val)                 \
 {                                                                             \
         while (iter->ht->arr[iter->nxt].state != SOME                         \
                && iter->nxt < iter->ht->cap)                                  \
                 iter->nxt++;                                                  \
-        if (iter->nxt < iter->ht->cap)                                        \
-                return &iter->ht->arr[iter->nxt++].val;                       \
+        if (iter->nxt < iter->ht->cap) {                                      \
+                *val = iter->ht->arr[iter->nxt++].val;                        \
+		return 0;                                                     \
+	}                                                                     \
                                                                               \
         iter->nxt = 0;                                                        \
                                                                               \
-        return NULL;                                                          \
+        return -1;                                                            \
 }                                                                             \
                                                                               \
 void                                                                          \
@@ -243,7 +245,7 @@ ht_##name##_free(struct ht_##name *ht)                                        \
                                                                               \
 struct ht_##name##_semi { char _; /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, ht) while (((p) = ht_##name##_next(&ht)))
+#define FOR_EACH(name, i, ht) while (!ht_##name##_getnxt(&iter, &i))
 
 #define INIT_HT(name, key_t, val_t, hash, cmp)                                \
 INIT_HT_TYPE(name, key_t, val_t);                                             \

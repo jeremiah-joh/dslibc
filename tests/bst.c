@@ -107,7 +107,7 @@ ptr()
 void
 foreach()
 {
-	int *i, j;
+	int i, j;
 	int arr[] = { 0, 0, 0 };
 	int key[] = { 2, 1, 3 };
 	int val[] = { 2, 1, 3 };
@@ -119,7 +119,7 @@ foreach()
 
 	j = 0;
 	FOR_EACH(int, i, iter) {
-		arr[j++] = *i;
+		arr[j++] = i;
 	}
 
 	assert(arr[0] == 1);

@@ -38,8 +38,8 @@ struct heap_##name heap_##name##_copy(const struct heap_##name);              \
 struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);           \
 int heap_##name##_push(struct heap_##name *, const type);                     \
 int heap_##name##_pop(struct heap_##name *, type *);                          \
+int heap_##name##_getnxt(struct heap_##name##_iter *, type *);                \
 type *heap_##name##_root(struct heap_##name *);                               \
-type *heap_##name##_next(struct heap_##name##_iter *);                        \
 void heap_##name##_free(struct heap_##name *) /* to enforce semicolon */
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord)                                  \
@@ -166,15 +166,17 @@ heap_##name##_root(struct heap_##name *heap)                                  \
         return &heap->arr[0];                                                 \
 }                                                                             \
                                                                               \
-type *                                                                        \
-heap_##name##_next(struct heap_##name##_iter *iter)                           \
+int                                                                           \
+heap_##name##_getnxt(struct heap_##name##_iter *iter, type *val)              \
 {                                                                             \
-        if (iter->nxt < iter->heap->len)                                      \
-                return &iter->heap->arr[iter->nxt++];                         \
+        if (iter->nxt < iter->heap->len) {                                    \
+                *val = iter->heap->arr[iter->nxt++];                          \
+		return 0;                                                     \
+	}                                                                     \
                                                                               \
         iter->nxt = 0;                                                        \
                                                                               \
-        return NULL;                                                          \
+        return -1;                                                            \
 }                                                                             \
                                                                               \
 void                                                                          \
@@ -187,7 +189,7 @@ heap_##name##_free(struct heap_##name *heap)                                  \
                                                                               \
 struct heap_##name##_semi { char _; /* to enforce semicolon */ }
 
-#define FOR_EACH(name, p, iter) while (((p) = heap_##name##_next(&iter)))
+#define FOR_EACH(name, i, iter) while (!heap_##name##_getnxt(&iter, &i))
 
 #define INIT_MIN_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, <)
 #define INIT_MAX_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, >)
