@@ -8,9 +8,9 @@ Initialization
 
 You can initialize a binary search tree with following macros.
 
-* INIT_BST(name, key_t, val_t, cmp);
-* INIT_BST_TYPE(name, key_t, val_t);
-* INIT_BST_FUNC(name, key_t, val_t, cmp);
+* `INIT_BST_TYPE(name, key_t, val_t);` - generates struct and function declaration.
+* `INIT_BST_FUNC(name, key_t, val_t, cmp);` - generates function definition.
+* `INIT_BST(name, key_t, val_t, cmp);` - initializes both at once.
 
 Each parpameters have following meanings.
 
