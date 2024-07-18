@@ -338,7 +338,7 @@ vec_##name##_free(struct vec_##name *vec)                                     \
         vec->cap = vec->len = 0;                                              \
 }                                                                             \
                                                                               \
-struct vec_##name##_semi { /* to enforce semicolon */ }
+struct vec_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, p, iter) while (((p) = vec_##name##_next(&iter)))
 

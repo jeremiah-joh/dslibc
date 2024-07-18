@@ -341,7 +341,7 @@ sll_##name##_free(struct sll_##name *sll)                                     \
         sll->len = 0;                                                         \
 }                                                                             \
                                                                               \
-struct sll_##name##_semi { /* to enforce semicolon */ }
+struct sll_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, p, iter) while (((p) = sll_##name##_next(&iter)))
 

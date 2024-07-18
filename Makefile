@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -ansi -Wall -Wextra -Werror -g
+CFLAGS = -ansi -Wall -Wextra -Wpedantic -Werror -g
 
 test:
 	$(CC) $(CFLAGS) tests/bst.c

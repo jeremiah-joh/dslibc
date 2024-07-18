@@ -155,7 +155,11 @@ bst_##name##_rmv3(struct bst_##name##_node *par,                              \
 struct bst_##name                                                             \
 bst_##name##_new()                                                            \
 {                                                                             \
-        struct bst_##name bst = { NULL, 0 };                                  \
+        struct bst_##name bst;                                                \
+                                                                              \
+        bst.root = NULL;                                                      \
+        bst.len = 0;                                                          \
+                                                                              \
         return bst;                                                           \
 }                                                                             \
                                                                               \
@@ -175,7 +179,9 @@ bst_##name##_from(const key_t key[], const val_t val[],                       \
                   const size_t len)                                           \
 {                                                                             \
         size_t i;                                                             \
-        struct bst_##name bst = { NULL, 0 };                                  \
+        struct bst_##name bst;                                                \
+                                                                              \
+        bst = bst_##name##_new();                                             \
                                                                               \
         for (i = 0; i < len; i++)                                             \
                 bst_##name##_insert(&bst, key[i], val[i]);                    \
@@ -325,7 +331,7 @@ bst_##name##_free(struct bst_##name *bst)                                     \
         bst->len = 0;                                                         \
 }                                                                             \
                                                                               \
-struct bst_##name##_semi { /* to enforce semicolon */ }
+struct bst_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, p, iter) while (((p) = bst_##name##_next(&iter)))
 

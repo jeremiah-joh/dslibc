@@ -241,7 +241,7 @@ ht_##name##_free(struct ht_##name *ht)                                        \
         ht->cap = ht->len = 0;                                                \
 }                                                                             \
                                                                               \
-struct ht_##name##_semi { /* to enforce semicolon */ }
+struct ht_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, p, ht) while (((p) = ht_##name##_next(&ht)))
 

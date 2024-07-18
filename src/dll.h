@@ -401,7 +401,7 @@ dll_##name##_free(struct dll_##name *dll)                                     \
         dll->len = 0;                                                         \
 }                                                                             \
                                                                               \
-struct dll_##name##_semi { /* to enforce semicolon */ }
+struct dll_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, p, iter) while (((p) = dll_##name##_next(&iter)))
 
