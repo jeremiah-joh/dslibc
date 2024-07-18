@@ -1,0 +1,23 @@
+Binary search tree
+==================
+
+Unbalanced, plain binary search tree.
+
+Initialization
+--------------
+
+You can initialize a binary search tree with following macros.
+
+* INIT_BST(name, key_t, val_t, cmp);
+* INIT_BST_TYPE(name, key_t, val_t);
+* INIT_BST_FUNC(name, key_t, val_t, cmp);
+
+Each parpameters have following meanings.
+
+* 'name' is the name of data structure. it is represented as 'struct bst_name'.
+* 'key_t' is a type of key.
+* 'val_t' is a type of value.
+* 'cmp' is a function that compares two key and returns signed integer.
+it should returns negative integer if the first key is less than second,
+positive if the first key is greater than second,
+and zero if both keys have same value.
