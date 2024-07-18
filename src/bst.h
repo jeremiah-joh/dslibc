@@ -21,7 +21,6 @@
 #define MAX_DEPTH 64
 #define PUSH(iter, item) iter->arr[iter->top++] = item
 #define POP(iter) iter->arr[--iter->top]
-#define TOP(iter) iter->arr[iter->top - 1]
 
 #define INIT_BST_TYPE(name, key_t, val_t)                                     \
 struct bst_##name##_node {                                                    \
