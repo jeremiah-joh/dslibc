@@ -19,6 +19,9 @@
 #include <stdlib.h>
 
 #define MAX_DEPTH 64
+#define PUSH(iter, item) iter->arr[iter->top++] = item
+#define POP(iter) iter->arr[--iter->top]
+#define TOP(iter) iter->arr[iter->top - 1]
 
 #define INIT_BST_TYPE(name, key_t, val_t)                                     \
 struct bst_##name##_node {                                                    \
@@ -33,8 +36,9 @@ struct bst_##name {                                                           \
 };                                                                            \
                                                                               \
 struct bst_##name##_iter {                                                    \
-        struct bst_##name##_node **arr;                                       \
-        size_t len, nxt;                                                      \
+        struct bst_##name *bst;                                               \
+        struct bst_##name##_node *arr[MAX_DEPTH], *cur;                       \
+        unsigned char top;                                                    \
 };                                                                            \
                                                                               \
 struct bst_##name bst_##name##_new();                                         \
@@ -179,6 +183,18 @@ bst_##name##_from(const key_t key[], const val_t val[],                       \
         return bst;                                                           \
 }                                                                             \
                                                                               \
+struct bst_##name##_iter                                                      \
+bst_##name##_iter(struct bst_##name *bst)                                     \
+{                                                                             \
+        struct bst_##name##_iter iter;                                        \
+                                                                              \
+        iter.bst = bst;                                                       \
+        iter.cur = bst->root;                                                 \
+        iter.top = 0;                                                         \
+                                                                              \
+        return iter;                                                          \
+}                                                                             \
+                                                                              \
 int                                                                           \
 bst_##name##_insert(struct bst_##name *bst, const key_t key, const val_t val) \
 {                                                                             \
@@ -279,6 +295,26 @@ bst_##name##_min(struct bst_##name *bst)                                      \
                 ;                                                             \
                                                                               \
         return &min->val;                                                     \
+}                                                                             \
+                                                                              \
+val_t *                                                                       \
+bst_##name##_next(struct bst_##name##_iter *iter)                             \
+{                                                                             \
+        val_t *ptr;                                                           \
+                                                                              \
+        while (iter->cur) {                                                   \
+                PUSH(iter, iter->cur);                                        \
+                iter->cur = iter->cur->lch;                                   \
+        }                                                                     \
+                                                                              \
+        if (iter->top == 0)                                                   \
+                return NULL;                                                  \
+                                                                              \
+        iter->cur = POP(iter);                                                \
+        ptr = &iter->cur->val;                                                \
+        iter->cur = iter->cur->rch;                                           \
+                                                                              \
+        return ptr;                                                           \
 }                                                                             \
                                                                               \
 void                                                                          \
