@@ -15,6 +15,7 @@ Following data structures are planned.
 * AVL Tree
 * Red-Black Tree
 * B-Tree
+* Splay Tree
 
 How to use this library
 -----------------------
