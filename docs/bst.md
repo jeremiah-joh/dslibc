@@ -4,9 +4,11 @@ Binary search tree
 Unbalanced, plain binary search tree.
 
 It has following time complexities.
-* Search - O(log n) ~ O(n)
-* Insert - O(log n) ~ O(n)
-* Remove - O(log n) ~ O(n)
+| Operation | Best     | Worst |
+|-----------|----------|-------|
+| Search    | O(log n) | O(n)  |
+| Insert    | O(log n) | O(n)  |
+| Remove    | O(log n) | O(n)  |
 
 Initialization
 --------------
