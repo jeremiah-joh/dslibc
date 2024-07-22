@@ -196,13 +196,13 @@ int v;
 struct bst_int bst = bst_int_from(key, val, 3);
 struct bst_int_iter iter = bst_int_iter(&bst);
 
-assert(bst_int_getnxt(&iter, &v));
+assert(bst_int_getnxt(&iter, &v) == 0);
 assert(v == 4);
-assert(bst_int_getnxt(&iter, &v));
+assert(bst_int_getnxt(&iter, &v) == 0);
 assert(v == 5);
-assert(bst_int_getnxt(&iter, &v));
+assert(bst_int_getnxt(&iter, &v) == 0);
 assert(v == 6);
-assert(bst_int_getnxt(&iter) < 0);
+assert(bst_int_getnxt(&iter, &v) != 0);
 ```
 
 ptr
