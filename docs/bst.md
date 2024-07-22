@@ -174,6 +174,37 @@ assert(buf == 5);
 assert(bst.len == 2);
 ```
 
+getnxt
+------
+
+`int bst_##name##_getnxt(struct bst_##name##_iter *, val_t *)`
+
+Gets next value in iterator.
+
+```c
+#include "bst.h"
+#include <assert.h>
+
+int cmp_int(int x, int y) { return x - y };
+
+INIT_BST(int, int, int, cmp_int);
+
+int key[] = { 1, 2, 3 };
+int val[] = { 4, 5, 6 };
+int v;
+
+struct bst_int bst = bst_int_from(key, val, 3);
+struct bst_int_iter iter = bst_int_iter(&bst);
+
+assert(bst_int_getnxt(&iter, &v));
+assert(v == 4);
+assert(bst_int_getnxt(&iter, &v));
+assert(v == 5);
+assert(bst_int_getnxt(&iter, &v));
+assert(v == 6);
+assert(bst_int_getnxt(&iter) < 0);
+```
+
 ptr
 ---
 
@@ -265,33 +296,6 @@ int val[] = { 4, 5, 6 };
 struct bst_int bst = bst_int_from(key, val, 3);
 
 assert(bst_int_min(&bst) == 4);
-```
-
-next
-----
-
-`val_t *bst_##name##_next(struct bst_##name##_iter *)`
-
-Returns pointer of next value in iterator. Returns NULL if the iteration is ended.
-
-```c
-#include "bst.h"
-#include <assert.h>
-
-int cmp_int(int x, int y) { return x - y };
-
-INIT_BST(int, int, int, cmp_int);
-
-int key[] = { 1, 2, 3 };
-int val[] = { 4, 5, 6 };
-
-struct bst_int bst = bst_int_from(key, val, 3);
-struct bst_int_iter iter = bst_int_iter(&bst);
-
-assert(*bst_int_next(&iter) == 6);
-assert(*bst_int_next(&iter) == 5);
-assert(*bst_int_next(&iter) == 4);
-assert(bst_int_next(&iter) == NULL);
 ```
 
 free
