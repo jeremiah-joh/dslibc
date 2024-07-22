@@ -1,7 +1,7 @@
 Data Structure Library for C
 ============================
 
-A collection of useful data structures written in ANSI C.  
+A collection of useful data structures written in ANSI C.
 
 Following data structures are implemented.
 * Vector
