@@ -14,10 +14,10 @@ You can initialize a binary search tree with following macros.
 
 Each parpameters have following meanings.
 
-* 'name' - name of data structure. it is represented as 'struct bst_name'.
-* 'key_t' - type of key.
-* 'val_t' - type of value.
-* 'cmp' - function that compares two keys and returns signed integer. it should returns negative integer if the first key is less than second, positive if the first key is greater than second, and zero if both keys have same value.
+* `name` - name of data structure. it is represented as `struct bst_name`.
+* `key_t` - type of key.
+* `val_t` - type of value.
+* `cmp` - function that compares two keys and returns signed integer. it should returns negative integer if the first key is less than second, positive if the first key is greater than second, and zero if both keys have same value.
 
 new
 ---
