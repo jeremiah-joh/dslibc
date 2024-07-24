@@ -323,3 +323,28 @@ bst_int_free(&bst);
 assert(bst->root == NULL);
 assert(bst->len = 0;)
 ```
+
+FOR_EACH
+--------
+
+`FOR_EACH(name, item, bst)`
+
+It allows user to iterate all the values in binary search tree.
+
+```c
+#include "bst.h"
+#include <stdio.h>
+
+int cmp_int(int x, int y) { return x - y };
+
+INIT_BST(int, int, int, cmp_int);
+
+int key[] = { 1, 2, 3 };
+int val[] = { 4, 5, 6 };
+int i;
+
+struct bst_int bst = bst_int_from(key, val, 3);
+
+FOR_EACH(int, i, bst) /* since it is wrapper of loop, you can omit { and } */
+	printf("%d\n", i);
+```
