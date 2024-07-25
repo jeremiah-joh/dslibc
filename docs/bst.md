@@ -345,6 +345,7 @@ int i;
 
 struct bst_int bst = bst_int_from(key, val, 3);
 
-FOR_EACH(int, i, bst) /* since it is wrapper of loop, you can omit { and } */
+FOR_EACH(int, i, bst) {
 	printf("%d\n", i);
+} /* since it is wrapper of loop, you could omit { and } */
 ```
