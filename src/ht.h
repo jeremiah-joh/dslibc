@@ -16,6 +16,7 @@
 #define _HT_H
 
 #include <stddef.h>
+#include <string.h>
 
 #define FNV1_32_BASIS 0x811c9dc5
 #define FNV1_32_PRIME 0x01000193
@@ -70,8 +71,9 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                    \
         size_t i;                                                             \
                                                                               \
         new.cap = ht_##name##_cap(ht_##name##_cap(len));                      \
-        new.arr = calloc(new.cap, sizeof(struct ht_##name##_node));           \
         new.len = 0;                                                          \
+        new.arr = malloc(new.cap * sizeof(struct ht_##name##_node));          \
+	memset(new.arr, 0, new.cap * sizeof(struct ht_##name##_node));        \
                                                                               \
         for (i = 0; i < ht->cap; i++) {                                       \
                 if (ht->arr[i].state != SOME)                                 \
@@ -105,7 +107,8 @@ ht_##name##_copy(const struct ht_##name ht)                                   \
                                                                               \
         cp.len = ht.len;                                                      \
         cp.cap = ht.cap;                                                      \
-        cp.arr = calloc(cp.cap, sizeof(struct ht_##name##_node));             \
+        cp.arr = malloc(cp.cap * sizeof(struct ht_##name##_node));            \
+	memset(cp.arr, 0, cp.cap * sizeof(struct ht_##name##_node));          \
                                                                               \
         memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
                                                                               \
