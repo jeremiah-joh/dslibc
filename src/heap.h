@@ -170,8 +170,8 @@ heap_##name##_getnxt(struct heap_##name##_iter *iter, type *val)              \
 {                                                                             \
         if (iter->nxt < iter->heap->len) {                                    \
                 *val = iter->heap->arr[iter->nxt++];                          \
-		return 0;                                                     \
-	}                                                                     \
+                return 0;                                                     \
+        }                                                                     \
                                                                               \
         iter->nxt = 0;                                                        \
                                                                               \

@@ -305,8 +305,8 @@ vec_##name##_getnxt(struct vec_##name##_iter *iter, type *val)                \
 {                                                                             \
         if (iter->nxt < iter->vec->len) {                                     \
                 *val = iter->vec->arr[iter->nxt++];                           \
-		return 0;                                                     \
-	}                                                                     \
+                return 0;                                                     \
+        }                                                                     \
                                                                               \
         iter->nxt = 0;                                                        \
                                                                               \

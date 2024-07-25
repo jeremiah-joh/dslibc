@@ -226,8 +226,8 @@ ht_##name##_getnxt(struct ht_##name##_iter *iter, val_t *val)                 \
                 iter->nxt++;                                                  \
         if (iter->nxt < iter->ht->cap) {                                      \
                 *val = iter->ht->arr[iter->nxt++].val;                        \
-		return 0;                                                     \
-	}                                                                     \
+                return 0;                                                     \
+        }                                                                     \
                                                                               \
         iter->nxt = 0;                                                        \
                                                                               \
