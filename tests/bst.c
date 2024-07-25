@@ -8,7 +8,7 @@ cmp(int x, int y)
 	return x - y;
 }
 
-INIT_BST(int, int, int, cmp, malloc, realloc, free);
+INIT_BST(int, int, int, cmp, malloc, free);
 
 void
 from()

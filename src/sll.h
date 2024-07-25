@@ -53,7 +53,7 @@ type *sll_##name##_head(struct sll_##name *);                                 \
 type *sll_##name##_tail(struct sll_##name *);                                 \
 void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
 
-#define INIT_SLL_FUNC(name, type, malloc, realloc, free)                      \
+#define INIT_SLL_FUNC(name, type, malloc, free)                               \
 static struct sll_##name##_node *                                             \
 sll_##name##_new_node(const type val)                                         \
 {                                                                             \
@@ -342,8 +342,8 @@ struct sll_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, i, iter) while (!sll_##name##_getnxt(&iter, &i))
 
-#define INIT_SLL(name, type, malloc, realloc, free)                           \
+#define INIT_SLL(name, type, malloc, free)                                    \
 INIT_SLL_TYPE(name, type);                                                    \
-INIT_SLL_FUNC(name, type, malloc, realloc, free)
+INIT_SLL_FUNC(name, type, malloc, free)
 
 #endif

@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-INIT_SLL(int, int, malloc, realloc, free);
+INIT_SLL(int, int, malloc, free);
 
 void
 from()

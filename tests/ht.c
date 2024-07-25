@@ -15,7 +15,7 @@ cmp_int(int x, int y)
 	return y - x;
 }
 
-INIT_HT(int, int, int, hash_int_t, cmp_int, malloc, realloc, free);
+INIT_HT(int, int, int, hash_int_t, cmp_int, malloc, free);
 
 void
 from()

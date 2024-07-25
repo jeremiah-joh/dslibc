@@ -54,7 +54,7 @@ val_t *bst_##name##_max(struct bst_##name *);                                 \
 val_t *bst_##name##_min(struct bst_##name *);                                 \
 void bst_##name##_free(struct bst_##name *) /* to enforce semicolon */
 
-#define INIT_BST_FUNC(name, key_t, val_t, cmp, malloc, realloc, free)         \
+#define INIT_BST_FUNC(name, key_t, val_t, cmp, malloc, free)                  \
 static struct bst_##name##_node *                                             \
 bst_##name##_new_node(const key_t key, const val_t val)                       \
 {                                                                             \
@@ -331,8 +331,8 @@ struct bst_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, i, iter) while (!bst_##name##_getnxt(&iter, &i))
 
-#define INIT_BST(name, key_t, val_t, cmp, malloc, realloc, free)              \
+#define INIT_BST(name, key_t, val_t, cmp, malloc, free)                       \
 INIT_BST_TYPE(name, key_t, val_t);                                            \
-INIT_BST_FUNC(name, key_t, val_t, cmp, malloc, realloc, free)
+INIT_BST_FUNC(name, key_t, val_t, cmp, malloc, free)
 
 #endif

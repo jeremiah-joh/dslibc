@@ -52,7 +52,7 @@ int ht_##name##_getnxt(struct ht_##name##_iter *, val_t *);                   \
 val_t *ht_##name##_ptr(struct ht_##name *, const key_t);                      \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
-#define INIT_HT_FUNC(name, key_t, val_t, hash, cmp, malloc, realloc, free)    \
+#define INIT_HT_FUNC(name, key_t, val_t, hash, cmp, malloc, free)             \
 static size_t                                                                 \
 ht_##name##_cap(const size_t len)                                             \
 {                                                                             \
@@ -249,9 +249,9 @@ struct ht_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, i, ht) while (!ht_##name##_getnxt(&iter, &i))
 
-#define INIT_HT(name, key_t, val_t, hash, cmp, malloc, realloc, free)         \
+#define INIT_HT(name, key_t, val_t, hash, cmp, malloc, free)                  \
 INIT_HT_TYPE(name, key_t, val_t);                                             \
-INIT_HT_FUNC(name, key_t, val_t, hash, cmp, malloc, realloc, free)
+INIT_HT_FUNC(name, key_t, val_t, hash, cmp, malloc, free)
 
 /* FNV-1a hash function for string */
 static size_t
