@@ -16,15 +16,18 @@ Initialization
 You can initialize a binary search tree with following macros.
 
 * `INIT_BST_TYPE(name, key_t, val_t);` - generates struct and function declaration.
-* `INIT_BST_FUNC(name, key_t, val_t, cmp);` - generates function definition.
-* `INIT_BST(name, key_t, val_t, cmp);` - generates both at once.
+* `INIT_BST_FUNC(name, key_t, val_t, cmp, malloc, realloc, free);` - generates function definition.
+* `INIT_BST(name, key_t, val_t, cmp, malloc, realloc, free);` - generates both at once.
 
 Each parpameters have following meanings.
 
-* `name` - name of data structure. it represents `struct bst_name`.
+* `name` - name of data structure. it generates `struct bst_name`.
 * `key_t` - type of key.
 * `val_t` - type of value.
 * `cmp` - function that compares two keys and returns signed integer. it should returns negative integer if the first key is less than second, positive if the first key is greater than second, and zero if both keys have same value.
+* `malloc` - memory allocation, it's not necessary to be it in the standard library.
+* `realloc` - re-allocation, it's not necessary to be it in the standard library.
+* `free` - frees memory, it's not necessary to be it in the standard library.
 
 new
 ---
