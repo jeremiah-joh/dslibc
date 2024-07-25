@@ -16,7 +16,6 @@
 #define _HEAP_H
 
 #include <stddef.h>
-#include <stdlib.h>
 #include <string.h>
 
 #define PAR(i) (((i) - 1) >> 1)
@@ -42,7 +41,7 @@ int heap_##name##_getnxt(struct heap_##name##_iter *, type *);                \
 type *heap_##name##_root(struct heap_##name *);                               \
 void heap_##name##_free(struct heap_##name *) /* to enforce semicolon */
 
-#define INIT_HEAP_FUNC(name, type, cmp, ord)                                  \
+#define INIT_HEAP_FUNC(name, type, cmp, ord, malloc, realloc, free)           \
 static size_t                                                                 \
 heap_##name##_cap(const size_t len)                                           \
 {                                                                             \
@@ -191,15 +190,18 @@ struct heap_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, i, iter) while (!heap_##name##_getnxt(&iter, &i))
 
-#define INIT_MIN_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, <)
-#define INIT_MAX_HEAP_FUNC(name, type, cmp) INIT_HEAP_FUNC(name, type, cmp, >)
+#define INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free)            \
+INIT_HEAP_FUNC(name, type, cmp, <, malloc, realloc, free)
 
-#define INIT_MIN_HEAP(name, type, cmp)                                        \
-INIT_HEAP_TYPE(name, type);                                                   \
-INIT_MIN_HEAP_FUNC(name, type, cmp)
+#define INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)            \
+INIT_HEAP_FUNC(name, type, cmp, >, malloc, realloc, free)
 
-#define INIT_MAX_HEAP(name, type, cmp)                                        \
+#define INIT_MIN_HEAP(name, type, cmp, malloc, realloc, free)                 \
 INIT_HEAP_TYPE(name, type);                                                   \
-INIT_MAX_HEAP_FUNC(name, type, cmp)
+INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
+
+#define INIT_MAX_HEAP(name, type, cmp, malloc, realloc, free)                 \
+INIT_HEAP_TYPE(name, type);                                                   \
+INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
 
 #endif

@@ -1,5 +1,6 @@
 #include "../src/heap.h"
 #include <assert.h>
+#include <stdlib.h>
 
 static int
 cmp_int(int x, int y)
@@ -7,7 +8,7 @@ cmp_int(int x, int y)
 	return x - y;
 }
 
-INIT_MIN_HEAP(int, int, cmp_int);
+INIT_MIN_HEAP(int, int, cmp_int, malloc, realloc, free);
 
 void
 from()

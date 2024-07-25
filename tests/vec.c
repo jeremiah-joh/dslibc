@@ -1,7 +1,8 @@
 #include "../src/vec.h"
 #include <assert.h>
+#include <stdlib.h>
 
-INIT_VEC(int, int);
+INIT_VEC(int, int, malloc, realloc, free);
 
 void
 from()

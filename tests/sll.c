@@ -1,7 +1,8 @@
 #include "../src/sll.h"
 #include <assert.h>
+#include <stdlib.h>
 
-INIT_SLL(int, int);
+INIT_SLL(int, int, malloc, realloc, free);
 
 void
 from()

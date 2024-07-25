@@ -16,7 +16,6 @@
 #define _VEC_H
 
 #include <stddef.h>
-#include <stdlib.h>
 #include <string.h>
 
 #define INIT_VEC_TYPE(name, type)                                             \
@@ -52,7 +51,7 @@ type *vec_##name##_head(struct vec_##name *);                                 \
 type *vec_##name##_tail(struct vec_##name *);                                 \
 void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
 
-#define INIT_VEC_FUNC(name, type)                                             \
+#define INIT_VEC_FUNC(name, type, malloc, realloc, free)                      \
 static size_t                                                                 \
 vec_##name##_new_cap(const size_t len)                                        \
 {                                                                             \
@@ -344,8 +343,8 @@ struct vec_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, i, iter) while (!vec_##name##_getnxt(&iter, &i))
 
-#define INIT_VEC(name, type)                                                  \
+#define INIT_VEC(name, type, malloc, realloc, free)                           \
 INIT_VEC_TYPE(name, type);                                                    \
-INIT_VEC_FUNC(name, type)
+INIT_VEC_FUNC(name, type, malloc, realloc, free)
 
 #endif

@@ -16,7 +16,6 @@
 #define _DLL_H
 
 #include <stddef.h>
-#include <stdlib.h>
 
 #define INIT_DLL_TYPE(name, type)                                             \
 struct dll_##name##_node {                                                    \
@@ -56,7 +55,7 @@ type *dll_##name##_head(struct dll_##name *);                                 \
 type *dll_##name##_tail(struct dll_##name *);                                 \
 void dll_##name##_free(struct dll_##name *) /* to enforce semicolon */
 
-#define INIT_DLL_FUNC(name, type)                                             \
+#define INIT_DLL_FUNC(name, type, malloc, realloc, free)                      \
 static struct dll_##name##_node *                                             \
 dll_##name##_new_node(const type val,                                         \
                       struct dll_##name##_node *prv,                          \
@@ -403,8 +402,8 @@ struct dll_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, i, iter) while (!dll_##name##_getnxt(&iter, &i))
 
-#define INIT_DLL(name, type)                                                  \
+#define INIT_DLL(name, type, malloc, realloc, free)                           \
 INIT_DLL_TYPE(name, type);                                                    \
-INIT_DLL_FUNC(name, type)
+INIT_DLL_FUNC(name, type, malloc, realloc, free)
 
 #endif

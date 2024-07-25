@@ -1,7 +1,8 @@
 #include "../src/dll.h"
 #include <assert.h>
+#include <stdlib.h>
 
-INIT_DLL(int, int);
+INIT_DLL(int, int, malloc, realloc, free);
 
 void
 from()

@@ -1,6 +1,7 @@
 #include "../src/ht.h"
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 
 static size_t
 hash_int_t(int x)
@@ -14,7 +15,7 @@ cmp_int(int x, int y)
 	return y - x;
 }
 
-INIT_HT(int, int, int, hash_int_t, cmp_int);
+INIT_HT(int, int, int, hash_int_t, cmp_int, malloc, realloc, free);
 
 void
 from()

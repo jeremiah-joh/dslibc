@@ -1,5 +1,6 @@
 #include "../src/bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int
 cmp(int x, int y)
@@ -7,7 +8,7 @@ cmp(int x, int y)
 	return x - y;
 }
 
-INIT_BST(int, int, int, cmp);
+INIT_BST(int, int, int, cmp, malloc, realloc, free);
 
 void
 from()
