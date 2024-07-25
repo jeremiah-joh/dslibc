@@ -38,10 +38,11 @@ Constructs an empty tree.
 
 ```c
 #include "bst.h"
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 struct bst_int bst = bst_int_new();
 ```
@@ -55,10 +56,11 @@ Constructs a deeply copied tree from given tree.
 
 ```c
 #include "bst.h"
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 struct bst_int bst = bst_int_new();
 struct bst_int cpy = bst_int_copy(bst);
@@ -73,10 +75,11 @@ Constructs a tree from given keys and values.
 
 ```c
 #include "bst.h"
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -93,10 +96,11 @@ Constructs an iterator of given pointer of tree.
 
 ```c
 #include "bst.h"
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -114,10 +118,11 @@ Inserts a new key and value into tree. Returns 0 on success, -1 on failure.
 
 ```c
 #include "bst.h"
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 struct bst_int bst = bst_int_new();
 
@@ -136,10 +141,11 @@ Gets a value corresponded with given key as call-by-reference. Returns 0 on suce
 ```c
 #include "bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -161,10 +167,11 @@ Removes a value corresponded with given key and return it as call-by-reference. 
 ```c
 #include "bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -187,10 +194,11 @@ Gets next value in iterator.
 ```c
 #include "bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -218,10 +226,11 @@ Returns pointer of value corresponded with given key. Returns NULL on failure.
 ```c
 #include "bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -242,10 +251,11 @@ Returns pointer of value in root node. Returns NULL if the tree is empty.
 ```c
 #include "bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -265,10 +275,11 @@ Returns pointer of the greatest value in tree. Returns NULL if the tree is empty
 ```c
 #include "bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -288,10 +299,11 @@ Returns pointer of the least value in tree. Returns NULL if the tree is empty.
 ```c
 #include "bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -311,10 +323,11 @@ Deallocates entire nodes and tree itself from memory. This function is use-after
 ```c
 #include "bst.h"
 #include <assert.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -337,10 +350,11 @@ It allows user to iterate all the values in binary search tree.
 ```c
 #include "bst.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int);
+INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
