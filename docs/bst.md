@@ -16,8 +16,8 @@ Initialization
 You can initialize a binary search tree with following macros.
 
 * `INIT_BST_TYPE(name, key_t, val_t);` - generates struct and function declaration.
-* `INIT_BST_FUNC(name, key_t, val_t, cmp, malloc, realloc, free);` - generates function definition.
-* `INIT_BST(name, key_t, val_t, cmp, malloc, realloc, free);` - generates both at once.
+* `INIT_BST_FUNC(name, key_t, val_t, cmp, malloc, free);` - generates function definition.
+* `INIT_BST(name, key_t, val_t, cmp, malloc, free);` - generates both at once.
 
 Each parpameters have following meanings.
 
@@ -26,7 +26,6 @@ Each parpameters have following meanings.
 * `val_t` - type of value.
 * `cmp` - function that compares two keys and returns signed integer. it should returns negative integer if the first key is less than second, positive if the first key is greater than second, and zero if both keys have same value.
 * `malloc` - memory allocation, it's not necessary to be it in the standard library.
-* `realloc` - re-allocation, it's not necessary to be it in the standard library.
 * `free` - frees memory, it's not necessary to be it in the standard library.
 
 new
@@ -42,7 +41,7 @@ Constructs an empty tree.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 struct bst_int bst = bst_int_new();
 ```
@@ -60,7 +59,7 @@ Constructs a deeply copied tree from given tree.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 struct bst_int bst = bst_int_new();
 struct bst_int cpy = bst_int_copy(bst);
@@ -79,7 +78,7 @@ Constructs a tree from given keys and values.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -100,7 +99,7 @@ Constructs an iterator of given pointer of tree.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -122,7 +121,7 @@ Inserts a new key and value into tree. Returns 0 on success, -1 on failure.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 struct bst_int bst = bst_int_new();
 
@@ -145,7 +144,7 @@ Gets a value corresponded with given key as call-by-reference. Returns 0 on suce
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -171,7 +170,7 @@ Removes a value corresponded with given key and return it as call-by-reference. 
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -198,7 +197,7 @@ Gets next value in iterator.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -230,7 +229,7 @@ Returns pointer of value corresponded with given key. Returns NULL on failure.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -255,7 +254,7 @@ Returns pointer of value in root node. Returns NULL if the tree is empty.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -279,7 +278,7 @@ Returns pointer of the greatest value in tree. Returns NULL if the tree is empty
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -303,7 +302,7 @@ Returns pointer of the least value in tree. Returns NULL if the tree is empty.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -327,7 +326,7 @@ Deallocates entire nodes and tree itself from memory. This function is use-after
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
@@ -354,7 +353,7 @@ It allows user to iterate all the values in binary search tree.
 
 int cmp_int(int x, int y) { return x - y };
 
-INIT_BST(int, int, int, cmp_int, malloc, realloc, free);
+INIT_BST(int, int, int, cmp_int, malloc, free);
 
 int key[] = { 1, 2, 3 };
 int val[] = { 4, 5, 6 };
