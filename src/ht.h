@@ -25,7 +25,7 @@
 
 #define INIT_HT_TYPE(name, type)                                              \
 struct ht_##name##_node {                                                     \
-	type data;                                                            \
+        type data;                                                            \
         enum { NONE, TOMB, SOME } state;                                      \
 };                                                                            \
                                                                               \

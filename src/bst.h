@@ -23,7 +23,7 @@
 
 #define INIT_BST_TYPE(name, type)                                             \
 struct bst_##name##_node {                                                    \
-	type data;                                                            \
+        type data;                                                            \
         struct bst_##name##_node *lch, *rch;                                  \
 };                                                                            \
                                                                               \

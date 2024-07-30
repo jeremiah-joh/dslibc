@@ -366,13 +366,13 @@ dll_##name##_getnxt(struct dll_##name##_iter *iter, type *val)                \
 int                                                                           \
 dll_##name##_head(struct dll_##name *dll, type *val)                          \
 {                                                                             \
-	return (*val = dll->head->val) ? 0 : -1;                              \
+        return (*val = dll->head->val) ? 0 : -1;                              \
 }                                                                             \
                                                                               \
 int                                                                           \
 dll_##name##_tail(struct dll_##name *dll, type *val)                          \
 {                                                                             \
-	return (*val = dll->tail->val) ? 0 : -1;                              \
+        return (*val = dll->tail->val) ? 0 : -1;                              \
 }                                                                             \
                                                                               \
 void                                                                          \
