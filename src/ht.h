@@ -23,6 +23,90 @@
 #define FNV1_64_BASIS 0xcbf29ce484222325
 #define FNV1_64_PRIME 0x00000100000001B3
 
+static size_t
+hash_str_64(const char *str)
+{
+        size_t h;
+
+        h = FNV1_64_BASIS;
+        for (; *str; str++) {
+                h ^= *str;
+                h *= FNV1_64_PRIME;
+        }
+
+        return h;
+}
+
+static size_t
+hash_str_32(const char *str)
+{
+        size_t h;
+
+        h = FNV1_32_BASIS;
+        for (; *str; str++) {
+                h ^= *str;
+                h *= FNV1_32_PRIME;
+        }
+
+        return h;
+}
+
+/* FNV-1a hash function for string */
+size_t
+hash_str(const char *str)
+{
+        /* compiler would optimize it */
+        if (sizeof(size_t) == 8)
+                return hash_str_64(str);
+        if (sizeof(size_t) == 4)
+                return hash_str_32(str);
+
+        /* unreachable unless cpu is neither 64 nor 32 bit */
+        return 0;
+}
+
+static size_t
+hash_any_64(const void *ptr, const size_t len)
+{
+        size_t h, i;
+
+        h = FNV1_64_BASIS;
+        for (i = 0; i < len; i++) {
+                h ^= ((char *)ptr)[i];
+                h *= FNV1_64_PRIME;
+        }
+
+        return h;
+}
+
+static size_t
+hash_any_32(const void *ptr, const size_t len)
+{
+        size_t h, i;
+
+        h = FNV1_32_BASIS;
+        for (i = 0; i < len; i++) {
+                h ^= ((char *)ptr)[i];
+                h *= FNV1_32_PRIME;
+        }
+
+        return h;
+}
+
+/* FNV-1a hash function for any type */
+size_t
+hash_any(const void *ptr, const size_t len)
+{
+        /* compiler would optimize it */
+        if (sizeof(size_t) == 8)
+                return hash_any_64(ptr, len);
+        if (sizeof(size_t) == 4)
+                return hash_any_32(ptr, len);
+
+        /* unreachable unless cpu is neither 64 nor 32 bit */
+        return 0;
+}
+
 #define INIT_HT_TYPE(name, type)                                              \
 struct ht_##name##_node {                                                     \
         type data;                                                            \
@@ -241,47 +325,5 @@ struct ht_##name##_semi { char _; /* to enforce semicolon */ }
 #define INIT_HT(name, type, hash, cmp, malloc, free)                          \
 INIT_HT_TYPE(name, type);                                                     \
 INIT_HT_FUNC(name, type, hash, cmp, malloc, free)
-
-/* FNV-1a hash function for string */
-static size_t
-hash_str_64(const char *str)
-{
-        size_t h;
-
-        h = FNV1_64_BASIS;
-        for (; *str; str++) {
-                h ^= *str;
-                h *= FNV1_64_PRIME;
-        }
-
-        return h;
-}
-
-static size_t
-hash_str_32(const char *str)
-{
-        size_t h;
-
-        h = FNV1_32_BASIS;
-        for (; *str; str++) {
-                h ^= *str;
-                h *= FNV1_32_PRIME;
-        }
-
-        return h;
-}
-
-size_t
-hash_str(const char *str)
-{
-        /* compiler would optimize it */
-        if (sizeof(size_t) == 8)
-                return hash_str_64(str);
-        if (sizeof(size_t) == 4)
-                return hash_str_32(str);
-
-        /* unreachable unless cpu is neither 64 nor 32 bit */
-        return 0;
-}
 
 #endif
