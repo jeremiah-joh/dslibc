@@ -124,14 +124,15 @@ struct ht_##name##_iter {                                                     \
 };                                                                            \
                                                                               \
 struct ht_##name ht_##name##_new();                                           \
-struct ht_##name ht_##name##_copy(const struct ht_##name);                    \
 struct ht_##name ht_##name##_from(const type [], const size_t);               \
-struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                 \
+struct ht_##name ht_##name##_copy(const struct ht_##name);                    \
 int ht_##name##_insert(struct ht_##name *, const type);                       \
 int ht_##name##_search(struct ht_##name *, type *);                           \
 int ht_##name##_remove(struct ht_##name *, type *);                           \
-int ht_##name##_getnxt(struct ht_##name##_iter *, type *);                    \
-void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
+void ht_##name##_free(struct ht_##name *);                                    \
+                                                                              \
+struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                 \
+int ht_##name##_getnxt(struct ht_##name##_iter *, type *) /* semicolon */
 
 #define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                     \
 static void                                                                   \
@@ -191,21 +192,6 @@ ht_##name##_new()                                                             \
 }                                                                             \
                                                                               \
 struct ht_##name                                                              \
-ht_##name##_copy(const struct ht_##name ht)                                   \
-{                                                                             \
-        struct ht_##name cp;                                                  \
-                                                                              \
-        cp.len = ht.len;                                                      \
-        cp.cap = ht.cap;                                                      \
-        cp.arr = malloc(cp.cap * sizeof(struct ht_##name##_node));            \
-        ht_##name##_init(&cp);                                                \
-                                                                              \
-        memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
-                                                                              \
-        return cp;                                                            \
-}                                                                             \
-                                                                              \
-struct ht_##name                                                              \
 ht_##name##_from(const type data[], const size_t len)                         \
 {                                                                             \
         size_t i;                                                             \
@@ -220,15 +206,19 @@ ht_##name##_from(const type data[], const size_t len)                         \
         return ht;                                                            \
 }                                                                             \
                                                                               \
-struct ht_##name##_iter                                                       \
-ht_##name##_iter(struct ht_##name *ht)                                        \
+struct ht_##name                                                              \
+ht_##name##_copy(const struct ht_##name ht)                                   \
 {                                                                             \
-        struct ht_##name##_iter iter;                                         \
+        struct ht_##name cp;                                                  \
                                                                               \
-        iter.ht = ht;                                                         \
-        iter.nxt = 0;                                                         \
+        cp.len = ht.len;                                                      \
+        cp.cap = ht.cap;                                                      \
+        cp.arr = malloc(cp.cap * sizeof(struct ht_##name##_node));            \
+        ht_##name##_init(&cp);                                                \
                                                                               \
-        return iter;                                                          \
+        memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
+                                                                              \
+        return cp;                                                            \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -294,6 +284,25 @@ ht_##name##_remove(struct ht_##name *ht, type *data)                          \
         return 0;                                                             \
 }                                                                             \
                                                                               \
+void                                                                          \
+ht_##name##_free(struct ht_##name *ht)                                        \
+{                                                                             \
+        free(ht->arr);                                                        \
+        ht->arr = NULL;                                                       \
+        ht->cap = ht->len = 0;                                                \
+}                                                                             \
+                                                                              \
+struct ht_##name##_iter                                                       \
+ht_##name##_iter(struct ht_##name *ht)                                        \
+{                                                                             \
+        struct ht_##name##_iter iter;                                         \
+                                                                              \
+        iter.ht = ht;                                                         \
+        iter.nxt = 0;                                                         \
+                                                                              \
+        return iter;                                                          \
+}                                                                             \
+                                                                              \
 int                                                                           \
 ht_##name##_getnxt(struct ht_##name##_iter *iter, type *data)                 \
 {                                                                             \
@@ -310,15 +319,7 @@ ht_##name##_getnxt(struct ht_##name##_iter *iter, type *data)                 \
         return -1;                                                            \
 }                                                                             \
                                                                               \
-void                                                                          \
-ht_##name##_free(struct ht_##name *ht)                                        \
-{                                                                             \
-        free(ht->arr);                                                        \
-        ht->arr = NULL;                                                       \
-        ht->cap = ht->len = 0;                                                \
-}                                                                             \
-                                                                              \
-struct ht_##name##_semi { char _; /* to enforce semicolon */ }
+struct ht_##name##_semi { char _; } /* semicolon */
 
 #define FOR_EACH(name, i, ht) while (!ht_##name##_getnxt(&iter, &i))
 
