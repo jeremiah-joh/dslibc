@@ -23,10 +23,9 @@
 #define FNV1_64_BASIS 0xcbf29ce484222325
 #define FNV1_64_PRIME 0x00000100000001B3
 
-#define INIT_HT_TYPE(name, key_t, val_t)                                      \
+#define INIT_HT_TYPE(name, type)                                              \
 struct ht_##name##_node {                                                     \
-        key_t key;                                                            \
-        val_t val;                                                            \
+	type data;                                                            \
         enum { NONE, TOMB, SOME } state;                                      \
 };                                                                            \
                                                                               \
@@ -42,16 +41,15 @@ struct ht_##name##_iter {                                                     \
                                                                               \
 struct ht_##name ht_##name##_new();                                           \
 struct ht_##name ht_##name##_copy(const struct ht_##name);                    \
-struct ht_##name ht_##name##_from(const key_t [], const val_t [],             \
-                                  const size_t);                              \
+struct ht_##name ht_##name##_from(const type [], const size_t);               \
 struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                 \
-int ht_##name##_insert(struct ht_##name *, const key_t, const val_t);         \
-int ht_##name##_search(struct ht_##name *, const key_t, val_t *);             \
-int ht_##name##_remove(struct ht_##name *, const key_t, val_t *);             \
-int ht_##name##_getnxt(struct ht_##name##_iter *, val_t *);                   \
+int ht_##name##_insert(struct ht_##name *, const type);                       \
+int ht_##name##_search(struct ht_##name *, type *);                           \
+int ht_##name##_remove(struct ht_##name *, type *);                           \
+int ht_##name##_getnxt(struct ht_##name##_iter *, type *);                    \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
-#define INIT_HT_FUNC(name, key_t, val_t, hash, cmp, malloc, free)             \
+#define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                     \
 static void                                                                   \
 ht_##name##_init(struct ht_##name *ht)                                        \
 {                                                                             \
@@ -86,7 +84,7 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                    \
         for (i = 0; i < ht->cap; i++) {                                       \
                 if (ht->arr[i].state != SOME)                                 \
                         continue;                                             \
-                if (ht_##name##_insert(&new, ht->arr[i].key, ht->arr[i].val)) \
+                if (ht_##name##_insert(&new, ht->arr[i].data))                \
                         return -1;                                            \
         }                                                                     \
                                                                               \
@@ -124,7 +122,7 @@ ht_##name##_copy(const struct ht_##name ht)                                   \
 }                                                                             \
                                                                               \
 struct ht_##name                                                              \
-ht_##name##_from(const key_t key[], const val_t val[], const size_t len)      \
+ht_##name##_from(const type data[], const size_t len)                         \
 {                                                                             \
         size_t i;                                                             \
         struct ht_##name ht;                                                  \
@@ -132,7 +130,7 @@ ht_##name##_from(const key_t key[], const val_t val[], const size_t len)      \
         ht = ht_##name##_new();                                               \
                                                                               \
         for (i = 0; i < len; i++)                                             \
-                if (ht_##name##_insert(&ht, key[i], val[i]))                  \
+                if (ht_##name##_insert(&ht, data[i]))                         \
                         return ht;                                            \
                                                                               \
         return ht;                                                            \
@@ -150,7 +148,7 @@ ht_##name##_iter(struct ht_##name *ht)                                        \
 }                                                                             \
                                                                               \
 int                                                                           \
-ht_##name##_insert(struct ht_##name *ht, const key_t key, const val_t val)    \
+ht_##name##_insert(struct ht_##name *ht, const type data)                     \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
@@ -158,13 +156,12 @@ ht_##name##_insert(struct ht_##name *ht, const key_t key, const val_t val)    \
                 if (ht_##name##_resize(ht, ht->len + 1))                      \
                         return -1;                                            \
                                                                               \
-        h = hash(key) & (ht->cap - 1);                                        \
+        h = hash(data) & (ht->cap - 1);                                       \
         for (i = h; ht->arr[i].state == SOME; i = (i + 1) % ht->cap)          \
-                if (cmp(key, ht->arr[i].key) == 0 || i + 1 == h)              \
+                if (cmp(data, ht->arr[i].data) == 0 || i + 1 == h)            \
                         return -1;                                            \
                                                                               \
-        ht->arr[i].key = key;                                                 \
-        ht->arr[i].val = val;                                                 \
+        ht->arr[i].data= data;                                                \
         ht->arr[i].state = SOME;                                              \
         ht->len++;                                                            \
                                                                               \
@@ -172,25 +169,25 @@ ht_##name##_insert(struct ht_##name *ht, const key_t key, const val_t val)    \
 }                                                                             \
                                                                               \
 int                                                                           \
-ht_##name##_search(struct ht_##name *ht, const key_t key, val_t *val)         \
+ht_##name##_search(struct ht_##name *ht, type *data)                          \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
-        h = hash(key) & (ht->cap - 1);                                        \
+        h = hash(*data) & (ht->cap - 1);                                      \
         for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
-                if (cmp(key, ht->arr[i].key) == 0)                            \
+                if (cmp(*data, ht->arr[i].data) == 0)                         \
                         break;                                                \
                 if (i + 1 == h)                                               \
                         return -1;                                            \
         }                                                                     \
                                                                               \
-        *val = ht->arr[i].val;                                                \
+        *data = ht->arr[i].data;                                              \
                                                                               \
         return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
-ht_##name##_remove(struct ht_##name *ht, const key_t key, val_t *val)         \
+ht_##name##_remove(struct ht_##name *ht, type *data)                          \
 {                                                                             \
         size_t i, h;                                                          \
                                                                               \
@@ -198,45 +195,29 @@ ht_##name##_remove(struct ht_##name *ht, const key_t key, val_t *val)         \
                 if (ht_##name##_resize(ht, ht->len))                          \
                         return -1;                                            \
                                                                               \
-        h = hash(key) & (ht->cap - 1);                                        \
+        h = hash(*data) & (ht->cap - 1);                                      \
         for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
-                if (cmp(key, ht->arr[i].key) == 0)                            \
+                if (cmp(*data, ht->arr[i].data) == 0)                         \
                         break;                                                \
                 if (i + 1 == h)                                               \
                         return -1;                                            \
         }                                                                     \
                                                                               \
-        *val = ht->arr[i].val;                                                \
+        *data = ht->arr[i].data;                                              \
         ht->arr[i].state = TOMB;                                              \
         ht->len--;                                                            \
                                                                               \
         return 0;                                                             \
 }                                                                             \
                                                                               \
-val_t *                                                                       \
-ht_##name##_ptr(struct ht_##name *ht, const key_t key)                        \
-{                                                                             \
-        size_t i, h;                                                          \
-                                                                              \
-        h = hash(key) & (ht->cap - 1);                                        \
-        for (i = h; ht->arr[i].state != NONE; i = (i + 1) % ht->cap) {        \
-                if (cmp(key, ht->arr[i].key) == 0)                            \
-                        break;                                                \
-                if (i + i == h)                                               \
-                        return NULL;                                          \
-        }                                                                     \
-                                                                              \
-        return &ht->arr[i].val;                                               \
-}                                                                             \
-                                                                              \
 int                                                                           \
-ht_##name##_getnxt(struct ht_##name##_iter *iter, val_t *val)                 \
+ht_##name##_getnxt(struct ht_##name##_iter *iter, type *data)                 \
 {                                                                             \
         while (iter->ht->arr[iter->nxt].state != SOME                         \
                && iter->nxt < iter->ht->cap)                                  \
                 iter->nxt++;                                                  \
         if (iter->nxt < iter->ht->cap) {                                      \
-                *val = iter->ht->arr[iter->nxt++].val;                        \
+                *data = iter->ht->arr[iter->nxt++].data;                      \
                 return 0;                                                     \
         }                                                                     \
                                                                               \
@@ -257,9 +238,9 @@ struct ht_##name##_semi { char _; /* to enforce semicolon */ }
 
 #define FOR_EACH(name, i, ht) while (!ht_##name##_getnxt(&iter, &i))
 
-#define INIT_HT(name, key_t, val_t, hash, cmp, malloc, free)                  \
-INIT_HT_TYPE(name, key_t, val_t);                                             \
-INIT_HT_FUNC(name, key_t, val_t, hash, cmp, malloc, free)
+#define INIT_HT(name, type, hash, cmp, malloc, free)                          \
+INIT_HT_TYPE(name, type);                                                     \
+INIT_HT_FUNC(name, type, hash, cmp, malloc, free)
 
 /* FNV-1a hash function for string */
 static size_t

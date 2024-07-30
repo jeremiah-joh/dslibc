@@ -48,8 +48,8 @@ int sll_##name##_getnth(struct sll_##name *, type *, const size_t);           \
 int sll_##name##_setnth(struct sll_##name *, const type, const size_t);       \
 int sll_##name##_rmvnth(struct sll_##name *, type *, const size_t);           \
 int sll_##name##_getnxt(struct sll_##name##_iter *, type *);                  \
-type *sll_##name##_head(struct sll_##name *);                                 \
-type *sll_##name##_tail(struct sll_##name *);                                 \
+int sll_##name##_head(struct sll_##name *, type *);                           \
+int sll_##name##_tail(struct sll_##name *, type *);                           \
 void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
 
 #define INIT_SLL_FUNC(name, type, malloc, free)                               \
@@ -303,24 +303,16 @@ sll_##name##_getnxt(struct sll_##name##_iter *iter, type *val)                \
         return 0;                                                             \
 }                                                                             \
                                                                               \
-type *                                                                        \
-sll_##name##_ptr(struct sll_##name *sll, const size_t idx)                    \
+int                                                                           \
+sll_##name##_head(struct sll_##name *sll, type *val)                          \
 {                                                                             \
-        struct sll_##name##_node *tmp;                                        \
-                                                                              \
-        return ((tmp = sll_##name##_nth(sll, idx))) ? &tmp->val : NULL;       \
+        return (*val = sll->head->val) ? 0 : -1;                              \
 }                                                                             \
                                                                               \
-type *                                                                        \
-sll_##name##_head(struct sll_##name *sll)                                     \
+int                                                                           \
+sll_##name##_tail(struct sll_##name *sll, type *val)                          \
 {                                                                             \
-        return &sll->head->val;                                               \
-}                                                                             \
-                                                                              \
-type *                                                                        \
-sll_##name##_tail(struct sll_##name *sll)                                     \
-{                                                                             \
-        return &sll->tail->val;                                               \
+        return (*val = sll->tail->val) ? 0 : -1;                              \
 }                                                                             \
                                                                               \
 void                                                                          \

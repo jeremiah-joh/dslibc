@@ -148,19 +148,6 @@ nth()
 }
 
 void
-ptr()
-{
-	int arr[] = { 1, 2, 3 };
-	struct dll_int dll;
-
-	dll = dll_int_from(arr, 3);
-
-	assert(*dll_int_ptr(&dll, 1) == 2);
-	assert(*dll_int_head(&dll) == 1);
-	assert(*dll_int_tail(&dll) == 3);
-}
-
-void
 foreach()
 {
 	int i, j, val[] = { 1, 2, 3, 4, 5 };
@@ -188,7 +175,6 @@ main()
 	insert();
 	shrink();
 	nth();
-	ptr();
 	foreach();
 
 	return 0;

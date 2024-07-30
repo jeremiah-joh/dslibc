@@ -46,8 +46,8 @@ int vec_##name##_getnth(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_setnth(struct vec_##name *, const type, const size_t);       \
 int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_getnxt(struct vec_##name##_iter *, type *);                  \
-type *vec_##name##_head(struct vec_##name *);                                 \
-type *vec_##name##_tail(struct vec_##name *);                                 \
+int vec_##name##_head(struct vec_##name *, type *);                           \
+int vec_##name##_tail(struct vec_##name *, type *);                           \
 void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
 
 #define INIT_VEC_FUNC(name, type, malloc, realloc, free)                      \
@@ -312,22 +312,26 @@ vec_##name##_getnxt(struct vec_##name##_iter *iter, type *val)                \
         return -1;                                                            \
 }                                                                             \
                                                                               \
-type *                                                                        \
-vec_##name##_ptr(struct vec_##name *vec, const size_t idx)                    \
+int                                                                           \
+vec_##name##_head(struct vec_##name *vec, type *data)                         \
 {                                                                             \
-        return (idx < vec->len) ? &vec->arr[idx] : NULL;                      \
+        if (vec->len == 0 || vec->arr == NULL)                                \
+                return -1;                                                    \
+                                                                              \
+        *data = vec->arr[0];                                                  \
+                                                                              \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
-type *                                                                        \
-vec_##name##_head(struct vec_##name *vec)                                     \
+int                                                                           \
+vec_##name##_tail(struct vec_##name *vec, type *data)                         \
 {                                                                             \
-        return vec->arr ? &vec->arr[0] : NULL;                                \
-}                                                                             \
+        if (vec->len == 0 || vec->arr == NULL)                                \
+                return -1;                                                    \
                                                                               \
-type *                                                                        \
-vec_##name##_tail(struct vec_##name *vec)                                     \
-{                                                                             \
-        return vec->arr ? &vec->arr[vec->len - 1] : NULL;                     \
+        *data = vec->arr[vec->len - 1];                                       \
+                                                                              \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 void                                                                          \

@@ -38,7 +38,7 @@ struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);           \
 int heap_##name##_push(struct heap_##name *, const type);                     \
 int heap_##name##_pop(struct heap_##name *, type *);                          \
 int heap_##name##_getnxt(struct heap_##name##_iter *, type *);                \
-type *heap_##name##_root(struct heap_##name *);                               \
+int heap_##name##_root(struct heap_##name *, type *);                         \
 void heap_##name##_free(struct heap_##name *) /* to enforce semicolon */
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord, malloc, realloc, free)           \
@@ -159,10 +159,15 @@ heap_##name##_pop(struct heap_##name *heap, type *val)                        \
         return 0;                                                             \
 }                                                                             \
                                                                               \
-type *                                                                        \
-heap_##name##_root(struct heap_##name *heap)                                  \
+int                                                                           \
+heap_##name##_root(struct heap_##name *heap, type *val)                       \
 {                                                                             \
-        return &heap->arr[0];                                                 \
+        if (heap->len == 0 || heap->arr == NULL)                              \
+                return -1;                                                    \
+                                                                              \
+        *val = heap->arr[0];                                                  \
+                                                                              \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \

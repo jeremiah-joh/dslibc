@@ -8,36 +8,34 @@ cmp(int x, int y)
 	return x - y;
 }
 
-INIT_BST(int, int, int, cmp, malloc, free);
+INIT_BST(int, int, cmp, malloc, free);
 
 void
 from()
 {
-	int key[] = { 2, 1, 3 };
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 3);
+	bst = bst_int_from(val, 3);
 
 	assert(bst.len == 3);
-	assert(bst.root->val == 2);
-	assert(bst.root->rch->val == 3);
-	assert(bst.root->lch->val == 1);
+	assert(bst.root->data == 2);
+	assert(bst.root->rch->data == 3);
+	assert(bst.root->lch->data == 1);
 }
 
 void
 copy()
 {
-	int key[] = { 2, 1, 3 };
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst, cpy;
 
-	bst = bst_int_from(key, val, 3);
+	bst = bst_int_from(val, 3);
 	cpy = bst_int_copy(bst);
 
-	assert(bst.root->val == cpy.root->val);
-	assert(bst.root->rch->val == cpy.root->rch->val);
-	assert(bst.root->lch->val == cpy.root->lch->val);
+	assert(bst.root->data == cpy.root->data);
+	assert(bst.root->rch->data == cpy.root->rch->data);
+	assert(bst.root->lch->data == cpy.root->lch->data);
 }
 
 void
@@ -47,62 +45,44 @@ insert()
 
 	bst = bst_int_new();
 
-	bst_int_insert(&bst, 2, 2);
-	bst_int_insert(&bst, 1, 1);
-	bst_int_insert(&bst, 3, 3);
+	bst_int_insert(&bst, 2);
+	bst_int_insert(&bst, 1);
+	bst_int_insert(&bst, 3);
 
 	assert(bst.len == 3);
-	assert(bst.root->val == 2);
-	assert(bst.root->rch->val == 3);
-	assert(bst.root->lch->val == 1);
+	assert(bst.root->data == 2);
+	assert(bst.root->rch->data == 3);
+	assert(bst.root->lch->data == 1);
 }
 
 void
 search()
 {
 	int v;
-	int key[] = { 2, 1, 3 };
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 3);
+	bst = bst_int_from(val, 3);
 	
-	bst_int_search(&bst, 1, &v);
-
-	assert(v == 1);
+	v = 1;
+	assert(bst_int_search(&bst, &v) == 0);
 }
 
 void
 remove()
 {
 	int v;
-	int key[] = { 2, 1, 4, 3, 5 };
 	int val[] = { 2, 1, 4, 3, 5 };
 	struct bst_int bst;
 
-	bst = bst_int_from(key, val, 5);
+	bst = bst_int_from(val, 5);
 	
-	bst_int_remove(&bst, 4, &v);
-
+	v = 4;
+	assert(bst_int_remove(&bst, &v) == 0);
 	assert(v == 4);
-	assert(bst.root->rch->val == 5);
-	assert(bst.root->rch->lch->val == 3);
+	assert(bst.root->rch->data == 5);
+	assert(bst.root->rch->lch->data == 3);
 	assert(bst.len == 4);
-}
-
-void
-ptr()
-{
-	int key[] = { 2, 1, 3 };
-	int val[] = { 2, 1, 3 };
-	struct bst_int bst;
-
-	bst = bst_int_from(key, val, 3);
-	
-	assert(*bst_int_ptr(&bst, 3) == 3);
-	assert(*bst_int_root(&bst) == 2);
-	assert(*bst_int_min(&bst) == 1);
-	assert(*bst_int_max(&bst) == 3);
 }
 
 void
@@ -110,12 +90,11 @@ foreach()
 {
 	int i, j;
 	int arr[] = { 0, 0, 0 };
-	int key[] = { 2, 1, 3 };
 	int val[] = { 2, 1, 3 };
 	struct bst_int bst;
 	struct bst_int_iter iter;
 
-	bst = bst_int_from(key, val, 3);
+	bst = bst_int_from(val, 3);
 	iter = bst_int_iter(&bst);
 
 	j = 0;
@@ -136,7 +115,6 @@ main()
 	insert();
 	search();
 	remove();
-	ptr();
 	foreach();
 
 	return 0;

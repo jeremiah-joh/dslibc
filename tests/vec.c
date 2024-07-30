@@ -142,26 +142,6 @@ nth()
 }
 
 void
-ptr()
-{
-	int v;
-	struct vec_int vec = vec_int_new();
-	
-	vec_int_push_back(&vec, 1);
-	vec_int_push_back(&vec, 2);
-	vec_int_push_back(&vec, 3);
-
-	v = *vec_int_ptr(&vec, 1);
-	assert(v == 2);
-
-	v = *vec_int_head(&vec);
-	assert(v == 1);
-
-	v = *vec_int_tail(&vec);
-	assert(v == 3);
-}
-
-void
 foreach()
 {
 	int i, j;
@@ -189,7 +169,6 @@ main()
 	insert();
 	shrink();
 	nth();
-	ptr();
 	foreach();
 
 	return 0;

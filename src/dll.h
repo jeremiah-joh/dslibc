@@ -50,8 +50,8 @@ int dll_##name##_getnth(struct dll_##name *, type *, const size_t);           \
 int dll_##name##_setnth(struct dll_##name *, const type, const size_t);       \
 int dll_##name##_rmvnth(struct dll_##name *, type *, const size_t);           \
 int dll_##name##_getnxt(struct dll_##name##_iter *, type *);                  \
-type *dll_##name##_head(struct dll_##name *);                                 \
-type *dll_##name##_tail(struct dll_##name *);                                 \
+int dll_##name##_head(struct dll_##name *, type *);                           \
+int dll_##name##_tail(struct dll_##name *, type *);                           \
 void dll_##name##_free(struct dll_##name *) /* to enforce semicolon */
 
 #define INIT_DLL_FUNC(name, type, malloc, free)                               \
@@ -363,24 +363,16 @@ dll_##name##_getnxt(struct dll_##name##_iter *iter, type *val)                \
         return 0;                                                             \
 }                                                                             \
                                                                               \
-type *                                                                        \
-dll_##name##_ptr(struct dll_##name *dll, const size_t idx)                    \
+int                                                                           \
+dll_##name##_head(struct dll_##name *dll, type *val)                          \
 {                                                                             \
-        struct dll_##name##_node *tmp;                                        \
-                                                                              \
-        return (tmp = dll_##name##_nth(dll, idx)) ? &tmp->val : NULL;         \
+	return (*val = dll->head->val) ? 0 : -1;                              \
 }                                                                             \
                                                                               \
-type *                                                                        \
-dll_##name##_head(struct dll_##name *dll)                                     \
+int                                                                           \
+dll_##name##_tail(struct dll_##name *dll, type *val)                          \
 {                                                                             \
-        return &dll->head->val;                                               \
-}                                                                             \
-                                                                              \
-type *                                                                        \
-dll_##name##_tail(struct dll_##name *dll)                                     \
-{                                                                             \
-        return &dll->tail->val;                                               \
+	return (*val = dll->tail->val) ? 0 : -1;                              \
 }                                                                             \
                                                                               \
 void                                                                          \

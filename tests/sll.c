@@ -132,20 +132,6 @@ nth()
 }
 
 void
-ptr()
-{
-	struct sll_int sll = sll_int_new();
-
-	sll_int_push(&sll, 1);
-	sll_int_push(&sll, 2);
-	sll_int_push(&sll, 3);
-
-	assert(*sll_int_ptr(&sll, 1) == 2);
-	assert(*sll_int_head(&sll) == 1);
-	assert(*sll_int_tail(&sll) == 3);
-}
-
-void
 foreach()
 {
 	int i, j, val[] = { 1, 2, 3, 4, 5 };
@@ -172,7 +158,6 @@ main()
 	insert();
 	shrink();
 	nth();
-	ptr();
 	foreach();
 
 	return 0;

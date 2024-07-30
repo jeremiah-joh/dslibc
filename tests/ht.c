@@ -15,33 +15,31 @@ cmp_int(int x, int y)
 	return y - x;
 }
 
-INIT_HT(int, int, int, hash_int_t, cmp_int, malloc, free);
+INIT_HT(int, int, hash_int_t, cmp_int, malloc, free);
 
 void
 from()
 {
 	struct ht_int ht;
-	int key[] = { 0, 1, 2, 3, 4 };
 	int val[] = { 0, 1, 2, 3, 4 };
 
-	ht = ht_int_from(key, val, 5);
+	ht = ht_int_from(val, 5);
 
 	assert(ht.len == 5);
-	assert(ht.arr[0].val == 0);
-	assert(ht.arr[1].val == 1);
-	assert(ht.arr[2].val == 2);
-	assert(ht.arr[3].val == 3);
-	assert(ht.arr[4].val == 4);
+	assert(ht.arr[0].data == 0);
+	assert(ht.arr[1].data == 1);
+	assert(ht.arr[2].data == 2);
+	assert(ht.arr[3].data == 3);
+	assert(ht.arr[4].data == 4);
 }
 
 void
 copy()
 {
 	struct ht_int ht, cp;
-	int key[] = { 0, 1, 2, 3, 4 };
 	int val[] = { 0, 1, 2, 3, 4 };
 
-	ht = ht_int_from(key, val, 5);
+	ht = ht_int_from(val, 5);
         cp = ht_int_copy(ht);
 
 	assert(ht.len == cp.len);
@@ -56,64 +54,54 @@ insert()
 
 	ht = ht_int_new();
 
-	ht_int_insert(&ht, 0, 0);
-	ht_int_insert(&ht, 1, 1);
-	ht_int_insert(&ht, 2, 2);
-	ht_int_insert(&ht, 3, 3);
-	ht_int_insert(&ht, 4, 4);
+	ht_int_insert(&ht, 0);
+	ht_int_insert(&ht, 1);
+	ht_int_insert(&ht, 2);
+	ht_int_insert(&ht, 3);
+	ht_int_insert(&ht, 4);
 
 	assert(ht.len == 5);
 	assert(ht.cap == 8);
-	assert(ht.arr[0].val == 0);
-	assert(ht.arr[1].val == 1);
-	assert(ht.arr[2].val == 2);
-	assert(ht.arr[3].val == 3);
-	assert(ht.arr[4].val == 4);
+	assert(ht.arr[0].data == 0);
+	assert(ht.arr[1].data == 1);
+	assert(ht.arr[2].data == 2);
+	assert(ht.arr[3].data == 3);
+	assert(ht.arr[4].data == 4);
 }
 
 void
 search()
 {
 	struct ht_int ht;
-	int key[] = { 0, 1, 2, 3, 4 };
 	int val[] = { 0, 1, 2, 3, 4 };
 	int v;
 
-	ht = ht_int_from(key, val, 5);
-	assert(ht_int_search(&ht, 3, &v) == 0);
+	ht = ht_int_from(val, 5);
 
-	assert(v == 3);
+	v = 3;
+	assert(ht_int_search(&ht, &v) == 0);
 }
 
 void
 remove()
 {
 	struct ht_int ht;
-	int key[] = { 0, 1, 2, 3, 4 };
 	int val[] = { 0, 1, 2, 3, 4 };
 	int v;
 
-	ht = ht_int_from(key, val, 5);
-	assert(ht_int_remove(&ht, 1, &v) == 0);
-	assert(ht_int_remove(&ht, 2, &v) == 0);
-	assert(ht_int_remove(&ht, 3, &v) == 0);
+	ht = ht_int_from(val, 5);
+
+	v = 1;
+	assert(ht_int_remove(&ht, &v) == 0);
+	v = 2;
+	assert(ht_int_remove(&ht, &v) == 0);
+	v = 3;
+	assert(ht_int_remove(&ht, &v) == 0);
 
 	assert(ht.len == 2);
 	assert(ht.cap == 4);
-	assert(ht.arr[0].val == 0);
-	assert(ht.arr[1].val == 4);
-}
-
-void
-ptr()
-{
-	struct ht_int ht;
-	int key[] = { 0, 1, 2, 3, 4 };
-	int val[] = { 0, 1, 2, 3, 4 };
-
-	ht = ht_int_from(key, val, 5);
-
-	assert(*ht_int_ptr(&ht, 2) == 2);
+	assert(ht.arr[0].data == 0);
+	assert(ht.arr[1].data == 4);
 }
 
 void
@@ -121,11 +109,10 @@ foreach()
 {
 	struct ht_int ht;
 	struct ht_int_iter iter;
-	int key[] = { 0, 1, 2, 3, 4 };
 	int val[] = { 0, 1, 2, 3, 4 };
 	int i, j;
 
-	ht = ht_int_from(key, val, 5);
+	ht = ht_int_from(val, 5);
 	iter = ht_int_iter(&ht);
 
 	j = 0;
@@ -142,7 +129,6 @@ main()
 	insert();
 	search();
 	remove();
-	ptr();
 	foreach();
 
 	return 0;
