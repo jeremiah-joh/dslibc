@@ -39,17 +39,18 @@ struct bst_##name##_iter {                                                    \
 };                                                                            \
                                                                               \
 struct bst_##name bst_##name##_new();                                         \
-struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
 struct bst_##name bst_##name##_from(const type [], const size_t);             \
-struct bst_##name##_iter bst_##name##_iter(struct bst_##name *);              \
+struct bst_##name bst_##name##_copy(const struct bst_##name);                 \
 int bst_##name##_insert(struct bst_##name *, const type);                     \
 int bst_##name##_search(struct bst_##name *, type *);                         \
 int bst_##name##_remove(struct bst_##name *, type *);                         \
-int bst_##name##_getnxt(struct bst_##name##_iter *, type *);                  \
 int bst_##name##_root(struct bst_##name *, type *);                           \
 int bst_##name##_max(struct bst_##name *, type *);                            \
 int bst_##name##_min(struct bst_##name *, type *);                            \
-void bst_##name##_free(struct bst_##name *) /* to enforce semicolon */
+void bst_##name##_free(struct bst_##name *);                                  \
+                                                                              \
+struct bst_##name##_iter bst_##name##_iter(struct bst_##name *);              \
+int bst_##name##_getnxt(struct bst_##name##_iter *, type *) /* semicolon */
 
 #define INIT_BST_FUNC(name, type, cmp, malloc, free)                          \
 static struct bst_##name##_node *                                             \
@@ -157,17 +158,6 @@ bst_##name##_new()                                                            \
 }                                                                             \
                                                                               \
 struct bst_##name                                                             \
-bst_##name##_copy(const struct bst_##name bst)                                \
-{                                                                             \
-        struct bst_##name cpy;                                                \
-                                                                              \
-        cpy = bst_##name##_new();                                             \
-        bst_##name##_copy_node(&cpy, bst.root);                               \
-                                                                              \
-        return cpy;                                                           \
-}                                                                             \
-                                                                              \
-struct bst_##name                                                             \
 bst_##name##_from(const type data[], const size_t len)                        \
 {                                                                             \
         size_t i;                                                             \
@@ -181,16 +171,15 @@ bst_##name##_from(const type data[], const size_t len)                        \
         return bst;                                                           \
 }                                                                             \
                                                                               \
-struct bst_##name##_iter                                                      \
-bst_##name##_iter(struct bst_##name *bst)                                     \
+struct bst_##name                                                             \
+bst_##name##_copy(const struct bst_##name bst)                                \
 {                                                                             \
-        struct bst_##name##_iter iter;                                        \
+        struct bst_##name cpy;                                                \
                                                                               \
-        iter.bst = bst;                                                       \
-        iter.cur = bst->root;                                                 \
-        iter.top = 0;                                                         \
+        cpy = bst_##name##_new();                                             \
+        bst_##name##_copy_node(&cpy, bst.root);                               \
                                                                               \
-        return iter;                                                          \
+        return cpy;                                                           \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -254,6 +243,26 @@ bst_##name##_remove(struct bst_##name *bst, type *data)                       \
         return 0;                                                             \
 }                                                                             \
                                                                               \
+void                                                                          \
+bst_##name##_free(struct bst_##name *bst)                                     \
+{                                                                             \
+        bst_##name##_free_node(bst->root);                                    \
+        bst->root = NULL;                                                     \
+        bst->len = 0;                                                         \
+}                                                                             \
+                                                                              \
+struct bst_##name##_iter                                                      \
+bst_##name##_iter(struct bst_##name *bst)                                     \
+{                                                                             \
+        struct bst_##name##_iter iter;                                        \
+                                                                              \
+        iter.bst = bst;                                                       \
+        iter.cur = bst->root;                                                 \
+        iter.top = 0;                                                         \
+                                                                              \
+        return iter;                                                          \
+}                                                                             \
+                                                                              \
 int                                                                           \
 bst_##name##_getnxt(struct bst_##name##_iter *iter, type *data)               \
 {                                                                             \
@@ -272,15 +281,7 @@ bst_##name##_getnxt(struct bst_##name##_iter *iter, type *data)               \
         return 0;                                                             \
 }                                                                             \
                                                                               \
-void                                                                          \
-bst_##name##_free(struct bst_##name *bst)                                     \
-{                                                                             \
-        bst_##name##_free_node(bst->root);                                    \
-        bst->root = NULL;                                                     \
-        bst->len = 0;                                                         \
-}                                                                             \
-                                                                              \
-struct bst_##name##_semi { char _; /* to enforce semicolon */ }
+struct bst_##name##_semi { char _; } /* semicolon */
 
 #define FOR_EACH(name, i, iter) while (!bst_##name##_getnxt(&iter, &i))
 
