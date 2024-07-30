@@ -125,9 +125,9 @@ INIT_BST(int, int, int, cmp_int, malloc, free);
 
 struct bst_int bst = bst_int_new();
 
-bst_##name##_insert(&bst, 1, 4);
-bst_##name##_insert(&bst, 2, 5);
-bst_##name##_insert(&bst, 3, 6);
+bst_int_insert(&bst, 1, 4);
+bst_int_insert(&bst, 2, 5);
+bst_int_insert(&bst, 3, 6);
 ```
 
 search
