@@ -285,8 +285,8 @@ struct bst_##name##_semi { char _; } /* semicolon */
 
 #define FOR_EACH(name, i, iter) while (!bst_##name##_getnxt(&iter, &i))
 
-#define INIT_BST(name, type, cmp, malloc, free)                       \
-INIT_BST_TYPE(name, type);                                            \
+#define INIT_BST(name, type, cmp, malloc, free)                               \
+INIT_BST_TYPE(name, type);                                                    \
 INIT_BST_FUNC(name, type, cmp, malloc, free)
 
 #endif
