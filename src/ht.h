@@ -53,6 +53,15 @@ val_t *ht_##name##_ptr(struct ht_##name *, const key_t);                      \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
 #define INIT_HT_FUNC(name, key_t, val_t, hash, cmp, malloc, free)             \
+static void                                                                   \
+ht_##name##_init(struct ht_##name *ht)                                        \
+{                                                                             \
+        size_t i;                                                             \
+                                                                              \
+        for (i = 0; i < ht->cap; i++)                                         \
+                ht->arr[i].state = NONE;                                      \
+}                                                                             \
+                                                                              \
 static size_t                                                                 \
 ht_##name##_cap(const size_t len)                                             \
 {                                                                             \
@@ -73,7 +82,7 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                    \
         new.cap = ht_##name##_cap(ht_##name##_cap(len));                      \
         new.len = 0;                                                          \
         new.arr = malloc(new.cap * sizeof(struct ht_##name##_node));          \
-        memset(new.arr, 0, new.cap * sizeof(struct ht_##name##_node));        \
+        ht_##name##_init(&new);                                               \
                                                                               \
         for (i = 0; i < ht->cap; i++) {                                       \
                 if (ht->arr[i].state != SOME)                                 \
@@ -108,7 +117,7 @@ ht_##name##_copy(const struct ht_##name ht)                                   \
         cp.len = ht.len;                                                      \
         cp.cap = ht.cap;                                                      \
         cp.arr = malloc(cp.cap * sizeof(struct ht_##name##_node));            \
-        memset(cp.arr, 0, cp.cap * sizeof(struct ht_##name##_node));          \
+        ht_##name##_init(&cp);                                                \
                                                                               \
         memcpy(cp.arr, ht.arr, cp.cap * sizeof(struct ht_##name##_node));     \
                                                                               \
