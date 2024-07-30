@@ -49,7 +49,6 @@ int ht_##name##_insert(struct ht_##name *, const key_t, const val_t);         \
 int ht_##name##_search(struct ht_##name *, const key_t, val_t *);             \
 int ht_##name##_remove(struct ht_##name *, const key_t, val_t *);             \
 int ht_##name##_getnxt(struct ht_##name##_iter *, val_t *);                   \
-val_t *ht_##name##_ptr(struct ht_##name *, const key_t);                      \
 void ht_##name##_free(struct ht_##name *) /* to enforce semicolon */
 
 #define INIT_HT_FUNC(name, key_t, val_t, hash, cmp, malloc, free)             \

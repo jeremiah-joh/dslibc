@@ -48,7 +48,6 @@ int bst_##name##_insert(struct bst_##name *, const key_t, const val_t);       \
 int bst_##name##_search(struct bst_##name *, const key_t, val_t *);           \
 int bst_##name##_remove(struct bst_##name *, const key_t, val_t *);           \
 int bst_##name##_getnxt(struct bst_##name##_iter *, val_t *);                 \
-val_t *bst_##name##_ptr(struct bst_##name *, const key_t);                    \
 val_t *bst_##name##_root(struct bst_##name *);                                \
 val_t *bst_##name##_max(struct bst_##name *);                                 \
 val_t *bst_##name##_min(struct bst_##name *);                                 \

@@ -46,7 +46,6 @@ int vec_##name##_getnth(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_setnth(struct vec_##name *, const type, const size_t);       \
 int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_getnxt(struct vec_##name##_iter *, type *);                  \
-type *vec_##name##_ptr(struct vec_##name *, const size_t);                    \
 type *vec_##name##_head(struct vec_##name *);                                 \
 type *vec_##name##_tail(struct vec_##name *);                                 \
 void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */

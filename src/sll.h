@@ -48,7 +48,6 @@ int sll_##name##_getnth(struct sll_##name *, type *, const size_t);           \
 int sll_##name##_setnth(struct sll_##name *, const type, const size_t);       \
 int sll_##name##_rmvnth(struct sll_##name *, type *, const size_t);           \
 int sll_##name##_getnxt(struct sll_##name##_iter *, type *);                  \
-type *sll_##name##_ptr(struct sll_##name *, const size_t);                    \
 type *sll_##name##_head(struct sll_##name *);                                 \
 type *sll_##name##_tail(struct sll_##name *);                                 \
 void sll_##name##_free(struct sll_##name *) /* to enforce semicolon */
