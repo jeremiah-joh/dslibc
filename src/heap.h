@@ -34,12 +34,12 @@ struct heap_##name##_iter {                                                   \
 struct heap_##name heap_##name##_new();                                       \
 struct heap_##name heap_##name##_from(const type *, const size_t);            \
 struct heap_##name heap_##name##_copy(const struct heap_##name);              \
-struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);           \
 int heap_##name##_push(struct heap_##name *, const type);                     \
 int heap_##name##_pop(struct heap_##name *, type *);                          \
-int heap_##name##_getnxt(struct heap_##name##_iter *, type *);                \
 int heap_##name##_root(struct heap_##name *, type *);                         \
-void heap_##name##_free(struct heap_##name *) /* to enforce semicolon */
+void heap_##name##_free(struct heap_##name *);                                \
+struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);           \
+int heap_##name##_getnxt(struct heap_##name##_iter *, type *); /* semicolon */
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord, malloc, realloc, free)           \
 static size_t                                                                 \
@@ -117,17 +117,6 @@ heap_##name##_copy(const struct heap_##name heap)                             \
         return copy;                                                          \
 }                                                                             \
                                                                               \
-struct heap_##name##_iter                                                     \
-heap_##name##_iter(struct heap_##name *heap)                                  \
-{                                                                             \
-        struct heap_##name##_iter iter;                                       \
-                                                                              \
-        iter.heap = heap;                                                     \
-        iter.nxt = 0;                                                         \
-                                                                              \
-        return iter;                                                          \
-}                                                                             \
-                                                                              \
 int                                                                           \
 heap_##name##_push(struct heap_##name *heap, type val)                        \
 {                                                                             \
@@ -170,6 +159,25 @@ heap_##name##_root(struct heap_##name *heap, type *val)                       \
         return 0;                                                             \
 }                                                                             \
                                                                               \
+void                                                                          \
+heap_##name##_free(struct heap_##name *heap)                                  \
+{                                                                             \
+        free(heap->arr);                                                      \
+        heap->arr = NULL;                                                     \
+        heap->cap = heap->len = 0;                                            \
+}                                                                             \
+                                                                              \
+struct heap_##name##_iter                                                     \
+heap_##name##_iter(struct heap_##name *heap)                                  \
+{                                                                             \
+        struct heap_##name##_iter iter;                                       \
+                                                                              \
+        iter.heap = heap;                                                     \
+        iter.nxt = 0;                                                         \
+                                                                              \
+        return iter;                                                          \
+}                                                                             \
+                                                                              \
 int                                                                           \
 heap_##name##_getnxt(struct heap_##name##_iter *iter, type *val)              \
 {                                                                             \
@@ -183,15 +191,7 @@ heap_##name##_getnxt(struct heap_##name##_iter *iter, type *val)              \
         return -1;                                                            \
 }                                                                             \
                                                                               \
-void                                                                          \
-heap_##name##_free(struct heap_##name *heap)                                  \
-{                                                                             \
-        free(heap->arr);                                                      \
-        heap->arr = NULL;                                                     \
-        heap->cap = heap->len = 0;                                            \
-}                                                                             \
-                                                                              \
-struct heap_##name##_semi { char _; /* to enforce semicolon */ }
+struct heap_##name##_semi { char _; } /* semicolon */
 
 #define FOR_EACH(name, i, iter) while (!heap_##name##_getnxt(&iter, &i))
 

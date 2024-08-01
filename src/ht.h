@@ -130,7 +130,6 @@ int ht_##name##_insert(struct ht_##name *, const type);                       \
 int ht_##name##_search(struct ht_##name *, type *);                           \
 int ht_##name##_remove(struct ht_##name *, type *);                           \
 void ht_##name##_free(struct ht_##name *);                                    \
-                                                                              \
 struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                 \
 int ht_##name##_getnxt(struct ht_##name##_iter *, type *) /* semicolon */
 

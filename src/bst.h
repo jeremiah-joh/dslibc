@@ -48,7 +48,6 @@ int bst_##name##_root(struct bst_##name *, type *);                           \
 int bst_##name##_max(struct bst_##name *, type *);                            \
 int bst_##name##_min(struct bst_##name *, type *);                            \
 void bst_##name##_free(struct bst_##name *);                                  \
-                                                                              \
 struct bst_##name##_iter bst_##name##_iter(struct bst_##name *);              \
 int bst_##name##_getnxt(struct bst_##name##_iter *, type *) /* semicolon */
 
