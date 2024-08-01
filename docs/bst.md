@@ -21,7 +21,7 @@ structure for your use case.
 * `INIT_BST(name, type, cmp, malloc, free);` - define both at once.
 
 Here are the descriptions of each parameters.
-* `name` - the name of data structure, represented as `struct bst_name`.
+* `name` - the name of data structure, generates `struct bst_name`.
 * `type` - type of data in the data structure.
 * `cmp` - comparison function. returns subtraction of two data.
 * `malloc` - memory allocating function.

@@ -19,7 +19,7 @@ functions of minimum heap.
 * `INIT_MIN_HT(name, type, cmp, malloc, realloc, free);` - define both at once.
 
 Here are the descriptions of each parameters.
-* `name` - the name of data structure, represented as `struct heap_name`.
+* `name` - the name of data structure, generates `struct heap_name`.
 * `type` - type of data in the data structure.
 * `cmp` - comparison function. returns subtraction of two data.
 * `malloc` - memory allocating function.
