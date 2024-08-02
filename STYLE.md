@@ -170,7 +170,7 @@ main()
 }
 ```
 
-Typedefs
---------
+Typedef
+-------
 
 DO NOT use it.
