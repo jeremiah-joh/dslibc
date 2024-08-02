@@ -20,7 +20,8 @@ Following data structures are planned.
 How to use this library
 -----------------------
 
-Read documents in [docs/](docs/).
+First, copy the header file into your project directory and include it.
+Then, read document for it in [docs/](docs/).
 
 License
 -------
