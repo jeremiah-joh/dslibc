@@ -234,7 +234,7 @@ ht_##name##_insert(struct ht_##name *ht, const type data)                     \
                 if (cmp(data, ht->arr[i].data) == 0 || i + 1 == h)            \
                         return -1;                                            \
                                                                               \
-        ht->arr[i].data= data;                                                \
+        ht->arr[i].data = data;                                               \
         ht->arr[i].state = SOME;                                              \
         ht->len++;                                                            \
                                                                               \
