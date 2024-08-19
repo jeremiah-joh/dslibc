@@ -39,7 +39,7 @@ int heap_##name##_pop(struct heap_##name *, type *);                          \
 int heap_##name##_root(struct heap_##name *, type *);                         \
 void heap_##name##_free(struct heap_##name *);                                \
 struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);           \
-int heap_##name##_getnxt(struct heap_##name##_iter *, type *); /* semicolon */
+int heap_##name##_getnxt(struct heap_##name##_iter *, type *) /* semicolon */
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord, malloc, realloc, free)           \
 static size_t                                                                 \
