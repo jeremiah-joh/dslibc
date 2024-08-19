@@ -16,8 +16,9 @@
 #define _BST_H
 
 #include <stddef.h>
+#include <limits.h>
 
-#define MAX_DEPTH 64
+#define MAX_DEPTH sizeof(size_t) * CHAR_BIT
 #define PUSH(iter, item) iter->arr[iter->top++] = item
 #define POP(iter) iter->arr[--iter->top]
 
