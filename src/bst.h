@@ -57,6 +57,7 @@ static struct bst_##name##_node *                                             \
 bst_##name##_new_node(const type data)                                        \
 {                                                                             \
         struct bst_##name##_node *new;                                        \
+                                                                              \
         if ((new = malloc(sizeof(struct bst_##name##_node))) == NULL)         \
                 return NULL;                                                  \
                                                                               \

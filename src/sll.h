@@ -57,6 +57,7 @@ static struct sll_##name##_node *                                             \
 sll_##name##_new_node(const type val)                                         \
 {                                                                             \
         struct sll_##name##_node *new;                                        \
+                                                                              \
         if ((new = malloc(sizeof(struct sll_##name##_node))) == NULL)         \
                 return NULL;                                                  \
                                                                               \

@@ -61,6 +61,7 @@ dll_##name##_new_node(const type val,                                         \
                       struct dll_##name##_node *nxt)                          \
 {                                                                             \
         struct dll_##name##_node *new;                                        \
+	                                                                      \
         if ((new = malloc(sizeof(struct dll_##name##_node))) == NULL)         \
                 return NULL;                                                  \
                                                                               \
