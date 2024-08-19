@@ -231,7 +231,7 @@ ht_##name##_insert(struct ht_##name *ht, const type data)                     \
                                                                               \
         h = hash(data) & (ht->cap - 1);                                       \
         for (i = h; ht->arr[i].state == SOME; i = (i + 1) % ht->cap)          \
-                if (cmp(data, ht->arr[i].data) == 0 || i + 1 == h)            \
+                if (cmp(data, ht->arr[i].data) == 0 || (i + 1) % ht->cap == h)\
                         return -1;                                            \
                                                                               \
         ht->arr[i].data = data;                                               \
