@@ -1,5 +1,5 @@
 /*
- * dslibc - collection of useful data structures written in ANSI C
+ * dslibc - data structure library for ANSI C
  *
  * Written in 2024 by Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
  *
@@ -26,57 +26,47 @@ struct vec_##name {                                                           \
                                                                               \
 struct vec_##name##_iter {                                                    \
         struct vec_##name *vec;                                               \
-        size_t nxt;                                                           \
+        size_t idx;                                                           \
 };                                                                            \
                                                                               \
-struct vec_##name vec_##name##_new();                                         \
+struct vec_##name vec_##name##_new(void);                                     \
 struct vec_##name vec_##name##_from(const type *, const size_t);              \
 struct vec_##name vec_##name##_copy(const struct vec_##name);                 \
-struct vec_##name vec_##name##_slice(const struct vec_##name,                 \
-                                     const size_t, const size_t);             \
-struct vec_##name##_iter vec_##name##_iter(struct vec_##name *);              \
-int vec_##name##_push_back(struct vec_##name *, const type);                  \
-int vec_##name##_push_front(struct vec_##name *, const type);                 \
-int vec_##name##_pop_back(struct vec_##name *, type *);                       \
-int vec_##name##_pop_front(struct vec_##name *, type *);                      \
+int vec_##name##_push(struct vec_##name *, const type);                       \
+int vec_##name##_pop(struct vec_##name *, type *);                            \
+int vec_##name##_get(struct vec_##name *, type *, const size_t);              \
+int vec_##name##_set(struct vec_##name *, const type, const size_t);          \
 int vec_##name##_append(struct vec_##name *, const type *, const size_t);     \
 int vec_##name##_insert(struct vec_##name *, const type, const size_t);       \
+int vec_##name##_remove(struct vec_##name *, type *, const size_t);           \
 int vec_##name##_shrink(struct vec_##name *, const size_t);                   \
-int vec_##name##_getnth(struct vec_##name *, type *, const size_t);           \
-int vec_##name##_setnth(struct vec_##name *, const type, const size_t);       \
-int vec_##name##_rmvnth(struct vec_##name *, type *, const size_t);           \
-int vec_##name##_getnxt(struct vec_##name##_iter *, type *);                  \
-int vec_##name##_head(struct vec_##name *, type *);                           \
-int vec_##name##_tail(struct vec_##name *, type *);                           \
-void vec_##name##_free(struct vec_##name *) /* to enforce semicolon */
+size_t vec_##name##_length(struct vec_##name *);                              \
+size_t vec_##name##_sizeof(struct vec_##name *);                              \
+void vec_##name##_free(struct vec_##name *);                                  \
+                                                                              \
+struct vec_##name##_iter vec_##name##_iter(struct vec_##name *);              \
+int vec_##name##_next(struct vec_##name##_iter *, type *);                    \
 
 #define INIT_VEC_FUNC(name, type, malloc, realloc, free)                      \
-static size_t                                                                 \
-vec_##name##_new_cap(const size_t len)                                        \
-{                                                                             \
-        size_t i;                                                             \
-                                                                              \
-        for (i = 4; i < len; i <<= 1)                                         \
-                ;                                                             \
-                                                                              \
-        return i * sizeof(type);                                              \
-}                                                                             \
-                                                                              \
 static int                                                                    \
 vec_##name##_resize(struct vec_##name *vec, const size_t len)                 \
 {                                                                             \
-        if (len < vec->cap && len > vec->cap / 3)                             \
-                return 0;                                                     \
+        size_t cap;                                                           \
                                                                               \
-        vec->cap = vec_##name##_new_cap(len);                                 \
-        if ((vec->arr = realloc(vec->arr, vec->cap)) == NULL)                 \
+        if (vec->len < vec->cap && vec->cap / 3 < vec->len)                   \
+                return 0;                                                     \
+        for (cap = 1; cap < len; cap <<= 1)                                   \
+                ;                                                             \
+        if ((vec->arr = realloc(vec->arr, sizeof(type) * cap)) == NULL)       \
                 return -1;                                                    \
+                                                                              \
+        vec->cap = cap;                                                       \
                                                                               \
         return 0;                                                             \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \
-vec_##name##_new()                                                            \
+vec_##name##_new(void)                                                        \
 {                                                                             \
         struct vec_##name vec;                                                \
                                                                               \
@@ -87,132 +77,101 @@ vec_##name##_new()                                                            \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \
-vec_##name##_from(const type *arr, const size_t len)                          \
-{                                                                             \
-        struct vec_##name vec;                                                \
-                                                                              \
-        vec.cap = vec_##name##_new_cap(len);                                  \
-        vec.arr = malloc(vec.cap);                                            \
-        vec.len = len;                                                        \
-                                                                              \
-        memcpy(vec.arr, arr, sizeof(*arr) * len);                             \
-                                                                              \
-        return vec;                                                           \
-}                                                                             \
-                                                                              \
-struct vec_##name                                                             \
 vec_##name##_copy(const struct vec_##name vec)                                \
 {                                                                             \
         struct vec_##name cpy;                                                \
                                                                               \
-        cpy.arr = malloc(vec.cap);                                            \
-        cpy.cap = vec.cap;                                                    \
-        cpy.len = vec.len;                                                    \
+        cpy = vec_##name##_new();                                             \
                                                                               \
-        memcpy(cpy.arr, vec.arr, vec.cap);                                    \
+        if (vec_##name##_resize(&cpy, vec.len))                               \
+                return vec_##name##_new();                                    \
+                                                                              \
+        memcpy(cpy.arr, vec.arr, vec.len * sizeof(type));                     \
+        cpy.len = vec.len;                                                    \
                                                                               \
         return cpy;                                                           \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \
-vec_##name##_slice(const struct vec_##name vec,                               \
-                   const size_t head, const size_t tail)                      \
+vec_##name##_from(const type *arr, const size_t len)                          \
 {                                                                             \
-        struct vec_##name sli;                                                \
+        struct vec_##name vec;                                                \
                                                                               \
-        if (tail <= head)                                                     \
+        vec = vec_##name##_new();                                             \
+                                                                              \
+        if (vec_##name##_resize(&vec, len))                                   \
                 return vec_##name##_new();                                    \
                                                                               \
-        sli.cap = vec_##name##_new_cap(tail - head);                          \
-        sli.arr = malloc(sli.cap);                                            \
-        sli.len = tail - head;                                                \
+        memcpy(vec.arr, arr, len * sizeof(type));                             \
+        vec.len = len;                                                        \
                                                                               \
-        memcpy(sli.arr, vec.arr + head, sizeof(type) * sli.len);              \
-                                                                              \
-        return sli;                                                           \
-}                                                                             \
-                                                                              \
-struct vec_##name##_iter                                                      \
-vec_##name##_iter(struct vec_##name *vec)                                     \
-{                                                                             \
-        struct vec_##name##_iter iter;                                        \
-                                                                              \
-        iter.vec = vec;                                                       \
-        iter.nxt = 0;                                                         \
-                                                                              \
-        return iter;                                                          \
+        return vec;                                                           \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_push_back(struct vec_##name *vec, const type val)                \
+vec_##name##_push(struct vec_##name *vec, const type val)                     \
 {                                                                             \
         if (vec->arr == NULL)                                                 \
                 return -1;                                                    \
         if (vec_##name##_resize(vec, vec->len + 1))                           \
                 return -1;                                                    \
                                                                               \
-        vec->arr[vec->len] = val;                                             \
-        vec->len++;                                                           \
+        vec->arr[vec->len++] = val;                                           \
                                                                               \
         return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_push_front(struct vec_##name *vec, const type val)               \
+vec_##name##_pop(struct vec_##name *vec, type *val)                           \
 {                                                                             \
-        if (vec->arr == NULL)                                                 \
+        if (vec->arr == NULL || vec->cap == 0 || vec->len == 0)               \
                 return -1;                                                    \
-        if (vec_##name##_resize(vec, vec->len + 1))                           \
+        if (vec_##name##_resize(vec, vec->len - 1))                           \
                 return -1;                                                    \
                                                                               \
-        memmove(vec->arr + 1, vec->arr, sizeof(type) * vec->len);             \
-        vec->arr[0] = val;                                                    \
-        vec->len++;                                                           \
+        *val = vec->arr[--vec->len];                                          \
                                                                               \
         return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_pop_back(struct vec_##name *vec, type *val)                      \
+vec_##name##_get(struct vec_##name *vec, type *val, const size_t idx)         \
 {                                                                             \
-        if (vec->arr == NULL || vec->len == 0)                                \
+        if (vec->arr == NULL || vec->cap == 0 || vec->len == 0)               \
+                return -1;                                                    \
+        if (vec->len <= idx)                                                  \
                 return -1;                                                    \
                                                                               \
-        *val = vec->arr[vec->len - 1];                                        \
-        vec->len--;                                                           \
+        *val = vec->arr[idx];                                                 \
                                                                               \
-        return vec_##name##_resize(vec, vec->len);                            \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_pop_front(struct vec_##name *vec, type *val)                     \
+vec_##name##_set(struct vec_##name *vec, const type val, const size_t idx)    \
 {                                                                             \
-        if (vec->arr == NULL || vec->len == 0)                                \
+        if (vec->arr == NULL || vec->cap == 0 || vec->len == 0)               \
+                return -1;                                                    \
+        if (vec->len <= idx)                                                  \
                 return -1;                                                    \
                                                                               \
-        *val = vec->arr[0];                                                   \
-        memmove(vec->arr, vec->arr + 1, sizeof(type) * vec->len);             \
-        vec->len--;                                                           \
+        vec->arr[idx] = val;                                                  \
                                                                               \
-        return vec_##name##_resize(vec, vec->len);                            \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
-vec_##name##_append(struct vec_##name *des,                                   \
-                    const type *arr, const size_t len)                        \
+vec_##name##_append(struct vec_##name *vec, const type *arr, const size_t len)\
 {                                                                             \
         if (arr == NULL || len == 0)                                          \
                 return 0;                                                     \
-        if (des->arr == NULL || des->len == 0) {                              \
-                *des = vec_##name##_from(arr, len);                           \
-                return 0;                                                     \
-        }                                                                     \
-        if (vec_##name##_resize(des, des->len + len))                         \
+        if (vec->arr == NULL)                                                 \
+                return -1;                                                    \
+        if (vec_##name##_resize(vec, vec->len + len))                         \
                 return -1;                                                    \
                                                                               \
-        memcpy(des->arr + des->len, arr, sizeof(*arr) * len);                 \
-                                                                              \
-        des->len += len;                                                      \
+        memcpy(vec->arr + vec->len, arr, len * sizeof(type));                 \
+        vec->len += len;                                                      \
                                                                               \
         return 0;                                                             \
 }                                                                             \
@@ -222,19 +181,37 @@ vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx) \
 {                                                                             \
         if (vec->arr == NULL)                                                 \
                 return -1;                                                    \
-        if (vec->len <= idx)                                                  \
+        if (vec->len < idx)                                                   \
                 return -1;                                                    \
+        if (vec->len == idx)                                                  \
+                return vec_##name##_push(vec, val);                           \
         if (vec_##name##_resize(vec, vec->len + 1))                           \
                 return -1;                                                    \
                                                                               \
-        memmove(vec->arr + idx,                                               \
-                vec->arr + idx + 1,                                           \
-                sizeof(type) * (vec->len - idx));                             \
+        memmove(vec->arr + idx + 1,                                           \
+                vec->arr + idx,                                               \
+                (vec->len - idx) * sizeof(type));                             \
         vec->arr[idx] = val;                                                  \
-                                                                              \
         vec->len++;                                                           \
                                                                               \
         return 0;                                                             \
+}                                                                             \
+                                                                              \
+int                                                                           \
+vec_##name##_remove(struct vec_##name *vec, type *val, const size_t idx)      \
+{                                                                             \
+        if (vec->arr == NULL)                                                 \
+                return -1;                                                    \
+        if (vec->len <= idx)                                                  \
+                return -1;                                                    \
+                                                                              \
+        *val = vec->arr[idx];                                                 \
+        memmove(vec->arr + idx,                                               \
+                vec->arr + idx + 1,                                           \
+                (vec->len - idx) * sizeof(type));                             \
+        vec->len--;                                                           \
+                                                                              \
+        return vec_##name##_resize(vec, vec->len);                            \
 }                                                                             \
                                                                               \
 int                                                                           \
@@ -242,96 +219,26 @@ vec_##name##_shrink(struct vec_##name *vec, const size_t len)                 \
 {                                                                             \
         if (vec->arr == NULL)                                                 \
                 return -1;                                                    \
-        if (vec->len < len)                                                   \
-                return -1;                                                    \
-        if (vec->len == len)                                                  \
+        if (vec->len <= len)                                                  \
                 return 0;                                                     \
+        if (vec_##name##_resize(vec, len))                                    \
+                return -1;                                                    \
                                                                               \
         vec->len = len;                                                       \
                                                                               \
-        return vec_##name##_resize(vec, len);                                 \
-}                                                                             \
-                                                                              \
-int                                                                           \
-vec_##name##_getnth(struct vec_##name *vec, type *val, const size_t idx)      \
-{                                                                             \
-        if (vec->arr == NULL)                                                 \
-                return -1;                                                    \
-        if (vec->len <= idx)                                                  \
-                return -1;                                                    \
-                                                                              \
-        *val = vec->arr[idx];                                                 \
-                                                                              \
         return 0;                                                             \
 }                                                                             \
                                                                               \
-int                                                                           \
-vec_##name##_setnth(struct vec_##name *vec, const type val, const size_t idx) \
+size_t                                                                        \
+vec_##name##_length(struct vec_##name *vec)                                   \
 {                                                                             \
-        if (vec->arr == NULL)                                                 \
-                return -1;                                                    \
-        if (vec->len <= idx)                                                  \
-                return -1;                                                    \
-                                                                              \
-        vec->arr[idx] = val;                                                  \
-                                                                              \
-        return 0;                                                             \
+        return vec->len;                                                      \
 }                                                                             \
                                                                               \
-int                                                                           \
-vec_##name##_rmvnth(struct vec_##name *vec, type *val, const size_t idx)      \
+size_t                                                                        \
+vec_##name##_sizeof(struct vec_##name *vec)                                   \
 {                                                                             \
-        if (vec->arr == NULL || vec->len == 0)                                \
-                return -1;                                                    \
-        if (vec->len <= idx)                                                  \
-                return -1;                                                    \
-                                                                              \
-        *val = vec->arr[idx];                                                 \
-        memmove(vec->arr + idx,                                               \
-                vec->arr + idx + 1,                                           \
-                sizeof(type) * (vec->len - idx));                             \
-                                                                              \
-        if (vec_##name##_resize(vec, vec->len - 1))                           \
-                return -1;                                                    \
-                                                                              \
-        vec->len--;                                                           \
-                                                                              \
-        return 0;                                                             \
-}                                                                             \
-                                                                              \
-int                                                                           \
-vec_##name##_getnxt(struct vec_##name##_iter *iter, type *val)                \
-{                                                                             \
-        if (iter->nxt < iter->vec->len) {                                     \
-                *val = iter->vec->arr[iter->nxt++];                           \
-                return 0;                                                     \
-        }                                                                     \
-                                                                              \
-        iter->nxt = 0;                                                        \
-                                                                              \
-        return -1;                                                            \
-}                                                                             \
-                                                                              \
-int                                                                           \
-vec_##name##_head(struct vec_##name *vec, type *data)                         \
-{                                                                             \
-        if (vec->len == 0 || vec->arr == NULL)                                \
-                return -1;                                                    \
-                                                                              \
-        *data = vec->arr[0];                                                  \
-                                                                              \
-        return 0;                                                             \
-}                                                                             \
-                                                                              \
-int                                                                           \
-vec_##name##_tail(struct vec_##name *vec, type *data)                         \
-{                                                                             \
-        if (vec->len == 0 || vec->arr == NULL)                                \
-                return -1;                                                    \
-                                                                              \
-        *data = vec->arr[vec->len - 1];                                       \
-                                                                              \
-        return 0;                                                             \
+        return vec->cap * sizeof(type);                                       \
 }                                                                             \
                                                                               \
 void                                                                          \
@@ -342,12 +249,30 @@ vec_##name##_free(struct vec_##name *vec)                                     \
         vec->cap = vec->len = 0;                                              \
 }                                                                             \
                                                                               \
-struct vec_##name##_semi { char _; /* to enforce semicolon */ }
+struct vec_##name##_iter                                                      \
+vec_##name##_iter(struct vec_##name *vec)                                     \
+{                                                                             \
+        struct vec_##name##_iter iter;                                        \
+                                                                              \
+        iter.vec = vec;                                                       \
+        iter.idx = 0;                                                         \
+                                                                              \
+        return iter;                                                          \
+}                                                                             \
+                                                                              \
+int                                                                           \
+vec_##name##_next(struct vec_##name##_iter *iter, type *val)                  \
+{                                                                             \
+        if (iter->idx == iter->vec->len)                                      \
+                return -1;                                                    \
+                                                                              \
+        *val = iter->vec->arr[iter->idx++];                                   \
+                                                                              \
+        return 0;                                                             \
+}
 
-#define FOR_EACH(name, i, iter) while (!vec_##name##_getnxt(&iter, &i))
-
-#define INIT_VEC(name, type, malloc, realloc, free)                           \
-INIT_VEC_TYPE(name, type);                                                    \
+#define INIT_VEC_BOTH(name, type, malloc, realloc, free)                      \
+INIT_VEC_TYPE(name, type)                                                     \
 INIT_VEC_FUNC(name, type, malloc, realloc, free)
 
 #endif
