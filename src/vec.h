@@ -271,6 +271,8 @@ vec_##name##_next(struct vec_##name##_iter *iter, type *val)                  \
         return 0;                                                             \
 }
 
+#define FOR_EACH_VEC(name, elem, iter) while (!vec_##name##_next(&iter, &elem))
+
 #define INIT_VEC_BOTH(name, type, malloc, realloc, free)                      \
 INIT_VEC_TYPE(name, type)                                                     \
 INIT_VEC_FUNC(name, type, malloc, realloc, free)
