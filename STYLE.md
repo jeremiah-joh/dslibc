@@ -8,6 +8,7 @@ Basic
 * Set `-D_XOPEN_SOURCE=700` if it's needed.
 * Code must fits in 79 columns.
 * Use tab character of 8 spaces width for identation.
+* Never use `goto` to go up. And try not to use `goto`.
 * Put copyright and license notice at top of every file in project.
 
 Variable
@@ -107,7 +108,7 @@ DO NOT put code at same line with statement.
 ```c
 if (condition) /* DON'T do anything here */
 
-while (condition); /* DON'T do this too */
+while (condition); /* DON'T do this neither */
 ```
 
 Put `case` at the same column with `switch`. Comment if case fall-through.
@@ -132,7 +133,7 @@ void foo(int);
 Comment is recommended for function prototype. It should explains *what* it
 does, not *how* it does.
 ```c
-/* swap to call-by-referenced int */
+/* swap two call-by-referenced integers */
 void swap(int *, int *);
 ```
 
@@ -143,9 +144,9 @@ Here are the rules you have to follow when defining functions.
 * Make functions do one thing and do it well.
 * Make functions fits it 79 columns and 20 rows.
 * Make functions have up to 7 local variables.
-* Make functions report error when something went wrong.
+* Make functions return error when something went wrong.
 
-Return type should be on a line by itself.
+Return type should be placed in a separate line.
 ```c
 void
 foo(int x)
@@ -169,8 +170,3 @@ main()
 	return 0;
 }
 ```
-
-Typedef
--------
-
-DO NOT use it.
