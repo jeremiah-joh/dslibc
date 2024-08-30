@@ -45,7 +45,7 @@ size_t vec_##name##_sizeof(struct vec_##name *);                              \
 void vec_##name##_free(struct vec_##name *);                                  \
                                                                               \
 struct vec_##name##_iter vec_##name##_iter(struct vec_##name *);              \
-int vec_##name##_next(struct vec_##name##_iter *, type *);                    \
+int vec_##name##_next(struct vec_##name##_iter *, type *);
 
 #define INIT_VEC_FUNC(name, type, malloc, realloc, free)                      \
 static int                                                                    \
