@@ -31,7 +31,7 @@ struct vec_##name##_iter {                                                    \
                                                                               \
 struct vec_##name vec_##name##_new(void);                                     \
 struct vec_##name vec_##name##_from(const type *, const size_t);              \
-struct vec_##name vec_##name##_copy(const struct vec_##name);                 \
+struct vec_##name vec_##name##_copy(const struct vec_##name *);               \
 int vec_##name##_push(struct vec_##name *, const type);                       \
 int vec_##name##_pop(struct vec_##name *, type *);                            \
 int vec_##name##_get(struct vec_##name *, type *, const size_t);              \
@@ -73,19 +73,9 @@ vec_##name##_new(void)                                                        \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \
-vec_##name##_copy(const struct vec_##name vec)                                \
+vec_##name##_copy(const struct vec_##name *vec)                               \
 {                                                                             \
-        struct vec_##name cpy;                                                \
-                                                                              \
-        cpy = vec_##name##_new();                                             \
-                                                                              \
-        if (vec_##name##_resize(&cpy, vec.len))                               \
-                return vec_##name##_new();                                    \
-                                                                              \
-        memcpy(cpy.arr, vec.arr, vec.len * sizeof(type));                     \
-        cpy.len = vec.len;                                                    \
-                                                                              \
-        return cpy;                                                           \
+        return vec_##name##_from(vec->arr, vec->len);                         \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \
