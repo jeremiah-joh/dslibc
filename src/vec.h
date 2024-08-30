@@ -112,12 +112,10 @@ vec_##name##_pop(struct vec_##name *vec, type *val)                           \
 {                                                                             \
         if (vec->arr == NULL || vec->cap == 0 || vec->len == 0)               \
                 return -1;                                                    \
-        if (vec_##name##_resize(vec, vec->len - 1))                           \
-                return -1;                                                    \
                                                                               \
         *val = vec->arr[--vec->len];                                          \
                                                                               \
-        return 0;                                                             \
+        return vec_##name##_resize(vec, vec->len);                            \
 }                                                                             \
                                                                               \
 int                                                                           \
