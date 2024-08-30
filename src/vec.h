@@ -51,16 +51,12 @@ int vec_##name##_next(struct vec_##name##_iter *, type *);                    \
 static int                                                                    \
 vec_##name##_resize(struct vec_##name *vec, const size_t len)                 \
 {                                                                             \
-        size_t cap;                                                           \
-                                                                              \
         if (vec->len < vec->cap && vec->cap / 3 < vec->len)                   \
                 return 0;                                                     \
-        for (cap = 1; cap < len; cap <<= 1)                                   \
+        for (vec->cap = 1; vec->cap < len; vec->cap <<= 1)                    \
                 ;                                                             \
-        if ((vec->arr = realloc(vec->arr, sizeof(type) * cap)) == NULL)       \
+        if ((vec->arr = realloc(vec->arr, sizeof(type) * vec->cap)) == NULL)  \
                 return -1;                                                    \
-                                                                              \
-        vec->cap = cap;                                                       \
                                                                               \
         return 0;                                                             \
 }                                                                             \
