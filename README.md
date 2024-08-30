@@ -3,25 +3,22 @@ Data Structure Library for C
 
 A collection of useful data structures written in ANSI C.
 
-Following data structures are implemented.
+Following data structures are in this library.
 * Vector
-* Singly Linked List
-* Doubly Linked List
-* Binary Search Tree
-* Hash Table
-* Heap
-
-Following data structures are planned.
-* AVL Tree
-* Red-Black Tree
-* B Tree
-* Splay Tree
+* Singly Linked List(unimplemented)
+* Doubly Linked List(unimplemented)
+* Binary Search Tree(unimplemented)
+* Hash Table(unimplemented)
+* Heap(unimplemented)
+* AVL Tree(unimplemented)
+* Red-Black Tree(unimplemented)
+* B Tree(unimplemented)
+* Splay Tree(unimplemented)
 
 How to use this library
 -----------------------
 
-First, copy the header file into your project directory and include it.
-Then, read document for it in [docs/](docs/).
+Read (API document)[doc/].
 
 License
 -------
