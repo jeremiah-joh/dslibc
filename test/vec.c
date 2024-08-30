@@ -203,6 +203,30 @@ shrink()
         assert(vec.arr[2] == 2);
 }
 
+static void
+iter()
+{
+        struct vec_int vec;
+        struct vec_int_iter iter;
+        int arr[LEN] = { 0, 1, 2, 3, 4 };
+        int val;
+
+        vec = vec_int_from(arr, LEN);
+        iter = vec_int_iter(&vec);
+
+        assert(vec_int_next(&iter, &val) == 0);
+        assert(val == 0);
+        assert(vec_int_next(&iter, &val) == 0);
+        assert(val == 1);
+        assert(vec_int_next(&iter, &val) == 0);
+        assert(val == 2);
+        assert(vec_int_next(&iter, &val) == 0);
+        assert(val == 3);
+        assert(vec_int_next(&iter, &val) == 0);
+        assert(val == 4);
+        assert(vec_int_next(&iter, &val) != 0);
+}
+
 int
 main()
 {
@@ -215,6 +239,7 @@ main()
         insert();
         remove();
         shrink();
+        iter();
 
         return 0;
 }
