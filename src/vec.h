@@ -73,12 +73,6 @@ vec_##name##_new(void)                                                        \
 }                                                                             \
                                                                               \
 struct vec_##name                                                             \
-vec_##name##_copy(const struct vec_##name *vec)                               \
-{                                                                             \
-        return vec_##name##_from(vec->arr, vec->len);                         \
-}                                                                             \
-                                                                              \
-struct vec_##name                                                             \
 vec_##name##_from(const type *arr, const size_t len)                          \
 {                                                                             \
         struct vec_##name vec;                                                \
@@ -92,6 +86,12 @@ vec_##name##_from(const type *arr, const size_t len)                          \
         vec.len = len;                                                        \
                                                                               \
         return vec;                                                           \
+}                                                                             \
+                                                                              \
+struct vec_##name                                                             \
+vec_##name##_copy(const struct vec_##name *vec)                               \
+{                                                                             \
+        return vec_##name##_from(vec->arr, vec->len);                         \
 }                                                                             \
                                                                               \
 int                                                                           \
