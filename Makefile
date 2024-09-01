@@ -5,4 +5,4 @@ all:
 	./vec
 
 clean:
-	rm vec
+	rm -f vec
