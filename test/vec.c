@@ -83,6 +83,19 @@ pop()
 }
 
 static void
+top()
+{
+        struct vec_int vec;
+        int arr[LEN] = { 0, 1, 2, 3, 4 };
+        int val;
+
+        vec = vec_int_from(arr, LEN);
+
+        vec_int_top(&vec, &val);
+        assert(val == 4);
+}
+
+static void
 get()
 {
         struct vec_int vec;
@@ -233,6 +246,7 @@ main()
         from();
         push();
         pop();
+        top();
         get();
         set();
         append();

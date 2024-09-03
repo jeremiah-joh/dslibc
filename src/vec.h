@@ -34,6 +34,7 @@ struct vec_##name vec_##name##_from(const type *, const size_t);              \
 struct vec_##name vec_##name##_copy(const struct vec_##name *);               \
 int vec_##name##_push(struct vec_##name *, const type);                       \
 int vec_##name##_pop(struct vec_##name *, type *);                            \
+int vec_##name##_top(struct vec_##name *, type *);                            \
 int vec_##name##_get(struct vec_##name *, type *, const size_t);              \
 int vec_##name##_set(struct vec_##name *, const type, const size_t);          \
 int vec_##name##_append(struct vec_##name *, const type *, const size_t);     \
@@ -116,6 +117,17 @@ vec_##name##_pop(struct vec_##name *vec, type *val)                           \
         *val = vec->arr[--vec->len];                                          \
                                                                               \
         return vec_##name##_resize(vec, vec->len);                            \
+}                                                                             \
+                                                                              \
+int                                                                           \
+vec_##name##_top(struct vec_##name *vec, type *val)                           \
+{                                                                             \
+        if (vec->arr == NULL || vec->cap == 0 || vec->len == 0)               \
+                return -1;                                                    \
+                                                                              \
+        *val = vec->arr[vec->len - 1];                                        \
+                                                                              \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
