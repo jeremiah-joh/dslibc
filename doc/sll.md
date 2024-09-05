@@ -94,7 +94,7 @@ push
 `int sll_##name##_push(struct sll_##name *sll, const type val);`
 
 Appends an element `val` to the back of the `sll`. It returns -1 as error if
-memory reallocation is failed.
+memory allocation is failed.
 
 ```c
 #include <stdlib.h>
@@ -114,7 +114,7 @@ pop
 `int sll_##name##_pop(struct sll_##name *sll, type *val);`
 
 Removes the first element from the `sll` and assigns into `val`. It returns -1
-as error if memory reallocation is failed.
+as error if memory deallocation is failed.
 
 ```c
 #include <stdlib.h>
@@ -176,7 +176,7 @@ append
 `int sll_##name##_append(struct sll_##name *sll, const type *arr, const size_t len);`
 
 Appends an `arr` to the back of the `sll`. It returns -1 as error if memory
-reallocation is failed.
+allocation is failed.
 
 ```c
 #include <stdlib.h>
@@ -196,7 +196,7 @@ insert
 `int sll_##name##_insert(struct sll_##name *sll, const type val, const size_t idx);`
 
 Inserts the `val` to the `idx` in `sll`. It returns -1 as error if `idx` is out
-of range or memory reallocation is failed.
+of range or memory allocation is failed.
 
 ```c
 #include <stdlib.h>
@@ -216,7 +216,7 @@ remove
 `int sll_##name##_remove(struct sll_##name *sll, type *val, const size_t idx);`
 
 Removes the element at the `idx` and assigns it into `val`. It returns -1 as
-error if `idx` is out of range or memory reallocation is failed.
+error if `idx` is out of range or memory deallocation is failed.
 
 ```c
 #include <stdlib.h>
@@ -237,7 +237,7 @@ shrink
 `int sll_##name##_shrink(struct sll_##name *sll, const size_t len);`
 
 Shrinks the length of `sll` to `len`. It returns -1 as erro if `len` is greater
-than the length of `sll` or memory reallocation is failed.
+than the length of `sll` or memory deallocation is failed.
 
 ```c
 #include <stdlib.h>
