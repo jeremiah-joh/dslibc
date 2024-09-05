@@ -233,7 +233,6 @@ main()
         from();
         push();
         pop();
-        top();
         get();
         set();
         append();
