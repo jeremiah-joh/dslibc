@@ -5,6 +5,8 @@ all:
 	./vec
 	$(CC) -o sll test/sll.c -g
 	./sll
+	$(CC) -o dll test/dll.c -g
+	./dll
 
 clean:
-	rm -f vec sll
+	rm -f vec sll dll
