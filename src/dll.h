@@ -1,5 +1,5 @@
 /*
- * dslibc - data structure library for ANSI C
+ : dslibc - data structure library for ANSI C
  *
  * Written in 2024 by Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
  *
@@ -256,10 +256,6 @@ dll_##name##_insert(struct dll_##name *dll, const type val, const size_t idx) \
 {                                                                             \
         struct dll_##name##_node *cur, *new;                                  \
                                                                               \
-        if (idx == 0)                                                         \
-                return dll_##name##_push_front(dll, val);                     \
-        if (dll->len == idx)                                                  \
-                return dll_##name##_push_back(dll, val);                      \
         if (dll->len < idx)                                                   \
                 return -1;                                                    \
         if ((cur = dll_##name##_ptr(dll, idx - 1)) == NULL)                   \
@@ -329,6 +325,29 @@ dll_##name##_free(struct dll_##name *dll)                                     \
         dll_##name##_del(dll->beg);                                           \
         dll->beg = dll->end = NULL;                                           \
         dll->len = 0;                                                         \
+}                                                                             \
+                                                                              \
+struct dll_##name##_iter                                                      \
+dll_##name##_iter(struct dll_##name *dll)                                     \
+{                                                                             \
+        struct dll_##name##_iter iter;                                        \
+                                                                              \
+        iter.dll = dll;                                                       \
+        iter.cur = dll->beg;                                                  \
+                                                                              \
+        return iter;                                                          \
+}                                                                             \
+                                                                              \
+int                                                                           \
+dll_##name##_next(struct dll_##name##_iter *iter, type *val)                  \
+{                                                                             \
+        if (iter->cur == NULL)                                                \
+                return -1;                                                    \
+                                                                              \
+        *val = iter->cur->val;                                                \
+        iter->cur = iter->cur->nxt;                                           \
+                                                                              \
+        return 0;                                                             \
 }
 
 #define INIT_DLL_BOTH(name, type, malloc, free)                               \

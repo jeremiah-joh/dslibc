@@ -203,7 +203,7 @@ shrink()
         assert(dll.beg->nxt->val == 1);
         assert(dll.beg->nxt->nxt->val == 2);
 }
-/*
+
 static void
 iter()
 {
@@ -227,7 +227,7 @@ iter()
         assert(val == 4);
         assert(dll_int_next(&iter, &val) != 0);
 }
-*/
+
 int
 main()
 {
@@ -240,6 +240,7 @@ main()
         insert();
         remove();
         shrink();
+        iter();
 
         return 0;
 }
