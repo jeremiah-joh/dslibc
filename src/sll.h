@@ -274,7 +274,7 @@ sll_##name##_length(struct sll_##name *sll)                                   \
 size_t                                                                        \
 sll_##name##_sizeof(struct sll_##name *sll)                                   \
 {                                                                             \
-        return sll->len * sizeof(type);                                       \
+        return sll->len * sizeof(type) + sizeof(*sll);                        \
 }                                                                             \
                                                                               \
 void                                                                          \

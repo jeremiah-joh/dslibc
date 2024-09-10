@@ -316,7 +316,7 @@ dll_##name##_length(struct dll_##name *dll)                                   \
 size_t                                                                        \
 dll_##name##_sizeof(struct dll_##name *dll)                                   \
 {                                                                             \
-        return dll->len * sizeof(type);                                       \
+        return dll->len * sizeof(type) + sizeof(*dll);                        \
 }                                                                             \
                                                                               \
 void                                                                          \

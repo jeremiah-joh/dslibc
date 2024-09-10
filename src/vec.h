@@ -222,7 +222,7 @@ vec_##name##_length(struct vec_##name *vec)                                   \
 size_t                                                                        \
 vec_##name##_sizeof(struct vec_##name *vec)                                   \
 {                                                                             \
-        return vec->cap * sizeof(type);                                       \
+        return vec->cap * sizeof(type) + sizeof(*vec);                        \
 }                                                                             \
                                                                               \
 void                                                                          \
