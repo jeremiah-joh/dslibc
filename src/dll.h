@@ -242,13 +242,13 @@ dll_##name##_set(struct dll_##name *dll, const type val, const size_t idx)    \
 int                                                                           \
 dll_##name##_append(struct dll_##name *old, struct dll_##name *new)           \
 {                                                                             \
-	struct dll_##name##_node *cur;                                        \
+        struct dll_##name##_node *cur;                                        \
                                                                               \
-	for (cur = new->beg; cur != NULL; cur = cur->nxt)                     \
-		if (dll_##name##_push_back(old, cur->val))                    \
-			return -1;                                            \
+        for (cur = new->beg; cur != NULL; cur = cur->nxt)                     \
+                if (dll_##name##_push_back(old, cur->val))                    \
+                        return -1;                                            \
                                                                               \
-	return 0;                                                             \
+        return 0;                                                             \
 }                                                                             \
                                                                               \
 int                                                                           \
