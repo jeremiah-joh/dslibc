@@ -9,6 +9,8 @@ INIT_VEC_TYPE(name, type)
 Initializes structures and function prototypes.
 
 ```c
+#include "vec.h"
+
 INIT_VEC_TYPE(int, int)
 ```
 
@@ -18,6 +20,7 @@ INIT_VEC_FUNC(name, type, malloc, realloc, free)
 Initializes function definitions.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_FUNC(int, int, malloc, realloc, free)
@@ -29,6 +32,7 @@ INIT_VEC_BOTH(name, type, malloc, realloc, free)
 Initializes both structures and functions.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_FUNC(int, int, malloc, realloc, free)
@@ -42,6 +46,7 @@ new
 Constructs a new, empty vector.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -59,6 +64,7 @@ from
 Allocate a vector and fill it by `arr`\`s items.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -77,6 +83,7 @@ copy
 Constructs a deeply copied vector from given `vec`.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -97,6 +104,7 @@ Appends an element `val` to the back of the `vec`. It returns -1 as error if
 memory reallocation is failed.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -117,6 +125,7 @@ Removes the last element from the `vec` and assigns into `val`. It returns -1
 as error if memory reallocation is failed.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -138,6 +147,7 @@ Assigns the element at `idx` into `val` in `vec`. It returs -1 as error if the
 `idx` is out of range.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -159,6 +169,7 @@ Assigns the `val` at `idx` in `vec`. It returns -1 as error if the `idx` is out
 of range.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -179,6 +190,7 @@ Appends an `arr` to the back of the `vec`. It returns -1 as error if memory
 reallocation is failed.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -199,6 +211,7 @@ Inserts the `val` to the `idx` in `vec`. It returns -1 as error if `idx` is out
 of range or memory reallocation is failed.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -219,6 +232,7 @@ Removes the element at the `idx` and assigns it into `val`. It returns -1 as
 error if `idx` is out of range or memory reallocation is failed.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -240,6 +254,7 @@ Shrinks the length of `vec` to `len`. It returns -1 as erro if `len` is greater
 than the length of `vec` or memory reallocation is failed.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -259,6 +274,7 @@ length
 Returns the length of `vec`.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -279,6 +295,7 @@ sizeof
 Retruns the amount of bytes that `vec` is occuping.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -300,6 +317,7 @@ Deallocates the `vec` from memory and fills NULL and zeros into the internal
 fields to prevent use-after-free.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -319,6 +337,7 @@ iter
 Constructs an iterator of `vec`.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -340,6 +359,7 @@ Assigns the next element in `vec` into `val`. It returns -1 as error if the end
 of range is reached.
 
 ```c
+#include "vec.h"
 #include <stdlib.h>
 
 INIT_VEC_BOTH(int, int, malloc, realloc, free)
@@ -361,6 +381,7 @@ FOR_EACH_VEC(name, elem, iter)
 Traverses each elements in `iter` of vector.
 
 ```c
+#include "vec.h"
 #include <stdio.h>
 #include <stdlib.h>
 

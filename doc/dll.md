@@ -9,6 +9,8 @@ INIT_DLL_TYPE(name, type)
 Initializes structures and function prototypes.
 
 ```c
+#include "dll.h"
+
 INIT_DLL_TYPE(int, int)
 ```
 
@@ -18,6 +20,7 @@ INIT_DLL_FUNC(name, type, malloc, free)
 Initializes function definitions.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_FUNC(int, int, malloc, free)
@@ -29,6 +32,7 @@ INIT_DLL_BOTH(name, type, malloc, free)
 Initializes both structures and functions.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_FUNC(int, int, malloc, free)
@@ -42,6 +46,7 @@ new
 Constructs a new, empty linked list.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -59,6 +64,7 @@ from
 Allocate a linked list and fill it by `arr`\`s items.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -77,6 +83,7 @@ copy
 Constructs a deeply copied linked list from given `dll`.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -97,6 +104,7 @@ Appends an element `val` to the back of the `dll`. It returns -1 as error if
 memory allocation is failed.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -117,6 +125,7 @@ Removes the last element from the `dll` and assigns into `val`. It returns -1
 as error if memory deallocation is failed.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -138,6 +147,7 @@ Appends an element `val` to the front of the `dll`. It returns -1 as error if
 memory allocation is failed.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -158,6 +168,7 @@ Removes the first element from the `dll` and assigns into `val`. It returns -1
 as error if memory deallocation is failed.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -179,6 +190,7 @@ Assigns the element at `idx` into `val` in `dll`. It returs -1 as error if the
 `idx` is out of range.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -200,6 +212,7 @@ Assigns the `val` at `idx` in `dll`. It returns -1 as error if the `idx` is out
 of range.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -220,6 +233,7 @@ Appends an `arr` to the back of the `dll`. It returns -1 as error if memory
 allocation is failed.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -240,6 +254,7 @@ Inserts the `val` to the `idx` in `dll`. It returns -1 as error if `idx` is out
 of range or memory allocation is failed.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -260,6 +275,7 @@ Removes the element at the `idx` and assigns it into `val`. It returns -1 as
 error if `idx` is out of range or memory deallocation is failed.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -281,6 +297,7 @@ Shrinks the length of `dll` to `len`. It returns -1 as erro if `len` is greater
 than the length of `dll` or memory deallocation is failed.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -300,6 +317,7 @@ length
 Returns the length of `dll`.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -320,6 +338,7 @@ sizeof
 Retruns the amount of bytes that `dll` is occuping.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -341,6 +360,7 @@ Deallocates the `dll` from memory and fills NULL and zeros into the internal
 fields to prevent use-after-free.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -360,6 +380,7 @@ iter
 Constructs an iterator of `dll`.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -381,6 +402,7 @@ Assigns the next element in `dll` into `val`. It returns -1 as error if the end
 of range is reached.
 
 ```c
+#include "dll.h"
 #include <stdlib.h>
 
 INIT_DLL_BOTH(int, int, malloc, free)
@@ -402,6 +424,7 @@ FOR_EACH_DLL(name, elem, iter)
 Traverses each elements in `iter` of linked list.
 
 ```c
+#include "dll.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -9,6 +9,8 @@ INIT_SLL_TYPE(name, type)
 Initializes structures and function prototypes.
 
 ```c
+#include "sll.h"
+
 INIT_SLL_TYPE(int, int)
 ```
 
@@ -18,6 +20,7 @@ INIT_SLL_FUNC(name, type, malloc, free)
 Initializes function definitions.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_FUNC(int, int, malloc, free)
@@ -29,6 +32,7 @@ INIT_SLL_BOTH(name, type, malloc, free)
 Initializes both structures and functions.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_FUNC(int, int, malloc, free)
@@ -42,6 +46,7 @@ new
 Constructs a new, empty linked list.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -59,6 +64,7 @@ from
 Allocate a linked list and fill it by `arr`\`s items.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -77,6 +83,7 @@ copy
 Constructs a deeply copied linked list from given `sll`.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -97,6 +104,7 @@ Appends an element `val` to the back of the `sll`. It returns -1 as error if
 memory allocation is failed.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -117,6 +125,7 @@ Removes the first element from the `sll` and assigns into `val`. It returns -1
 as error if memory deallocation is failed.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -138,6 +147,7 @@ Assigns the element at `idx` into `val` in `sll`. It returs -1 as error if the
 `idx` is out of range.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -159,6 +169,7 @@ Assigns the `val` at `idx` in `sll`. It returns -1 as error if the `idx` is out
 of range.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -179,6 +190,7 @@ Appends an `arr` to the back of the `sll`. It returns -1 as error if memory
 allocation is failed.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -199,6 +211,7 @@ Inserts the `val` to the `idx` in `sll`. It returns -1 as error if `idx` is out
 of range or memory allocation is failed.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -219,6 +232,7 @@ Removes the element at the `idx` and assigns it into `val`. It returns -1 as
 error if `idx` is out of range or memory deallocation is failed.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -240,6 +254,7 @@ Shrinks the length of `sll` to `len`. It returns -1 as erro if `len` is greater
 than the length of `sll` or memory deallocation is failed.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -259,6 +274,7 @@ length
 Returns the length of `sll`.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -279,6 +295,7 @@ sizeof
 Retruns the amount of bytes that `sll` is occuping.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -300,6 +317,7 @@ Deallocates the `sll` from memory and fills NULL and zeros into the internal
 fields to prevent use-after-free.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -319,6 +337,7 @@ iter
 Constructs an iterator of `sll`.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -340,6 +359,7 @@ Assigns the next element in `sll` into `val`. It returns -1 as error if the end
 of range is reached.
 
 ```c
+#include "sll.h"
 #include <stdlib.h>
 
 INIT_SLL_BOTH(int, int, malloc, free)
@@ -361,6 +381,7 @@ FOR_EACH_SLL(name, elem, iter)
 Traverses each elements in `iter` of linked list.
 
 ```c
+#include "sll.h"
 #include <stdio.h>
 #include <stdlib.h>
 
