@@ -13,7 +13,7 @@ A collection of useful data structures written in ANSI C.
 | B Tree             | bt.h    |   X   |
 | Red-Black Tree     | rbt.h   |   X   |
 | Splay Tree         | splay.h |   X   |
-| Heap               | heap.h  |   X   |
+| Heap               | heap.h  |   O   |
 | Hash Table         | ht.h    |   X   |
 
 How to use this library

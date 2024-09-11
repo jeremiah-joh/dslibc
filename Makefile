@@ -7,6 +7,8 @@ all:
 	./sll
 	$(CC) -o dll test/dll.c -g
 	./dll
+	$(CC) -o heap test/heap.c -g
+	./heap
 
 clean:
-	rm -f vec sll dll
+	rm -f vec sll dll heap
