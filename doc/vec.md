@@ -241,7 +241,7 @@ struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
 int val;
 
-vec = vec_int_from(arr, 4);
+vec = vec_int_from(arr, 5);
 vec_int_remove(&vec, &val, 2);
 ```
 
@@ -262,7 +262,7 @@ INIT_VEC_BOTH(int, int, malloc, realloc, free)
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
 
-vec = vec_int_from(arr, 4);
+vec = vec_int_from(arr, 5);
 vec_int_shrink(&vec, 3);
 ```
 
@@ -283,7 +283,7 @@ struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
 size_t len;
 
-vec = vec_int_from(arr, 4);
+vec = vec_int_from(arr, 5);
 len = vec_int_length(&vec);
 ```
 
@@ -304,7 +304,7 @@ struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
 size_t size;
 
-vec = vec_int_from(arr, 4);
+vec = vec_int_from(arr, 5);
 size = vec_int_sizeof(&vec);
 ```
 
@@ -325,7 +325,7 @@ INIT_VEC_BOTH(int, int, malloc, realloc, free)
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
 
-vec = vec_int_from(arr, 4);
+vec = vec_int_from(arr, 5);
 vec_int_free(&vec);
 ```
 
