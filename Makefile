@@ -9,6 +9,8 @@ all:
 	./dll
 	$(CC) -o heap test/heap.c -g
 	./heap
+	$(CC) -o ht test/ht.c -g
+	./ht
 
 clean:
-	rm -f vec sll dll heap
+	rm -f vec sll dll heap ht
