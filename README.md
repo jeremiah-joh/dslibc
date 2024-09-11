@@ -14,7 +14,7 @@ A collection of useful data structures written in ANSI C.
 | Red-Black Tree     | rbt.h   |   X   |
 | Splay Tree         | splay.h |   X   |
 | Heap               | heap.h  |   O   |
-| Hash Table         | ht.h    |   X   |
+| Hash Table         | ht.h    |   O   |
 
 How to use this library
 -----------------------
