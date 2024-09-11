@@ -1,5 +1,5 @@
 /*
- : dslibc - data structure library for ANSI C
+ * dslibc - data structure library for ANSI C
  *
  * Written in 2024 by Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
  *
