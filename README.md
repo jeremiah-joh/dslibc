@@ -19,7 +19,7 @@ A collection of useful data structures written in ANSI C.
 How to use this library
 -----------------------
 
-Read (API document)[doc/].
+Read [API document](doc/).
 
 License
 -------
