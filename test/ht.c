@@ -121,6 +121,30 @@ remove()
 	assert(ht.cap == 4);
 }
 
+static void
+iter()
+{
+	struct ht_int_iter iter;
+	struct ht_int ht;
+	int arr[] = { 0, 1, 2, 3, 4 };
+	int val;
+
+	ht = ht_int_from(arr, LEN);
+	iter = ht_int_iter(&ht);
+
+	assert(ht_int_next(&iter, &val) == 0);
+	assert(val == 0);
+	assert(ht_int_next(&iter, &val) == 0);
+	assert(val == 4);
+	assert(ht_int_next(&iter, &val) == 0);
+	assert(val == 1);
+	assert(ht_int_next(&iter, &val) == 0);
+	assert(val == 2);
+	assert(ht_int_next(&iter, &val) == 0);
+	assert(val == 3);
+	assert(ht_int_next(&iter, &val) != 0);
+}
+
 int
 main()
 {
@@ -128,6 +152,7 @@ main()
 	get();
 	insert();
 	remove();
+	iter();
 
 	return 0;
 }

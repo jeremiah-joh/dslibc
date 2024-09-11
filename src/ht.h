@@ -261,7 +261,33 @@ ht_##name##_free(struct ht_##name *ht)                                         \
 	free(ht->arr);                                                         \
 	ht->arr = NULL;                                                        \
 	ht->cap = ht->len = 0;                                                 \
+}                                                                              \
+                                                                               \
+struct ht_##name##_iter                                                        \
+ht_##name##_iter(struct ht_##name *ht)                                         \
+{                                                                              \
+	struct ht_##name##_iter iter;                                          \
+                                                                               \
+	iter.ht = ht;                                                          \
+	iter.idx = 0;                                                          \
+                                                                               \
+	return iter;                                                           \
+}                                                                              \
+                                                                               \
+int                                                                            \
+ht_##name##_next(struct ht_##name##_iter *iter, type *val)                     \
+{                                                                              \
+	for (; iter->idx < iter->ht->cap; iter->idx++) {                       \
+		if (iter->ht->arr[iter->idx].state == SOME) {                  \
+			*val = iter->ht->arr[iter->idx++].val;                 \
+			return 0;                                              \
+		}                                                              \
+	}                                                                      \
+                                                                               \
+	return -1;                                                             \
 }
+
+#define FOR_EACH_HT(name, elem, iter) while (!ht_##name##_next(&iter, &elem))
 
 #define INIT_HT_BOTH(name, type, hash, cmp, malloc, free)                      \
 INIT_HT_TYPE(name, type)                                                       \
