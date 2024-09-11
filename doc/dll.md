@@ -35,7 +35,7 @@ Initializes both structures and functions.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_FUNC(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free)
 ```
 
 new

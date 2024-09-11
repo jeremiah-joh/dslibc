@@ -35,7 +35,7 @@ Initializes both structures and functions.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_FUNC(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free)
 ```
 
 new

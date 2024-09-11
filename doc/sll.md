@@ -35,7 +35,7 @@ Initializes both structures and functions.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_FUNC(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free)
 ```
 
 new
