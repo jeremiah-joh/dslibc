@@ -51,7 +51,7 @@ int vec_##name##_next(struct vec_##name##_iter *, type *);
 static int                                                                    \
 vec_##name##_resize(struct vec_##name *vec, const size_t len)                 \
 {                                                                             \
-        if (vec->len < vec->cap || vec->cap / 3 < vec->len)                   \
+        if (vec->len < vec->cap && vec->cap / 3 < vec->len)                   \
                 return 0;                                                     \
         for (vec->cap = 1; vec->cap < len; vec->cap <<= 1)                    \
                 ;                                                             \
