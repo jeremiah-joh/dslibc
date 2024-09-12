@@ -235,7 +235,7 @@ ht_##name##_remove(struct ht_##name *ht, type *val)                            \
 		return -1;                                                     \
                                                                                \
 	*val = ht->arr[i].val;                                                 \
-	ht->arr[i].state =TOMB;                                                \
+	ht->arr[i].state = TOMB;                                               \
 	ht->len--;                                                             \
                                                                                \
 	return ht_##name##_resize(ht, ht->len);                                \
