@@ -250,7 +250,7 @@ ht_##name##_length(struct ht_##name *ht)                                       \
 size_t                                                                         \
 ht_##name##_sizeof(struct ht_##name *ht)                                       \
 {                                                                              \
-	return ht->len * sizeof(type) + sizeof(*ht);                           \
+	return ht->cap * sizeof(type) + sizeof(*ht);                           \
 }                                                                              \
                                                                                \
 void                                                                           \
