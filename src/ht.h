@@ -60,6 +60,7 @@ ht_##name##_size(const size_t len)                                             \
 		;                                                              \
                                                                                \
 	ht.arr = malloc(ht.cap * sizeof(struct ht_##name##_node));             \
+	memset(ht.arr, 0, ht.cap * sizeof(struct ht_##name##_node));           \
 	ht.len = 0;                                                            \
                                                                                \
 	return ht;                                                             \
