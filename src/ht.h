@@ -72,12 +72,9 @@ ht_##name##_empty(struct ht_##name *ht, const type val)                        \
 	size_t h, i;                                                           \
                                                                                \
 	h = hash(val) & (ht->cap - 1);                                         \
-	for (i = h; NEXT(i, ht->cap) != h; i = NEXT(i, ht->cap)) {             \
+	for (i = h; NEXT(i, ht->cap) != h; i = NEXT(i, ht->cap))               \
 		if (ht->arr[i].state != SOME)                                  \
 			return i;                                              \
-		if (cmp(val, ht->arr[i].val) == 0)                             \
-			break;                                                 \
-	}                                                                      \
                                                                                \
 	return ht->cap;                                                        \
 }                                                                              \
