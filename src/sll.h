@@ -169,8 +169,8 @@ sll_##name##_get(struct sll_##name *sll, type *val, const size_t idx)          \
 {                                                                              \
         struct sll_##name##_node *cur;                                         \
                                                                                \
-	if (sll->len <= idx)                                                   \
-		return -1;                                                     \
+        if (sll->len <= idx)                                                   \
+                return -1;                                                     \
         if ((cur = sll_##name##_ptr(sll, idx)) == NULL)                        \
                 return -1;                                                     \
                                                                                \
@@ -182,49 +182,49 @@ sll_##name##_get(struct sll_##name *sll, type *val, const size_t idx)          \
 int                                                                            \
 sll_##name##_set(struct sll_##name *sll, const type val, const size_t idx)     \
 {                                                                              \
-	struct sll_##name##_node *cur;                                         \
+        struct sll_##name##_node *cur;                                         \
                                                                                \
-	if (sll->len <= idx)                                                   \
-		return -1;                                                     \
-	if ((cur = sll_##name##_ptr(sll, idx)) == NULL)                        \
-		return -1;                                                     \
+        if (sll->len <= idx)                                                   \
+                return -1;                                                     \
+        if ((cur = sll_##name##_ptr(sll, idx)) == NULL)                        \
+                return -1;                                                     \
                                                                                \
-	cur->val = val;                                                        \
+        cur->val = val;                                                        \
                                                                                \
-	return 0;                                                              \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 int                                                                            \
 sll_##name##_append(struct sll_##name *old, struct sll_##name *new)            \
 {                                                                              \
-	struct sll_##name##_node *cur;                                         \
+        struct sll_##name##_node *cur;                                         \
                                                                                \
-	for (cur = new->beg; cur != NULL; cur = cur->nxt)                      \
-		if (sll_##name##_push(old, cur->val))                          \
-			return -1;                                             \
+        for (cur = new->beg; cur != NULL; cur = cur->nxt)                      \
+                if (sll_##name##_push(old, cur->val))                          \
+                        return -1;                                             \
                                                                                \
-	return 0;                                                              \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 int                                                                            \
 sll_##name##_insert(struct sll_##name *sll, const type val, const size_t idx)  \
 {                                                                              \
-	struct sll_##name##_node *cur, *new;                                   \
+        struct sll_##name##_node *cur, *new;                                   \
                                                                                \
         if (sll->len == idx)                                                   \
                 return sll_##name##_push(sll, val);                            \
-	if (sll->len < idx)                                                    \
-		return -1;                                                     \
-	if ((cur = sll_##name##_ptr(sll, idx - 1)) == NULL)                    \
-		return -1;                                                     \
-	if ((new = sll_##name##_node(val)) == NULL)                            \
-		return -1;                                                     \
+        if (sll->len < idx)                                                    \
+                return -1;                                                     \
+        if ((cur = sll_##name##_ptr(sll, idx - 1)) == NULL)                    \
+                return -1;                                                     \
+        if ((new = sll_##name##_node(val)) == NULL)                            \
+                return -1;                                                     \
                                                                                \
-	new->nxt = cur->nxt;                                                   \
-	cur->nxt = new;                                                        \
-	sll->len++;                                                            \
+        new->nxt = cur->nxt;                                                   \
+        cur->nxt = new;                                                        \
+        sll->len++;                                                            \
                                                                                \
-	return 0;                                                              \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 int                                                                            \
