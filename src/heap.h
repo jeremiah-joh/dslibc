@@ -49,7 +49,7 @@ int heap_##name##_next(struct heap_##name##_iter *, type *);
 static int                                                                     \
 heap_##name##_resize(struct heap_##name *heap, const size_t len)               \
 {                                                                              \
-        if (heap->len < heap->cap && heap->cap / 3 < heap->len)                \
+        if (heap->cap / 3 < heap->len && heap->len < heap->cap)                \
                 return 0;                                                      \
         for (heap->cap = 1; heap->cap < len; heap->cap <<= 1)                  \
                 ;                                                              \
