@@ -8,7 +8,7 @@ A collection of useful data structures written in ANSI C.
 | Vector             | vec.h   |   O   |
 | Singly Linked List | sll.h   |   O   |
 | Doubly Linked List | dll.h   |   O   |
-| Binary Search Tree | bst.h   |   X   |
+| Binary Search Tree | bst.h   |   O   |
 | AVL Tree           | avl.h   |   X   |
 | B Tree             | bt.h    |   X   |
 | Red-Black Tree     | rbt.h   |   X   |
