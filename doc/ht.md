@@ -364,3 +364,4 @@ iter = ht_int_iter(&ht);
 FOR_EACH_HT(int, val, iter) {
 	printf("%d\n", val);
 }
+```
