@@ -93,26 +93,18 @@ bst_##name##_match(struct bst_##name *bst, const type val)                     \
 }                                                                              \
                                                                                \
 static void                                                                    \
-bst_##name##_remove_leaf(struct bst_##name *bst,                               \
-                         struct bst_##name##_node *par,                        \
-                         struct bst_##name##_node *del)                        \
+bst_##name##_remove_leaf(struct bst_##name##_node **del)                       \
 {                                                                              \
-        if (bst->root == del)                                                  \
-                bst->root = NULL;                                              \
-        else if (par->kid[0] == del)                                           \
-                par->kid[0] = NULL;                                            \
-        else                                                                   \
-                par->kid[1] = NULL;                                            \
-                                                                               \
-        free(del);                                                             \
+        free(*del);                                                            \
+        *del = NULL;                                                           \
 }                                                                              \
                                                                                \
 static void                                                                    \
 bst_##name##_remove_only(struct bst_##name##_node *del)                        \
 {                                                                              \
-	unsigned char i;                                                       \
+        unsigned char i;                                                       \
                                                                                \
-	i = del->kid[0] == NULL;                                               \
+        i = del->kid[0] == NULL;                                               \
         del->val = del->kid[i]->val;                                           \
         free(del->kid[i]);                                                     \
         del->kid[i] = NULL;                                                    \
@@ -121,15 +113,14 @@ bst_##name##_remove_only(struct bst_##name##_node *del)                        \
 static void                                                                    \
 bst_##name##_remove_full(struct bst_##name##_node *del)                        \
 {                                                                              \
-        struct bst_##name##_node *suc, *par;                                   \
+        struct bst_##name##_node **suc;                                        \
                                                                                \
-        par = del;                                                             \
-        for (suc = del->kid[1]; suc->kid[0] != NULL; suc = suc->kid[0])        \
-                par = suc;                                                     \
+        for (suc = &del->kid[1]; (*suc)->kid[0] != NULL; suc = &(*suc)->kid[0])\
+                ;                                                              \
                                                                                \
-        del->val = suc->val;                                                   \
-        free(suc);                                                             \
-        par->kid[par == del] = NULL;                                           \
+        del->val = (*suc)->val;                                                \
+        free(*suc);                                                            \
+        *suc = NULL;                                                           \
 }                                                                              \
                                                                                \
 static void                                                                    \
@@ -266,20 +257,22 @@ bst_##name##_insert(struct bst_##name *bst, const type val)                    \
 int                                                                            \
 bst_##name##_remove(struct bst_##name *bst, type *val)                         \
 {                                                                              \
-        struct bst_##name##_node *par, *del;                                   \
+        struct bst_##name##_node **cur;                                        \
         int res;                                                               \
                                                                                \
-        if (bst->root == NULL || bst->len == 0)                                \
-                return -1;                                                     \
-        for (del = bst->root; del != NULL; par = del, del = del->kid[res > 0]) \
-                if ((res = cmp(*val, del->val)) == 0)                          \
+        for (cur = &bst->root; ; cur = &(*cur)->kid[res > 0]) {                \
+                if (*cur == NULL)                                              \
+                        return -1;                                             \
+                if ((res = cmp(*val, (*cur)->val)) == 0)                       \
                         break;                                                 \
-        if (del->kid[0] != NULL && del->kid[1] != NULL)                        \
-                bst_##name##_remove_full(del);                                 \
-        else if (del->kid[0] == NULL && del->kid[1] == NULL)                   \
-                bst_##name##_remove_leaf(bst, par, del);                       \
+        }                                                                      \
+                                                                               \
+        if ((*cur)->kid[0] == NULL && (*cur)->kid[1] == NULL)                  \
+                bst_##name##_remove_leaf(cur);                                 \
+        else if ((*cur)->kid[0] != NULL && (*cur)->kid[1] != NULL)             \
+                bst_##name##_remove_full(*cur);                                \
         else                                                                   \
-                bst_##name##_remove_only(del);                                 \
+                bst_##name##_remove_only(*cur);                                \
                                                                                \
         bst->len--;                                                            \
                                                                                \
