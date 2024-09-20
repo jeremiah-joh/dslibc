@@ -110,15 +110,12 @@ bst_##name##_remove_leaf(struct bst_##name *bst,                               \
 static void                                                                    \
 bst_##name##_remove_only(struct bst_##name##_node *del)                        \
 {                                                                              \
-        if (del->kid[0] != NULL) {                                             \
-                del->val = del->kid[0]->val;                                   \
-                free(del->kid[0]);                                             \
-                del->kid[0] = NULL;                                            \
-        } else {                                                               \
-                del->val = del->kid[1]->val;                                   \
-                free(del->kid[1]);                                             \
-                del->kid[1] = NULL;                                            \
-        }                                                                      \
+	unsigned char i;                                                       \
+                                                                               \
+	i = del->kid[0] == NULL;                                               \
+        del->val = del->kid[i]->val;                                           \
+        free(del->kid[i]);                                                     \
+        del->kid[i] = NULL;                                                    \
 }                                                                              \
                                                                                \
 static void                                                                    \
@@ -259,7 +256,7 @@ bst_##name##_insert(struct bst_##name *bst, const type val)                    \
         for (cur = &bst->root; *cur != NULL; cur = &(*cur)->kid[res > 0])      \
                 res = cmp(val, (*cur)->val);                                   \
         if ((*cur = bst_##name##_node(val)) == NULL)                           \
-		return -1;                                                     \
+                return -1;                                                     \
                                                                                \
         bst->len++;                                                            \
                                                                                \
