@@ -253,19 +253,13 @@ bst_##name##_set(struct bst_##name *bst, const type val)                       \
 int                                                                            \
 bst_##name##_insert(struct bst_##name *bst, const type val)                    \
 {                                                                              \
-        struct bst_##name##_node **cur, *new;                                  \
-        int dir;                                                               \
+        struct bst_##name##_node **cur;                                        \
+        int res;                                                               \
                                                                                \
-        if ((new = bst_##name##_node(val)) == NULL)                            \
-                return -1;                                                     \
-        if (bst->root == NULL || bst->len == 0) {                              \
-                bst->root = new;                                               \
-        } else {                                                               \
-                for (cur = &bst->root; *cur != NULL; cur = &(*cur)->kid[dir])  \
-                        dir = cmp(val, (*cur)->val) > 0;                       \
-                                                                               \
-                *cur = new;                                                    \
-        }                                                                      \
+        for (cur = &bst->root; *cur != NULL; cur = &(*cur)->kid[res > 0])      \
+                res = cmp(val, (*cur)->val);                                   \
+        if ((*cur = bst_##name##_node(val)) == NULL)                           \
+		return -1;                                                     \
                                                                                \
         bst->len++;                                                            \
                                                                                \
