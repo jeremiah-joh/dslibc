@@ -79,14 +79,14 @@ bst_##name##_node(const type val)                                              \
         return new;                                                            \
 }                                                                              \
                                                                                \
-static struct bst_##name##_node *                                              \
+static struct bst_##name##_node **                                             \
 bst_##name##_match(struct bst_##name *bst, const type val)                     \
 {                                                                              \
-        struct bst_##name##_node *cur;                                         \
+        struct bst_##name##_node **cur;                                        \
         int res;                                                               \
                                                                                \
-        for (cur = bst->root; cur != NULL; cur = cur->kid[res > 0])            \
-                if ((res = cmp(val, cur->val)) == 0)                           \
+        for (cur = &bst->root; *cur != NULL; cur = &(*cur)->kid[res > 0])      \
+                if ((res = cmp(val, (*cur)->val)) == 0)                        \
                         return cur;                                            \
                                                                                \
         return NULL;                                                           \
@@ -215,12 +215,12 @@ bst_##name##_min(struct bst_##name *bst, type *val)                            \
 int                                                                            \
 bst_##name##_get(struct bst_##name *bst, type *val)                            \
 {                                                                              \
-        struct bst_##name##_node *cur;                                         \
+        struct bst_##name##_node **cur;                                        \
                                                                                \
         if ((cur = bst_##name##_match(bst, *val)) == NULL)                     \
                 return -1;                                                     \
                                                                                \
-        *val = cur->val;                                                       \
+        *val = (*cur)->val;                                                    \
                                                                                \
         return 0;                                                              \
 }                                                                              \
@@ -228,12 +228,12 @@ bst_##name##_get(struct bst_##name *bst, type *val)                            \
 int                                                                            \
 bst_##name##_set(struct bst_##name *bst, const type val)                       \
 {                                                                              \
-        struct bst_##name##_node *cur;                                         \
+        struct bst_##name##_node **cur;                                        \
                                                                                \
         if ((cur = bst_##name##_match(bst, val)) == NULL)                      \
                 return -1;                                                     \
                                                                                \
-        cur->val = val;                                                        \
+        (*cur)->val = val;                                                     \
                                                                                \
         return 0;                                                              \
 }                                                                              \
@@ -258,14 +258,9 @@ int                                                                            \
 bst_##name##_remove(struct bst_##name *bst, type *val)                         \
 {                                                                              \
         struct bst_##name##_node **cur;                                        \
-        int res;                                                               \
                                                                                \
-        for (cur = &bst->root; ; cur = &(*cur)->kid[res > 0]) {                \
-                if (*cur == NULL)                                              \
-                        return -1;                                             \
-                if ((res = cmp(*val, (*cur)->val)) == 0)                       \
-                        break;                                                 \
-        }                                                                      \
+	if ((cur = bst_##name##_match(bst, *val)) == NULL)                     \
+		return -1;                                                     \
                                                                                \
         if ((*cur)->kid[0] == NULL && (*cur)->kid[1] == NULL)                  \
                 bst_##name##_remove_leaf(cur);                                 \
