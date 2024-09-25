@@ -307,10 +307,10 @@ sll_##name##_next(struct sll_##name##_iter *iter, type *val)                   \
 }
 
 
-#define FOR_EACH_SLL(name, elem, iter) while (!sll_##name##_next(&iter, &elem))
-
 #define INIT_SLL_BOTH(name, type, malloc, free)                                \
 INIT_SLL_TYPE(name, type)                                                      \
 INIT_SLL_FUNC(name, type, malloc, free)
+
+#define FOR_EACH_SLL(name, elem, iter) while (!sll_##name##_next(&iter, &elem))
 
 #endif

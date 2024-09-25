@@ -323,10 +323,10 @@ bst_##name##_next(struct bst_##name##_iter *iter, type *val)                   \
         return 0;                                                              \
 }
 
-#define FOR_EACH_BST(name, elem, iter) while (!bst_##name##_next(&iter, &elem))
-
 #define INIT_BST_BOTH(name, type, cmp, malloc, free)                           \
 INIT_BST_TYPE(name, type)                                                      \
 INIT_BST_FUNC(name, type, cmp, malloc, free)
+
+#define FOR_EACH_BST(name, elem, iter) while (!bst_##name##_next(&iter, &elem))
 
 #endif

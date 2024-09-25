@@ -352,4 +352,6 @@ dll_##name##_next(struct dll_##name##_iter *iter, type *val)                   \
 INIT_DLL_TYPE(name, type)                                                      \
 INIT_DLL_FUNC(name, type, malloc, free)
 
+#define FOR_EACH_DLL(name, elem, iter) while (!dll_##name##_next(&iter, &elem))
+
 #endif

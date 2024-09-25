@@ -285,10 +285,10 @@ ht_##name##_next(struct ht_##name##_iter *iter, type *val)                     \
         return -1;                                                             \
 }
 
-#define FOR_EACH_HT(name, elem, iter) while (!ht_##name##_next(&iter, &elem))
-
 #define INIT_HT_BOTH(name, type, hash, cmp, malloc, free)                      \
 INIT_HT_TYPE(name, type)                                                       \
 INIT_HT_FUNC(name, type, hash, cmp, malloc, free)
+
+#define FOR_EACH_HT(name, elem, iter) while (!ht_##name##_next(&iter, &elem))
 
 #endif

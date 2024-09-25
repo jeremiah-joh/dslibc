@@ -216,9 +216,6 @@ heap_##name##_next(struct heap_##name##_iter *iter, type *val)                 \
         return 0;                                                              \
 }
 
-#define FOR_EACH_HEAP(name, elem, iter)                                        \
-while (!heap_##name##_next(&iter, &elem))
-
 #define INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)             \
 INIT_HEAP_FUNC(name, type, cmp, >, malloc, realloc, free)
 
@@ -232,5 +229,8 @@ INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
 #define INIT_MIN_HEAP_BOTH(name, type, cmp, malloc, realloc, free)             \
 INIT_HEAP_TYPE(name, type)                                                     \
 INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
+
+#define FOR_EACH_HEAP(name, elem, iter)                                        \
+while (!heap_##name##_next(&iter, &elem))
 
 #endif
