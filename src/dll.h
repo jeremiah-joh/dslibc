@@ -29,7 +29,6 @@ struct dll_##name {                                                            \
 };                                                                             \
                                                                                \
 struct dll_##name##_iter {                                                     \
-        struct dll_##name *dll;                                                \
         struct dll_##name##_node *cur;                                         \
 };                                                                             \
                                                                                \
@@ -332,7 +331,6 @@ dll_##name##_iter(struct dll_##name *dll)                                      \
 {                                                                              \
         struct dll_##name##_iter iter;                                         \
                                                                                \
-        iter.dll = dll;                                                        \
         iter.cur = dll->beg;                                                   \
                                                                                \
         return iter;                                                           \

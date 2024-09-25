@@ -29,7 +29,6 @@ struct sll_##name {                                                            \
 };                                                                             \
                                                                                \
 struct sll_##name##_iter {                                                     \
-        struct sll_##name *sll;                                                \
         struct sll_##name##_node *cur;                                         \
 };                                                                             \
                                                                                \
@@ -290,7 +289,6 @@ sll_##name##_iter(struct sll_##name *sll)                                      \
 {                                                                              \
         struct sll_##name##_iter iter;                                         \
                                                                                \
-        iter.sll = sll;                                                        \
         iter.cur = sll->beg;                                                   \
                                                                                \
         return iter;                                                           \
