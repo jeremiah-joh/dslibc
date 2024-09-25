@@ -54,10 +54,10 @@ int sgt_##name##_next(struct sgt_##name##_iter *, type *);
 
 #define INIT_SGT_FUNC(name, type, cmp, malloc, free)                           \
 
-#define FOR_EACH_SGT(name, elem, iter) while (!sgt_##name##_next(&iter, &elem))
-
 #define INIT_SGT_BOTH(name, type, cmp, malloc, free)                           \
 INIT_SGT_TYPE(name, type)                                                      \
 INIT_SGT_FUNC(name, type, cmp, malloc, free)
+
+#define FOR_EACH_SGT(name, elem, iter) while (!sgt_##name##_next(&iter, &elem))
 
 #endif
