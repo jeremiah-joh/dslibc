@@ -259,8 +259,8 @@ bst_##name##_remove(struct bst_##name *bst, type *val)                         \
 {                                                                              \
         struct bst_##name##_node **cur;                                        \
                                                                                \
-	if ((cur = bst_##name##_match(bst, *val)) == NULL)                     \
-		return -1;                                                     \
+        if ((cur = bst_##name##_match(bst, *val)) == NULL)                     \
+                return -1;                                                     \
                                                                                \
         if ((*cur)->kid[0] == NULL && (*cur)->kid[1] == NULL)                  \
                 bst_##name##_remove_leaf(cur);                                 \
