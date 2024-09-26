@@ -12,7 +12,6 @@ A collection of useful data structures written in ANSI C.
 | AVL Tree           | avl.h   |   X   |
 | B Tree             | bt.h    |   X   |
 | Red-Black Tree     | rbt.h   |   X   |
-| Scapegoat Tree     | sgt.h   |   X   |
 | Splay Tree         | spt.h   |   X   |
 | Heap               | heap.h  |   O   |
 | Hash Table         | ht.h    |   O   |
