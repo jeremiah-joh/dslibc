@@ -30,7 +30,7 @@ from()
 
 	bst = bst_int_from(arr, LEN);
 
-	assert(bst_int_length(&bst) == 5);
+	assert(bst_int_len(&bst) == 5);
 	assert(bst.root->val == 3);
 	assert(bst.root->kid[0]->val == 1);
 	assert(bst.root->kid[1]->val == 4);
@@ -78,7 +78,7 @@ insert()
 	bst_int_insert(&bst, arr[3]);
 	bst_int_insert(&bst, arr[4]);
 
-	assert(bst_int_length(&bst) == 5);
+	assert(bst_int_len(&bst) == 5);
 	assert(bst.root->val == 3);
 	assert(bst.root->kid[0]->val == 1);
 	assert(bst.root->kid[1]->val == 4);
@@ -111,7 +111,7 @@ remove()
 	bst_int_remove(&bst, &val);
 	assert(val == 2);
 
-	assert(bst_int_length(&bst) == 0);
+	assert(bst_int_len(&bst) == 0);
 }
 
 static void

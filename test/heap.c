@@ -30,7 +30,7 @@ from()
 
 	heap = heap_int_from(arr, LEN);
 
-	assert(heap_int_length(&heap) == 5);
+	assert(heap_int_len(&heap) == 5);
 	assert(heap.arr[0] == 4);
 	assert(heap.arr[1] == 3);
 	assert(heap.arr[2] == 1);
@@ -51,7 +51,7 @@ push()
 	heap_int_push(&heap, 3);
 	heap_int_push(&heap, 4);
 
-	assert(heap_int_length(&heap) == 5);
+	assert(heap_int_len(&heap) == 5);
 	assert(heap.arr[0] == 4);
 	assert(heap.arr[1] == 3);
 	assert(heap.arr[2] == 1);
@@ -79,7 +79,7 @@ pop()
 	heap_int_pop(&heap, &val);
 	assert(val == 0);
 
-	assert(heap_int_length(&heap) == 0);
+	assert(heap_int_len(&heap) == 0);
 
 	assert(heap_int_pop(&heap, &val) != 0);
 }

@@ -28,7 +28,7 @@ from()
 
 	sll = sll_int_from(arr, LEN);
 
-	assert(sll_int_length(&sll) == 5);
+	assert(sll_int_len(&sll) == 5);
 	assert(sll.beg->val == 0);
 	assert(sll.beg->nxt->val == 1);
 	assert(sll.beg->nxt->nxt->val == 2);
@@ -49,7 +49,7 @@ push()
 	sll_int_push(&sll, 3);
 	sll_int_push(&sll, 4);
 
-	assert(sll_int_length(&sll) == 5);
+	assert(sll_int_len(&sll) == 5);
 	assert(sll.beg->val == 0);
 	assert(sll.beg->nxt->val == 1);
 	assert(sll.beg->nxt->nxt->val == 2);
@@ -77,7 +77,7 @@ pop()
 	sll_int_pop(&sll, &val);
 	assert(val == 4);
 
-	assert(sll_int_length(&sll) == 0);
+	assert(sll_int_len(&sll) == 0);
 
 	assert(sll_int_pop(&sll, &val) != 0);
 }
@@ -139,7 +139,7 @@ append()
 
 	sll_int_append(&sll1, &sll2);
 
-	assert(sll_int_length(&sll1) == 5);
+	assert(sll_int_len(&sll1) == 5);
 	assert(sll2.beg->val == 0);
 	assert(sll2.beg->nxt->val == 1);
 	assert(sll2.beg->nxt->nxt->val == 2);
@@ -159,7 +159,7 @@ insert()
 	sll_int_insert(&sll, 2, 2);
 	sll_int_insert(&sll, 3, 3);
 
-	assert(sll_int_length(&sll) == 5);
+	assert(sll_int_len(&sll) == 5);
 	assert(sll.beg->val == 0);
 	assert(sll.beg->nxt->val == 1);
 	assert(sll.beg->nxt->nxt->val == 2);
@@ -181,7 +181,7 @@ remove()
 	sll_int_remove(&sll, &val, 2);
 	assert(val == 2);
 
-	assert(sll_int_length(&sll) == 4);
+	assert(sll_int_len(&sll) == 4);
 	assert(sll.beg->val == 0);
 	assert(sll.beg->nxt->val == 1);
 	assert(sll.beg->nxt->nxt->val == 3);
@@ -198,7 +198,7 @@ shrink()
 
 	sll_int_shrink(&sll, 3);
 
-	assert(sll_int_length(&sll) == 3);
+	assert(sll_int_len(&sll) == 3);
 	assert(sll.beg->val == 0);
 	assert(sll.beg->nxt->val == 1);
 	assert(sll.beg->nxt->nxt->val == 2);

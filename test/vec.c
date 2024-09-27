@@ -28,7 +28,7 @@ from()
 
 	vec = vec_int_from(arr, LEN);
 
-	assert(vec_int_length(&vec) == 5);
+	assert(vec_int_len(&vec) == 5);
 	assert(vec.arr[0] == 0);
 	assert(vec.arr[1] == 1);
 	assert(vec.arr[2] == 2);
@@ -49,7 +49,7 @@ push()
 	vec_int_push(&vec, 3);
 	vec_int_push(&vec, 4);
 
-	assert(vec_int_length(&vec) == 5);
+	assert(vec_int_len(&vec) == 5);
 	assert(vec.arr[0] == 0);
 	assert(vec.arr[1] == 1);
 	assert(vec.arr[2] == 2);
@@ -77,7 +77,7 @@ pop()
 	vec_int_pop(&vec, &val);
 	assert(val == 0);
 
-	assert(vec_int_length(&vec) == 0);
+	assert(vec_int_len(&vec) == 0);
 
 	assert(vec_int_pop(&vec, &val) != 0);
 }
@@ -138,7 +138,7 @@ append()
 
 	vec_int_append(&vec, arr, LEN);
 
-	assert(vec_int_length(&vec) == 5);
+	assert(vec_int_len(&vec) == 5);
 	assert(vec.arr[0] == 0);
 	assert(vec.arr[1] == 1);
 	assert(vec.arr[2] == 2);
@@ -158,7 +158,7 @@ insert()
 	vec_int_insert(&vec, 2, 2);
 	vec_int_insert(&vec, 3, 3);
 
-	assert(vec_int_length(&vec) == 5);
+	assert(vec_int_len(&vec) == 5);
 	assert(vec.arr[0] == 0);
 	assert(vec.arr[1] == 1);
 	assert(vec.arr[2] == 2);
@@ -180,7 +180,7 @@ remove()
 	vec_int_remove(&vec, &val, 2);
 	assert(val == 2);
 
-	assert(vec_int_length(&vec) == 4);
+	assert(vec_int_len(&vec) == 4);
 	assert(vec.arr[0] == 0);
 	assert(vec.arr[1] == 1);
 	assert(vec.arr[2] == 3);
@@ -197,7 +197,7 @@ shrink()
 
 	vec_int_shrink(&vec, 3);
 
-	assert(vec_int_length(&vec) == 3);
+	assert(vec_int_len(&vec) == 3);
 	assert(vec.arr[0] == 0);
 	assert(vec.arr[1] == 1);
 	assert(vec.arr[2] == 2);

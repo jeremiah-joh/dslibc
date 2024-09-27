@@ -28,7 +28,7 @@ from()
 
 	dll = dll_int_from(arr, LEN);
 
-	assert(dll_int_length(&dll) == 5);
+	assert(dll_int_len(&dll) == 5);
 	assert(dll.beg->val == 0);
 	assert(dll.beg->nxt->val == 1);
 	assert(dll.beg->nxt->nxt->val == 2);
@@ -49,7 +49,7 @@ push()
 	dll_int_push_back(&dll, 3);
 	dll_int_push_back(&dll, 4);
 
-	assert(dll_int_length(&dll) == 5);
+	assert(dll_int_len(&dll) == 5);
 	assert(dll.beg->val == 0);
 	assert(dll.beg->nxt->val == 1);
 	assert(dll.beg->nxt->nxt->val == 2);
@@ -77,7 +77,7 @@ pop()
 	dll_int_pop_back(&dll, &val);
 	assert(val == 0);
 
-	assert(dll_int_length(&dll) == 0);
+	assert(dll_int_len(&dll) == 0);
 
 	assert(dll_int_pop_back(&dll, &val) != 0);
 }
@@ -139,7 +139,7 @@ append()
 
 	dll_int_append(&dll1, &dll2);
 
-	assert(dll_int_length(&dll1) == 5);
+	assert(dll_int_len(&dll1) == 5);
 	assert(dll2.beg->val == 0);
 	assert(dll2.beg->nxt->val == 1);
 	assert(dll2.beg->nxt->nxt->val == 2);
@@ -159,7 +159,7 @@ insert()
 	dll_int_insert(&dll, 2, 2);
 	dll_int_insert(&dll, 3, 3);
 
-	assert(dll_int_length(&dll) == 5);
+	assert(dll_int_len(&dll) == 5);
 	assert(dll.beg->val == 0);
 	assert(dll.beg->nxt->val == 1);
 	assert(dll.beg->nxt->nxt->val == 2);
@@ -181,7 +181,7 @@ remove()
 	dll_int_remove(&dll, &val, 2);
 	assert(val == 2);
 
-	assert(dll_int_length(&dll) == 4);
+	assert(dll_int_len(&dll) == 4);
 	assert(dll.beg->val == 0);
 	assert(dll.beg->nxt->val == 1);
 	assert(dll.beg->nxt->nxt->val == 3);
@@ -198,7 +198,7 @@ shrink()
 
 	dll_int_shrink(&dll, 3);
 
-	assert(dll_int_length(&dll) == 3);
+	assert(dll_int_len(&dll) == 3);
 	assert(dll.beg->val == 0);
 	assert(dll.beg->nxt->val == 1);
 	assert(dll.beg->nxt->nxt->val == 2);
