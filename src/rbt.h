@@ -43,8 +43,7 @@ int rbt_##name##_get(struct rbt_##name *, type *);                             \
 int rbt_##name##_set(struct rbt_##name *, const type);                         \
 int rbt_##name##_insert(struct rbt_##name *, const type);                      \
 int rbt_##name##_remove(struct rbt_##name *, type *);                          \
-size_t rbt_##name##_length(struct rbt_##name *);                               \
-size_t rbt_##name##_sizeof(struct rbt_##name *);                               \
+size_t rbt_##name##_len(struct rbt_##name *);                                  \
 void rbt_##name##_free(struct rbt_##name *);                                   \
                                                                                \
 struct rbt_##name##_iter rbt_##name##_iter(struct rbt_##name *);               \

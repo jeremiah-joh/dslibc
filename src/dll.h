@@ -45,8 +45,7 @@ int dll_##name##_append(struct dll_##name *, struct dll_##name *);             \
 int dll_##name##_insert(struct dll_##name *, const type, const size_t);        \
 int dll_##name##_remove(struct dll_##name *, type *, const size_t);            \
 int dll_##name##_shrink(struct dll_##name *, const size_t);                    \
-size_t dll_##name##_length(struct dll_##name *);                               \
-size_t dll_##name##_sizeof(struct dll_##name *);                               \
+size_t dll_##name##_len(struct dll_##name *);                                  \
 void dll_##name##_free(struct dll_##name *);                                   \
                                                                                \
 struct dll_##name##_iter dll_##name##_iter(struct dll_##name *);               \
@@ -307,15 +306,9 @@ dll_##name##_shrink(struct dll_##name *dll, const size_t len)                  \
 }                                                                              \
                                                                                \
 size_t                                                                         \
-dll_##name##_length(struct dll_##name *dll)                                    \
+dll_##name##_len(struct dll_##name *dll)                                       \
 {                                                                              \
         return dll->len;                                                       \
-}                                                                              \
-                                                                               \
-size_t                                                                         \
-dll_##name##_sizeof(struct dll_##name *dll)                                    \
-{                                                                              \
-        return dll->len * sizeof(struct dll_##name##_node) + sizeof(*dll);     \
 }                                                                              \
                                                                                \
 void                                                                           \

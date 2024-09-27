@@ -43,8 +43,7 @@ int avl_##name##_get(struct avl_##name *, type *);                             \
 int avl_##name##_set(struct avl_##name *, const type);                         \
 int avl_##name##_insert(struct avl_##name *, const type);                      \
 int avl_##name##_remove(struct avl_##name *, type *);                          \
-size_t avl_##name##_length(struct avl_##name *);                               \
-size_t avl_##name##_sizeof(struct avl_##name *);                               \
+size_t avl_##name##_len(struct avl_##name *);                                  \
 void avl_##name##_free(struct avl_##name *);                                   \
                                                                                \
 struct avl_##name##_iter avl_##name##_iter(struct avl_##name *);               \

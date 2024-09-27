@@ -40,8 +40,7 @@ int vec_##name##_append(struct vec_##name *, const type *, const size_t);      \
 int vec_##name##_insert(struct vec_##name *, const type, const size_t);        \
 int vec_##name##_remove(struct vec_##name *, type *, const size_t);            \
 int vec_##name##_shrink(struct vec_##name *, const size_t);                    \
-size_t vec_##name##_length(struct vec_##name *);                               \
-size_t vec_##name##_sizeof(struct vec_##name *);                               \
+size_t vec_##name##_len(struct vec_##name *);                                  \
 void vec_##name##_free(struct vec_##name *);                                   \
                                                                                \
 struct vec_##name##_iter vec_##name##_iter(struct vec_##name *);               \
@@ -214,15 +213,9 @@ vec_##name##_shrink(struct vec_##name *vec, const size_t len)                  \
 }                                                                              \
                                                                                \
 size_t                                                                         \
-vec_##name##_length(struct vec_##name *vec)                                    \
+vec_##name##_len(struct vec_##name *vec)                                       \
 {                                                                              \
         return vec->len;                                                       \
-}                                                                              \
-                                                                               \
-size_t                                                                         \
-vec_##name##_sizeof(struct vec_##name *vec)                                    \
-{                                                                              \
-        return vec->cap * sizeof(type) + sizeof(*vec);                         \
 }                                                                              \
                                                                                \
 void                                                                           \

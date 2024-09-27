@@ -43,8 +43,7 @@ int bt_##name##_get(struct bt_##name *, type *);                               \
 int bt_##name##_set(struct bt_##name *, const type);                           \
 int bt_##name##_insert(struct bt_##name *, const type);                        \
 int bt_##name##_remove(struct bt_##name *, type *);                            \
-size_t bt_##name##_length(struct bt_##name *);                                 \
-size_t bt_##name##_sizeof(struct bt_##name *);                                 \
+size_t bt_##name##_len(struct bt_##name *);                                    \
 void bt_##name##_free(struct bt_##name *);                                     \
                                                                                \
 struct bt_##name##_iter bt_##name##_iter(struct bt_##name *);                  \

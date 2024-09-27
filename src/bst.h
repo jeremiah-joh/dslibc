@@ -45,8 +45,7 @@ int bst_##name##_get(struct bst_##name *, type *);                             \
 int bst_##name##_set(struct bst_##name *, const type);                         \
 int bst_##name##_insert(struct bst_##name *, const type);                      \
 int bst_##name##_remove(struct bst_##name *, type *);                          \
-size_t bst_##name##_length(struct bst_##name *);                               \
-size_t bst_##name##_sizeof(struct bst_##name *);                               \
+size_t bst_##name##_len(struct bst_##name *);                                  \
 void bst_##name##_free(struct bst_##name *);                                   \
                                                                                \
 struct bst_##name##_iter bst_##name##_iter(struct bst_##name *);               \
@@ -275,15 +274,9 @@ bst_##name##_remove(struct bst_##name *bst, type *val)                         \
 }                                                                              \
                                                                                \
 size_t                                                                         \
-bst_##name##_length(struct bst_##name *bst)                                    \
+bst_##name##_len(struct bst_##name *bst)                                       \
 {                                                                              \
         return bst->len;                                                       \
-}                                                                              \
-                                                                               \
-size_t                                                                         \
-bst_##name##_sizeof(struct bst_##name *bst)                                    \
-{                                                                              \
-        return bst->len * sizeof(struct bst_##name##_node) + sizeof(*bst);     \
 }                                                                              \
                                                                                \
 void                                                                           \

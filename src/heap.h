@@ -38,8 +38,7 @@ int heap_##name##_push(struct heap_##name *, const type);                      \
 int heap_##name##_pop(struct heap_##name *, type *);                           \
 int heap_##name##_get(struct heap_##name *, type *);                           \
 int heap_##name##_set(struct heap_##name *, const type);                       \
-size_t heap_##name##_length(struct heap_##name *);                             \
-size_t heap_##name##_sizeof(struct heap_##name *);                             \
+size_t heap_##name##_len(struct heap_##name *);                                \
 void heap_##name##_free(struct heap_##name *);                                 \
                                                                                \
 struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);            \
@@ -175,15 +174,9 @@ heap_##name##_set(struct heap_##name *heap, const type val)                    \
 }                                                                              \
                                                                                \
 size_t                                                                         \
-heap_##name##_length(struct heap_##name *heap)                                 \
+heap_##name##_len(struct heap_##name *heap)                                    \
 {                                                                              \
         return heap->len;                                                      \
-}                                                                              \
-                                                                               \
-size_t                                                                         \
-heap_##name##_sizeof(struct heap_##name *heap)                                 \
-{                                                                              \
-        return heap->cap * sizeof(type) + sizeof(*heap);                       \
 }                                                                              \
                                                                                \
 void                                                                           \

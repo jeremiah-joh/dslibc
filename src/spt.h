@@ -43,8 +43,7 @@ int spt_##name##_get(struct spt_##name *, type *);                             \
 int spt_##name##_set(struct spt_##name *, const type);                         \
 int spt_##name##_insert(struct spt_##name *, const type);                      \
 int spt_##name##_remove(struct spt_##name *, type *);                          \
-size_t spt_##name##_length(struct spt_##name *);                               \
-size_t spt_##name##_sizeof(struct spt_##name *);                               \
+size_t spt_##name##_len(struct spt_##name *);                                  \
 void spt_##name##_free(struct spt_##name *);                                   \
                                                                                \
 struct spt_##name##_iter spt_##name##_iter(struct spt_##name *);               \
