@@ -49,7 +49,7 @@ void rbt_##name##_free(struct rbt_##name *);                                   \
 struct rbt_##name##_iter rbt_##name##_iter(struct rbt_##name *);               \
 int rbt_##name##_next(struct rbt_##name##_iter *, type *);
 
-#define INIT_RBT_FUNC(nawe, type, cmp, malloc, free)
+#define INIT_RBT_FUNC(name, type, cmp, malloc, free)
 
 #define FOR_EACH_RBT(name, elem, iter) while (!rbt_##name##_next(&iter, &elem))
 

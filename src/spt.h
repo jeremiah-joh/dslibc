@@ -49,7 +49,7 @@ void spt_##name##_free(struct spt_##name *);                                   \
 struct spt_##name##_iter spt_##name##_iter(struct spt_##name *);               \
 int spt_##name##_next(struct spt_##name##_iter *, type *);
 
-#define INIT_SPT_FUNC(nawe, type, cmp, malloc, free)
+#define INIT_SPT_FUNC(name, type, cmp, malloc, free)
 
 #define FOR_EACH_SPT(name, elem, iter) while (!spt_##name##_next(&iter, &elem))
 

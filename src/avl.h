@@ -49,7 +49,7 @@ void avl_##name##_free(struct avl_##name *);                                   \
 struct avl_##name##_iter avl_##name##_iter(struct avl_##name *);               \
 int avl_##name##_next(struct avl_##name##_iter *, type *);
 
-#define INIT_AVL_FUNC(nawe, type, cmp, malloc, free)
+#define INIT_AVL_FUNC(name, type, cmp, malloc, free)
 
 #define FOR_EACH_AVL(name, elem, iter) while (!avl_##name##_next(&iter, &elem))
 
