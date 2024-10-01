@@ -283,10 +283,10 @@ val = 3;
 bst_int_set(&bst, val);
 ```
 
-length
-------
+len
+---
 
-`size_t bst_##name##_length(struct bst_##name *bst);`
+`size_t bst_##name##_len(struct bst_##name *bst);`
 
 Returns the length of `bst`.
 
@@ -303,7 +303,7 @@ int arr[] = { 3, 4, 1, 0, 2 };
 size_t len;
 
 bst = bst_int_from(arr, 5);
-len = bst_int_length(&bst);
+len = bst_int_len(&bst);
 ```
 
 sizeof

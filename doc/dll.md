@@ -309,10 +309,10 @@ dll = dll_int_from(arr, 4);
 dll_int_shrink(&dll, 3);
 ```
 
-length
-------
+len
+---
 
-`size_t dll_##name##_length(struct dll_##name *dll);`
+`size_t dll_##name##_len(struct dll_##name *dll);`
 
 Returns the length of `dll`.
 
@@ -327,7 +327,7 @@ int arr[] = { 0, 1, 2, 3, 4 };
 size_t len;
 
 dll = dll_int_from(arr, 4);
-len = dll_int_length(&dll);
+len = dll_int_len(&dll);
 ```
 
 sizeof

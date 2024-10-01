@@ -217,10 +217,10 @@ val = 3;
 ht_int_set(&ht, val);
 ```
 
-length
-------
+len
+---
 
-`size_t ht_##name##_length(struct ht_##name *ht);`
+`size_t ht_##name##_len(struct ht_##name *ht);`
 
 Returns the length of `ht`.
 
@@ -238,7 +238,7 @@ int arr[] = { 0, 1, 2, 3, 4 };
 size_t len;
 
 ht = ht_int_from(arr, 5);
-len = ht_int_length(&ht);
+len = ht_int_len(&ht);
 ```
 
 sizeof

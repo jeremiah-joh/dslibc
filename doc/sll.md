@@ -266,10 +266,10 @@ sll = sll_int_from(arr, 4);
 sll_int_shrink(&sll, 3);
 ```
 
-length
-------
+len
+---
 
-`size_t sll_##name##_length(struct sll_##name *sll);`
+`size_t sll_##name##_len(struct sll_##name *sll);`
 
 Returns the length of `sll`.
 
@@ -284,7 +284,7 @@ int arr[] = { 0, 1, 2, 3, 4 };
 size_t len;
 
 sll = sll_int_from(arr, 4);
-len = sll_int_length(&sll);
+len = sll_int_len(&sll);
 ```
 
 sizeof

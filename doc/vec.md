@@ -266,10 +266,10 @@ vec = vec_int_from(arr, 5);
 vec_int_shrink(&vec, 3);
 ```
 
-length
-------
+len
+---
 
-`size_t vec_##name##_length(struct vec_##name *vec);`
+`size_t vec_##name##_len(struct vec_##name *vec);`
 
 Returns the length of `vec`.
 
@@ -284,7 +284,7 @@ int arr[] = { 0, 1, 2, 3, 4 };
 size_t len;
 
 vec = vec_int_from(arr, 5);
-len = vec_int_length(&vec);
+len = vec_int_len(&vec);
 ```
 
 sizeof

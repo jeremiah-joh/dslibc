@@ -232,10 +232,10 @@ heap = heap_int_from(arr, 5);
 heap_int_set(&heap, 3);
 ```
 
-length
-------
+len
+---
 
-`size_t heap_##name##_length(struct heap_##name *heap);`
+`size_t heap_##name##_len(struct heap_##name *heap);`
 
 Returns the length of `heap`.
 
@@ -252,7 +252,7 @@ int arr[] = { 0, 1, 2, 3, 4 };
 size_t len;
 
 heap = heap_int_from(arr, 4);
-len = heap_int_length(&heap);
+len = heap_int_len(&heap);
 ```
 
 sizeof
