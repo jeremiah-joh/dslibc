@@ -306,28 +306,6 @@ bst = bst_int_from(arr, 5);
 len = bst_int_len(&bst);
 ```
 
-sizeof
-------
-
-`size_t bst_##name##_sizeof(struct bst_##name *bst);`
-
-Retruns the amount of bytes that `bst` is occuping.
-
-```c
-#include "bst.h"
-#include <stdlib.h>
-
-int cmp(int x, int y) { return x - y; }
-
-INIT_BST_BOTH(int, int, cmp, malloc, free)
-
-struct bst_int bst;
-int arr[] = { 3, 4, 1, 0, 2 };
-size_t size;
-
-bst = bst_int_from(arr, 5);
-size = bst_int_sizeof(&bst);
-```
 free
 ----
 

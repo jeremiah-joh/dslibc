@@ -241,29 +241,6 @@ ht = ht_int_from(arr, 5);
 len = ht_int_len(&ht);
 ```
 
-sizeof
-------
-
-`size_t ht_##name##_sizeof(struct ht_##name *ht);`
-
-Retruns the amount of bytes that `ht` is occuping.
-
-```c
-#include "ht.h"
-#include <stdlib.h>
-
-int hash(int x) { /* some hash function */ }
-int cmp(int x, int y) { return x - y; }
-
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
-
-struct ht_int ht;
-int arr[] = { 0, 1, 2, 3, 4 };
-size_t size;
-
-ht = ht_int_from(arr, 5);
-size = ht_int_sizeof(&ht);
-```
 free
 ----
 

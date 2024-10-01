@@ -330,27 +330,6 @@ dll = dll_int_from(arr, 4);
 len = dll_int_len(&dll);
 ```
 
-sizeof
-------
-
-`size_t dll_##name##_sizeof(struct dll_##name *dll);`
-
-Retruns the amount of bytes that `dll` is occuping.
-
-```c
-#include "dll.h"
-#include <stdlib.h>
-
-INIT_DLL_BOTH(int, int, malloc, free)
-
-struct dll_int dll;
-int arr[] = { 0, 1, 2, 3, 4 };
-size_t size;
-
-dll = dll_int_from(arr, 4);
-size = dll_int_sizeof(&dll);
-```
-
 free
 ----
 

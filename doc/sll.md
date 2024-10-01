@@ -287,27 +287,6 @@ sll = sll_int_from(arr, 4);
 len = sll_int_len(&sll);
 ```
 
-sizeof
-------
-
-`size_t sll_##name##_sizeof(struct sll_##name *sll);`
-
-Retruns the amount of bytes that `sll` is occuping.
-
-```c
-#include "sll.h"
-#include <stdlib.h>
-
-INIT_SLL_BOTH(int, int, malloc, free)
-
-struct sll_int sll;
-int arr[] = { 0, 1, 2, 3, 4 };
-size_t size;
-
-sll = sll_int_from(arr, 4);
-size = sll_int_sizeof(&sll);
-```
-
 free
 ----
 

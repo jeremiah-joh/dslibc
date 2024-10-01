@@ -255,29 +255,6 @@ heap = heap_int_from(arr, 4);
 len = heap_int_len(&heap);
 ```
 
-sizeof
-------
-
-`size_t heap_##name##_sizeof(struct heap_##name *heap);`
-
-Retruns the amount of bytes that `heap` is occuping.
-
-```c
-#include "heap.h"
-#include <stdlib.h>
-
-int cmp(int x, int y) { return x - y; }
-
-INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free)
-
-struct heap_int heap;
-int arr[] = { 0, 1, 2, 3, 4 };
-size_t size;
-
-heap = heap_int_from(arr, 4);
-size = heap_int_sizeof(&heap);
-```
-
 free
 ----
 

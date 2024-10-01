@@ -287,27 +287,6 @@ vec = vec_int_from(arr, 5);
 len = vec_int_len(&vec);
 ```
 
-sizeof
-------
-
-`size_t vec_##name##_sizeof(struct vec_##name *vec);`
-
-Retruns the amount of bytes that `vec` is occuping.
-
-```c
-#include "vec.h"
-#include <stdlib.h>
-
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
-
-struct vec_int vec;
-int arr[] = { 0, 1, 2, 3, 4 };
-size_t size;
-
-vec = vec_int_from(arr, 5);
-size = vec_int_sizeof(&vec);
-```
-
 free
 ----
 
