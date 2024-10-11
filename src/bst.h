@@ -63,21 +63,6 @@ bst_##name##_copy_node(struct bst_##name *cpy, struct bst_##name##_node *node) \
                 bst_##name##_copy_node(cpy, node->kid[1]);                     \
 }                                                                              \
                                                                                \
-static struct bst_##name##_node *                                              \
-bst_##name##_node(const type val)                                              \
-{                                                                              \
-        struct bst_##name##_node *new;                                         \
-                                                                               \
-        if ((new = malloc(sizeof(struct bst_##name##_node))) == NULL)          \
-                return NULL;                                                   \
-                                                                               \
-        new->val = val;                                                        \
-        new->kid[0] = NULL;                                                    \
-        new->kid[1] = NULL;                                                    \
-                                                                               \
-        return new;                                                            \
-}                                                                              \
-                                                                               \
 static struct bst_##name##_node **                                             \
 bst_##name##_match(struct bst_##name *bst, const type val)                     \
 {                                                                              \
@@ -245,8 +230,12 @@ bst_##name##_insert(struct bst_##name *bst, const type val)                    \
                                                                                \
         for (cur = &bst->root; *cur != NULL; cur = &(*cur)->kid[res > 0])      \
                 res = cmp(val, (*cur)->val);                                   \
-        if ((*cur = bst_##name##_node(val)) == NULL)                           \
+        if ((*cur = malloc(sizeof(struct bst_##name##_node))) == NULL)         \
                 return -1;                                                     \
+                                                                               \
+        (*cur)->val = val;                                                     \
+        (*cur)->kid[0] = NULL;                                                 \
+        (*cur)->kid[1] = NULL;                                                 \
                                                                                \
         bst->len++;                                                            \
                                                                                \
