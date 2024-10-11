@@ -86,7 +86,7 @@ bst_##name##_remove_leaf(struct bst_##name##_node **del)                       \
 static void                                                                    \
 bst_##name##_remove_only(struct bst_##name##_node *del)                        \
 {                                                                              \
-        unsigned char i;                                                       \
+        int i;                                                                 \
                                                                                \
         i = del->kid[0] == NULL;                                               \
         del->val = del->kid[i]->val;                                           \
