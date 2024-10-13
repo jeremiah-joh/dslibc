@@ -23,7 +23,7 @@
 #define INIT_HT_TYPE(name, type)                                               \
 struct ht_##name##_node {                                                      \
         type val;                                                              \
-        enum { NONE = 0, SOME, TOMB } state;                                   \
+        enum { NONE, SOME, TOMB } state;                                       \
 };                                                                             \
                                                                                \
 struct ht_##name {                                                             \
@@ -54,13 +54,16 @@ static struct ht_##name                                                        \
 ht_##name##_size(const size_t len)                                             \
 {                                                                              \
         struct ht_##name ht;                                                   \
+        size_t i;                                                              \
                                                                                \
         for (ht.cap = 4; ht.cap < len; ht.cap <<= 1)                           \
                 ;                                                              \
                                                                                \
         ht.arr = malloc(ht.cap * sizeof(struct ht_##name##_node));             \
-        memset(ht.arr, 0, ht.cap * sizeof(struct ht_##name##_node));           \
         ht.len = 0;                                                            \
+                                                                               \
+        for (i = 0; i < ht.cap; i++)                                           \
+                ht.arr[i].state = NONE;                                        \
                                                                                \
         return ht;                                                             \
 }                                                                              \
