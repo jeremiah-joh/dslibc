@@ -88,14 +88,18 @@ ht_##name##_match(struct ht_##name *ht, const type val)                        \
                                                                                \
         h = hash(val) & (ht->cap - 1);                                         \
         for (i = h; NEXT(i, ht->cap) != h; i = NEXT(i, ht->cap)) {             \
-                if (ht->arr[i].state == NONE)                                  \
-                        break;                                                 \
-                if (ht->arr[i].state == TOMB)                                  \
+                switch (ht->arr[i].state) {                                    \
+                case NONE:                                                     \
+                        goto err;                                              \
+                case TOMB:                                                     \
                         continue;                                              \
-                if (cmp(val, ht->arr[i].val) == 0)                             \
-                        return i;                                              \
+                case SOME:                                                     \
+                        if (cmp(val, ht->arr[i].val) == 0)                     \
+                                return i;                                      \
+                }                                                              \
         }                                                                      \
                                                                                \
+err:                                                                           \
         return ht->cap;                                                        \
 }                                                                              \
                                                                                \
