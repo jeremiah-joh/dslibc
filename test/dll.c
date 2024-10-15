@@ -18,7 +18,7 @@
 
 #define LEN 5
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 static void
 from()

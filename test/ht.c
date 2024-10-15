@@ -21,7 +21,7 @@
 int hash(int x) { return x * 2; }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
 
 static void
 from()

@@ -18,7 +18,7 @@
 
 #define LEN 5
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 static void
 from()

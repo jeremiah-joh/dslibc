@@ -20,7 +20,7 @@
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 
 static void
 from()

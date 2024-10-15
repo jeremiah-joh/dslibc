@@ -20,7 +20,7 @@
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 static void
 from()
