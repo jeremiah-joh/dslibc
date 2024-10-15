@@ -16,10 +16,24 @@ A collection of useful data structures written in ANSI C.
 | Heap               | heap.h  |   O   |
 | Hash Table         | ht.h    |   O   |
 
-How to use this library
------------------------
+Installation
+------------
 
-Read [API document](doc/).
+Following commands will install these header files under '/usr/local/include'.
+
+```sh
+git clone https://github.com/jeremiah-joh/dslibc.git
+cd dslibc
+make install # run this command as root
+```
+
+Usage
+-----
+
+You could use this library with or without installation. If you don't want to
+install, then just put one of these header files into your project directory.
+
+Then, include the header file and use it. There is an [API document](doc).
 
 License
 -------
