@@ -42,7 +42,9 @@ size_t heap_##name##_len(struct heap_##name *);                                \
 void heap_##name##_free(struct heap_##name *);                                 \
                                                                                \
 struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);            \
-int heap_##name##_next(struct heap_##name##_iter *, type *);
+int heap_##name##_next(struct heap_##name##_iter *, type *);                   \
+                                                                               \
+extern int _heap_type_##name
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord, malloc, realloc, free)            \
 static int                                                                     \
@@ -207,7 +209,9 @@ heap_##name##_next(struct heap_##name##_iter *iter, type *val)                 \
         *val = iter->heap->arr[iter->idx++];                                   \
                                                                                \
         return 0;                                                              \
-}
+}                                                                              \
+                                                                               \
+extern int _heap_func_##name
 
 #define INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)             \
 INIT_HEAP_FUNC(name, type, cmp, >, malloc, realloc, free)
@@ -216,11 +220,11 @@ INIT_HEAP_FUNC(name, type, cmp, >, malloc, realloc, free)
 INIT_HEAP_FUNC(name, type, cmp, <, malloc, realloc, free)
 
 #define INIT_MAX_HEAP_BOTH(name, type, cmp, malloc, realloc, free)             \
-INIT_HEAP_TYPE(name, type)                                                     \
+INIT_HEAP_TYPE(name, type);                                                    \
 INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
 
 #define INIT_MIN_HEAP_BOTH(name, type, cmp, malloc, realloc, free)             \
-INIT_HEAP_TYPE(name, type)                                                     \
+INIT_HEAP_TYPE(name, type);                                                    \
 INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
 
 #define FOR_EACH_HEAP(name, elem, iter) while (!heap_##name##_next(&iter, &elem))

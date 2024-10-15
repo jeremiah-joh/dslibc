@@ -47,7 +47,9 @@ size_t ht_##name##_len(struct ht_##name *);                                    \
 void ht_##name##_free(struct ht_##name *);                                     \
                                                                                \
 struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                  \
-int ht_##name##_next(struct ht_##name##_iter *, type *);
+int ht_##name##_next(struct ht_##name##_iter *, type *);                       \
+                                                                               \
+extern int _ht_type_##name
 
 #define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                      \
 static struct ht_##name                                                        \
@@ -283,10 +285,12 @@ ht_##name##_next(struct ht_##name##_iter *iter, type *val)                     \
         }                                                                      \
                                                                                \
         return -1;                                                             \
-}
+}                                                                              \
+                                                                               \
+extern int _ht_func_##name
 
 #define INIT_HT_BOTH(name, type, hash, cmp, malloc, free)                      \
-INIT_HT_TYPE(name, type)                                                       \
+INIT_HT_TYPE(name, type);                                                      \
 INIT_HT_FUNC(name, type, hash, cmp, malloc, free)
 
 #define FOR_EACH_HT(name, elem, iter) while (!ht_##name##_next(&iter, &elem))

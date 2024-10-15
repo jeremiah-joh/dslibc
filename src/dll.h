@@ -49,7 +49,9 @@ size_t dll_##name##_len(struct dll_##name *);                                  \
 void dll_##name##_free(struct dll_##name *);                                   \
                                                                                \
 struct dll_##name##_iter dll_##name##_iter(struct dll_##name *);               \
-int dll_##name##_next(struct dll_##name##_iter *, type *);
+int dll_##name##_next(struct dll_##name##_iter *, type *);                     \
+                                                                               \
+extern int _dll_type_##name
 
 #define INIT_DLL_FUNC(name, type, malloc, free)                                \
 static struct dll_##name##_node *                                              \
@@ -339,10 +341,12 @@ dll_##name##_next(struct dll_##name##_iter *iter, type *val)                   \
         iter->cur = iter->cur->nxt;                                            \
                                                                                \
         return 0;                                                              \
-}
+}                                                                              \
+                                                                               \
+extern int _dll_func_##name
 
 #define INIT_DLL_BOTH(name, type, malloc, free)                                \
-INIT_DLL_TYPE(name, type)                                                      \
+INIT_DLL_TYPE(name, type);                                                     \
 INIT_DLL_FUNC(name, type, malloc, free)
 
 #define FOR_EACH_DLL(name, elem, iter) while (!dll_##name##_next(&iter, &elem))

@@ -47,7 +47,9 @@ size_t sll_##name##_len(struct sll_##name *);                                  \
 void sll_##name##_free(struct sll_##name *);                                   \
                                                                                \
 struct sll_##name##_iter sll_##name##_iter(struct sll_##name *);               \
-int sll_##name##_next(struct sll_##name##_iter *, type *);
+int sll_##name##_next(struct sll_##name##_iter *, type *);                     \
+                                                                               \
+extern int _sll_type_##name
 
 #define INIT_SLL_FUNC(name, type, malloc, free)                                \
 static struct sll_##name##_node *                                              \
@@ -297,11 +299,13 @@ sll_##name##_next(struct sll_##name##_iter *iter, type *val)                   \
         iter->cur = iter->cur->nxt;                                            \
                                                                                \
         return 0;                                                              \
-}
+}                                                                              \
+                                                                               \
+extern int _sll_func_##name
 
 
 #define INIT_SLL_BOTH(name, type, malloc, free)                                \
-INIT_SLL_TYPE(name, type)                                                      \
+INIT_SLL_TYPE(name, type);                                                     \
 INIT_SLL_FUNC(name, type, malloc, free)
 
 #define FOR_EACH_SLL(name, elem, iter) while (!sll_##name##_next(&iter, &elem))

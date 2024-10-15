@@ -44,7 +44,9 @@ size_t vec_##name##_len(struct vec_##name *);                                  \
 void vec_##name##_free(struct vec_##name *);                                   \
                                                                                \
 struct vec_##name##_iter vec_##name##_iter(struct vec_##name *);               \
-int vec_##name##_next(struct vec_##name##_iter *, type *);
+int vec_##name##_next(struct vec_##name##_iter *, type *);                     \
+                                                                               \
+extern int _vec_type_##name
 
 #define INIT_VEC_FUNC(name, type, malloc, realloc, free)                       \
 static int                                                                     \
@@ -246,10 +248,12 @@ vec_##name##_next(struct vec_##name##_iter *iter, type *val)                   \
         *val = iter->vec->arr[iter->idx++];                                    \
                                                                                \
         return 0;                                                              \
-}
+}                                                                              \
+                                                                               \
+extern int _vec_func_##name
 
 #define INIT_VEC_BOTH(name, type, malloc, realloc, free)                       \
-INIT_VEC_TYPE(name, type)                                                      \
+INIT_VEC_TYPE(name, type);                                                     \
 INIT_VEC_FUNC(name, type, malloc, realloc, free)
 
 #define FOR_EACH_VEC(name, elem, iter) while (!vec_##name##_next(&iter, &elem))
