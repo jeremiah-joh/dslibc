@@ -3,7 +3,7 @@ Heap
 
 A heap that implements priority queue.
 
-INIT_HEAP_TYPE(name, type)
+INIT_HEAP_TYPE(name, type);
 --------------------------
 
 Initializes structures and function prototypes.
@@ -11,10 +11,10 @@ Initializes structures and function prototypes.
 ```c
 #include "heap.h"
 
-INIT_HEAP_TYPE(int, int)
+INIT_HEAP_TYPE(int, int);
 ```
 
-INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free);
 ----------------------------------------------------------
 
 Initializes function definition for maximum heap.
@@ -25,10 +25,10 @@ Initializes function definition for maximum heap.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_FUNC(int, int, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_FUNC(int, int, cmp, malloc, realloc, free);
 ```
 
-INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
+INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free);
 ----------------------------------------------------------
 
 Initializes function definition for minimum heap.
@@ -39,10 +39,10 @@ Initializes function definition for minimum heap.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MIN_HEAP_FUNC(int, int, cmp, malloc, realloc, free)
+INIT_MIN_HEAP_FUNC(int, int, cmp, malloc, realloc, free);
 ```
 
-INIT_MAX_HEAP_BOTH(name, type, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(name, type, cmp, malloc, realloc, free);
 ----------------------------------------------------------
 
 Initializes both structures and functions for maximum heap.
@@ -53,10 +53,10 @@ Initializes both structures and functions for maximum heap.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MIN_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MIN_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 ```
 
-INIT_MIN_HEAP_BOTH(name, type, cmp, malloc, realloc, free)
+INIT_MIN_HEAP_BOTH(name, type, cmp, malloc, realloc, free);
 ----------------------------------------------------------
 
 Initializes both structures and functions for minimum heap.
@@ -67,7 +67,7 @@ Initializes both structures and functions for minimum heap.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MIN_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MIN_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 ```
 
 new
@@ -83,7 +83,7 @@ Constructs an empty heap.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MIN_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MIN_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 
 struct heap_int heap;
 
@@ -103,7 +103,7 @@ Constructs a heap and fill it by `arr`\`s items.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 
 struct heap_int heap;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -124,7 +124,7 @@ Constructs a deeply copied heap from given `heap`.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 
 struct heap_int heap1, heap2;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -147,7 +147,7 @@ reallocation is failed.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 
 struct heap_int heap;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -171,7 +171,7 @@ returns 0 on success, -1 if the memory reallocation is failed.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 
 struct heap_int heap;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -196,7 +196,7 @@ success, -1 if there is no such value in heap.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 
 struct heap_int heap;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -222,7 +222,7 @@ returns 0 on success, -1 if there is no such value in heap.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 
 struct heap_int heap;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -245,7 +245,7 @@ Returns the length of `heap`.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free);
 
 struct heap_int heap;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -269,7 +269,7 @@ fields to prevent use-after-free.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free);
 
 struct heap_int heap;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -291,7 +291,7 @@ Constructs an iterator of `heap`.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free);
 
 struct heap_int heap;
 struct heap_int_iter iter;
@@ -315,7 +315,7 @@ of range is reached.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free);
 
 struct heap_int heap;
 struct heap_int_iter iter;
@@ -340,7 +340,7 @@ Traverses each elements in `iter` of heap.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free)
+INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free);
 
 struct heap_int heap;
 struct heap_int_iter iter;

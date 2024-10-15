@@ -3,7 +3,7 @@ Vector
 
 A growable array that implements a stack.
 
-INIT_VEC_TYPE(name, type)
+INIT_VEC_TYPE(name, type);
 -------------------------
 
 Initializes structures and function prototypes.
@@ -11,10 +11,10 @@ Initializes structures and function prototypes.
 ```c
 #include "vec.h"
 
-INIT_VEC_TYPE(int, int)
+INIT_VEC_TYPE(int, int);
 ```
 
-INIT_VEC_FUNC(name, type, malloc, realloc, free)
+INIT_VEC_FUNC(name, type, malloc, realloc, free);
 ------------------------------------------------
 
 Initializes function definitions.
@@ -23,10 +23,10 @@ Initializes function definitions.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_FUNC(int, int, malloc, realloc, free)
+INIT_VEC_FUNC(int, int, malloc, realloc, free);
 ```
 
-INIT_VEC_BOTH(name, type, malloc, realloc, free)
+INIT_VEC_BOTH(name, type, malloc, realloc, free);
 ------------------------------------------------
 
 Initializes both structures and functions.
@@ -35,7 +35,7 @@ Initializes both structures and functions.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 ```
 
 new
@@ -49,7 +49,7 @@ Constructs a new, empty vector.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 
@@ -67,7 +67,7 @@ Allocate a vector and fill it by `arr`\`s items.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -86,7 +86,7 @@ Constructs a deeply copied vector from given `vec`.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec1, vec2;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -107,7 +107,7 @@ memory reallocation is failed.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -128,7 +128,7 @@ as error if memory reallocation is failed.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -150,7 +150,7 @@ Assigns the element at `idx` into `val` in `vec`. It returs -1 as error if the
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -172,7 +172,7 @@ of range.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -193,7 +193,7 @@ reallocation is failed.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -214,7 +214,7 @@ of range or memory reallocation is failed.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 3, 4 };
@@ -235,7 +235,7 @@ error if `idx` is out of range or memory reallocation is failed.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -257,7 +257,7 @@ than the length of `vec` or memory reallocation is failed.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -277,7 +277,7 @@ Returns the length of `vec`.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -299,7 +299,7 @@ fields to prevent use-after-free.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -319,7 +319,7 @@ Constructs an iterator of `vec`.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 struct vec_int_iter iter;
@@ -341,7 +341,7 @@ of range is reached.
 #include "vec.h"
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 struct vec_int_iter iter;
@@ -364,7 +364,7 @@ Traverses each elements in `iter` of vector.
 #include <stdio.h>
 #include <stdlib.h>
 
-INIT_VEC_BOTH(int, int, malloc, realloc, free)
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 struct vec_int_iter iter;

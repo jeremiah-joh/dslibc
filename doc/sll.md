@@ -3,7 +3,7 @@ Singly Linked List
 
 A singly linked list that implements queue.
 
-INIT_SLL_TYPE(name, type)
+INIT_SLL_TYPE(name, type);
 -------------------------
 
 Initializes structures and function prototypes.
@@ -11,10 +11,10 @@ Initializes structures and function prototypes.
 ```c
 #include "sll.h"
 
-INIT_SLL_TYPE(int, int)
+INIT_SLL_TYPE(int, int);
 ```
 
-INIT_SLL_FUNC(name, type, malloc, free)
+INIT_SLL_FUNC(name, type, malloc, free);
 ------------------------------------------------
 
 Initializes function definitions.
@@ -23,10 +23,10 @@ Initializes function definitions.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_FUNC(int, int, malloc, free)
+INIT_SLL_FUNC(int, int, malloc, free);
 ```
 
-INIT_SLL_BOTH(name, type, malloc, free)
+INIT_SLL_BOTH(name, type, malloc, free);
 ------------------------------------------------
 
 Initializes both structures and functions.
@@ -35,7 +35,7 @@ Initializes both structures and functions.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 ```
 
 new
@@ -49,7 +49,7 @@ Constructs a new, empty linked list.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 
@@ -67,7 +67,7 @@ Allocate a linked list and fill it by `arr`\`s items.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -86,7 +86,7 @@ Constructs a deeply copied linked list from given `sll`.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll1, sll2;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -107,7 +107,7 @@ memory allocation is failed.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -128,7 +128,7 @@ as error if memory deallocation is failed.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -150,7 +150,7 @@ Assigns the element at `idx` into `val` in `sll`. It returs -1 as error if the
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -172,7 +172,7 @@ of range.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -193,7 +193,7 @@ allocation is failed.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -214,7 +214,7 @@ of range or memory allocation is failed.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 3, 4 };
@@ -235,7 +235,7 @@ error if `idx` is out of range or memory deallocation is failed.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -257,7 +257,7 @@ than the length of `sll` or memory deallocation is failed.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -277,7 +277,7 @@ Returns the length of `sll`.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -299,7 +299,7 @@ fields to prevent use-after-free.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -319,7 +319,7 @@ Constructs an iterator of `sll`.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 struct sll_int_iter iter;
@@ -341,7 +341,7 @@ of range is reached.
 #include "sll.h"
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 struct sll_int_iter iter;
@@ -364,7 +364,7 @@ Traverses each elements in `iter` of linked list.
 #include <stdio.h>
 #include <stdlib.h>
 
-INIT_SLL_BOTH(int, int, malloc, free)
+INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 struct sll_int_iter iter;

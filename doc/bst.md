@@ -3,7 +3,7 @@ Binary Search Tree
 
 A binary search tree that implements dictionary.
 
-INIT_BST_TYPE(name, type)
+INIT_BST_TYPE(name, type);
 -------------------------
 
 Initializes structures and function prototypes.
@@ -11,10 +11,10 @@ Initializes structures and function prototypes.
 ```c
 #include "bst.h"
 
-INIT_BST_TYPE(int, int)
+INIT_BST_TYPE(int, int);
 ```
 
-INIT_BST_FUNC(name, type, cmp, malloc, free)
+INIT_BST_FUNC(name, type, cmp, malloc, free);
 --------------------------------------------
 
 Initializes function definitions.
@@ -25,10 +25,10 @@ Initializes function definitions.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_FUNC(int, int, cmp, malloc, free)
+INIT_BST_FUNC(int, int, cmp, malloc, free);
 ```
 
-INIT_BST_BOTH(name, type, cmp, malloc, free)
+INIT_BST_BOTH(name, type, cmp, malloc, free);
 --------------------------------------------
 
 Initializes both structures and functions.
@@ -39,7 +39,7 @@ Initializes both structures and functions.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 ```
 
 new
@@ -55,7 +55,7 @@ Constructs an empty binary search tree.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 
@@ -75,7 +75,7 @@ Constructs a binary search tree and fill it by `arr`\`s items.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -96,7 +96,7 @@ Constructs a deeply copied binary search tree from 'bst'.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst1, bst2;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -119,7 +119,7 @@ binary search tree is empty.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -144,7 +144,7 @@ the binary search tree is empty.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -169,7 +169,7 @@ the binary search tree is empty.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -194,7 +194,7 @@ if there is no such value.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -219,7 +219,7 @@ Assigns `val` in `bst`. It returns 0 on success, -1 if there is no such value.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -245,7 +245,7 @@ value, or memory reallocation is failed.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -271,7 +271,7 @@ or memory reallocation is failed.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -296,7 +296,7 @@ Returns the length of `bst`.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -317,7 +317,7 @@ free
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 int arr[] = { 3, 4, 1, 0, 2 };
@@ -340,7 +340,7 @@ Constructs an iterator.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int_iter iter;
 struct bst_int bst;
@@ -364,7 +364,7 @@ there is no value left.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int_iter iter;
 struct bst_int bst;
@@ -389,7 +389,7 @@ Traverses each elements in `iter` of binary search tree.
 
 int cmp(int x, int y) { return x - y; }
 
-INIT_BST_BOTH(int, int, cmp, malloc, free)
+INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 struct bst_int bst;
 struct bst_int_iter iter;

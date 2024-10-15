@@ -3,7 +3,7 @@ Hash Table
 
 A hash table that implements dictionary.
 
-INIT_HT_TYPE(name, type)
+INIT_HT_TYPE(name, type);
 -------------------------
 
 Initializes structures and function prototypes.
@@ -11,10 +11,10 @@ Initializes structures and function prototypes.
 ```c
 #include "ht.h"
 
-INIT_HT_TYPE(int, int)
+INIT_HT_TYPE(int, int);
 ```
 
-INIT_HT_FUNC(name, type, hash, cmp, malloc, realloc, free)
+INIT_HT_FUNC(name, type, hash, cmp, malloc, realloc, free);
 ------------------------------------------------
 
 Initializes function definitions.
@@ -26,10 +26,10 @@ Initializes function definitions.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_FUNC(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_FUNC(int, int, hash, cmp, malloc, realloc, free);
 ```
 
-INIT_HT_BOTH(name, type, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(name, type, hash, cmp, malloc, realloc, free);
 ------------------------------------------------
 
 Initializes both structures and functions.
@@ -41,7 +41,7 @@ Initializes both structures and functions.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 ```
 
 new
@@ -58,7 +58,7 @@ Constructs an empty hash table.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht;
 
@@ -79,7 +79,7 @@ Constructs a hash table and fill it by `arr`\`s items.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -101,7 +101,7 @@ Constructs a deeply copied hash table from 'ht'.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht1, ht2;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -125,7 +125,7 @@ if there is no such value.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -151,7 +151,7 @@ Assigns `val` in `ht`. It returns 0 on success, -1 if there is no such value.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -178,7 +178,7 @@ value, or memory reallocation is failed.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -205,7 +205,7 @@ or memory reallocation is failed.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -231,7 +231,7 @@ Returns the length of `ht`.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -253,7 +253,7 @@ free
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int ht;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -277,7 +277,7 @@ Constructs an iterator.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int_iter iter;
 struct ht_int ht;
@@ -302,7 +302,7 @@ there is no value left.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free)
+INIT_HT_BOTH(int, int, hash, cmp, malloc, realloc, free);
 
 struct ht_int_iter iter;
 struct ht_int ht;
@@ -328,7 +328,7 @@ Traverses each elements in `iter` of hash table.
 int hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
-INIT_HT_BOTH(int, int, malloc, realloc, free)
+INIT_HT_BOTH(int, int, malloc, realloc, free);
 
 struct ht_int ht;
 struct ht_int_iter iter;

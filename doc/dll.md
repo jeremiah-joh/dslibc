@@ -3,7 +3,7 @@ Doubly Linked List
 
 A doubly linked list that implements double-ended queue.
 
-INIT_DLL_TYPE(name, type)
+INIT_DLL_TYPE(name, type);
 -------------------------
 
 Initializes structures and function prototypes.
@@ -11,10 +11,10 @@ Initializes structures and function prototypes.
 ```c
 #include "dll.h"
 
-INIT_DLL_TYPE(int, int)
+INIT_DLL_TYPE(int, int);
 ```
 
-INIT_DLL_FUNC(name, type, malloc, free)
+INIT_DLL_FUNC(name, type, malloc, free);
 ------------------------------------------------
 
 Initializes function definitions.
@@ -23,10 +23,10 @@ Initializes function definitions.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_FUNC(int, int, malloc, free)
+INIT_DLL_FUNC(int, int, malloc, free);
 ```
 
-INIT_DLL_BOTH(name, type, malloc, free)
+INIT_DLL_BOTH(name, type, malloc, free);
 ------------------------------------------------
 
 Initializes both structures and functions.
@@ -35,7 +35,7 @@ Initializes both structures and functions.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 ```
 
 new
@@ -49,7 +49,7 @@ Constructs a new, empty linked list.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 
@@ -67,7 +67,7 @@ Allocate a linked list and fill it by `arr`\`s items.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -86,7 +86,7 @@ Constructs a deeply copied linked list from given `dll`.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll1, dll2;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -107,7 +107,7 @@ memory allocation is failed.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -128,7 +128,7 @@ as error if memory deallocation is failed.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -150,7 +150,7 @@ memory allocation is failed.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -171,7 +171,7 @@ as error if memory deallocation is failed.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -193,7 +193,7 @@ Assigns the element at `idx` into `val` in `dll`. It returs -1 as error if the
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -215,7 +215,7 @@ of range.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -236,7 +236,7 @@ allocation is failed.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -257,7 +257,7 @@ of range or memory allocation is failed.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 3, 4 };
@@ -278,7 +278,7 @@ error if `idx` is out of range or memory deallocation is failed.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -300,7 +300,7 @@ than the length of `dll` or memory deallocation is failed.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -320,7 +320,7 @@ Returns the length of `dll`.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -342,7 +342,7 @@ fields to prevent use-after-free.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
@@ -362,7 +362,7 @@ Constructs an iterator of `dll`.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 struct dll_int_iter iter;
@@ -384,7 +384,7 @@ of range is reached.
 #include "dll.h"
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 struct dll_int_iter iter;
@@ -407,7 +407,7 @@ Traverses each elements in `iter` of linked list.
 #include <stdio.h>
 #include <stdlib.h>
 
-INIT_DLL_BOTH(int, int, malloc, free)
+INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 struct dll_int_iter iter;
