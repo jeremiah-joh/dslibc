@@ -228,10 +228,9 @@ int                                                                            \
 bst_##name##_insert(struct bst_##name *bst, const type val)                    \
 {                                                                              \
         struct bst_##name##_node **cur;                                        \
-        int res;                                                               \
                                                                                \
-        for (cur = &bst->root; *cur; cur = &(*cur)->kid[res > 0])              \
-                res = cmp(val, (*cur)->val);                                   \
+        for (cur = &bst->root; *cur;)                                          \
+                cur = &(*cur)->kid[cmp(val, (*cur)->val) > 0];                 \
         if ((*cur = malloc(sizeof(struct bst_##name##_node))) == NULL)         \
                 return -1;                                                     \
                                                                                \
