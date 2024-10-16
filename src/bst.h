@@ -59,9 +59,9 @@ bst_##name##_copy_node(struct bst_##name *cpy, struct bst_##name##_node *node) \
 {                                                                              \
         bst_##name##_insert(cpy, node->val);                                   \
                                                                                \
-        if (node->kid[0] != NULL)                                              \
+        if (node->kid[0])                                                      \
                 bst_##name##_copy_node(cpy, node->kid[0]);                     \
-        if (node->kid[1] != NULL)                                              \
+        if (node->kid[1])                                                      \
                 bst_##name##_copy_node(cpy, node->kid[1]);                     \
 }                                                                              \
                                                                                \
@@ -71,7 +71,7 @@ bst_##name##_match(struct bst_##name *bst, const type val)                     \
         struct bst_##name##_node **cur;                                        \
         int res;                                                               \
                                                                                \
-        for (cur = &bst->root; *cur != NULL; cur = &(*cur)->kid[res > 0])      \
+        for (cur = &bst->root; *cur; cur = &(*cur)->kid[res > 0])              \
                 if ((res = cmp(val, (*cur)->val)) == 0)                        \
                         return cur;                                            \
                                                                                \
@@ -101,7 +101,7 @@ bst_##name##_remove_full(struct bst_##name##_node *del)                        \
 {                                                                              \
         struct bst_##name##_node **suc;                                        \
                                                                                \
-        for (suc = &del->kid[1]; (*suc)->kid[0] != NULL; suc = &(*suc)->kid[0])\
+        for (suc = &del->kid[1]; (*suc)->kid[0]; suc = &(*suc)->kid[0])        \
                 ;                                                              \
                                                                                \
         del->val = (*suc)->val;                                                \
@@ -112,9 +112,9 @@ bst_##name##_remove_full(struct bst_##name##_node *del)                        \
 static void                                                                    \
 bst_##name##_free_node(struct bst_##name##_node *node)                         \
 {                                                                              \
-        if (node->kid[0] != NULL)                                              \
+        if (node->kid[0])                                                      \
                 bst_##name##_free_node(node->kid[0]);                          \
-        if (node->kid[1] != NULL)                                              \
+        if (node->kid[1])                                                      \
                 bst_##name##_free_node(node->kid[1]);                          \
                                                                                \
         free(node);                                                            \
@@ -175,7 +175,7 @@ bst_##name##_max(struct bst_##name *bst, type *val)                            \
                                                                                \
         if (bst->root == NULL || bst->len == 0)                                \
                 return -1;                                                     \
-        for (max = bst->root; max->kid[1] != NULL; max = max->kid[1])          \
+        for (max = bst->root; max->kid[1]; max = max->kid[1])                  \
                 ;                                                              \
                                                                                \
         *val = max->val;                                                       \
@@ -190,7 +190,7 @@ bst_##name##_min(struct bst_##name *bst, type *val)                            \
                                                                                \
         if (bst->root == NULL || bst->len == 0)                                \
                 return -1;                                                     \
-        for (min = bst->root; min->kid[0] != NULL; min = min->kid[0])          \
+        for (min = bst->root; min->kid[0]; min = min->kid[0])                  \
                 ;                                                              \
                                                                                \
         *val = min->val;                                                       \
@@ -230,7 +230,7 @@ bst_##name##_insert(struct bst_##name *bst, const type val)                    \
         struct bst_##name##_node **cur;                                        \
         int res;                                                               \
                                                                                \
-        for (cur = &bst->root; *cur != NULL; cur = &(*cur)->kid[res > 0])      \
+        for (cur = &bst->root; *cur; cur = &(*cur)->kid[res > 0])              \
                 res = cmp(val, (*cur)->val);                                   \
         if ((*cur = malloc(sizeof(struct bst_##name##_node))) == NULL)         \
                 return -1;                                                     \
@@ -253,7 +253,7 @@ bst_##name##_remove(struct bst_##name *bst, type *val)                         \
                 return -1;                                                     \
         if ((*cur)->kid[0] == NULL && (*cur)->kid[1] == NULL)                  \
                 bst_##name##_remove_leaf(cur);                                 \
-        else if ((*cur)->kid[0] != NULL && (*cur)->kid[1] != NULL)             \
+        else if ((*cur)->kid[0] && (*cur)->kid[1])                             \
                 bst_##name##_remove_full(*cur);                                \
         else                                                                   \
                 bst_##name##_remove_only(*cur);                                \
@@ -291,7 +291,7 @@ bst_##name##_iter(struct bst_##name *bst)                                      \
 int                                                                            \
 bst_##name##_next(struct bst_##name##_iter *iter, type *val)                   \
 {                                                                              \
-        while (iter->cur != NULL) {                                            \
+        while (iter->cur) {                                                    \
                 iter->arr[iter->top++] = iter->cur;                            \
                 iter->cur = iter->cur->kid[0];                                 \
         }                                                                      \

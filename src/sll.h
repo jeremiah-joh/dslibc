@@ -71,7 +71,7 @@ sll_##name##_ptr(struct sll_##name *sll, size_t idx)                           \
 {                                                                              \
         struct sll_##name##_node *cur;                                         \
                                                                                \
-        for (cur = sll->beg; cur != NULL && idx != 0; cur = cur->nxt, idx--)   \
+        for (cur = sll->beg; cur && idx != 0; cur = cur->nxt, idx--)           \
                 ;                                                              \
                                                                                \
         return cur;                                                            \
@@ -82,7 +82,7 @@ sll_##name##_del(struct sll_##name##_node *del)                                \
 {                                                                              \
         struct sll_##name##_node *nxt, *cur;                                   \
                                                                                \
-        for (cur = del; cur != NULL; cur = nxt) {                              \
+        for (cur = del; cur; cur = nxt) {                                      \
                 nxt = cur->nxt;                                                \
                 free(cur);                                                     \
         }                                                                      \
@@ -123,7 +123,7 @@ sll_##name##_copy(const struct sll_##name *sll)                                \
                                                                                \
         cpy = sll_##name##_new();                                              \
                                                                                \
-        for (cur = sll->beg; cur != NULL; cur = cur->nxt)                      \
+        for (cur = sll->beg; cur; cur = cur->nxt)                              \
                 if (sll_##name##_push(&cpy, cur->val))                         \
                         break;                                                 \
                                                                                \
@@ -199,7 +199,7 @@ sll_##name##_append(struct sll_##name *old, struct sll_##name *new)            \
 {                                                                              \
         struct sll_##name##_node *cur;                                         \
                                                                                \
-        for (cur = new->beg; cur != NULL; cur = cur->nxt)                      \
+        for (cur = new->beg; cur; cur = cur->nxt)                              \
                 if (sll_##name##_push(old, cur->val))                          \
                         return -1;                                             \
                                                                                \

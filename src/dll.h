@@ -92,7 +92,7 @@ dll_##name##_del(struct dll_##name##_node *del)                                \
 {                                                                              \
         struct dll_##name##_node *nxt, *cur;                                   \
                                                                                \
-        for (cur = del; cur != NULL; cur = nxt) {                              \
+        for (cur = del; cur; cur = nxt) {                                      \
                 nxt = cur->nxt;                                                \
                 free(cur);                                                     \
         }                                                                      \
@@ -132,7 +132,7 @@ dll_##name##_copy(const struct dll_##name *dll)                                \
                                                                                \
         cpy = dll_##name##_new();                                              \
                                                                                \
-        for (cur = dll->beg; cur != NULL; cur = cur->nxt)                      \
+        for (cur = dll->beg; cur; cur = cur->nxt)                              \
                 if (dll_##name##_push_back(&cpy, cur->val))                    \
                         break;                                                 \
                                                                                \
@@ -244,7 +244,7 @@ dll_##name##_append(struct dll_##name *old, struct dll_##name *new)            \
 {                                                                              \
         struct dll_##name##_node *cur;                                         \
                                                                                \
-        for (cur = new->beg; cur != NULL; cur = cur->nxt)                      \
+        for (cur = new->beg; cur; cur = cur->nxt)                              \
                 if (dll_##name##_push_back(old, cur->val))                     \
                         return -1;                                             \
                                                                                \
