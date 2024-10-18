@@ -47,9 +47,12 @@ size_t spt_##name##_len(struct spt_##name *);                                  \
 void spt_##name##_free(struct spt_##name *);                                   \
                                                                                \
 struct spt_##name##_iter spt_##name##_iter(struct spt_##name *);               \
-int spt_##name##_next(struct spt_##name##_iter *, type *);
+int spt_##name##_next(struct spt_##name##_iter *, type *);                     \
+                                                                               \
+extern int _spt_type_##name
 
-#define INIT_SPT_FUNC(name, type, cmp, malloc, free)
+#define INIT_SPT_FUNC(name, type, cmp, malloc, free)                           \
+extern int _spt_func_##name
 
 #define FOR_EACH_SPT(name, elem, iter) while (!spt_##name##_next(&iter, &elem))
 

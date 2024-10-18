@@ -47,9 +47,12 @@ size_t bt_##name##_len(struct bt_##name *);                                    \
 void bt_##name##_free(struct bt_##name *);                                     \
                                                                                \
 struct bt_##name##_iter bt_##name##_iter(struct bt_##name *);                  \
-int bt_##name##_next(struct bt_##name##_iter *, type *);
+int bt_##name##_next(struct bt_##name##_iter *, type *);                       \
+                                                                               \
+extern int _bt_type_##name
 
-#define INIT_BT_FUNC(name, type, ord, cmp, malloc, free)
+#define INIT_BT_FUNC(name, type, cmp, malloc, free)                            \
+extern int _bt_func_##name
 
 #define INIT_BT_BOTH(name, type, ord, cmp, malloc, free)                       \
 INIT_BT_TYPE(name, type, ord)                                                  \

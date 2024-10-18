@@ -47,9 +47,12 @@ size_t avl_##name##_len(struct avl_##name *);                                  \
 void avl_##name##_free(struct avl_##name *);                                   \
                                                                                \
 struct avl_##name##_iter avl_##name##_iter(struct avl_##name *);               \
-int avl_##name##_next(struct avl_##name##_iter *, type *);
+int avl_##name##_next(struct avl_##name##_iter *, type *);                     \
+                                                                               \
+extern int _avl_type_##name
 
-#define INIT_AVL_FUNC(name, type, cmp, malloc, free)
+#define INIT_AVL_FUNC(name, type, cmp, malloc, free)                           \
+extern int _avl_func_##name
 
 #define FOR_EACH_AVL(name, elem, iter) while (!avl_##name##_next(&iter, &elem))
 
