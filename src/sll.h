@@ -275,7 +275,8 @@ void                                                                           \
 sll_##name##_free(struct sll_##name *sll)                                      \
 {                                                                              \
         sll_##name##_del(sll->beg);                                            \
-        sll->beg = sll->end = NULL;                                            \
+        sll->beg = NULL;                                                       \
+        sll->end = NULL;                                                       \
         sll->len = 0;                                                          \
 }                                                                              \
                                                                                \

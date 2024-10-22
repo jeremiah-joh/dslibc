@@ -317,7 +317,8 @@ void                                                                           \
 dll_##name##_free(struct dll_##name *dll)                                      \
 {                                                                              \
         dll_##name##_del(dll->beg);                                            \
-        dll->beg = dll->end = NULL;                                            \
+        dll->beg = NULL;                                                       \
+        dll->end = NULL;                                                       \
         dll->len = 0;                                                          \
 }                                                                              \
                                                                                \

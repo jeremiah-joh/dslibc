@@ -92,7 +92,7 @@ ht_##name##_match(struct ht_##name *ht, const type val)                        \
         for (i = h; NEXT(i, ht->cap) != h; i = NEXT(i, ht->cap)) {             \
                 switch (ht->arr[i].state) {                                    \
                 case NONE:                                                     \
-        		return ht->cap;                                        \
+                        return ht->cap;                                        \
                 case TOMB:                                                     \
                         continue;                                              \
                 case SOME:                                                     \
@@ -259,7 +259,8 @@ ht_##name##_free(struct ht_##name *ht)                                         \
 {                                                                              \
         free(ht->arr);                                                         \
         ht->arr = NULL;                                                        \
-        ht->cap = ht->len = 0;                                                 \
+        ht->cap = 0;                                                           \
+        ht->len = 0;                                                           \
 }                                                                              \
                                                                                \
 struct ht_##name##_iter                                                        \
