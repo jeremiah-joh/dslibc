@@ -77,10 +77,10 @@ ht_##name##_place(struct ht_##name *ht, const type val)                        \
         h = hash(val) & (ht->cap - 1);                                         \
         for (i = h; NEXT(i, ht->cap) != h; i = NEXT(i, ht->cap))               \
                 if (ht->arr[i].state != SOME)                                  \
-			break;                                                 \
+                        break;                                                 \
                                                                                \
-	if (NEXT(i, ht->cap) == h)                                             \
-		return -1;                                                     \
+        if (NEXT(i, ht->cap) == h)                                             \
+                return -1;                                                     \
                                                                                \
         ht->arr[i].val = val;                                                  \
         ht->arr[i].state = SOME;                                               \
@@ -119,7 +119,7 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                     \
         if (ht->cap >> 2 < ht->len && ht->len < ht->cap >> 1)                  \
                 return 0;                                                      \
         if ((new = ht_##name##_sized(len)).arr == NULL)                        \
-		return -1;                                                     \
+                return -1;                                                     \
         for (i = 0; i < ht->cap; i++) {                                        \
                 if (ht->arr[i].state != SOME)                                  \
                         continue;                                              \
@@ -128,7 +128,7 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                     \
         }                                                                      \
                                                                                \
         free(ht->arr);                                                         \
-	*ht = new;                                                             \
+        *ht = new;                                                             \
                                                                                \
         return 0;                                                              \
 }                                                                              \
