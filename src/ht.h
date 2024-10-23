@@ -16,7 +16,6 @@
 #define _HT_H
 
 #include <stddef.h>
-#include <string.h>
 
 #define NEXT(i, c) (((i) + 1) % (c))
 
@@ -53,34 +52,41 @@ extern int _ht_type_##name
 
 #define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                      \
 static struct ht_##name                                                        \
-ht_##name##_size(const size_t len)                                             \
+ht_##name##_sized(const size_t len)                                            \
 {                                                                              \
         struct ht_##name ht;                                                   \
         size_t i;                                                              \
                                                                                \
         for (ht.cap = 4; ht.cap < len; ht.cap <<= 1)                           \
                 ;                                                              \
-                                                                               \
-        ht.arr = malloc(ht.cap * sizeof(struct ht_##name##_node));             \
-        ht.len = 0;                                                            \
-                                                                               \
+        if ((ht.arr = malloc(ht.cap * sizeof(*ht.arr))) == NULL)               \
+                return ht;                                                     \
         for (i = 0; i < ht.cap; i++)                                           \
                 ht.arr[i].state = NONE;                                        \
+                                                                               \
+        ht.len = 0;                                                            \
                                                                                \
         return ht;                                                             \
 }                                                                              \
                                                                                \
-static size_t                                                                  \
-ht_##name##_empty(struct ht_##name *ht, const type val)                        \
+static int                                                                     \
+ht_##name##_place(struct ht_##name *ht, const type val)                        \
 {                                                                              \
         size_t h, i;                                                           \
                                                                                \
         h = hash(val) & (ht->cap - 1);                                         \
         for (i = h; NEXT(i, ht->cap) != h; i = NEXT(i, ht->cap))               \
                 if (ht->arr[i].state != SOME)                                  \
-                        return i;                                              \
+			break;                                                 \
                                                                                \
-        return ht->cap;                                                        \
+	if (NEXT(i, ht->cap) == h)                                             \
+		return -1;                                                     \
+                                                                               \
+        ht->arr[i].val = val;                                                  \
+        ht->arr[i].state = SOME;                                               \
+        ht->len++;                                                             \
+                                                                               \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 static size_t                                                                  \
@@ -108,23 +114,21 @@ static int                                                                     \
 ht_##name##_resize(struct ht_##name *ht, const size_t len)                     \
 {                                                                              \
         struct ht_##name new;                                                  \
-        size_t i, j;                                                           \
+        size_t i;                                                              \
                                                                                \
         if (ht->cap >> 2 < ht->len && ht->len < ht->cap >> 1)                  \
                 return 0;                                                      \
-        for (new = ht_##name##_size(len), i = 0; i < ht->cap; i++) {           \
+        if ((new = ht_##name##_sized(len)).arr == NULL)                        \
+		return -1;                                                     \
+        for (i = 0; i < ht->cap; i++) {                                        \
                 if (ht->arr[i].state != SOME)                                  \
                         continue;                                              \
-                if ((j = ht_##name##_empty(&new, ht->arr[i].val)) == new.cap)  \
+                if (ht_##name##_place(&new, ht->arr[i].val))                   \
                         return -1;                                             \
-                                                                               \
-                new.arr[j].val = ht->arr[i].val;                               \
-                new.arr[j].state = SOME;                                       \
-                new.len++;                                                     \
         }                                                                      \
                                                                                \
         free(ht->arr);                                                         \
-        *ht = new;                                                             \
+	*ht = new;                                                             \
                                                                                \
         return 0;                                                              \
 }                                                                              \
@@ -144,18 +148,13 @@ struct ht_##name                                                               \
 ht_##name##_from(const type *arr, const size_t len)                            \
 {                                                                              \
         struct ht_##name ht;                                                   \
-        size_t i, j;                                                           \
+        size_t i;                                                              \
                                                                                \
-        ht = ht_##name##_size(len);                                            \
+        ht = ht_##name##_sized(len);                                           \
                                                                                \
-        for (i = 0; i < len; i++) {                                            \
-                if ((j = ht_##name##_empty(&ht, arr[i])) == ht.cap)            \
+        for (i = 0; i < len; i++)                                              \
+                if (ht_##name##_place(&ht, arr[i]))                            \
                         break;                                                 \
-                                                                               \
-                ht.arr[j].val = arr[i];                                        \
-                ht.arr[j].state = SOME;                                        \
-                ht.len++;                                                      \
-        }                                                                      \
                                                                                \
         return ht;                                                             \
 }                                                                              \
@@ -164,19 +163,15 @@ struct ht_##name                                                               \
 ht_##name##_copy(const struct ht_##name *ht)                                   \
 {                                                                              \
         struct ht_##name cp;                                                   \
-        size_t i, j;                                                           \
+        size_t i;                                                              \
                                                                                \
-        cp = ht_##name##_size(ht->len);                                        \
+        cp = ht_##name##_sized(ht->len);                                       \
                                                                                \
         for (i = 0; i < ht->len; i++) {                                        \
                 if (ht->arr[i].state != SOME)                                  \
                         continue;                                              \
-                if ((j = ht_##name##_empty(&cp, ht->arr[i].val)) == cp.cap)    \
+                if (ht_##name##_place(&cp, ht->arr[i].val))                    \
                         break;                                                 \
-                                                                               \
-                cp.arr[j].val = ht->arr[i].val;                                \
-                cp.arr[j].state = SOME;                                        \
-                cp.len++;                                                      \
         }                                                                      \
                                                                                \
         return cp;                                                             \
@@ -215,20 +210,12 @@ ht_##name##_set(struct ht_##name *ht, const type val)                          \
 int                                                                            \
 ht_##name##_insert(struct ht_##name *ht, const type val)                       \
 {                                                                              \
-        size_t i;                                                              \
-                                                                               \
         if (ht->arr == NULL)                                                   \
                 return -1;                                                     \
         if (ht_##name##_resize(ht, ht->len + 1))                               \
                 return -1;                                                     \
-        if ((i = ht_##name##_empty(ht, val)) == ht->cap)                       \
-                return -1;                                                     \
                                                                                \
-        ht->arr[i].val = val;                                                  \
-        ht->arr[i].state = SOME;                                               \
-        ht->len++;                                                             \
-                                                                               \
-        return 0;                                                              \
+        return ht_##name##_place(ht, val);                                     \
 }                                                                              \
                                                                                \
 int                                                                            \
