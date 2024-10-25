@@ -186,8 +186,7 @@ heap_##name##_free(struct heap_##name *heap)                                   \
 {                                                                              \
         free(heap->arr);                                                       \
         heap->arr = NULL;                                                      \
-        heap->cap = 0;                                                         \
-        heap->len = 0;                                                         \
+        heap->cap = heap->len = 0;                                             \
 }                                                                              \
                                                                                \
 struct heap_##name##_iter                                                      \

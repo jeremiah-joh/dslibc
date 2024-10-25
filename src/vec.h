@@ -225,8 +225,7 @@ vec_##name##_free(struct vec_##name *vec)                                      \
 {                                                                              \
         free(vec->arr);                                                        \
         vec->arr = NULL;                                                       \
-        vec->cap = 0;                                                          \
-        vec->len = 0;                                                          \
+        vec->cap = vec->len = 0;                                               \
 }                                                                              \
                                                                                \
 struct vec_##name##_iter                                                       \

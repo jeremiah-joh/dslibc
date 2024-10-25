@@ -136,8 +136,7 @@ ht_##name##_new(void)                                                          \
         struct ht_##name ht;                                                   \
                                                                                \
         ht.arr = malloc(0);                                                    \
-        ht.cap = 0;                                                            \
-	ht.len = 0;                                                            \
+        ht.cap = ht.len = 0;                                                   \
                                                                                \
         return ht;                                                             \
 }                                                                              \
@@ -244,8 +243,7 @@ ht_##name##_free(struct ht_##name *ht)                                         \
 {                                                                              \
         free(ht->arr);                                                         \
         ht->arr = NULL;                                                        \
-        ht->cap = 0;                                                           \
-        ht->len = 0;                                                           \
+        ht->cap = ht->len = 0;                                                 \
 }                                                                              \
                                                                                \
 struct ht_##name##_iter                                                        \
