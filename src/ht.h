@@ -74,13 +74,10 @@ ht_##name##_place(struct ht_##name *ht, const type val)                        \
 {                                                                              \
         size_t h, i;                                                           \
                                                                                \
-        h = hash(val) & (ht->cap - 1);                                         \
-        for (i = h; NEXT(i, ht->cap) != h; i = NEXT(i, ht->cap))               \
-                if (ht->arr[i].state != SOME)                                  \
-                        break;                                                 \
-                                                                               \
-        if (NEXT(i, ht->cap) == h)                                             \
-                return -1;                                                     \
+        i = h = hash(val) & (ht->cap - 1);                                     \
+        while (ht->arr[i].state == SOME)                                       \
+                if ((i = NEXT(i, ht->cap)) == h)                               \
+                        return -1;                                             \
                                                                                \
         ht->arr[i].val = val;                                                  \
         ht->arr[i].state = SOME;                                               \
@@ -139,7 +136,8 @@ ht_##name##_new(void)                                                          \
         struct ht_##name ht;                                                   \
                                                                                \
         ht.arr = malloc(0);                                                    \
-        ht.cap = ht.len = 0;                                                   \
+        ht.cap = 0;                                                            \
+	ht.len = 0;                                                            \
                                                                                \
         return ht;                                                             \
 }                                                                              \
