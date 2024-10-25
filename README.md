@@ -19,7 +19,7 @@ A collection of useful data structures written in ANSI C.
 Installation
 ------------
 
-Following commands will install these header files under '/usr/local/include'.
+Following commands will install these header files under `/usr/local/include`.
 
 ```sh
 git clone https://github.com/jeremiah-joh/dslibc.git
