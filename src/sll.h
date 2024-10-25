@@ -93,8 +93,7 @@ sll_##name##_new(void)                                                         \
 {                                                                              \
         struct sll_##name sll;                                                 \
                                                                                \
-        sll.beg = NULL;                                                        \
-        sll.end = NULL;                                                        \
+        sll.beg = sll.end = NULL;                                              \
         sll.len = 0;                                                           \
                                                                                \
         return sll;                                                            \
@@ -275,8 +274,7 @@ void                                                                           \
 sll_##name##_free(struct sll_##name *sll)                                      \
 {                                                                              \
         sll_##name##_del(sll->beg);                                            \
-        sll->beg = NULL;                                                       \
-        sll->end = NULL;                                                       \
+        sll->beg = sll->end = NULL;                                            \
         sll->len = 0;                                                          \
 }                                                                              \
                                                                                \

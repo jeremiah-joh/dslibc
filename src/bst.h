@@ -235,8 +235,7 @@ bst_##name##_insert(struct bst_##name *bst, const type val)                    \
                 return -1;                                                     \
                                                                                \
         (*cur)->val = val;                                                     \
-        (*cur)->kid[0] = NULL;                                                 \
-        (*cur)->kid[1] = NULL;                                                 \
+        (*cur)->kid[0] = (*cur)->kid[1] = NULL;                                \
                                                                                \
         bst->len++;                                                            \
                                                                                \

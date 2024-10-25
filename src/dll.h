@@ -63,8 +63,7 @@ dll_##name##_node(const type val)                                              \
                 return NULL;                                                   \
                                                                                \
         new->val = val;                                                        \
-        new->nxt = NULL;                                                       \
-        new->prv = NULL;                                                       \
+        new->nxt = new->prv = NULL;                                            \
                                                                                \
         return new;                                                            \
 }                                                                              \
@@ -317,8 +316,7 @@ void                                                                           \
 dll_##name##_free(struct dll_##name *dll)                                      \
 {                                                                              \
         dll_##name##_del(dll->beg);                                            \
-        dll->beg = NULL;                                                       \
-        dll->end = NULL;                                                       \
+        dll->beg = dll->end = NULL;                                            \
         dll->len = 0;                                                          \
 }                                                                              \
                                                                                \
