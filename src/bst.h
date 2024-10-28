@@ -48,23 +48,12 @@ int bst_##name##_remove(struct bst_##name *, type *);                          \
 size_t bst_##name##_len(struct bst_##name *);                                  \
 void bst_##name##_free(struct bst_##name *);                                   \
                                                                                \
-struct bst_##name##_iter bst_##name##_iter(struct bst_##name *);               \
+struct bst_##name##_iter bst_##name##_iter(const struct bst_##name *);         \
 int bst_##name##_next(struct bst_##name##_iter *, type *);                     \
                                                                                \
 extern int _bst_type_##name
 
 #define INIT_BST_FUNC(name, type, cmp, malloc, free)                           \
-static void                                                                    \
-bst_##name##_copy_node(struct bst_##name *cpy, struct bst_##name##_node *node) \
-{                                                                              \
-        bst_##name##_insert(cpy, node->val);                                   \
-                                                                               \
-        if (node->kid[0])                                                      \
-                bst_##name##_copy_node(cpy, node->kid[0]);                     \
-        if (node->kid[1])                                                      \
-                bst_##name##_copy_node(cpy, node->kid[1]);                     \
-}                                                                              \
-                                                                               \
 static struct bst_##name##_node **                                             \
 bst_##name##_match(struct bst_##name *bst, const type val)                     \
 {                                                                              \
@@ -109,15 +98,24 @@ bst_##name##_remove_full(struct bst_##name##_node *del)                        \
         *suc = NULL;                                                           \
 }                                                                              \
                                                                                \
-static void                                                                    \
-bst_##name##_free_node(struct bst_##name##_node *node)                         \
+static struct bst_##name##_node *                                              \
+bst_##name##_next_node(struct bst_##name##_iter *iter)                         \
 {                                                                              \
-        if (node->kid[0])                                                      \
-                bst_##name##_free_node(node->kid[0]);                          \
-        if (node->kid[1])                                                      \
-                bst_##name##_free_node(node->kid[1]);                          \
+        struct bst_##name##_node *next;                                        \
                                                                                \
-        free(node);                                                            \
+        while (iter->cur) {                                                    \
+                iter->arr[iter->top++] = iter->cur;                            \
+                iter->cur = iter->cur->kid[0];                                 \
+        }                                                                      \
+                                                                               \
+        if (iter->top == 0)                                                    \
+                return NULL;                                                   \
+                                                                               \
+        iter->cur = iter->arr[--iter->top];                                    \
+        next = iter->cur;                                                      \
+        iter->cur = iter->cur->kid[1];                                         \
+                                                                               \
+        return next;                                                           \
 }                                                                              \
                                                                                \
 struct bst_##name                                                              \
@@ -135,9 +133,15 @@ struct bst_##name                                                              \
 bst_##name##_copy(const struct bst_##name *bst)                                \
 {                                                                              \
         struct bst_##name cpy;                                                 \
+        struct bst_##name##_iter iter;                                         \
+        struct bst_##name##_node *cur;                                         \
                                                                                \
         cpy = bst_##name##_new();                                              \
-        bst_##name##_copy_node(&cpy, bst->root);                               \
+        iter = bst_##name##_iter(bst);                                         \
+                                                                               \
+        while ((cur = bst_##name##_next_node(&iter)))                          \
+                if (bst_##name##_insert(&cpy, cur->val))                       \
+                        break;                                                 \
                                                                                \
         return cpy;                                                            \
 }                                                                              \
@@ -270,13 +274,20 @@ bst_##name##_len(struct bst_##name *bst)                                       \
 void                                                                           \
 bst_##name##_free(struct bst_##name *bst)                                      \
 {                                                                              \
-        bst_##name##_free_node(bst->root);                                     \
+        struct bst_##name##_iter iter;                                         \
+        struct bst_##name##_node *cur;                                         \
+                                                                               \
+        iter = bst_##name##_iter(bst);                                         \
+                                                                               \
+        while ((cur = bst_##name##_next_node(&iter)))                          \
+                free(cur);                                                     \
+                                                                               \
         bst->root = NULL;                                                      \
         bst->len = 0;                                                          \
 }                                                                              \
                                                                                \
 struct bst_##name##_iter                                                       \
-bst_##name##_iter(struct bst_##name *bst)                                      \
+bst_##name##_iter(const struct bst_##name *bst)                                \
 {                                                                              \
         struct bst_##name##_iter iter;                                         \
                                                                                \
@@ -289,17 +300,12 @@ bst_##name##_iter(struct bst_##name *bst)                                      \
 int                                                                            \
 bst_##name##_next(struct bst_##name##_iter *iter, type *val)                   \
 {                                                                              \
-        while (iter->cur) {                                                    \
-                iter->arr[iter->top++] = iter->cur;                            \
-                iter->cur = iter->cur->kid[0];                                 \
-        }                                                                      \
+        struct bst_##name##_node *cur;                                         \
                                                                                \
-        if (iter->top == 0)                                                    \
+        if ((cur = bst_##name##_next_node(iter)) == NULL)                      \
                 return -1;                                                     \
                                                                                \
-        iter->cur = iter->arr[--iter->top];                                    \
-        *val = iter->cur->val;                                                 \
-        iter->cur = iter->cur->kid[1];                                         \
+        *val = cur->val;                                                       \
                                                                                \
         return 0;                                                              \
 }                                                                              \

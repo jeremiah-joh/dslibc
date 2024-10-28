@@ -23,7 +23,7 @@ int cmp(int x, int y) { return x - y; }
 INIT_BST_BOTH(int, int, cmp, malloc, free);
 
 static void
-from()
+from(void)
 {
 	struct bst_int bst;
 	int arr[] = { 3, 4, 1, 0, 2 };
@@ -39,7 +39,7 @@ from()
 }
 
 static void
-get()
+get(void)
 {
 	struct bst_int bst;
 	int arr[] = { 3, 4, 1, 0, 2 };
@@ -65,7 +65,7 @@ get()
 }
 
 static void
-insert()
+insert(void)
 {
 	struct bst_int bst;
 	int arr[] = { 3, 4, 1, 0, 2 };
@@ -87,7 +87,7 @@ insert()
 }
 
 static void
-remove()
+remove(void)
 {
 	struct bst_int bst;
 	int arr[] = { 3, 4, 1, 0, 2 };
@@ -115,7 +115,7 @@ remove()
 }
 
 static void
-iter()
+iter(void)
 {
 	struct bst_int bst;
 	struct bst_int_iter iter;
@@ -139,6 +139,19 @@ iter()
 	assert(bst_int_next(&iter, &val) != 0);
 }
 
+static void
+free_t(void)
+{
+	struct bst_int bst;
+	int arr[] = { 3, 4, 1, 0, 2 };
+
+	bst = bst_int_from(arr, LEN);
+	bst_int_free(&bst);
+
+	assert(bst.root == NULL);
+	assert(bst.len == 0);
+}
+
 int
 main()
 {
@@ -147,6 +160,7 @@ main()
 	insert();
 	remove();
 	iter();
+	free_t();
 
 	return 0;
 }
