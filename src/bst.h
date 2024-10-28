@@ -104,6 +104,9 @@ bst_##name##_next_node(struct bst_##name##_iter *iter)                         \
         struct bst_##name##_node *next;                                        \
                                                                                \
         while (iter->cur) {                                                    \
+                if (iter->top >= MAX_DEPTH)                                    \
+                        return NULL;                                           \
+                                                                               \
                 iter->arr[iter->top++] = iter->cur;                            \
                 iter->cur = iter->cur->kid[0];                                 \
         }                                                                      \
