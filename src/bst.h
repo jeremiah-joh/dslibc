@@ -17,8 +17,6 @@
 
 #include <stddef.h>
 
-#define MAX_DEPTH (sizeof(size_t) * 8)
-
 #define INIT_BST_TYPE(name, type)                                              \
 struct bst_##name##_node {                                                     \
         type val;                                                              \
@@ -31,7 +29,7 @@ struct bst_##name {                                                            \
 };                                                                             \
                                                                                \
 struct bst_##name##_iter {                                                     \
-        struct bst_##name##_node *cur, *arr[MAX_DEPTH];                        \
+        struct bst_##name##_node *cur, **arr;                                  \
         size_t top;                                                            \
 };                                                                             \
                                                                                \
@@ -104,19 +102,19 @@ bst_##name##_next_node(struct bst_##name##_iter *iter)                         \
         struct bst_##name##_node *next;                                        \
                                                                                \
         while (iter->cur) {                                                    \
-                if (iter->top >= MAX_DEPTH)                                    \
-                        return NULL;                                           \
-                                                                               \
                 iter->arr[iter->top++] = iter->cur;                            \
                 iter->cur = iter->cur->kid[0];                                 \
         }                                                                      \
                                                                                \
-        if (iter->top == 0)                                                    \
-                return NULL;                                                   \
-                                                                               \
-        iter->cur = iter->arr[--iter->top];                                    \
-        next = iter->cur;                                                      \
-        iter->cur = iter->cur->kid[1];                                         \
+        if (iter->top == 0) {                                                  \
+                free(iter->arr);                                               \
+                iter->arr = NULL;                                              \
+                next = NULL;                                                   \
+        } else {                                                               \
+                iter->cur = iter->arr[--iter->top];                            \
+                next = iter->cur;                                              \
+                iter->cur = iter->cur->kid[1];                                 \
+        }                                                                      \
                                                                                \
         return next;                                                           \
 }                                                                              \
@@ -294,7 +292,11 @@ bst_##name##_iter(const struct bst_##name *bst)                                \
 {                                                                              \
         struct bst_##name##_iter iter;                                         \
                                                                                \
-        iter.cur = bst->root;                                                  \
+        if ((iter.arr = malloc(bst->len * sizeof(struct bst_##name##_node *))))\
+                iter.cur = bst->root;                                          \
+        else                                                                   \
+                iter.cur = NULL;                                               \
+                                                                               \
         iter.top = 0;                                                          \
                                                                                \
         return iter;                                                           \
