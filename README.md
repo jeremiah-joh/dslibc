@@ -21,11 +21,9 @@ Installation
 
 Following commands will install these header files under `/usr/local/include`.
 
-```sh
-git clone https://github.com/jeremiah-joh/dslibc.git
-cd dslibc
-make install # run this command as root
-```
+	$ git clone https://github.com/jeremiah-joh/dslibc.git
+	$ cd dslibc
+	# make install
 
 Usage
 -----
