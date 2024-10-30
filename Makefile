@@ -1,6 +1,6 @@
 include config.mk
 
-HEADER = avl.h bst.h bt.h dll.h heap.h ht.h rbt.h sll.h spt.h vec.h
+HEADER = dll.h heap.h ht.h sll.h vec.h
 
 all:
 	@echo "usage: make install"
