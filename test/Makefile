@@ -11,8 +11,6 @@ all:
 	./heap
 	$(CC) -o ht ht.c -g
 	./ht
-	$(CC) -o bst bst.c -g
-	./bst
 
 clean:
-	rm -f vec sll dll heap ht bst
+	rm -f vec sll dll heap ht
