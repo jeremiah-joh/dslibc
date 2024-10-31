@@ -56,7 +56,7 @@ vec_##name##_resize(struct vec_##name *vec, const size_t len)                  \
                 return 0;                                                      \
         for (vec->cap = 1; vec->cap < len; vec->cap <<= 1)                     \
                 ;                                                              \
-        if ((vec->arr = realloc(vec->arr, sizeof(type) * vec->cap)) == NULL)   \
+        if ((vec->arr = realloc(vec->arr, vec->cap * sizeof(type))) == NULL)   \
                 return -1;                                                     \
                                                                                \
         return 0;                                                              \
