@@ -1,5 +1,4 @@
 #include <stddef.h>
-#include <stdio.h>
 
 #define IS_DIR(n, d) ((n) == (n)->par->kid[(d)])
 #define SIBLING(n) ((n)->par->kid[IS_DIR(n, 0)])
