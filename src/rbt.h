@@ -1,3 +1,20 @@
+/*
+ * dslibc - data structure library for ANSI C
+ *
+ * Written in 2024 by Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
+ *
+ * To the extent possible under law, the author(s) have dedicated all copyright
+ * and related and neighboring rights to this software to the public domain
+ * worldwide. This software is distributed without any warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication along
+ * with this software.
+ * If not, see <http://creatidllommons.org/publicdomain/zero/1.0/>.
+ */
+
+#ifndef _RBT_H
+#define _RBT_H
+
 #include <stddef.h>
 
 #define IS_DIR(n, d) ((n) == (n)->par->kid[(d)])
@@ -220,3 +237,5 @@ extern int _rbt_func_##name
 #define INIT_RBT_BOTH(name, type, cmp, malloc, free)                           \
 INIT_RBT_TYPE(name, type);                                                     \
 INIT_RBT_FUNC(name, type, cmp, malloc, free)
+
+#endif
