@@ -232,6 +232,26 @@ rbt_##name##_insert(struct rbt_##name *rbt, const type val)                    \
         return 0;                                                              \
 }                                                                              \
                                                                                \
+void                                                                           \
+rbt_##name##_free(struct rbt_##name *rbt)                                      \
+{                                                                              \
+        struct rbt_##name##_node *del, *cur, *pre;                             \
+                                                                               \
+        for (cur = rbt->root, pre = NULL; cur; pre = cur) {                    \
+                if (pre && pre->kid[1] != cur) {                               \
+                        cur = cur->kid[1];                                     \
+                        continue;                                              \
+                }                                                              \
+                                                                               \
+                del = cur;                                                     \
+                cur = (cur->kid[0]) ? cur->kid[0] : cur->par;                  \
+                free(del);                                                     \
+        }                                                                      \
+                                                                               \
+        rbt->root = NULL;                                                      \
+        rbt->len = 0;                                                          \
+}                                                                              \
+                                                                               \
 extern int _rbt_func_##name
 
 #define INIT_RBT_BOTH(name, type, cmp, malloc, free)                           \
