@@ -34,7 +34,7 @@ struct rbt_##name {                                                            \
 };                                                                             \
                                                                                \
 struct rbt_##name##_iter {                                                     \
-        struct rbt_##name##_node *pre, *cur;                                   \
+        struct rbt_##name##_node *prv, *cur;                                   \
 };                                                                             \
                                                                                \
 struct rbt_##name rbt_##name##_new(void);                                      \
@@ -89,6 +89,7 @@ rbt_##name##_rotate(struct rbt_##name *rbt,                                    \
                                                                                \
         kid->kid[dir] = cur;                                                   \
         cur->par = kid;                                                        \
+	cur->kid[!dir] = NULL;                                                 \
 }                                                                              \
                                                                                \
 static void                                                                    \
