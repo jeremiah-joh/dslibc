@@ -240,12 +240,11 @@ rbt_##name##_free(struct rbt_##name *rbt)                                      \
         for (cur = rbt->root, pre = NULL; cur; pre = cur) {                    \
                 if (pre && pre->kid[1] != cur) {                               \
                         cur = cur->kid[1];                                     \
-                        continue;                                              \
+                } else {                                                       \
+                        del = cur;                                             \
+                        cur = (cur->kid[0]) ? cur->kid[0] : cur->par;          \
+                        free(del);                                             \
                 }                                                              \
-                                                                               \
-                del = cur;                                                     \
-                cur = (cur->kid[0]) ? cur->kid[0] : cur->par;                  \
-                free(del);                                                     \
         }                                                                      \
                                                                                \
         rbt->root = NULL;                                                      \
