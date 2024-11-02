@@ -34,7 +34,7 @@ struct rbt_##name {                                                            \
 };                                                                             \
                                                                                \
 struct rbt_##name##_iter {                                                     \
-        struct rbt_##name##_node *cur;                                         \
+        struct rbt_##name##_node *pre, *cur;                                   \
 };                                                                             \
                                                                                \
 struct rbt_##name rbt_##name##_new(void);                                      \
@@ -235,10 +235,10 @@ rbt_##name##_insert(struct rbt_##name *rbt, const type val)                    \
 void                                                                           \
 rbt_##name##_free(struct rbt_##name *rbt)                                      \
 {                                                                              \
-        struct rbt_##name##_node *del, *cur, *pre;                             \
+        struct rbt_##name##_node *del, *cur, *prv;                             \
                                                                                \
-        for (cur = rbt->root, pre = NULL; cur; pre = cur) {                    \
-                if (pre && pre->kid[1] != cur) {                               \
+        for (cur = rbt->root, prv = NULL; cur; prv = cur) {                    \
+                if (prv && prv->kid[1] != cur) {                               \
                         cur = cur->kid[1];                                     \
                 } else {                                                       \
                         del = cur;                                             \
