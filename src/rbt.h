@@ -103,7 +103,7 @@ rbt_##name##_post_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur)\
                         cur->par->col = UNCLE(cur)->col = BLACK;               \
                         cur->par->par->col = RED;                              \
                         continue;                                              \
-                } else if (!DIR(cur) != !DIR(cur->par)) {                      \
+                } else if (DIR(cur) != DIR(cur->par)) {                        \
                         dir = !DIR(cur) && DIR(cur->par);                      \
                         rbt_##name##_rotate(rbt, cur->par, dir);               \
                         cur = cur->kid[dir];                                   \
