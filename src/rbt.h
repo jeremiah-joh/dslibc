@@ -17,8 +17,8 @@
 
 #include <stddef.h>
 
-#define IS_DIR(n, d) ((n) == (n)->par->kid[(d)])
-#define SIBLING(n) ((n)->par->kid[IS_DIR(n, 0)])
+#define DIR(n) ((n) == (n)->par->kid[1])
+#define SIBLING(n) ((n)->par->kid[!DIR(n)])
 #define UNCLE(n) (SIBLING((n)->par))
 
 #define INIT_RBT_TYPE(name, type)                                              \
@@ -79,7 +79,7 @@ rbt_##name##_rotate(struct rbt_##name *rbt,                                    \
         kid = cur->kid[!dir];                                                  \
                                                                                \
         if (cur->par)                                                          \
-                cur->par->kid[IS_DIR(cur, 1)] = kid;                           \
+                cur->par->kid[DIR(cur)] = kid;                                 \
         else                                                                   \
                 rbt->root = kid;                                               \
         if (kid)                                                               \
@@ -103,14 +103,14 @@ rbt_##name##_post_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur)\
                         cur->par->col = UNCLE(cur)->col = BLACK;               \
                         cur->par->par->col = RED;                              \
                         continue;                                              \
-                } else if (IS_DIR(cur, 0) != IS_DIR(cur->par, 0)) {            \
-                        dir = IS_DIR(cur, 0) && IS_DIR(cur->par, 1);           \
+                } else if (!DIR(cur) != !DIR(cur->par)) {                      \
+                        dir = !DIR(cur) && DIR(cur->par);                      \
                         rbt_##name##_rotate(rbt, cur->par, dir);               \
                         cur = cur->kid[dir];                                   \
                 }                                                              \
                 cur->par->col = BLACK;                                         \
                 cur->par->par->col = RED;                                      \
-                dir = IS_DIR(cur, 0) && IS_DIR(cur->par, 0);                   \
+                dir = !DIR(cur) && !DIR(cur->par);                             \
                 rbt_##name##_rotate(rbt, cur->par->par, dir);                  \
                 return;                                                        \
         }                                                                      \
