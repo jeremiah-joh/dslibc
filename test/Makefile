@@ -11,7 +11,7 @@ all:
 	./heap
 	$(CC) -o ht ht.c -g
 	./ht
-	$(CC) -O0 -o rbt rbt.c -g
+	$(CC) -o rbt rbt.c -g
 	./rbt
 
 clean:
