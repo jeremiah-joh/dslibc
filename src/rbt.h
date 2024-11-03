@@ -89,32 +89,31 @@ rbt_##name##_rotate(struct rbt_##name *rbt,                                    \
                                                                                \
         kid->kid[dir] = cur;                                                   \
         cur->par = kid;                                                        \
-	cur->kid[!dir] = NULL;                                                 \
+        cur->kid[!dir] = NULL;                                                 \
 }                                                                              \
                                                                                \
 static void                                                                    \
 rbt_##name##_post_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur)\
 {                                                                              \
         int dir;                                                               \
-                                                                               \
-        for (;;) {                                                             \
-                if (cur->par == NULL || cur->par->col == BLACK) {              \
-                        return;                                                \
-                } else if (UNCLE(cur) && UNCLE(cur)->col == RED) {             \
-                        cur->par->col = UNCLE(cur)->col = BLACK;               \
-                        cur->par->par->col = RED;                              \
-                        continue;                                              \
-                } else if (DIR(cur) != DIR(cur->par)) {                        \
-                        dir = !DIR(cur) && DIR(cur->par);                      \
-                        rbt_##name##_rotate(rbt, cur->par, dir);               \
-                        cur = cur->kid[dir];                                   \
-                }                                                              \
-                cur->par->col = BLACK;                                         \
-                cur->par->par->col = RED;                                      \
-                dir = !DIR(cur) && !DIR(cur->par);                             \
-                rbt_##name##_rotate(rbt, cur->par->par, dir);                  \
+begin:                                                                         \
+        if (cur->par == NULL || cur->par->col == BLACK) {                      \
                 return;                                                        \
+        } else if (UNCLE(cur) && UNCLE(cur)->col == RED) {                     \
+                cur->par->col = UNCLE(cur)->col = BLACK;                       \
+                cur->par->par->col = RED;                                      \
+                cur = cur->par->par;                                           \
+                goto begin;                                                    \
+        } else if (DIR(cur) != DIR(cur->par)) {                                \
+                dir = !DIR(cur) && DIR(cur->par);                              \
+                rbt_##name##_rotate(rbt, cur->par, dir);                       \
+                cur = cur->kid[dir];                                           \
         }                                                                      \
+                                                                               \
+        cur->par->col = BLACK;                                                 \
+        cur->par->par->col = RED;                                              \
+        dir = !DIR(cur) && !DIR(cur->par);                                     \
+        rbt_##name##_rotate(rbt, cur->par->par, dir);                          \
 }                                                                              \
                                                                                \
 struct rbt_##name                                                              \
