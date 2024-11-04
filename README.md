@@ -28,6 +28,29 @@ install, then just put one of these header files into your project directory.
 
 Then, include the header file and use it. There is an [API document](doc).
 
+Here is the example code that put integers from 0 to 16 into vector.
+
+```c
+#include <vec.h>
+#include <stdlib.h>
+
+INIT_VEC_BOTH(int, int, malloc, realloc, free);
+
+int
+main(void)
+{
+	struct vec_int vec;
+	int i;
+
+	vec = vec_int_new();
+
+	for (i = 0; i < 16; i++)
+		vec_int_push(&vec, i);
+
+	return 0;
+}
+```
+
 License
 -------
 
