@@ -98,23 +98,23 @@ rbt_##name##_post_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur)\
         int dir;                                                               \
                                                                                \
         while (cur->par && cur->par->par && cur->par->col == RED) {            \
-        	if (UNCLE(cur) && UNCLE(cur)->col == RED) {                    \
-        	        cur->par->col = UNCLE(cur)->col = BLACK;               \
-        	        cur->par->par->col = RED;                              \
-        	        cur = cur->par->par;                                   \
-        	        continue;                                              \
-        	} else if (DIR(cur) != DIR(cur->par)) {                        \
-        	        dir = !DIR(cur) && DIR(cur->par);                      \
-        	        rbt_##name##_rotate(rbt, cur->par, dir);               \
-        	        cur = cur->kid[dir];                                   \
-        	}                                                              \
+                if (UNCLE(cur) && UNCLE(cur)->col == RED) {                    \
+                        cur->par->col = UNCLE(cur)->col = BLACK;               \
+                        cur->par->par->col = RED;                              \
+                        cur = cur->par->par;                                   \
+                        continue;                                              \
+                } else if (DIR(cur) != DIR(cur->par)) {                        \
+                        dir = !DIR(cur) && DIR(cur->par);                      \
+                        rbt_##name##_rotate(rbt, cur->par, dir);               \
+                        cur = cur->kid[dir];                                   \
+                }                                                              \
                                                                                \
-        	cur->par->col = BLACK;                                         \
-        	cur->par->par->col = RED;                                      \
-        	dir = !DIR(cur) && !DIR(cur->par);                             \
-        	rbt_##name##_rotate(rbt, cur->par->par, dir);                  \
-		break;                                                         \
-	}                                                                      \
+                cur->par->col = BLACK;                                         \
+                cur->par->par->col = RED;                                      \
+                dir = !DIR(cur) && !DIR(cur->par);                             \
+                rbt_##name##_rotate(rbt, cur->par->par, dir);                  \
+                break;                                                         \
+        }                                                                      \
 }                                                                              \
                                                                                \
 struct rbt_##name                                                              \
@@ -236,7 +236,7 @@ rbt_##name##_insert(struct rbt_##name *rbt, const type val)                    \
 size_t                                                                         \
 rbt_##name##_len(struct rbt_##name *rbt)                                       \
 {                                                                              \
-	return rbt->len;                                                       \
+        return rbt->len;                                                       \
 }                                                                              \
                                                                                \
 void                                                                           \
