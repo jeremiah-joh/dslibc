@@ -20,12 +20,23 @@ insert(void)
 	assert(rbt_int_insert(&rbt, 2) == 0);
 	assert(rbt_int_insert(&rbt, 3) == 0);
 	assert(rbt_int_insert(&rbt, 4) == 0);
+	assert(rbt_int_insert(&rbt, 5) == 0);
+	assert(rbt_int_insert(&rbt, 6) == 0);
+	assert(rbt_int_insert(&rbt, 7) == 0);
+	assert(rbt_int_insert(&rbt, 8) == 0);
+	assert(rbt_int_insert(&rbt, 9) == 0);
 
-	assert(rbt.root->val == 1);
-	assert(rbt.root->kid[0]->val == 0);
-	assert(rbt.root->kid[1]->val == 3);
-	assert(rbt.root->kid[1]->kid[0]->val == 2);
-	assert(rbt.root->kid[1]->kid[1]->val == 4);
+	assert(rbt_int_len(&rbt) == 10);
+	assert(rbt.root->val == 3);
+	assert(rbt.root->kid[0]->val == 1);
+	assert(rbt.root->kid[0]->kid[0]->val == 0);
+	assert(rbt.root->kid[0]->kid[1]->val == 2);
+	assert(rbt.root->kid[1]->val == 5);
+	assert(rbt.root->kid[1]->kid[0]->val == 4);
+	assert(rbt.root->kid[1]->kid[1]->val == 7);
+	assert(rbt.root->kid[1]->kid[1]->kid[0]->val == 6);
+	assert(rbt.root->kid[1]->kid[1]->kid[1]->val == 8);
+	assert(rbt.root->kid[1]->kid[1]->kid[1]->kid[1]->val == 9);
 }
 
 static void
