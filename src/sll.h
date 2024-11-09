@@ -258,7 +258,7 @@ sll_##name##_shrink(struct sll_##name *sll, const size_t len)                  \
                 return -1;                                                     \
                                                                                \
         sll_##name##_del(pre->nxt);                                            \
-	pre->nxt = NULL;                                                       \
+        pre->nxt = NULL;                                                       \
         sll->end = pre;                                                        \
         sll->len = len;                                                        \
                                                                                \

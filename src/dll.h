@@ -301,8 +301,8 @@ dll_##name##_shrink(struct dll_##name *dll, const size_t len)                  \
                 return -1;                                                     \
                                                                                \
         dll_##name##_del(prv->nxt);                                            \
-	prv->nxt = NULL;                                                       \
-	dll->end = prv;                                                        \
+        prv->nxt = NULL;                                                       \
+        dll->end = prv;                                                        \
         dll->len = len;                                                        \
                                                                                \
         return 0;                                                              \
