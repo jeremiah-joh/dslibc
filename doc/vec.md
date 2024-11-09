@@ -3,7 +3,7 @@ Vector
 
 A growable array that implements a stack.
 
-INIT_VEC_TYPE(name, type);
+INIT_VEC_TYPE(name, type)
 -------------------------
 
 Initializes structures and function prototypes.
@@ -14,7 +14,7 @@ Initializes structures and function prototypes.
 INIT_VEC_TYPE(int, int);
 ```
 
-INIT_VEC_FUNC(name, type, malloc, realloc, free);
+INIT_VEC_FUNC(name, type, malloc, realloc, free)
 ------------------------------------------------
 
 Initializes function definitions.
@@ -26,7 +26,7 @@ Initializes function definitions.
 INIT_VEC_FUNC(int, int, malloc, realloc, free);
 ```
 
-INIT_VEC_BOTH(name, type, malloc, realloc, free);
+INIT_VEC_BOTH(name, type, malloc, realloc, free)
 ------------------------------------------------
 
 Initializes both structures and functions.

@@ -3,7 +3,7 @@ Singly Linked List
 
 A singly linked list that implements queue.
 
-INIT_SLL_TYPE(name, type);
+INIT_SLL_TYPE(name, type)
 -------------------------
 
 Initializes structures and function prototypes.
@@ -14,8 +14,8 @@ Initializes structures and function prototypes.
 INIT_SLL_TYPE(int, int);
 ```
 
-INIT_SLL_FUNC(name, type, malloc, free);
-------------------------------------------------
+INIT_SLL_FUNC(name, type, malloc, free)
+---------------------------------------
 
 Initializes function definitions.
 
@@ -26,8 +26,8 @@ Initializes function definitions.
 INIT_SLL_FUNC(int, int, malloc, free);
 ```
 
-INIT_SLL_BOTH(name, type, malloc, free);
-------------------------------------------------
+INIT_SLL_BOTH(name, type, malloc, free)
+---------------------------------------
 
 Initializes both structures and functions.
 

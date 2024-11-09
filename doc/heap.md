@@ -3,7 +3,7 @@ Heap
 
 A heap that implements priority queue.
 
-INIT_HEAP_TYPE(name, type);
+INIT_HEAP_TYPE(name, type)
 --------------------------
 
 Initializes structures and function prototypes.
@@ -14,7 +14,7 @@ Initializes structures and function prototypes.
 INIT_HEAP_TYPE(int, int);
 ```
 
-INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free);
+INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
 ----------------------------------------------------------
 
 Initializes function definition for maximum heap.
@@ -28,7 +28,7 @@ int cmp(int x, int y) { return x - y; }
 INIT_MAX_HEAP_FUNC(int, int, cmp, malloc, realloc, free);
 ```
 
-INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free);
+INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
 ----------------------------------------------------------
 
 Initializes function definition for minimum heap.
@@ -42,7 +42,7 @@ int cmp(int x, int y) { return x - y; }
 INIT_MIN_HEAP_FUNC(int, int, cmp, malloc, realloc, free);
 ```
 
-INIT_MAX_HEAP_BOTH(name, type, cmp, malloc, realloc, free);
+INIT_MAX_HEAP_BOTH(name, type, cmp, malloc, realloc, free)
 ----------------------------------------------------------
 
 Initializes both structures and functions for maximum heap.
@@ -56,7 +56,7 @@ int cmp(int x, int y) { return x - y; }
 INIT_MIN_HEAP_BOTH(int, int, cmp, malloc, realloc, free);
 ```
 
-INIT_MIN_HEAP_BOTH(name, type, cmp, malloc, realloc, free);
+INIT_MIN_HEAP_BOTH(name, type, cmp, malloc, realloc, free)
 ----------------------------------------------------------
 
 Initializes both structures and functions for minimum heap.

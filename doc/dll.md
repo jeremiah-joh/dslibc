@@ -3,7 +3,7 @@ Doubly Linked List
 
 A doubly linked list that implements double-ended queue.
 
-INIT_DLL_TYPE(name, type);
+INIT_DLL_TYPE(name, type)
 -------------------------
 
 Initializes structures and function prototypes.
@@ -14,8 +14,8 @@ Initializes structures and function prototypes.
 INIT_DLL_TYPE(int, int);
 ```
 
-INIT_DLL_FUNC(name, type, malloc, free);
-------------------------------------------------
+INIT_DLL_FUNC(name, type, malloc, free)
+---------------------------------------
 
 Initializes function definitions.
 
@@ -26,8 +26,8 @@ Initializes function definitions.
 INIT_DLL_FUNC(int, int, malloc, free);
 ```
 
-INIT_DLL_BOTH(name, type, malloc, free);
-------------------------------------------------
+INIT_DLL_BOTH(name, type, malloc, free)
+---------------------------------------
 
 Initializes both structures and functions.
 
