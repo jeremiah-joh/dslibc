@@ -202,6 +202,7 @@ shrink()
 	assert(dll.beg->val == 0);
 	assert(dll.beg->nxt->val == 1);
 	assert(dll.beg->nxt->nxt->val == 2);
+	assert(dll.beg->nxt->nxt->nxt == NULL);
 }
 
 static void

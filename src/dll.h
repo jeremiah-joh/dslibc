@@ -293,14 +293,16 @@ dll_##name##_remove(struct dll_##name *dll, type *val, const size_t idx)       \
 int                                                                            \
 dll_##name##_shrink(struct dll_##name *dll, const size_t len)                  \
 {                                                                              \
-        struct dll_##name##_node *del;                                         \
+        struct dll_##name##_node *prv;                                         \
                                                                                \
         if (dll->beg == NULL || dll->end == NULL || dll->len == 0)             \
                 return -1;                                                     \
-        if ((del = dll_##name##_ptr(dll, len)) == NULL)                        \
+        if ((prv = dll_##name##_ptr(dll, len - 1)) == NULL)                    \
                 return -1;                                                     \
                                                                                \
-        dll_##name##_del(del);                                                 \
+        dll_##name##_del(prv->nxt);                                            \
+	prv->nxt = NULL;                                                       \
+	dll->end = prv;                                                        \
         dll->len = len;                                                        \
                                                                                \
         return 0;                                                              \

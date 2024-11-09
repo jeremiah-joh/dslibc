@@ -202,6 +202,7 @@ shrink()
 	assert(sll.beg->val == 0);
 	assert(sll.beg->nxt->val == 1);
 	assert(sll.beg->nxt->nxt->val == 2);
+	assert(sll.beg->nxt->nxt->nxt == NULL);
 }
 
 static void

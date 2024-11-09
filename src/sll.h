@@ -248,18 +248,19 @@ sll_##name##_remove(struct sll_##name *sll, type *val, const size_t idx)       \
 }                                                                              \
                                                                                \
 int                                                                            \
-sll_##name##_shrink(struct sll_##name *sll, const size_t idx)                  \
+sll_##name##_shrink(struct sll_##name *sll, const size_t len)                  \
 {                                                                              \
         struct sll_##name##_node *pre;                                         \
                                                                                \
         if (sll->beg == NULL || sll->end == NULL || sll->len == 0)             \
                 return -1;                                                     \
-        if ((pre = sll_##name##_ptr(sll, idx - 1)) == NULL)                    \
+        if ((pre = sll_##name##_ptr(sll, len - 1)) == NULL)                    \
                 return -1;                                                     \
                                                                                \
         sll_##name##_del(pre->nxt);                                            \
+	pre->nxt = NULL;                                                       \
         sll->end = pre;                                                        \
-        sll->len = idx;                                                        \
+        sll->len = len;                                                        \
                                                                                \
         return 0;                                                              \
 }                                                                              \
