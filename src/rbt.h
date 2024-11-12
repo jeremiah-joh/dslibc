@@ -20,6 +20,7 @@
 #define DIR(n) ((n) == (n)->par->kid[1])
 #define SIBLING(n) ((n)->par->kid[!DIR(n)])
 #define UNCLE(n) (SIBLING((n)->par))
+#define COLOR(n) ((n) ? (n)->col : BLACK)
 
 #define INIT_RBT_TYPE(name, type)                                              \
 struct rbt_##name##_node {                                                     \
@@ -97,8 +98,8 @@ rbt_##name##_post_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur)\
 {                                                                              \
         int dir;                                                               \
                                                                                \
-        while (cur->par && cur->par->par && cur->par->col == RED) {            \
-                if (UNCLE(cur) && UNCLE(cur)->col == RED) {                    \
+        while (cur->par && cur->par->par && COLOR(cur->par) == RED) {          \
+                if (COLOR(UNCLE(cur)) == RED) {                                \
                         cur->par->col = UNCLE(cur)->col = BLACK;               \
                         cur->par->par->col = RED;                              \
                         cur = cur->par->par;                                   \
@@ -115,6 +116,47 @@ rbt_##name##_post_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur)\
                 rbt_##name##_rotate(rbt, cur->par->par, dir);                  \
                 break;                                                         \
         }                                                                      \
+}                                                                              \
+                                                                               \
+static struct rbt_##name##_node *                                              \
+rbt_##name##_remove_full(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
+{                                                                              \
+	struct rbt_##name##_node *suc;                                         \
+                                                                               \
+	for (suc = del->kid[0]; suc->kid[1]; suc = suc->kid[1])                \
+		;                                                              \
+	if (del->par == NULL)                                                  \
+		rbt->root->val = suc->val;                                     \
+	else                                                                   \
+		del->val = suc->val;                                           \
+                                                                               \
+	suc->par->kid[DIR(suc)] = NULL;                                        \
+                                                                               \
+	return suc;                                                            \
+}                                                                              \
+                                                                               \
+static void                                                                    \
+rbt_##name##_remove_only(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
+{                                                                              \
+	int dir;                                                               \
+                                                                               \
+	dir = del->kid[1] != NULL;                                             \
+                                                                               \
+	if (del->par == NULL) {                                                \
+		rbt->root = del->kid[dir];                                     \
+	} else {                                                               \
+		del->par->kid[DIR(del)] = del->kid[dir];                       \
+		del->kid[dir]->par = del->par;                                 \
+	}                                                                      \
+}                                                                              \
+                                                                               \
+static void                                                                    \
+rbt_##name##_remove_leaf(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
+{                                                                              \
+	if (del->par == NULL)                                                  \
+		rbt->root = NULL;                                              \
+	else                                                                   \
+		del->par->kid[DIR(del)] = NULL;                                \
 }                                                                              \
                                                                                \
 struct rbt_##name                                                              \
@@ -231,6 +273,27 @@ rbt_##name##_insert(struct rbt_##name *rbt, const type val)                    \
         rbt->len++;                                                            \
                                                                                \
         return 0;                                                              \
+}                                                                              \
+                                                                               \
+int                                                                            \
+rbt_##name##_remove(struct rbt_##name *rbt, type *val)                         \
+{                                                                              \
+	struct rbt_##name##_node *del;                                         \
+                                                                               \
+	if (((del = rbt_##name##_match(rbt, *val))) == NULL)                   \
+		return -1;                                                     \
+	if (del->kid[0] && del->kid[1])                                        \
+		del = rbt_##name##_remove_full(rbt, del);                      \
+	else if (del->kid[0] || del->kid[1])                                   \
+		rbt_##name##_remove_only(rbt, del);                            \
+	else                                                                   \
+		rbt_##name##_remove_leaf(rbt, del);                            \
+                                                                               \
+      /*rbt_##name##_post_remove(rbt, del);*/                                  \
+	free(del);                                                             \
+	rbt->len--;                                                            \
+                                                                               \
+	return 0;                                                              \
 }                                                                              \
                                                                                \
 size_t                                                                         \
