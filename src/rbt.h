@@ -119,7 +119,7 @@ rbt_##name##_post_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur)\
 }                                                                              \
                                                                                \
 static struct rbt_##name##_node *                                              \
-rbt_##name##_remove_full(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
+rbt_##name##_unlink_full(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
 {                                                                              \
 	struct rbt_##name##_node *suc;                                         \
                                                                                \
@@ -136,7 +136,7 @@ rbt_##name##_remove_full(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
 }                                                                              \
                                                                                \
 static void                                                                    \
-rbt_##name##_remove_only(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
+rbt_##name##_unlink_only(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
 {                                                                              \
 	int dir;                                                               \
                                                                                \
@@ -151,7 +151,7 @@ rbt_##name##_remove_only(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
 }                                                                              \
                                                                                \
 static void                                                                    \
-rbt_##name##_remove_leaf(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
+rbt_##name##_unlink_leaf(struct rbt_##name *rbt, struct rbt_##name##_node *del)\
 {                                                                              \
 	if (del->par == NULL)                                                  \
 		rbt->root = NULL;                                              \
@@ -283,11 +283,11 @@ rbt_##name##_remove(struct rbt_##name *rbt, type *val)                         \
 	if (((del = rbt_##name##_match(rbt, *val))) == NULL)                   \
 		return -1;                                                     \
 	if (del->kid[0] && del->kid[1])                                        \
-		del = rbt_##name##_remove_full(rbt, del);                      \
+		del = rbt_##name##_unlink_full(rbt, del);                      \
 	else if (del->kid[0] || del->kid[1])                                   \
-		rbt_##name##_remove_only(rbt, del);                            \
+		rbt_##name##_unlink_only(rbt, del);                            \
 	else                                                                   \
-		rbt_##name##_remove_leaf(rbt, del);                            \
+		rbt_##name##_unlink_leaf(rbt, del);                            \
                                                                                \
       /*rbt_##name##_post_remove(rbt, del);*/                                  \
 	free(del);                                                             \
