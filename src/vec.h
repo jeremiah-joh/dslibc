@@ -78,9 +78,9 @@ vec_##name##_from(const type *arr, const size_t len)                           \
 {                                                                              \
         struct vec_##name vec;                                                 \
                                                                                \
-        vec = vec_##name##_new();                                              \
-                                                                               \
-        if (vec_##name##_resize(&vec, len))                                    \
+        for (vec.cap = 1; vec.cap < len; vec.cap <<= 1)                        \
+                ;                                                              \
+        if ((vec.arr = malloc(vec.cap * sizeof(type))) == NULL)                \
                 return vec_##name##_new();                                     \
                                                                                \
         memcpy(vec.arr, arr, len * sizeof(type));                              \
