@@ -92,7 +92,16 @@ vec_##name##_from(const type *arr, const size_t len)                           \
 struct vec_##name                                                              \
 vec_##name##_copy(const struct vec_##name *vec)                                \
 {                                                                              \
-        return vec_##name##_from(vec->arr, vec->len);                          \
+        struct vec_##name cpy;                                                 \
+                                                                               \
+        if ((cpy.arr = malloc(vec->cap * sizeof(type))) == NULL)               \
+                return vec_##name##_new();                                     \
+                                                                               \
+        memcpy(cpy.arr, vec->arr, vec->cap * sizeof(type));                    \
+        cpy.cap = vec->cap;                                                    \
+        cpy.len = vec->len;                                                    \
+                                                                               \
+        return cpy;                                                            \
 }                                                                              \
                                                                                \
 int                                                                            \
