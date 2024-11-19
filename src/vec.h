@@ -52,7 +52,7 @@ extern int _vec_type_##name
 static int                                                                     \
 vec_##name##_resize(struct vec_##name *vec, const size_t len)                  \
 {                                                                              \
-        if (vec->cap / 3 < vec->len && vec->len < vec->cap)                    \
+        if (vec->len < vec->cap)                                               \
                 return 0;                                                      \
         for (vec->cap = 1; vec->cap < len; vec->cap <<= 1)                     \
                 ;                                                              \
@@ -125,7 +125,7 @@ vec_##name##_pop(struct vec_##name *vec, type *val)                            \
                                                                                \
         *val = vec->arr[--vec->len];                                           \
                                                                                \
-        return vec_##name##_resize(vec, vec->len);                             \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 int                                                                            \
@@ -177,8 +177,6 @@ vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx)  \
                 return -1;                                                     \
         if (vec->len < idx)                                                    \
                 return -1;                                                     \
-        if (vec->len == idx)                                                   \
-                return vec_##name##_push(vec, val);                            \
         if (vec_##name##_resize(vec, vec->len + 1))                            \
                 return -1;                                                     \
                                                                                \
@@ -205,7 +203,7 @@ vec_##name##_remove(struct vec_##name *vec, type *val, const size_t idx)       \
                 (vec->len - idx) * sizeof(type));                              \
         vec->len--;                                                            \
                                                                                \
-        return vec_##name##_resize(vec, vec->len);                             \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 int                                                                            \
