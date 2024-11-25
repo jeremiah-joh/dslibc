@@ -72,7 +72,7 @@ This example code demonstrates creating a vector and pushing integers from 0 to
 #include <vec.h>
 #include <stdlib.h>
 
-// Define memory allocation/deallocation functions (optional)
+/* initialize vector type and its functions */
 INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 int
@@ -81,15 +81,15 @@ main(void)
     struct vec_int vec;
     int i;
     
-    vec = vec_int_new();  /* Initialize the vector */
+    vec = vec_int_new();  /* initialize the vector */
     
     for (i = 0; i < 16; i++) {
-      vec_int_push(&vec, i);  /* Push elements to the vector */
+      vec_int_push(&vec, i);  /* push elements to the vector */
     }
     
-    /* Here you can use the vector data for your needs */
+    /* here you can use the vector data for your needs */
     
-    vec_int_free(&vec);  /* Free the memory allocated by the vector */
+    vec_int_free(&vec);  /* free the memory allocated by the vector */
     
     return 0;
 }
