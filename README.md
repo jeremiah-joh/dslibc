@@ -6,13 +6,13 @@ in C, adhering to the ISO/IEC 9899:1990 standard.
 
 **Supported Data Structures:**
 
-| Data Structure     | Header File |
-|--------------------|-------------|
-| Vector             | `vec.h`     |
-| Singly Linked List | `sll.h`     |
-| Doubly Linked List | `dll.h`     |
-| Heap               | `heap.h`    |
-| Hash Table         | `ht.h`      |
+| Data Structure     | Header File | API Reference            |
+|--------------------|-------------|--------------------------|
+| Vector             | `vec.h`     | [`vec.md`](doc/vec.md)   |
+| Singly Linked List | `sll.h`     | [`sll.md`](doc/sll.md)   |
+| Doubly Linked List | `dll.h`     | [`dll.md`](doc/dll.md)   |
+| Heap               | `heap.h`    | [`heap.md`](doc/heap.md) |
+| Hash Table         | `ht.h`      | [`ht.md`](doc/ht.md)     |
 
 Installation (Optional)
 -----------------------
