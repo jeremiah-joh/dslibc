@@ -34,7 +34,7 @@ cd dslibc
 3.  **Install the headers:** (Requires root privileges)
 
 ```sh
-# make install
+make install
 ```
 
 This will install the header files under `/usr/local/include`.
