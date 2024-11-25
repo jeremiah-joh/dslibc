@@ -83,9 +83,8 @@ main(void)
     
     vec = vec_int_new();  /* initialize the vector */
     
-    for (i = 0; i < 16; i++) {
-      vec_int_push(&vec, i);  /* push elements to the vector */
-    }
+    for (i = 0; i < 16; i++)
+        vec_int_push(&vec, i);  /* push elements to the vector */
     
     /* here you can use the vector data for your needs */
     
