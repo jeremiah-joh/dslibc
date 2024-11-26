@@ -113,7 +113,7 @@ ht_##name##_resize(struct ht_##name *ht, const size_t len)                     \
         struct ht_##name new;                                                  \
         size_t i;                                                              \
                                                                                \
-        if (ht->cap >> 2 < ht->len && ht->len < ht->cap >> 1)                  \
+        if (ht->len < ht->cap)                                                 \
                 return 0;                                                      \
         if ((new = ht_##name##_sized(len)).arr == NULL)                        \
                 return -1;                                                     \

@@ -118,7 +118,6 @@ remove()
 	assert(val == 0);
 
 	assert(ht_int_len(&ht) == 0);
-	assert(ht.cap == 4);
 }
 
 static void
