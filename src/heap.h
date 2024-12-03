@@ -50,7 +50,7 @@ extern int _heap_type_##name
 static int                                                                     \
 heap_##name##_resize(struct heap_##name *heap, const size_t len)               \
 {                                                                              \
-        if (heap->cap / 3 < heap->len && heap->len < heap->cap)                \
+        if (heap->len < heap->cap)                                             \
                 return 0;                                                      \
         for (heap->cap = 1; heap->cap < len; heap->cap <<= 1)                  \
                 ;                                                              \
