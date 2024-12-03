@@ -11,7 +11,7 @@ in C, adhering to the ISO/IEC 9899:1990 standard.
 | Vector             | `vec.h`     | [`vec.md`](doc/vec.md)   |
 | Singly Linked List | `sll.h`     | [`sll.md`](doc/sll.md)   |
 | Doubly Linked List | `dll.h`     | [`dll.md`](doc/dll.md)   |
-| Heap               | `heap.h`    | [`heap.md`](doc/heap.md) |
+| Binary Heap        | `heap.h`    | [`heap.md`](doc/heap.md) |
 | Hash Table         | `ht.h`      | [`ht.md`](doc/ht.md)     |
 
 **Planned Data Structures:**
