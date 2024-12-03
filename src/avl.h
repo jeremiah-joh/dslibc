@@ -21,7 +21,7 @@
 struct avl_##name##_node {                                                     \
         type val;                                                              \
         struct avl_##name##_node *par, *kid[2];                                \
-	signed char bf;                                                        \
+        signed char bf;                                                        \
 };                                                                             \
                                                                                \
 struct avl_##name {                                                            \
