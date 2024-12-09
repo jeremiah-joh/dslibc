@@ -48,11 +48,13 @@ extern int _heap_type_##name
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord, malloc, realloc, free)            \
 static int                                                                     \
-heap_##name##_resize(struct heap_##name *heap, const size_t len)               \
+heap_##name##_extend(struct heap_##name *heap, const size_t len)               \
 {                                                                              \
         if (heap->len < heap->cap)                                             \
                 return 0;                                                      \
-        for (heap->cap = 1; heap->cap < len; heap->cap <<= 1)                  \
+        if (heap->cap == 0)                                                    \
+                heap->cap = 1;                                                 \
+        for (; heap->cap < len; heap->cap <<= 1)                               \
                 ;                                                              \
         if ((heap->arr = realloc(heap->arr, heap->cap * sizeof(type))) == NULL)\
                 return -1;                                                     \
@@ -112,7 +114,7 @@ heap_##name##_push(struct heap_##name *heap, const type val)                   \
 {                                                                              \
         if (heap->arr == NULL)                                                 \
                 return -1;                                                     \
-        if (heap_##name##_resize(heap, heap->len + 1))                         \
+        if (heap_##name##_extend(heap, heap->len + 1))                         \
                 return -1;                                                     \
                                                                                \
         heap->arr[heap->len++] = val;                                          \
@@ -132,7 +134,7 @@ heap_##name##_pop(struct heap_##name *heap, type *val)                         \
         heap_##name##_heapify(heap);                                           \
         heap->len--;                                                           \
                                                                                \
-        return heap_##name##_resize(heap, heap->len);                          \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 int                                                                            \

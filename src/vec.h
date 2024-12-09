@@ -50,11 +50,13 @@ extern int _vec_type_##name
 
 #define INIT_VEC_FUNC(name, type, malloc, realloc, free)                       \
 static int                                                                     \
-vec_##name##_resize(struct vec_##name *vec, const size_t len)                  \
+vec_##name##_extend(struct vec_##name *vec, const size_t len)                  \
 {                                                                              \
         if (vec->len < vec->cap)                                               \
                 return 0;                                                      \
-        for (vec->cap = 1; vec->cap < len; vec->cap <<= 1)                     \
+        if (vec->cap == 0)                                                     \
+                vec->cap = 1;                                                  \
+        for (; vec->cap < len; vec->cap <<= 1)                                 \
                 ;                                                              \
         if ((vec->arr = realloc(vec->arr, vec->cap * sizeof(type))) == NULL)   \
                 return -1;                                                     \
@@ -109,7 +111,7 @@ vec_##name##_push(struct vec_##name *vec, const type val)                      \
 {                                                                              \
         if (vec->arr == NULL)                                                  \
                 return -1;                                                     \
-        if (vec_##name##_resize(vec, vec->len + 1))                            \
+        if (vec_##name##_extend(vec, vec->len + 1))                            \
                 return -1;                                                     \
                                                                                \
         vec->arr[vec->len++] = val;                                            \
@@ -161,7 +163,7 @@ vec_##name##_append(struct vec_##name *vec, const type *arr, const size_t len) \
                 return 0;                                                      \
         if (vec->arr == NULL)                                                  \
                 return -1;                                                     \
-        if (vec_##name##_resize(vec, vec->len + len))                          \
+        if (vec_##name##_extend(vec, vec->len + len))                          \
                 return -1;                                                     \
                                                                                \
         memcpy(vec->arr + vec->len, arr, len * sizeof(type));                  \
@@ -177,7 +179,7 @@ vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx)  \
                 return -1;                                                     \
         if (vec->len < idx)                                                    \
                 return -1;                                                     \
-        if (vec_##name##_resize(vec, vec->len + 1))                            \
+        if (vec_##name##_extend(vec, vec->len + 1))                            \
                 return -1;                                                     \
                                                                                \
         memmove(vec->arr + idx + 1,                                            \
@@ -213,7 +215,9 @@ vec_##name##_shrink(struct vec_##name *vec, const size_t len)                  \
                 return -1;                                                     \
         if (vec->len <= len)                                                   \
                 return 0;                                                      \
-        if (vec_##name##_resize(vec, len))                                     \
+        for (vec->cap = 1; vec->cap < len; vec->cap <<= 1)                     \
+                ;                                                              \
+        if ((vec->arr = realloc(vec->arr, vec->cap * sizeof(type))) == NULL)   \
                 return -1;                                                     \
                                                                                \
         vec->len = len;                                                        \
