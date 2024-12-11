@@ -17,6 +17,8 @@
 
 #include <stddef.h>
 
+#define INIT_SIZE 4
+
 #define NEXT(i, c) (((i) + 1) % (c))
 
 #define INIT_HT_TYPE(name, type)                                               \
@@ -51,24 +53,6 @@ int ht_##name##_next(struct ht_##name##_iter *, type *);                       \
 extern int _ht_type_##name
 
 #define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                      \
-static struct ht_##name                                                        \
-ht_##name##_sized(const size_t len)                                            \
-{                                                                              \
-        struct ht_##name ht;                                                   \
-        size_t i;                                                              \
-                                                                               \
-        for (ht.cap = 4; ht.cap < len; ht.cap <<= 1)                           \
-                ;                                                              \
-        if ((ht.arr = malloc(ht.cap * sizeof(*ht.arr))) == NULL)               \
-                return ht;                                                     \
-        for (i = 0; i < ht.cap; i++)                                           \
-                ht.arr[i].state = NONE;                                        \
-                                                                               \
-        ht.len = 0;                                                            \
-                                                                               \
-        return ht;                                                             \
-}                                                                              \
-                                                                               \
 static int                                                                     \
 ht_##name##_place(struct ht_##name *ht, const type val)                        \
 {                                                                              \
@@ -108,24 +92,26 @@ ht_##name##_match(struct ht_##name *ht, const type val)                        \
 }                                                                              \
                                                                                \
 static int                                                                     \
-ht_##name##_resize(struct ht_##name *ht, const size_t len)                     \
+ht_##name##_extend(struct ht_##name *ht)                                       \
 {                                                                              \
-        struct ht_##name new;                                                  \
+        struct ht_##name cp;                                                   \
         size_t i;                                                              \
                                                                                \
         if (ht->len < ht->cap)                                                 \
                 return 0;                                                      \
-        if ((new = ht_##name##_sized(len)).arr == NULL)                        \
+                                                                               \
+        cp.cap = ht->cap ? ht->cap << 1 : INIT_SIZE;                           \
+        cp.len = 0;                                                            \
+                                                                               \
+        if ((cp.arr = malloc(cp.cap * sizeof(*cp.arr))) == NULL)               \
                 return -1;                                                     \
-        for (i = 0; i < ht->cap; i++) {                                        \
-                if (ht->arr[i].state != SOME)                                  \
-                        continue;                                              \
-                if (ht_##name##_place(&new, ht->arr[i].val))                   \
-                        return -1;                                             \
-        }                                                                      \
+        for (i = 0; i < ht->cap; i++)                                          \
+                if (ht->arr[i].state == SOME)                                  \
+                        if (ht_##name##_place(&cp, ht->arr[i].val))            \
+                                return -1;                                     \
                                                                                \
         free(ht->arr);                                                         \
-        *ht = new;                                                             \
+        *ht = cp;                                                              \
                                                                                \
         return 0;                                                              \
 }                                                                              \
@@ -147,8 +133,12 @@ ht_##name##_from(const type *arr, const size_t len)                            \
         struct ht_##name ht;                                                   \
         size_t i;                                                              \
                                                                                \
-        ht = ht_##name##_sized(len);                                           \
+        ht = ht_##name##_new();                                                \
                                                                                \
+        for (ht.cap = INIT_SIZE; ht.cap < len; ht.cap <<= 1)                   \
+                ;                                                              \
+        if ((ht.arr = realloc(ht.arr, ht.cap * sizeof(*ht.arr))) == NULL)      \
+                return ht_##name##_new();                                      \
         for (i = 0; i < len; i++)                                              \
                 if (ht_##name##_place(&ht, arr[i]))                            \
                         break;                                                 \
@@ -162,14 +152,16 @@ ht_##name##_copy(const struct ht_##name *ht)                                   \
         struct ht_##name cp;                                                   \
         size_t i;                                                              \
                                                                                \
-        cp = ht_##name##_sized(ht->len);                                       \
+        cp.cap = ht->cap;                                                      \
                                                                                \
-        for (i = 0; i < ht->len; i++) {                                        \
-                if (ht->arr[i].state != SOME)                                  \
-                        continue;                                              \
-                if (ht_##name##_place(&cp, ht->arr[i].val))                    \
-                        break;                                                 \
-        }                                                                      \
+        if ((cp.arr = malloc(cp.cap * sizeof(*cp.arr))) == NULL)               \
+                return ht_##name##_new();                                      \
+        for (i = 0; i < cp.cap; i++)                                           \
+                cp.arr[i].state = NONE;                                        \
+        for (i = 0; i < ht->len; i++)                                          \
+                if (ht->arr[i].state == SOME)                                  \
+                        if (ht_##name##_place(&cp, ht->arr[i].val))            \
+                                break;                                         \
                                                                                \
         return cp;                                                             \
 }                                                                              \
@@ -209,7 +201,7 @@ ht_##name##_insert(struct ht_##name *ht, const type val)                       \
 {                                                                              \
         if (ht->arr == NULL)                                                   \
                 return -1;                                                     \
-        if (ht_##name##_resize(ht, ht->len + 1))                               \
+        if (ht_##name##_extend(ht))                                            \
                 return -1;                                                     \
                                                                                \
         return ht_##name##_place(ht, val);                                     \
@@ -229,7 +221,7 @@ ht_##name##_remove(struct ht_##name *ht, type *val)                            \
         ht->arr[i].state = TOMB;                                               \
         ht->len--;                                                             \
                                                                                \
-        return ht_##name##_resize(ht, ht->len);                                \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 size_t                                                                         \
