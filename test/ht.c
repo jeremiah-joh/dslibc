@@ -31,6 +31,7 @@ from()
 
 	ht = ht_int_from(arr, LEN);
 
+	assert(ht.cap == 8);
 	assert(ht_int_len(&ht) == 5);
 	assert(ht.arr[0].val == 0);
 	assert(ht.arr[1].val == 4);
@@ -81,6 +82,7 @@ insert()
 	ht_int_insert(&ht, 3);
 	ht_int_insert(&ht, 4);
 
+	assert(ht.cap == 8);
 	assert(ht_int_len(&ht) == 5);
 	assert(ht.arr[0].val == 0);
 	assert(ht.arr[1].val == 4);
@@ -117,6 +119,7 @@ remove()
 	ht_int_remove(&ht, &val);
 	assert(val == 0);
 
+	assert(ht.cap == 8);
 	assert(ht_int_len(&ht) == 0);
 }
 
