@@ -18,7 +18,7 @@ in C, adhering to the ISO/IEC 9899:1990 standard.
 
 | Data Structure      | Header File | API Reference              |
 |---------------------|-------------|----------------------------|
-| Double-Ended Vector | `devec.h`   | [`devec.md`](doc/devec.md) |
+| Double-Ended Vector | `dev.h`     | [`dev.md`](doc/dev.md) |
 | AVL Tree            | `avl.h`     | [`avl.md`](doc/avl.md)     |
 | B tree              | `bt.h`      | [`bt.md`](doc/bt.md)       |
 | Red-Black Tree      | `rbt.h`     | [`rbt.md`](doc/rbt.md)     |
