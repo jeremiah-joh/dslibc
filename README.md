@@ -6,22 +6,23 @@ in C, adhering to the ISO/IEC 9899:1990 standard.
 
 **Supported Data Structures:**
 
-| Data Structure     | Header File | API Reference            |
-|--------------------|-------------|--------------------------|
-| Vector             | `vec.h`     | [`vec.md`](doc/vec.md)   |
-| Singly Linked List | `sll.h`     | [`sll.md`](doc/sll.md)   |
-| Doubly Linked List | `dll.h`     | [`dll.md`](doc/dll.md)   |
-| Binary Heap        | `heap.h`    | [`heap.md`](doc/heap.md) |
-| Hash Table         | `ht.h`      | [`ht.md`](doc/ht.md)     |
+| Data Structure      | Header File | API Reference            |
+|---------------------|-------------|--------------------------|
+| Vector              | `vec.h`     | [`vec.md`](doc/vec.md)   |
+| Singly Linked List  | `sll.h`     | [`sll.md`](doc/sll.md)   |
+| Doubly Linked List  | `dll.h`     | [`dll.md`](doc/dll.md)   |
+| Binary Heap         | `heap.h`    | [`heap.md`](doc/heap.md) |
+| Hash Table          | `ht.h`      | [`ht.md`](doc/ht.md)     |
 
 **Planned Data Structures:**
 
-| Data Structure      | Header File | API Reference              |
-|---------------------|-------------|----------------------------|
-| Double-Ended Vector | `dev.h`     | [`dev.md`](doc/dev.md) |
-| AVL Tree            | `avl.h`     | [`avl.md`](doc/avl.md)     |
-| B tree              | `bt.h`      | [`bt.md`](doc/bt.md)       |
-| Red-Black Tree      | `rbt.h`     | [`rbt.md`](doc/rbt.md)     |
+| Data Structure      | Header File | API Reference            |
+|---------------------|-------------|--------------------------|
+| Double-Ended Vector | `dev.h`     | [`dev.md`](doc/dev.md)   |
+| AVL Tree            | `avl.h`     | [`avl.md`](doc/avl.md)   |
+| B tree              | `bt.h`      | [`bt.md`](doc/bt.md)     |
+| Red-Black Tree      | `rbt.h`     | [`rbt.md`](doc/rbt.md)   |
+| Splay Tree          | `spt.h`     | [`spt.md`](doc/spt.md)   |
 
 Installation (Optional)
 -----------------------
