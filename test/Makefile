@@ -1,17 +1,18 @@
 CC = cc
+CFLAGS = -ansi -Wall -Wextra -Wpedantic -Werror
 
 all:
-	$(CC) -o vec vec.c -g
+	$(CC) $(CFLAGS) -o vec vec.c -g
 	./vec
-	$(CC) -o sll sll.c -g
+	$(CC) $(CFLAGS) -o sll sll.c -g
 	./sll
-	$(CC) -o dll dll.c -g
+	$(CC) $(CFLAGS) -o dll dll.c -g
 	./dll
-	$(CC) -o heap heap.c -g
+	$(CC) $(CFLAGS) -o heap heap.c -g
 	./heap
-	$(CC) -o ht ht.c -g
+	$(CC) $(CFLAGS) -o ht ht.c -g
 	./ht
-	$(CC) -o rbt rbt.c -g
+	$(CC) $(CFLAGS) -o rbt rbt.c -g
 	./rbt
 
 clean:
