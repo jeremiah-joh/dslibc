@@ -23,13 +23,13 @@
 #define SIBLING(n) ((n)->par->kid[!DIR(n)])
 #define UNCLE(n) SIBLING((n)->par)
 
-enum rbt_color { RED, BLACK };
-
 #define INIT_RBT_TYPE(name, type)                                              \
+enum rbt_##name##_color { RED, BLACK };                                        \
+                                                                               \
 struct rbt_##name##_node {                                                     \
         type val;                                                              \
         struct rbt_##name##_node *par, *kid[2];                                \
-        enum rbt_color col;                                                    \
+        enum rbt_##name##_color col;                                           \
 };                                                                             \
                                                                                \
 struct rbt_##name {                                                            \
@@ -60,20 +60,6 @@ int rbt_##name##_next(struct rbt_##name##_iter *, type *);                     \
 extern int _rbt_type_##name
 
 #define INIT_RBT_FUNC(name, type, cmp, malloc, free)                           \
-/*                                                                             \
-static void                                                                    \
-rbt_##name##_replace(struct rbt_##name *rbt,                                   \
-                     struct rbt_##name##_node *old,                            \
-		     struct rbt_##name##_node *new)                            \
-{                                                                              \
-	if (old->par)                                                          \
-		old->par->kid[DIR(old)] = new;                                 \
-	else                                                                   \
-		rbt->root = new;                                               \
-	if (new)                                                               \
-		new->par = old->par;                                           \
-}                                                                              \
-*/                                                                             \
 static void                                                                    \
 rbt_##name##_rotate(struct rbt_##name *rbt,                                    \
                     struct rbt_##name##_node *par,                             \
@@ -137,6 +123,30 @@ rbt_##name##_fix_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur) \
 	rbt->root->col = BLACK;                                                \
 }                                                                              \
                                                                                \
+static struct rbt_##name##_node *                                              \
+rbt_##name##_edge(struct rbt_##name##_node *tmp, int dir)                      \
+{                                                                              \
+	if (tmp == NULL)                                                       \
+		return NULL;                                                   \
+	while (tmp->kid[dir])                                                  \
+		tmp = tmp->kid[dir];                                           \
+                                                                               \
+	return tmp;                                                            \
+}                                                                              \
+                                                                               \
+static struct rbt_##name##_node *                                              \
+rbt_##name##_match(struct rbt_##name *rbt, const type val)                     \
+{                                                                              \
+	struct rbt_##name##_node *tmp;                                         \
+	int dir;                                                               \
+                                                                               \
+	for (tmp = rbt->root; tmp; tmp = tmp->kid[dir > 0])                    \
+		if ((dir = cmp(val, tmp->val)) == 0)                           \
+			return tmp;                                            \
+                                                                               \
+	return tmp;                                                            \
+}                                                                              \
+                                                                               \
 struct rbt_##name                                                              \
 rbt_##name##_new(void)                                                         \
 {                                                                              \
@@ -146,6 +156,84 @@ rbt_##name##_new(void)                                                         \
 	rbt.len = 0;                                                           \
                                                                                \
 	return rbt;                                                            \
+}                                                                              \
+                                                                               \
+struct rbt_##name                                                              \
+rbt_##name##_from(const type arr[], const size_t len)                          \
+{                                                                              \
+	struct rbt_##name rbt;                                                 \
+	size_t i;                                                              \
+                                                                               \
+	rbt = rbt_##name##_new();                                              \
+                                                                               \
+	for (i = 0; i < len; i++)                                              \
+		if (rbt_##name##_insert(&rbt, arr[i]))                         \
+			break;                                                 \
+                                                                               \
+	return rbt;                                                            \
+}                                                                              \
+                                                                               \
+int                                                                            \
+rbt_##name##_root(struct rbt_##name *rbt, type *val)                           \
+{                                                                              \
+	if (rbt->root == NULL)                                                 \
+		return -1;                                                     \
+                                                                               \
+	*val = rbt->root->val;                                                 \
+                                                                               \
+	return 0;                                                              \
+}                                                                              \
+                                                                               \
+int                                                                            \
+rbt_##name##_max(struct rbt_##name *rbt, type *val)                            \
+{                                                                              \
+	struct rbt_##name##_node *max;                                         \
+                                                                               \
+	if ((max = rbt_##name##_edge(rbt->root, 1)) == NULL)                   \
+		return -1;                                                     \
+	                                                                       \
+	*val = max->val;                                                       \
+                                                                               \
+	return 0;                                                              \
+}                                                                              \
+                                                                               \
+int                                                                            \
+rbt_##name##_min(struct rbt_##name *rbt, type *val)                            \
+{                                                                              \
+	struct rbt_##name##_node *min;                                         \
+                                                                               \
+	if ((min = rbt_##name##_edge(rbt->root, 0)) == NULL)                   \
+		return -1;                                                     \
+	                                                                       \
+	*val = min->val;                                                       \
+                                                                               \
+	return 0;                                                              \
+}                                                                              \
+                                                                               \
+int                                                                            \
+rbt_##name##_get(struct rbt_##name *rbt, type *val)                            \
+{                                                                              \
+	struct rbt_##name##_node *tmp;                                         \
+                                                                               \
+	if ((tmp = rbt_##name##_match(rbt, *val)) == NULL)                     \
+		return -1;                                                     \
+	                                                                       \
+	*val = tmp->val;                                                       \
+                                                                               \
+	return 0;                                                              \
+}                                                                              \
+                                                                               \
+int                                                                            \
+rbt_##name##_set(struct rbt_##name *rbt, const type val)                       \
+{                                                                              \
+	struct rbt_##name##_node *tmp;                                         \
+                                                                               \
+	if ((tmp = rbt_##name##_match(rbt, val)) == NULL)                      \
+		return -1;                                                     \
+	                                                                       \
+	tmp->val = val;                                                        \
+                                                                               \
+	return 0;                                                              \
 }                                                                              \
                                                                                \
 int                                                                            \
