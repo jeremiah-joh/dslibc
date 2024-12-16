@@ -108,16 +108,15 @@ rbt_##name##_fix_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur) \
                         UNCLE(cur)->col = BLACK;                               \
                         cur->par->par->col = RED;                              \
                         cur = cur->par->par;                                   \
-                } else {                                                       \
-                        if (DIR(cur->par) != DIR(cur)) {                       \
-                                cur = cur->par;                                \
-                                rbt_##name##_rotate(rbt, cur, DIR(cur));       \
-                        }                                                      \
-                                                                               \
-                        cur->par->col = BLACK;                                 \
-                        cur->par->par->col = RED;                              \
-                        rbt_##name##_rotate(rbt, cur->par->par, !DIR(cur));    \
+                        continue;                                              \
+                } else if (DIR(cur->par) != DIR(cur)) {                        \
+                        cur = cur->par;                                        \
+                        rbt_##name##_rotate(rbt, cur, DIR(cur));               \
                 }                                                              \
+                                                                               \
+                cur->par->col = BLACK;                                         \
+                cur->par->par->col = RED;                                      \
+                rbt_##name##_rotate(rbt, cur->par->par, !DIR(cur));            \
         }                                                                      \
                                                                                \
         rbt->root->col = BLACK;                                                \
