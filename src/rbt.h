@@ -38,7 +38,7 @@ struct rbt_##name {                                                            \
 };                                                                             \
                                                                                \
 struct rbt_##name##_iter {                                                     \
-        struct rbt_##name##_node *cur, *prv;                                   \
+        struct rbt_##name##_node *cur;                                         \
 };                                                                             \
                                                                                \
 struct rbt_##name rbt_##name##_new(void);                                      \
@@ -275,6 +275,35 @@ rbt_##name##_free(struct rbt_##name *rbt)                                      \
                                                                                \
         rbt->root = NULL;                                                      \
         rbt->len = 0;                                                          \
+}                                                                              \
+                                                                               \
+struct rbt_##name##_iter                                                       \
+rbt_##name##_iter(struct rbt_##name *rbt)                                      \
+{                                                                              \
+        struct rbt_##name##_iter iter;                                         \
+                                                                               \
+        iter.cur = rbt_##name##_edge(rbt->root, 0);                            \
+                                                                               \
+        return iter;                                                           \
+}                                                                              \
+                                                                               \
+int                                                                            \
+rbt_##name##_next(struct rbt_##name##_iter *iter, type *val)                   \
+{                                                                              \
+        if (iter->cur == NULL)                                                 \
+                return -1;                                                     \
+                                                                               \
+        *val = iter->cur->val;                                                 \
+                                                                               \
+        if (iter->cur->kid[1]) {                                               \
+                iter->cur = rbt_##name##_edge(iter->cur->kid[1], 0);           \
+        } else {                                                               \
+                while (iter->cur->par && DIR(iter->cur))                       \
+                        iter->cur = iter->cur->par;                            \
+                iter->cur = iter->cur->par;                                    \
+        }                                                                      \
+                                                                               \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 extern int _rbt_func_##name

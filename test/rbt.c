@@ -70,7 +70,6 @@ test_free(void)
 	struct rbt_int rbt;
 	int arr[] = { 2, 0, 1, 4, 3 };
 
-	srand(16);
 	rbt = rbt_int_from(arr, 5);
 
 	rbt_int_free(&rbt);
@@ -78,11 +77,36 @@ test_free(void)
 	assert(rbt.root == NULL && rbt.len == 0);
 }
 
+static void
+test_next(void)
+{
+	struct rbt_int rbt;
+	struct rbt_int_iter iter;
+	int arr[] = { 2, 0, 1, 4, 3 };
+	int val;
+
+	rbt = rbt_int_from(arr, 5);
+	iter = rbt_int_iter(&rbt);
+
+	assert(rbt_int_next(&iter, &val) == 0);
+	assert(val == 0);
+	assert(rbt_int_next(&iter, &val) == 0);
+	assert(val == 1);
+	assert(rbt_int_next(&iter, &val) == 0);
+	assert(val == 2);
+	assert(rbt_int_next(&iter, &val) == 0);
+	assert(val == 3);
+	assert(rbt_int_next(&iter, &val) == 0);
+	assert(val == 4);
+	assert(rbt_int_next(&iter, &val) != 0);
+}
+
 int
 main(void)
 {
 	test_insert();
 	test_free();
+	test_next();
 
 	return 0;
 }
