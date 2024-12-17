@@ -256,6 +256,12 @@ rbt_##name##_insert(struct rbt_##name *rbt, const type val)                    \
         return 0;                                                              \
 }                                                                              \
                                                                                \
+size_t                                                                         \
+rbt_##name##_len(struct rbt_##name *rbt)                                       \
+{                                                                              \
+        return rbt->len;                                                       \
+}                                                                              \
+                                                                               \
 void                                                                           \
 rbt_##name##_free(struct rbt_##name *rbt)                                      \
 {                                                                              \
