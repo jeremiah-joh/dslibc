@@ -259,18 +259,15 @@ rbt_##name##_insert(struct rbt_##name *rbt, const type val)                    \
 void                                                                           \
 rbt_##name##_free(struct rbt_##name *rbt)                                      \
 {                                                                              \
-        struct rbt_##name##_node *del, *cur, *prv;                             \
+        struct rbt_##name##_node *del, *cur;                                   \
                                                                                \
-        cur = rbt->root;                                                       \
-        prv = NULL;                                                            \
-                                                                               \
-        while (cur) {                                                          \
-                if (cur->kid[0] && cur->kid[0] != prv) {                       \
+        for (cur = rbt->root; cur->par; ) {                                    \
+                if (cur->kid[0]) {                                             \
                         cur = cur->kid[0];                                     \
-                } else if (cur->kid[1] && cur->kid[1] != prv) {                \
+                } else if (cur->kid[1]) {                                      \
                         cur = cur->kid[1];                                     \
                 } else {                                                       \
-                        del = prv = cur;                                       \
+                        del = cur;                                             \
                         cur = cur->par;                                        \
                         free(del);                                             \
                 }                                                              \

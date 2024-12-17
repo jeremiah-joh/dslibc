@@ -64,10 +64,25 @@ test_insert(void)
 	verify(&rbt);
 }
 
+static void
+test_free(void)
+{
+	struct rbt_int rbt;
+	int arr[] = { 2, 0, 1, 4, 3 };
+
+	srand(16);
+	rbt = rbt_int_from(arr, 5);
+
+	rbt_int_free(&rbt);
+
+	assert(rbt.root == NULL && rbt.len == 0);
+}
+
 int
 main(void)
 {
 	test_insert();
+	test_free();
 
 	return 0;
 }
