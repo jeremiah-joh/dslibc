@@ -84,7 +84,9 @@ rbt_##name##_rotate(struct rbt_##name *rbt,                                    \
 }                                                                              \
                                                                                \
 static struct rbt_##name##_node *                                              \
-rbt_##name##_node(const type val, struct rbt_##name##_node *par)               \
+rbt_##name##_node(const type val,                                              \
+                  struct rbt_##name##_node *par,                               \
+		  enum rbt_##name##_color col)                                 \
 {                                                                              \
         struct rbt_##name##_node *new;                                         \
                                                                                \
@@ -94,7 +96,7 @@ rbt_##name##_node(const type val, struct rbt_##name##_node *par)               \
         new->val = val;                                                        \
         new->par = par;                                                        \
         new->kid[0] = new->kid[1] = NULL;                                      \
-        new->col = RED;                                                        \
+        new->col = col;                                                        \
                                                                                \
         return new;                                                            \
 }                                                                              \
@@ -243,7 +245,7 @@ rbt_##name##_insert(struct rbt_##name *rbt, const type val)                    \
                                                                                \
         for (par = NULL, tmp = rbt->root; tmp; par = tmp, tmp = tmp->kid[dir]) \
                 dir = cmp(val, tmp->val) > 0;                                  \
-        if ((new = rbt_##name##_node(val, par)) == NULL)                       \
+        if ((new = rbt_##name##_node(val, par, RED)) == NULL)                  \
                 return -1;                                                     \
         if (par)                                                               \
                 par->kid[dir] = new;                                           \
