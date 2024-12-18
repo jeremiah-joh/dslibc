@@ -86,7 +86,7 @@ rbt_##name##_rotate(struct rbt_##name *rbt,                                    \
 static struct rbt_##name##_node *                                              \
 rbt_##name##_node(const type val,                                              \
                   struct rbt_##name##_node *par,                               \
-		  enum rbt_##name##_color col)                                 \
+                  enum rbt_##name##_color col)                                 \
 {                                                                              \
         struct rbt_##name##_node *new;                                         \
                                                                                \
