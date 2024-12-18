@@ -158,7 +158,7 @@ rbt_##name##_new(void)                                                         \
 }                                                                              \
                                                                                \
 struct rbt_##name                                                              \
-rbt_##name##_from(const type arr[], const size_t len)                          \
+rbt_##name##_from(const type *arr, const size_t len)                           \
 {                                                                              \
         struct rbt_##name rbt;                                                 \
         size_t i;                                                              \
