@@ -29,19 +29,19 @@ Installation (Optional)
 
 To install the library, follow these steps:
 
-1.  **Clone the repository:**
+1. **Clone the repository:**
 
 ```sh
 git clone https://github.com/jeremiah-joh/dslibc.git
 ```
 
-2.  **Navigate to the project directory:**
+2. **Navigate to the project directory:**
 
 ```sh
 cd dslibc
 ```
 
-3.  **Install the headers:** (Requires root privileges)
+3. **Install the headers:** (Requires root privileges)
 
 ```sh
 make install
@@ -88,19 +88,19 @@ INIT_VEC_BOTH(int, int, malloc, realloc, free);
 int
 main(void)
 {
-    struct vec_int vec;
-    int i;
+	struct vec_int vec;
+	int i;
+
+	vec = vec_int_new();  /* initialize the vector */
+
+	for (i = 0; i < 16; i++)
+		vec_int_push(&vec, i);  /* push elements to the vector */
     
-    vec = vec_int_new();  /* initialize the vector */
+	/* here you can use the vector data for your needs */
     
-    for (i = 0; i < 16; i++)
-        vec_int_push(&vec, i);  /* push elements to the vector */
+	vec_int_free(&vec);  /* free the memory allocated by the vector */
     
-    /* here you can use the vector data for your needs */
-    
-    vec_int_free(&vec);  /* free the memory allocated by the vector */
-    
-    return 0;
+	return 0;
 }
 ```
 
