@@ -49,7 +49,7 @@ void sll_##name##_free(struct sll_##name *);                                   \
 struct sll_##name##_iter sll_##name##_iter(struct sll_##name *);               \
 int sll_##name##_next(struct sll_##name##_iter *, type *);                     \
                                                                                \
-extern int _sll_type_##name
+extern int _sll_##name##_type
 
 #define INIT_SLL_FUNC(name, type, malloc, free)                                \
 static struct sll_##name##_node *                                              \
@@ -301,7 +301,7 @@ sll_##name##_next(struct sll_##name##_iter *iter, type *val)                   \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-extern int _sll_func_##name
+extern int _sll_##name##_func
 
 
 #define INIT_SLL_BOTH(name, type, malloc, free)                                \

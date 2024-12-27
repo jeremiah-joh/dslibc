@@ -51,7 +51,7 @@ void dll_##name##_free(struct dll_##name *);                                   \
 struct dll_##name##_iter dll_##name##_iter(struct dll_##name *);               \
 int dll_##name##_next(struct dll_##name##_iter *, type *);                     \
                                                                                \
-extern int _dll_type_##name
+extern int _dll_##name##_type
 
 #define INIT_DLL_FUNC(name, type, malloc, free)                                \
 static struct dll_##name##_node *                                              \
@@ -344,7 +344,7 @@ dll_##name##_next(struct dll_##name##_iter *iter, type *val)                   \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-extern int _dll_func_##name
+extern int _dll_##name##_func
 
 #define INIT_DLL_BOTH(name, type, malloc, free)                                \
 INIT_DLL_TYPE(name, type);                                                     \

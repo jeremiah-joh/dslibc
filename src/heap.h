@@ -44,7 +44,7 @@ void heap_##name##_free(struct heap_##name *);                                 \
 struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);            \
 int heap_##name##_next(struct heap_##name##_iter *, type *);                   \
                                                                                \
-extern int _heap_type_##name
+extern int _heap_##name##_type
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord, malloc, realloc, free)            \
 static int                                                                     \
@@ -213,7 +213,7 @@ heap_##name##_next(struct heap_##name##_iter *iter, type *val)                 \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-extern int _heap_func_##name
+extern int _heap_##name##_func
 
 #define INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)             \
 INIT_HEAP_FUNC(name, type, cmp, >, malloc, realloc, free)

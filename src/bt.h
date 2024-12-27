@@ -50,7 +50,7 @@ void bt_##name##_free(struct bt_##name *);                                     \
 struct bt_##name##_iter bt_##name##_iter(struct bt_##name *);                  \
 int bt_##name##_next(struct bt_##name##_iter *, type *);                       \
                                                                                \
-extern int _bt_type_##name
+extern int _bt_##name##_type
 
 #define INIT_BT_FUNC(name, type, ord, cmp, malloc, free)
 

@@ -47,7 +47,7 @@ void dev_##name##_free(struct dev_##name *);                                   \
 struct dev_##name##_iter dev_##name##_iter(struct dev_##name *);               \
 int dev_##name##_next(struct dev_##name##_iter *, type *);                     \
                                                                                \
-extern int _dev_type_##name
+extern int _dev_##name##_type
 
 #define INIT_DEV_FUNC(name, type, malloc, realloc, free)
 

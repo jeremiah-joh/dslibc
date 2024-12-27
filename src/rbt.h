@@ -57,7 +57,7 @@ void rbt_##name##_free(struct rbt_##name *);                                   \
 struct rbt_##name##_iter rbt_##name##_iter(struct rbt_##name *);               \
 int rbt_##name##_next(struct rbt_##name##_iter *, type *);                     \
                                                                                \
-extern int _rbt_type_##name
+extern int _rbt_##name##_type
 
 #define INIT_RBT_FUNC(name, type, cmp, malloc, free)                           \
 static void                                                                    \
@@ -314,7 +314,7 @@ rbt_##name##_next(struct rbt_##name##_iter *iter, type *val)                   \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-extern int _rbt_func_##name
+extern int _rbt_##name##_func
 
 #define INIT_RBT_BOTH(name, type, cmp, malloc, free)                           \
 INIT_RBT_TYPE(name, type);                                                     \

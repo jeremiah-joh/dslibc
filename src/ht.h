@@ -50,7 +50,7 @@ void ht_##name##_free(struct ht_##name *);                                     \
 struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                  \
 int ht_##name##_next(struct ht_##name##_iter *, type *);                       \
                                                                                \
-extern int _ht_type_##name
+extern int _ht_##name##_type
 
 #define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                      \
 static int                                                                     \
@@ -262,7 +262,7 @@ ht_##name##_next(struct ht_##name##_iter *iter, type *val)                     \
         return -1;                                                             \
 }                                                                              \
                                                                                \
-extern int _ht_func_##name
+extern int _ht_##name##_func
 
 #define INIT_HT_BOTH(name, type, hash, cmp, malloc, free)                      \
 INIT_HT_TYPE(name, type);                                                      \

@@ -46,7 +46,7 @@ void vec_##name##_free(struct vec_##name *);                                   \
 struct vec_##name##_iter vec_##name##_iter(struct vec_##name *);               \
 int vec_##name##_next(struct vec_##name##_iter *, type *);                     \
                                                                                \
-extern int _vec_type_##name
+extern int _vec_##name##_type
 
 #define INIT_VEC_FUNC(name, type, malloc, realloc, free)                       \
 static int                                                                     \
@@ -261,7 +261,7 @@ vec_##name##_next(struct vec_##name##_iter *iter, type *val)                   \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-extern int _vec_func_##name
+extern int _vec_##name##_func
 
 #define INIT_VEC_BOTH(name, type, malloc, realloc, free)                       \
 INIT_VEC_TYPE(name, type);                                                     \
