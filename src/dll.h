@@ -165,8 +165,9 @@ dll_##name##_pop_back(struct dll_##name *dll, type *val)                       \
                                                                                \
         if (dll->beg == NULL || dll->end == NULL || dll->len == 0)             \
                 return -1;                                                     \
+	if (val)                                                               \
+        	*val = dll->end->val;                                          \
                                                                                \
-        *val = dll->end->val;                                                  \
         del = dll->end;                                                        \
         dll->end = dll->end->prv;                                              \
         free(del);                                                             \
@@ -202,8 +203,9 @@ dll_##name##_pop_front(struct dll_##name *dll, type *val)                      \
                                                                                \
         if (dll->beg == NULL || dll->end == NULL || dll->len == 0)             \
                 return -1;                                                     \
+	if (val)                                                               \
+        	*val = dll->beg->val;                                          \
                                                                                \
-        *val = dll->beg->val;                                                  \
         del = dll->beg;                                                        \
         dll->beg = dll->beg->nxt;                                              \
         free(del);                                                             \
@@ -219,8 +221,8 @@ dll_##name##_get(struct dll_##name *dll, type *val, const size_t idx)          \
                                                                                \
         if ((cur = dll_##name##_ptr(dll, idx)) == NULL)                        \
                 return -1;                                                     \
-                                                                               \
-        *val = cur->val;                                                       \
+	if (val)                                                               \
+        	*val = cur->val;                                               \
                                                                                \
         return 0;                                                              \
 }                                                                              \
@@ -280,8 +282,9 @@ dll_##name##_remove(struct dll_##name *dll, type *val, const size_t idx)       \
                 return -1;                                                     \
         if ((del = dll_##name##_ptr(dll, idx)) == NULL)                        \
                 return -1;                                                     \
+	if (val)                                                               \
+        	*val = del->val;                                               \
                                                                                \
-        *val = del->val;                                                       \
         del->prv->nxt = del->nxt;                                              \
         del->nxt->prv = del->prv;                                              \
         free(del);                                                             \
@@ -337,8 +340,9 @@ dll_##name##_next(struct dll_##name##_iter *iter, type *val)                   \
 {                                                                              \
         if (iter->cur == NULL)                                                 \
                 return -1;                                                     \
+	if (val)                                                               \
+        	*val = iter->cur->val;                                         \
                                                                                \
-        *val = iter->cur->val;                                                 \
         iter->cur = iter->cur->nxt;                                            \
                                                                                \
         return 0;                                                              \
