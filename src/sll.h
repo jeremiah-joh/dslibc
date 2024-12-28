@@ -153,8 +153,9 @@ sll_##name##_pop(struct sll_##name *sll, type *val)                            \
                                                                                \
         if (sll->beg == NULL || sll->end == NULL || sll->end == 0)             \
                 return -1;                                                     \
+	if (val)                                                               \
+        	*val = sll->beg->val;                                          \
                                                                                \
-        *val = sll->beg->val;                                                  \
         del = sll->beg;                                                        \
         sll->beg = sll->beg->nxt;                                              \
         free(del);                                                             \
@@ -172,8 +173,8 @@ sll_##name##_get(struct sll_##name *sll, type *val, const size_t idx)          \
                 return -1;                                                     \
         if ((cur = sll_##name##_ptr(sll, idx)) == NULL)                        \
                 return -1;                                                     \
-                                                                               \
-        *val = cur->val;                                                       \
+	if (val)                                                               \
+        	*val = cur->val;                                               \
                                                                                \
         return 0;                                                              \
 }                                                                              \
@@ -237,8 +238,9 @@ sll_##name##_remove(struct sll_##name *sll, type *val, const size_t idx)       \
                 return sll_##name##_pop(sll, val);                             \
         if ((pre = sll_##name##_ptr(sll, idx - 1)) == NULL)                    \
                 return -1;                                                     \
+	if (val)                                                               \
+        	*val = pre->nxt->val;                                          \
                                                                                \
-        *val = pre->nxt->val;                                                  \
         del = pre->nxt;                                                        \
         pre->nxt = del->nxt;                                                   \
         free(del);                                                             \
@@ -294,15 +296,15 @@ sll_##name##_next(struct sll_##name##_iter *iter, type *val)                   \
 {                                                                              \
         if (iter->cur == NULL)                                                 \
                 return -1;                                                     \
+	if (val)                                                               \
+        	*val = iter->cur->val;                                         \
                                                                                \
-        *val = iter->cur->val;                                                 \
         iter->cur = iter->cur->nxt;                                            \
                                                                                \
         return 0;                                                              \
 }                                                                              \
                                                                                \
 extern int _sll_##name##_func
-
 
 #define INIT_SLL_BOTH(name, type, malloc, free)                                \
 INIT_SLL_TYPE(name, type);                                                     \

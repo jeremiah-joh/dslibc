@@ -171,7 +171,7 @@ ht_##name##_get(struct ht_##name *ht, type *val)                               \
 {                                                                              \
         size_t i;                                                              \
                                                                                \
-        if (ht->arr == NULL || ht->cap == 0 || ht->len == 0)                   \
+        if (ht->arr == NULL || ht->cap == 0 || ht->len == 0 || val == NULL)    \
                 return -1;                                                     \
         if ((i = ht_##name##_match(ht, *val)) == ht->cap)                      \
                 return -1;                                                     \
@@ -212,7 +212,7 @@ ht_##name##_remove(struct ht_##name *ht, type *val)                            \
 {                                                                              \
         size_t i;                                                              \
                                                                                \
-        if (ht->arr == NULL || ht->cap == 0 || ht->len == 0)                   \
+        if (ht->arr == NULL || ht->cap == 0 || ht->len == 0 || val == NULL)    \
                 return -1;                                                     \
         if ((i = ht_##name##_match(ht, *val)) == ht->cap)                      \
                 return -1;                                                     \
@@ -254,7 +254,9 @@ ht_##name##_next(struct ht_##name##_iter *iter, type *val)                     \
 {                                                                              \
         for (; iter->idx < iter->ht->cap; iter->idx++) {                       \
                 if (iter->ht->arr[iter->idx].state == SOME) {                  \
-                        *val = iter->ht->arr[iter->idx++].val;                 \
+			if (val)                                               \
+                        	*val = iter->ht->arr[iter->idx++].val;         \
+                                                                               \
                         return 0;                                              \
                 }                                                              \
         }                                                                      \

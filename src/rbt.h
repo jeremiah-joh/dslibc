@@ -228,7 +228,7 @@ rbt_##name##_from(const type *arr, const size_t len)                           \
 int                                                                            \
 rbt_##name##_root(struct rbt_##name *rbt, type *val)                           \
 {                                                                              \
-        if (rbt->root == NULL)                                                 \
+        if (rbt->root == NULL || val == NULL)                                  \
                 return -1;                                                     \
                                                                                \
         *val = rbt->root->val;                                                 \
@@ -241,6 +241,8 @@ rbt_##name##_max(struct rbt_##name *rbt, type *val)                            \
 {                                                                              \
         struct rbt_##name##_node *max;                                         \
                                                                                \
+	if (val == NULL)                                                       \
+		return -1;                                                     \
         if ((max = rbt_##name##_edge(rbt->root, 1)) == NULL)                   \
                 return -1;                                                     \
                                                                                \
@@ -254,6 +256,8 @@ rbt_##name##_min(struct rbt_##name *rbt, type *val)                            \
 {                                                                              \
         struct rbt_##name##_node *min;                                         \
                                                                                \
+	if (val == NULL)                                                       \
+		return -1;                                                     \
         if ((min = rbt_##name##_edge(rbt->root, 0)) == NULL)                   \
                 return -1;                                                     \
                                                                                \
@@ -267,6 +271,8 @@ rbt_##name##_get(struct rbt_##name *rbt, type *val)                            \
 {                                                                              \
         struct rbt_##name##_node *tmp;                                         \
                                                                                \
+	if (val == NULL)                                                       \
+		return -1;                                                     \
         if ((tmp = rbt_##name##_match(rbt, *val)) == NULL)                     \
                 return -1;                                                     \
                                                                                \
@@ -315,6 +321,8 @@ rbt_##name##_remove(struct rbt_##name *rbt, type *val)                         \
         struct rbt_##name##_node *del, *tmp, *kid;                             \
         enum rbt_##name##_color col;                                           \
                                                                                \
+	if (val == NULL)                                                       \
+		return -1;                                                     \
         if ((tmp = del = rbt_##name##_match(rbt, *val)) == NULL)               \
                 return -1;                                                     \
                                                                                \
@@ -391,9 +399,8 @@ rbt_##name##_next(struct rbt_##name##_iter *iter, type *val)                   \
 {                                                                              \
         if (iter->cur == NULL)                                                 \
                 return -1;                                                     \
-                                                                               \
-        *val = iter->cur->val;                                                 \
-                                                                               \
+        if (val)                                                               \
+        	*val = iter->cur->val;                                         \
         if (iter->cur->kid[1]) {                                               \
                 iter->cur = rbt_##name##_edge(iter->cur->kid[1], 0);           \
         } else {                                                               \
