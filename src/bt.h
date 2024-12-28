@@ -36,7 +36,7 @@ struct bt_##name##_iter {                                                      \
                                                                                \
 struct bt_##name bt_##name##_new(void);                                        \
 struct bt_##name bt_##name##_from(const type *, const size_t);                 \
-struct bt_##name bt_##name##_copy(const struct bt_##name *);                   \  
+struct bt_##name bt_##name##_copy(const struct bt_##name *);                   \
 int bt_##name##_root(struct bt_##name *, type *);                              \
 int bt_##name##_max(struct bt_##name *, type *);                               \
 int bt_##name##_min(struct bt_##name *, type *);                               \

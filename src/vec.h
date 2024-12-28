@@ -124,8 +124,8 @@ vec_##name##_pop(struct vec_##name *vec, type *val)                            \
 {                                                                              \
         if (vec->arr == NULL || vec->cap == 0 || vec->len == 0)                \
                 return -1;                                                     \
-	if (val)                                                               \
-        	*val = vec->arr[--vec->len];                                   \
+        if (val)                                                               \
+                *val = vec->arr[--vec->len];                                   \
                                                                                \
         return 0;                                                              \
 }                                                                              \
@@ -137,8 +137,8 @@ vec_##name##_get(struct vec_##name *vec, type *val, const size_t idx)          \
                 return -1;                                                     \
         if (vec->len <= idx)                                                   \
                 return -1;                                                     \
-	if (val)                                                               \
-        	*val = vec->arr[idx];                                          \
+        if (val)                                                               \
+                *val = vec->arr[idx];                                          \
                                                                                \
         return 0;                                                              \
 }                                                                              \
@@ -198,8 +198,8 @@ vec_##name##_remove(struct vec_##name *vec, type *val, const size_t idx)       \
                 return -1;                                                     \
         if (vec->len <= idx)                                                   \
                 return -1;                                                     \
-	if (val)                                                               \
-        	*val = vec->arr[idx];                                          \
+        if (val)                                                               \
+                *val = vec->arr[idx];                                          \
                                                                                \
         memmove(vec->arr + idx,                                                \
                 vec->arr + idx + 1,                                            \
@@ -256,8 +256,8 @@ vec_##name##_next(struct vec_##name##_iter *iter, type *val)                   \
 {                                                                              \
         if (iter->idx == iter->vec->len)                                       \
                 return -1;                                                     \
-	if (val)                                                               \
-        	*val = iter->vec->arr[iter->idx++];                            \
+        if (val)                                                               \
+                *val = iter->vec->arr[iter->idx++];                            \
                                                                                \
         return 0;                                                              \
 }                                                                              \

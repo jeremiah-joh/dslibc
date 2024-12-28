@@ -17,17 +17,17 @@
 
 #define INIT_SPT_TYPE(name, type)                                              \
 struct spt_##name##_node {                                                     \
-	type val;                                                              \
-	struct spt_##name##_node *kid[2];                                      \
+        type val;                                                              \
+        struct spt_##name##_node *kid[2];                                      \
 };                                                                             \
                                                                                \
 struct spt_##name {                                                            \
-	struct spt_##name##_node *root;                                        \
-	size_t len;                                                            \
+        struct spt_##name##_node *root;                                        \
+        size_t len;                                                            \
 };                                                                             \
                                                                                \
 struct spt_##name##_iter {                                                     \
-	struct spt_##name##_node *cur;                                         \
+        struct spt_##name##_node *cur;                                         \
 };                                                                             \
                                                                                \
 struct spt_##name spt_##name##_new(void);                                      \

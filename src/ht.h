@@ -254,8 +254,8 @@ ht_##name##_next(struct ht_##name##_iter *iter, type *val)                     \
 {                                                                              \
         for (; iter->idx < iter->ht->cap; iter->idx++) {                       \
                 if (iter->ht->arr[iter->idx].state == SOME) {                  \
-			if (val)                                               \
-                        	*val = iter->ht->arr[iter->idx++].val;         \
+                        if (val)                                               \
+                                *val = iter->ht->arr[iter->idx++].val;         \
                                                                                \
                         return 0;                                              \
                 }                                                              \

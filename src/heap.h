@@ -128,8 +128,8 @@ heap_##name##_pop(struct heap_##name *heap, type *val)                         \
 {                                                                              \
         if (heap->arr == NULL || heap->cap == 0 || heap->len == 0)             \
                 return -1;                                                     \
-	if (val)                                                               \
-        	*val = heap->arr[0];                                           \
+        if (val)                                                               \
+                *val = heap->arr[0];                                           \
                                                                                \
         heap->arr[0] = heap->arr[heap->len - 1];                               \
         heap_##name##_heapify(heap);                                           \
@@ -144,7 +144,7 @@ heap_##name##_get(struct heap_##name *heap, type *val)                         \
         size_t i;                                                              \
                                                                                \
         if (heap->arr == NULL || heap->cap == 0                                \
-	    || heap->len == 0 || val == NULL)                                  \
+            || heap->len == 0 || val == NULL)                                  \
                 return -1;                                                     \
                                                                                \
         for (i = 0; i < heap->len; i++) {                                      \
@@ -209,8 +209,8 @@ heap_##name##_next(struct heap_##name##_iter *iter, type *val)                 \
 {                                                                              \
         if (iter->idx == iter->heap->len)                                      \
                 return -1;                                                     \
-	if (val)                                                               \
-        	*val = iter->heap->arr[iter->idx++];                           \
+        if (val)                                                               \
+                *val = iter->heap->arr[iter->idx++];                           \
                                                                                \
         return 0;                                                              \
 }                                                                              \
