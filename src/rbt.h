@@ -9,7 +9,7 @@
  *
  * You should have received a copy of the CC0 Public Domain Dedication along
  * with this software.
- * If not, see <rbttp://creativecommons.org/publicdomain/zero/1.0/>.
+ * If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
 #ifndef _RBT_H
@@ -132,19 +132,23 @@ rbt_##name##_fix_remove(struct rbt_##name *rbt, struct rbt_##name##_node *cur) \
                                                                                \
         while (cur && cur != rbt->root && COLOR(cur) == BLACK) {               \
                 dir = DIR(cur);                                                \
-                sib = SIBLING(cur);                                            \
+                if ((sib = SIBLING(cur)) == NULL)                              \
+			break;                                                 \
                 if (COLOR(sib) == RED) {                                       \
                         sib->col = BLACK;                                      \
                         cur->par->col = RED;                                   \
                         rbt_##name##_rotate(rbt, cur->par, dir);               \
                         sib = SIBLING(cur);                                    \
                 }                                                              \
-                if (COLOR(sib->kid[0]) == BLACK                                \
+                if (COLOR(sib) == BLACK                                        \
+		    && COLOR(sib->kid[0]) == BLACK                             \
                     && COLOR(sib->kid[1]) == BLACK) {                          \
                         sib->col = RED;                                        \
                         cur = cur->par;                                        \
                         continue;                                              \
                 } else if (COLOR(sib->kid[!dir]) == BLACK) {                   \
+			if (sib->kid[dir] == NULL)                             \
+				break;                                         \
                         sib->kid[dir]->col = BLACK;                            \
                         sib->col = RED;                                        \
                         rbt_##name##_rotate(rbt, sib, !dir);                   \
@@ -155,13 +159,13 @@ rbt_##name##_fix_remove(struct rbt_##name *rbt, struct rbt_##name##_node *cur) \
                 cur->par->col = BLACK;                                         \
                 sib->kid[!dir]->col = BLACK;                                   \
                 rbt_##name##_rotate(rbt, cur->par, dir);                       \
-                cur = rbt->root;                                               \
+		cur = rbt->root;                                               \
         }                                                                      \
                                                                                \
         if (cur)                                                               \
                 cur->col = BLACK;                                              \
 }                                                                              \
-                                                                               \
+/*                                                                             \
 static void                                                                    \
 rbt_##name##_trasplant(struct rbt_##name *rbt,                                 \
                        struct rbt_##name##_node *old,                          \
@@ -174,7 +178,7 @@ rbt_##name##_trasplant(struct rbt_##name *rbt,                                 \
         if (new)                                                               \
                 new->par = old->par;                                           \
 }                                                                              \
-                                                                               \
+*/                                                                             \
 static struct rbt_##name##_node *                                              \
 rbt_##name##_edge(struct rbt_##name##_node *tmp, int dir)                      \
 {                                                                              \
@@ -319,42 +323,30 @@ int                                                                            \
 rbt_##name##_remove(struct rbt_##name *rbt, type *val)                         \
 {                                                                              \
         struct rbt_##name##_node *del, *tmp, *kid;                             \
-        enum rbt_##name##_color col;                                           \
                                                                                \
-        if (val == NULL)                                                       \
-                return -1;                                                     \
-        if ((tmp = del = rbt_##name##_match(rbt, *val)) == NULL)               \
-                return -1;                                                     \
+	if (val == NULL)                                                       \
+		return -1;                                                     \
+	if ((del = rbt_##name##_match(rbt, *val)) == NULL)                     \
+		return -1;                                                     \
+	if (del->kid[0] && del->kid[1])                                        \
+		tmp = rbt_##name##_edge(del->kid[1], 0);                       \
+	else                                                                   \
+		tmp = del;                                                     \
+	if ((kid = tmp->kid[tmp->kid[0] == NULL]))                             \
+		kid->par = tmp->par;                                           \
+ 	if (tmp->par)                                                          \
+		tmp->par->kid[DIR(tmp)] = kid;                                 \
+	else                                                                   \
+		rbt->root = kid;                                               \
+	if (tmp != del)                                                        \
+		del->val = tmp->val;                                           \
+	if (COLOR(tmp) == BLACK)                                               \
+		rbt_##name##_fix_remove(rbt, kid);                             \
                                                                                \
-        col = COLOR(tmp);                                                      \
-        if (del->kid[0] == NULL || del->kid[1] == NULL) {                      \
-                kid = del->kid[del->kid[0] == NULL];                           \
-                rbt_##name##_trasplant(rbt, del, kid);                         \
-        } else {                                                               \
-                tmp = rbt_##name##_edge(del->kid[1], 0);                       \
-                col = COLOR(tmp);                                              \
-                kid = tmp->kid[1];                                             \
-                if (tmp->par == del) {                                         \
-                        if (kid)                                               \
-                                kid->par = tmp;                                \
-                } else {                                                       \
-                        rbt_##name##_trasplant(rbt, tmp, tmp->kid[1]);         \
-                        tmp->kid[1] = del->kid[1];                             \
-                        tmp->kid[1]->par = tmp;                                \
-                }                                                              \
+	rbt->len--;                                                            \
+	free(tmp);                                                             \
                                                                                \
-                rbt_##name##_trasplant(rbt, del, tmp);                         \
-                tmp->kid[0] = del->kid[0];                                     \
-                tmp->kid[0]->par = tmp;                                        \
-                tmp->col = COLOR(del);                                         \
-        }                                                                      \
-        if (col == BLACK)                                                      \
-                rbt_##name##_fix_remove(rbt, kid);                             \
-                                                                               \
-        free(del);                                                             \
-        rbt->len--;                                                            \
-                                                                               \
-        return 0;                                                              \
+	return 0;                                                              \
 }                                                                              \
                                                                                \
 size_t                                                                         \
