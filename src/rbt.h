@@ -3,8 +3,8 @@
  *
  * Written in 2024 by Woohyun Joh <jeremiahjoh@sungkyul.ac.kr>
  *
- * To the extent possible under law, the author(s) have dedicated all copyrigrbt
- * and related and neighboring rigrbts to this software to the public domain
+ * To the extent possible under law, the author(s) have dedicated all copyright
+ * and related and neighboring rights to this software to the public domain
  * worldwide. This software is distributed without any warranty.
  *
  * You should have received a copy of the CC0 Public Domain Dedication along
@@ -16,7 +16,6 @@
 #define _RBT_H
 
 #include <stddef.h>
-#include <stdio.h>
 
 #define DIR(n) ((n) == (n)->par->kid[1]) /* panic if n is root */
 #define COLOR(n) ((n) ? (n)->col : BLACK)
