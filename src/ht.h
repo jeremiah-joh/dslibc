@@ -105,6 +105,8 @@ ht_##name##_extend(struct ht_##name *ht)                                       \
                                                                                \
         if ((cp.arr = malloc(cp.cap * sizeof(*cp.arr))) == NULL)               \
                 return -1;                                                     \
+	for (i = 0; i < cp.cap; i++)                                           \
+		cp.arr[i].state = NONE;                                        \
         for (i = 0; i < ht->cap; i++)                                          \
                 if (ht->arr[i].state == SOME)                                  \
                         if (ht_##name##_place(&cp, ht->arr[i].val))            \
