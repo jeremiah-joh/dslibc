@@ -20,7 +20,7 @@
 #define INIT_SIZE 4
 
 #define NEXT(i, c) (((i) + 1) % (c))
-#define THREE_FOURTH(i) ((i - (i >> 2))) /* i - (i / 4) == i * 3 / 4*/
+#define THREE_FOURTH(i) ((i) - ((i) >> 2)) /* == i - (i / 4) */
 
 #define INIT_HT_TYPE(name, type)                                               \
 struct ht_##name##_node {                                                      \
