@@ -123,61 +123,6 @@ rbt_##name##_fix_insert(struct rbt_##name *rbt, struct rbt_##name##_node *cur) \
         rbt->root->col = BLACK;                                                \
 }                                                                              \
                                                                                \
-static void                                                                    \
-rbt_##name##_fix_remove(struct rbt_##name *rbt, struct rbt_##name##_node *cur) \
-{                                                                              \
-        struct rbt_##name##_node *sib;                                         \
-        int dir;                                                               \
-                                                                               \
-        while (cur && cur != rbt->root && COLOR(cur) == BLACK) {               \
-                dir = DIR(cur);                                                \
-                if ((sib = SIBLING(cur)) == NULL)                              \
-			break;                                                 \
-                if (COLOR(sib) == RED) {                                       \
-                        sib->col = BLACK;                                      \
-                        cur->par->col = RED;                                   \
-                        rbt_##name##_rotate(rbt, cur->par, dir);               \
-                        sib = SIBLING(cur);                                    \
-                }                                                              \
-                if (COLOR(sib) == BLACK                                        \
-		    && COLOR(sib->kid[0]) == BLACK                             \
-                    && COLOR(sib->kid[1]) == BLACK) {                          \
-                        sib->col = RED;                                        \
-                        cur = cur->par;                                        \
-                        continue;                                              \
-                } else if (COLOR(sib->kid[!dir]) == BLACK) {                   \
-			if (sib->kid[dir] == NULL)                             \
-				break;                                         \
-                        sib->kid[dir]->col = BLACK;                            \
-                        sib->col = RED;                                        \
-                        rbt_##name##_rotate(rbt, sib, !dir);                   \
-                        sib = SIBLING(cur);                                    \
-                }                                                              \
-                                                                               \
-                sib->col = COLOR(cur->par);                                    \
-                cur->par->col = BLACK;                                         \
-                sib->kid[!dir]->col = BLACK;                                   \
-                rbt_##name##_rotate(rbt, cur->par, dir);                       \
-		cur = rbt->root;                                               \
-        }                                                                      \
-                                                                               \
-        if (cur)                                                               \
-                cur->col = BLACK;                                              \
-}                                                                              \
-/*                                                                             \
-static void                                                                    \
-rbt_##name##_trasplant(struct rbt_##name *rbt,                                 \
-                       struct rbt_##name##_node *old,                          \
-                       struct rbt_##name##_node *new)                          \
-{                                                                              \
-        if (old->par)                                                          \
-                old->par->kid[DIR(old)] = new;                                 \
-        else                                                                   \
-                rbt->root = new;                                               \
-        if (new)                                                               \
-                new->par = old->par;                                           \
-}                                                                              \
-*/                                                                             \
 static struct rbt_##name##_node *                                              \
 rbt_##name##_edge(struct rbt_##name##_node *tmp, int dir)                      \
 {                                                                              \
@@ -316,36 +261,6 @@ rbt_##name##_insert(struct rbt_##name *rbt, const type val)                    \
         rbt->len++;                                                            \
                                                                                \
         return 0;                                                              \
-}                                                                              \
-                                                                               \
-int                                                                            \
-rbt_##name##_remove(struct rbt_##name *rbt, type *val)                         \
-{                                                                              \
-        struct rbt_##name##_node *del, *tmp, *kid;                             \
-                                                                               \
-	if (val == NULL)                                                       \
-		return -1;                                                     \
-	if ((del = rbt_##name##_match(rbt, *val)) == NULL)                     \
-		return -1;                                                     \
-	if (del->kid[0] && del->kid[1])                                        \
-		tmp = rbt_##name##_edge(del->kid[1], 0);                       \
-	else                                                                   \
-		tmp = del;                                                     \
-	if ((kid = tmp->kid[tmp->kid[0] == NULL]))                             \
-		kid->par = tmp->par;                                           \
- 	if (tmp->par)                                                          \
-		tmp->par->kid[DIR(tmp)] = kid;                                 \
-	else                                                                   \
-		rbt->root = kid;                                               \
-	if (tmp != del)                                                        \
-		del->val = tmp->val;                                           \
-	if (COLOR(tmp) == BLACK)                                               \
-		rbt_##name##_fix_remove(rbt, kid);                             \
-                                                                               \
-	rbt->len--;                                                            \
-	free(tmp);                                                             \
-                                                                               \
-	return 0;                                                              \
 }                                                                              \
                                                                                \
 size_t                                                                         \
