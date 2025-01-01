@@ -264,16 +264,13 @@ ht_##name##_iter(struct ht_##name *ht)                                         \
 int                                                                            \
 ht_##name##_next(struct ht_##name##_iter *iter, type *val)                     \
 {                                                                              \
-        for (; iter->idx < iter->ht->cap; iter->idx++) {                       \
-                if (iter->ht->arr[iter->idx].state == SOME) {                  \
-                        if (val)                                               \
-                                *val = iter->ht->arr[iter->idx++].val;         \
+        for (; iter->ht->arr[iter->idx].state != SOME; iter->idx++)            \
+                if (iter->idx == iter->ht->cap)                                \
+                        return -1;                                             \
+        if (val)                                                               \
+                *val = iter->ht->arr[iter->idx++].val;                         \
                                                                                \
-                        return 0;                                              \
-                }                                                              \
-        }                                                                      \
-                                                                               \
-        return -1;                                                             \
+        return 0;                                                              \
 }                                                                              \
                                                                                \
 extern int _ht_##name##_func
