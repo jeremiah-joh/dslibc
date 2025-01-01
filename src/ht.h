@@ -55,15 +55,14 @@ extern int _ht_##name##_type
 
 #define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                      \
 static struct ht_##name##_node *                                               \
-ht_##name##_calloc(const size_t cap)                                           \
+ht_##name##_calloc(size_t cap)                                                 \
 {                                                                              \
         struct ht_##name##_node *arr;                                          \
-        size_t i;                                                              \
                                                                                \
         if ((arr = malloc(cap * sizeof(struct ht_##name##_node))) == NULL)     \
                 return NULL;                                                   \
-        for (i = 0; i < cap; i++)                                              \
-                arr[i].state = NONE;                                           \
+        while (cap)                                                            \
+                arr[--cap].state = NONE;                                       \
                                                                                \
         return arr;                                                            \
 }                                                                              \
