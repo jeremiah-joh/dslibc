@@ -20,6 +20,7 @@
 #define INIT_SIZE 4
 
 #define NEXT(i, c) (((i) + 1) % (c))
+#define THREE_FOURTH(i) ((i - (i >> 2))) /* i - (i / 4) == i * 3 / 4*/
 
 #define INIT_HT_TYPE(name, type)                                               \
 struct ht_##name##_node {                                                      \
@@ -53,6 +54,20 @@ int ht_##name##_next(struct ht_##name##_iter *, type *);                       \
 extern int _ht_##name##_type
 
 #define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                      \
+static struct ht_##name##_node *                                               \
+ht_##name##_calloc(const size_t cap)                                           \
+{                                                                              \
+        struct ht_##name##_node *arr;                                          \
+        size_t i;                                                              \
+                                                                               \
+        if ((arr = malloc(cap * sizeof(struct ht_##name##_node))) == NULL)     \
+                return NULL;                                                   \
+        for (i = 0; i < cap; i++)                                              \
+                arr[i].state = NONE;                                           \
+                                                                               \
+        return arr;                                                            \
+}                                                                              \
+                                                                               \
 static int                                                                     \
 ht_##name##_place(struct ht_##name *ht, const type val)                        \
 {                                                                              \
@@ -97,16 +112,14 @@ ht_##name##_extend(struct ht_##name *ht)                                       \
         struct ht_##name cp;                                                   \
         size_t i;                                                              \
                                                                                \
-        if (ht->len < ht->cap)                                                 \
+        if (ht->len < THREE_FOURTH(ht->cap))                                   \
                 return 0;                                                      \
                                                                                \
         cp.cap = ht->cap ? ht->cap << 1 : INIT_SIZE;                           \
         cp.len = 0;                                                            \
                                                                                \
-        if ((cp.arr = malloc(cp.cap * sizeof(*cp.arr))) == NULL)               \
+        if ((cp.arr = ht_##name##_calloc(cp.cap)) == NULL)                     \
                 return -1;                                                     \
-	for (i = 0; i < cp.cap; i++)                                           \
-		cp.arr[i].state = NONE;                                        \
         for (i = 0; i < ht->cap; i++)                                          \
                 if (ht->arr[i].state == SOME)                                  \
                         if (ht_##name##_place(&cp, ht->arr[i].val))            \
@@ -135,11 +148,11 @@ ht_##name##_from(const type *arr, const size_t len)                            \
         struct ht_##name ht;                                                   \
         size_t i;                                                              \
                                                                                \
-        ht = ht_##name##_new();                                                \
+        ht.len = 0;                                                            \
                                                                                \
         for (ht.cap = INIT_SIZE; ht.cap < len; ht.cap <<= 1)                   \
                 ;                                                              \
-        if ((ht.arr = realloc(ht.arr, ht.cap * sizeof(*ht.arr))) == NULL)      \
+        if ((ht.arr = ht_##name##_calloc(ht.cap)) == NULL)                     \
                 return ht_##name##_new();                                      \
         for (i = 0; i < len; i++)                                              \
                 if (ht_##name##_place(&ht, arr[i]))                            \
@@ -156,10 +169,8 @@ ht_##name##_copy(const struct ht_##name *ht)                                   \
                                                                                \
         cp.cap = ht->cap;                                                      \
                                                                                \
-        if ((cp.arr = malloc(cp.cap * sizeof(*cp.arr))) == NULL)               \
+        if ((cp.arr = ht_##name##_calloc(cp.cap)) == NULL)                     \
                 return ht_##name##_new();                                      \
-        for (i = 0; i < cp.cap; i++)                                           \
-                cp.arr[i].state = NONE;                                        \
         for (i = 0; i < ht->len; i++)                                          \
                 if (ht->arr[i].state == SOME)                                  \
                         if (ht_##name##_place(&cp, ht->arr[i].val))            \
