@@ -52,8 +52,8 @@ extern int _spt_##name##_type
                                                                                \
 extern int _spt_##name##_func
 
-#define INIT_SPT_BOTH(name, type, cmp, malloc, free)
-INIT_SPT_TYPE(name, type);
+#define INIT_SPT_BOTH(name, type, cmp, malloc, free)                           \
+INIT_SPT_TYPE(name, type);                                                     \
 INIT_SPT_FUNC(name, type, cmp, malloc, free)
 
 #endif

@@ -30,7 +30,7 @@ struct bt_##name {                                                             \
 };                                                                             \
                                                                                \
 struct bt_##name##_iter {                                                      \
-        struct bt_##name##_node *cur, *prv;                                    \
+        struct bt_##name##_node *cur:                                          \
         size_t idx;                                                            \
 };                                                                             \
                                                                                \
@@ -52,10 +52,12 @@ int bt_##name##_next(struct bt_##name##_iter *, type *);                       \
                                                                                \
 extern int _bt_##name##_type
 
-#define INIT_BT_FUNC(name, type, ord, cmp, malloc, free)
+#define INIT_BT_FUNC(name, type, ord, cmp, malloc, free)                       \
+                                                                               \
+extern int _bt_##name##_func
 
-#define INIT_BT_BOTH(name, type, ord, cmp, malloc, free)
-INIT_BT_TYPE(name, type);
+#define INIT_BT_BOTH(name, type, ord, cmp, malloc, free)                       \
+INIT_BT_TYPE(name, type);                                                      \
 INIT_BT_FUNC(name, type, ord, cmp, malloc, free)
 
 #endif

@@ -49,10 +49,12 @@ int dev_##name##_next(struct dev_##name##_iter *, type *);                     \
                                                                                \
 extern int _dev_##name##_type
 
-#define INIT_DEV_FUNC(name, type, malloc, realloc, free)
+#define INIT_DEV_FUNC(name, type, malloc, realloc, free)                       \
+                                                                               \
+extern int _dev_##name##_func
 
-#define INIT_DEV_BOTH(name, type, malloc, realloc, free)
-INIT_DEV_TYPE(name, type);
+#define INIT_DEV_BOTH(name, type, malloc, realloc, free)                       \
+INIT_DEV_TYPE(name, type);                                                     \
 INIT_DEV_FUNC(name, type, malloc, realloc, free)
 
 #endif

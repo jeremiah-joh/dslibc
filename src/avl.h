@@ -51,10 +51,12 @@ int avl_##name##_next(struct avl_##name##_iter *, type *);                     \
                                                                                \
 extern int _avl_##name##_type
 
-#define INIT_AVL_FUNC(name, type, cmp, malloc, free)
+#define INIT_AVL_FUNC(name, type, cmp, malloc, free)                           \
+                                                                               \
+extern int _avl_##name##_func
 
-#define INIT_AVL_BOTH(name, type, cmp, malloc, free)
-INIT_AVL_TYPE(name, type);
+#define INIT_AVL_BOTH(name, type, cmp, malloc, free)                           \
+INIT_AVL_TYPE(name, type);                                                     \
 INIT_AVL_FUNC(name, type, cmp, malloc, free)
 
 #endif
