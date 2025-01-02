@@ -1,7 +1,7 @@
 Vector
 ======
 
-A growable array that implements a stack.
+A growable array that implements stack.
 
 INIT_VEC_TYPE(name, type)
 -------------------------

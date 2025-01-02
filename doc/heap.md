@@ -1,7 +1,7 @@
-Heap
-====
+Binary Heap
+===========
 
-A heap that implements priority queue.
+A binary heap that implements priority queue.
 
 INIT_HEAP_TYPE(name, type)
 --------------------------
