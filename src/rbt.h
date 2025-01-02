@@ -139,13 +139,13 @@ static struct rbt_##name##_node *                                              \
 rbt_##name##_match(struct rbt_##name *rbt, const type val)                     \
 {                                                                              \
         struct rbt_##name##_node *tmp;                                         \
-        int dir;                                                               \
+        int res;                                                               \
                                                                                \
-        for (tmp = rbt->root; tmp; tmp = tmp->kid[dir > 0])                    \
-                if ((dir = cmp(val, tmp->val)) == 0)                           \
+        for (tmp = rbt->root; tmp; tmp = tmp->kid[res > 0])                    \
+                if ((res = cmp(val, tmp->val)) == 0)                           \
                         return tmp;                                            \
                                                                                \
-        return tmp;                                                            \
+        return NULL;                                                           \
 }                                                                              \
                                                                                \
 struct rbt_##name                                                              \
