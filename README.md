@@ -48,8 +48,8 @@ make install
 ```
 
 This will install the header files under `/usr/local/include`.
-You could change the path where header files are installed by editing `config.h`
-file.
+You could change the path where header files are installed by editing
+`config.mk` file.
 
 Usage
 -----
