@@ -231,6 +231,4 @@ INIT_MAX_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
 INIT_HEAP_TYPE(name, type);                                                    \
 INIT_MIN_HEAP_FUNC(name, type, cmp, malloc, realloc, free)
 
-#define FOR_EACH_HEAP(name, elem, iter) while (!heap_##name##_next(&iter, &elem))
-
 #endif

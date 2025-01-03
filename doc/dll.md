@@ -396,28 +396,3 @@ iter = dll_int_iter(&dll);
 
 dll_int_next(&iter, &val);
 ```
-
-FOR_EACH_DLL(name, elem, iter)
-------------------------------
-
-Traverses each elements in `iter` of linked list.
-
-```c
-#include "dll.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-INIT_DLL_BOTH(int, int, malloc, free);
-
-struct dll_int dll;
-struct dll_int_iter iter;
-int arr[] = { 0, 1, 2, 3, 4 };
-int val;
-
-dll = dll_int_from(arr, 5);
-iter = dll_int_iter(&dll);
-
-FOR_EACH_DLL(int, val, iter) {
-	printf("%d\n", val);
-}
-```

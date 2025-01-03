@@ -353,28 +353,3 @@ iter = vec_int_iter(&vec);
 
 vec_int_next(&iter, &val);
 ```
-
-FOR_EACH_VEC(name, elem, iter)
-------------------------------
-
-Traverses each elements in `iter` of vector.
-
-```c
-#include "vec.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-INIT_VEC_BOTH(int, int, malloc, realloc, free);
-
-struct vec_int vec;
-struct vec_int_iter iter;
-int arr[] = { 0, 1, 2, 3, 4 };
-int val;
-
-vec = vec_int_from(arr, 5);
-iter = vec_int_iter(&vec);
-
-FOR_EACH_VEC(int, val, iter) {
-	printf("%d\n", val);
-}
-```

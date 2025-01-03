@@ -279,6 +279,4 @@ extern int _ht_##name##_func
 INIT_HT_TYPE(name, type);                                                      \
 INIT_HT_FUNC(name, type, hash, cmp, malloc, free)
 
-#define FOR_EACH_HT(name, elem, iter) while (!ht_##name##_next(&iter, &elem))
-
 #endif

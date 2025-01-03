@@ -314,31 +314,3 @@ iter = ht_int_iter(&ht);
 
 ht_int_next(&iter, &val);
 ```
-
-FOR_EACH_HT(name, elem, iter)
------------------------------
-
-Traverses each elements in `iter` of hash table.
-
-```c
-#include "ht.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-int hash(int x) { /* some hash function */ }
-int cmp(int x, int y) { return x - y; }
-
-INIT_HT_BOTH(int, int, malloc, free);
-
-struct ht_int ht;
-struct ht_int_iter iter;
-int arr[] = { 0, 1, 2, 3, 4 };
-int val;
-
-ht = ht_int_from(arr, 5);
-iter = ht_int_iter(&ht);
-
-FOR_EACH_HT(int, val, iter) {
-	printf("%d\n", val);
-}
-```

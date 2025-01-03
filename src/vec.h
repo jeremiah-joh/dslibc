@@ -268,6 +268,4 @@ extern int _vec_##name##_func
 INIT_VEC_TYPE(name, type);                                                     \
 INIT_VEC_FUNC(name, type, malloc, realloc, free)
 
-#define FOR_EACH_VEC(name, elem, iter) while (!vec_##name##_next(&iter, &elem))
-
 #endif

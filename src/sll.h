@@ -310,6 +310,4 @@ extern int _sll_##name##_func
 INIT_SLL_TYPE(name, type);                                                     \
 INIT_SLL_FUNC(name, type, malloc, free)
 
-#define FOR_EACH_SLL(name, elem, iter) while (!sll_##name##_next(&iter, &elem))
-
 #endif

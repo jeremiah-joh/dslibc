@@ -353,28 +353,3 @@ iter = sll_int_iter(&sll);
 
 sll_int_next(&iter, &val);
 ```
-
-FOR_EACH_SLL(name, elem, iter)
-------------------------------
-
-Traverses each elements in `iter` of linked list.
-
-```c
-#include "sll.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-INIT_SLL_BOTH(int, int, malloc, free);
-
-struct sll_int sll;
-struct sll_int_iter iter;
-int arr[] = { 0, 1, 2, 3, 4 };
-int val;
-
-sll = sll_int_from(arr, 5);
-iter = sll_int_iter(&sll);
-
-FOR_EACH_SLL(int, val, iter) {
-	printf("%d\n", val);
-}
-```

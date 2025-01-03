@@ -327,30 +327,3 @@ iter = heap_int_iter(&heap);
 
 heap_int_next(&iter, &val);
 ```
-
-FOR_EACH_MAX_HEAP(name, elem, iter)
-------------------------------
-
-Traverses each elements in `iter` of heap.
-
-```c
-#include "heap.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-int cmp(int x, int y) { return x - y; }
-
-INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free);
-
-struct heap_int heap;
-struct heap_int_iter iter;
-int arr[] = { 0, 1, 2, 3, 4 };
-int val;
-
-heap = heap_int_from(arr, 5);
-iter = heap_int_iter(&heap);
-
-FOR_EACH_HEAP(int, val, iter) {
-	printf("%d\n", val);
-}
-```
