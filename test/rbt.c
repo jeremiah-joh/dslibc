@@ -79,6 +79,33 @@ test_insert(void)
 }
 
 static void
+test_remove(void)
+{
+	struct rbt_int rbt;
+	int i, v;
+
+	rbt = rbt_int_new();
+
+	srand(1024);
+	for (i = 0; i < 1024; i++) {
+		v = rand() % 1024;
+		assert(rbt_int_insert(&rbt, v) == 0);
+		verify(&rbt);
+	}
+	
+	srand(1024);
+	for (i = 0; i < 1024; i++) {
+		v = rand() % 1024;
+		printf("remove: %d\n", v);
+		assert(rbt_int_remove(&rbt, &v) == 0);
+		verify(&rbt);
+	}
+
+	assert(rbt.root == NULL);
+	assert(rbt.len == 0);
+}
+
+static void
 test_free(void)
 {
 	struct rbt_int rbt;
@@ -88,7 +115,8 @@ test_free(void)
 
 	rbt_int_free(&rbt);
 
-	assert(rbt.root == NULL && rbt.len == 0);
+	assert(rbt.root == NULL);
+	assert(rbt.len == 0);
 }
 
 static void
@@ -119,6 +147,7 @@ int
 main(void)
 {
 	test_insert();
+	test_remove();
 	test_free();
 	test_next();
 
