@@ -12,8 +12,6 @@ all:
 	./heap
 	$(CC) $(CFLAGS) -o ht ht.c -g
 	./ht
-	$(CC) $(CFLAGS) -o rbt rbt.c -g
-	./rbt
 
 clean:
-	rm -f vec sll dll heap ht rbt
+	rm -f vec sll dll heap ht
