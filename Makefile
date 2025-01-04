@@ -12,10 +12,10 @@ help:
 	@echo "       make install"
 	@echo "       make uninstall"
 
-dist: clean
+dist:
 	mkdir -p dslibc-$(VERSION)
 	cp -r LICENSE Makefile README.md config.mk\
-		doc/ src/ test/ dslibc-$(VERSION)
+		doc/ src/*.h test/*.c dslibc-$(VERSION)
 	tar -cf - dslibc-$(VERSION) | gzip > dslibc-$(VERSION).tar.gz
 	rm -rf dslibc-$(VERSION)
 
