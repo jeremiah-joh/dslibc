@@ -16,7 +16,6 @@
 #define _HEAP_H
 
 #include <stddef.h>
-#include <string.h>
 
 #define PARENT(i) (((i) - 1) >> 1)
 

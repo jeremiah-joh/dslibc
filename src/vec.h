@@ -16,7 +16,6 @@
 #define _VEC_H
 
 #include <stddef.h>
-#include <string.h>
 
 #define INIT_VEC_TYPE(name, type)                                              \
 struct vec_##name {                                                            \
@@ -79,13 +78,15 @@ struct vec_##name                                                              \
 vec_##name##_from(const type *arr, const size_t len)                           \
 {                                                                              \
         struct vec_##name vec;                                                 \
+        size_t i;                                                              \
                                                                                \
         for (vec.cap = 1; vec.cap < len; vec.cap <<= 1)                        \
                 ;                                                              \
         if ((vec.arr = malloc(vec.cap * sizeof(type))) == NULL)                \
                 return vec_##name##_new();                                     \
+        for (i = 0; i < len; i++)                                              \
+                vec.arr[i] = arr[i];                                           \
                                                                                \
-        memcpy(vec.arr, arr, len * sizeof(type));                              \
         vec.len = len;                                                         \
                                                                                \
         return vec;                                                            \
@@ -95,11 +96,13 @@ struct vec_##name                                                              \
 vec_##name##_copy(const struct vec_##name *vec)                                \
 {                                                                              \
         struct vec_##name cpy;                                                 \
+        size_t i;                                                              \
                                                                                \
         if ((cpy.arr = malloc(vec->cap * sizeof(type))) == NULL)               \
                 return vec_##name##_new();                                     \
+        for (i = 0; i < vec->cap; i++)                                         \
+                cpy.arr[i] = vec->arr[i];                                      \
                                                                                \
-        memcpy(cpy.arr, vec->arr, vec->cap * sizeof(type));                    \
         cpy.cap = vec->cap;                                                    \
         cpy.len = vec->len;                                                    \
                                                                                \
@@ -159,14 +162,17 @@ vec_##name##_set(struct vec_##name *vec, const type val, const size_t idx)     \
 int                                                                            \
 vec_##name##_append(struct vec_##name *vec, const type *arr, const size_t len) \
 {                                                                              \
+        size_t i;                                                              \
+                                                                               \
         if (arr == NULL || len == 0)                                           \
                 return 0;                                                      \
         if (vec->arr == NULL)                                                  \
                 return -1;                                                     \
         if (vec_##name##_extend(vec, vec->len + len))                          \
                 return -1;                                                     \
+        for (i = 0; i < len; i++)                                              \
+                vec->arr[i + vec->len] = arr[i];                               \
                                                                                \
-        memcpy(vec->arr + vec->len, arr, len * sizeof(type));                  \
         vec->len += len;                                                       \
                                                                                \
         return 0;                                                              \
@@ -175,16 +181,17 @@ vec_##name##_append(struct vec_##name *vec, const type *arr, const size_t len) \
 int                                                                            \
 vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx)  \
 {                                                                              \
+        size_t i;                                                              \
+                                                                               \
         if (vec->arr == NULL)                                                  \
                 return -1;                                                     \
         if (vec->len < idx)                                                    \
                 return -1;                                                     \
         if (vec_##name##_extend(vec, vec->len + 1))                            \
                 return -1;                                                     \
+        for (i = vec->len; i > idx; i--)                                       \
+                vec->arr[i] = vec->arr[i - 1];                                 \
                                                                                \
-        memmove(vec->arr + idx + 1,                                            \
-                vec->arr + idx,                                                \
-                (vec->len - idx) * sizeof(type));                              \
         vec->arr[idx] = val;                                                   \
         vec->len++;                                                            \
                                                                                \
@@ -194,16 +201,17 @@ vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx)  \
 int                                                                            \
 vec_##name##_remove(struct vec_##name *vec, type *val, const size_t idx)       \
 {                                                                              \
+        size_t i;                                                              \
+                                                                               \
         if (vec->arr == NULL)                                                  \
                 return -1;                                                     \
         if (vec->len <= idx)                                                   \
                 return -1;                                                     \
         if (val)                                                               \
                 *val = vec->arr[idx];                                          \
+        for (i = idx; i < vec->len - 1; i++)                                   \
+                vec->arr[i] = vec->arr[i + 1];                                 \
                                                                                \
-        memmove(vec->arr + idx,                                                \
-                vec->arr + idx + 1,                                            \
-                (vec->len - idx) * sizeof(type));                              \
         vec->len--;                                                            \
                                                                                \
         return 0;                                                              \
