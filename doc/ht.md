@@ -3,6 +3,15 @@ Hash Table
 
 A hash table that implements dictionary.
 
+Each macro parameters mean:
+
+* name - the name of data structure.
+* type - the type that data structure stores.
+* cmp - comparison function that returns subtraction of two inputs of `type`.
+* hash - hash function that returns `unsigned long`.
+* malloc - memory allocation function.
+* free - memory deallocation function.
+
 INIT_HT_TYPE(name, type)
 ------------------------
 
