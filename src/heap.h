@@ -15,29 +15,27 @@
 #ifndef _HEAP_H
 #define _HEAP_H
 
-#include <stddef.h>
-
 #define PARENT(i) (((i) - 1) >> 1)
 
 #define INIT_HEAP_TYPE(name, type)                                             \
 struct heap_##name {                                                           \
         type *arr;                                                             \
-        size_t cap, len;                                                       \
+        unsigned long cap, len;                                                \
 };                                                                             \
                                                                                \
 struct heap_##name##_iter {                                                    \
         struct heap_##name *heap;                                              \
-        size_t idx;                                                            \
+        unsigned long idx;                                                     \
 };                                                                             \
                                                                                \
 struct heap_##name heap_##name##_new(void);                                    \
-struct heap_##name heap_##name##_from(const type *, const size_t);             \
+struct heap_##name heap_##name##_from(const type *, const unsigned long);      \
 struct heap_##name heap_##name##_copy(const struct heap_##name *);             \
 int heap_##name##_push(struct heap_##name *, const type);                      \
 int heap_##name##_pop(struct heap_##name *, type *);                           \
 int heap_##name##_get(struct heap_##name *, type *);                           \
 int heap_##name##_set(struct heap_##name *, const type);                       \
-size_t heap_##name##_len(struct heap_##name *);                                \
+unsigned long heap_##name##_len(struct heap_##name *);                         \
 void heap_##name##_free(struct heap_##name *);                                 \
                                                                                \
 struct heap_##name##_iter heap_##name##_iter(struct heap_##name *);            \
@@ -47,7 +45,7 @@ extern int _heap_##name##_type
 
 #define INIT_HEAP_FUNC(name, type, cmp, ord, malloc, realloc, free)            \
 static int                                                                     \
-heap_##name##_extend(struct heap_##name *heap, const size_t len)               \
+heap_##name##_extend(struct heap_##name *heap, const unsigned long len)        \
 {                                                                              \
         if (heap->len < heap->cap)                                             \
                 return 0;                                                      \
@@ -64,7 +62,7 @@ heap_##name##_extend(struct heap_##name *heap, const size_t len)               \
 static void                                                                    \
 heap_##name##_heapify(struct heap_##name *heap)                                \
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
         type tmp;                                                              \
                                                                                \
         for (i = heap->len - 1; i; i = PARENT(i)) {                            \
@@ -88,10 +86,10 @@ heap_##name##_new(void)                                                        \
 }                                                                              \
                                                                                \
 struct heap_##name                                                             \
-heap_##name##_from(const type *arr, const size_t len)                          \
+heap_##name##_from(const type *arr, const unsigned long len)                   \
 {                                                                              \
         struct heap_##name heap;                                               \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         heap = heap_##name##_new();                                            \
                                                                                \
@@ -140,7 +138,7 @@ heap_##name##_pop(struct heap_##name *heap, type *val)                         \
 int                                                                            \
 heap_##name##_get(struct heap_##name *heap, type *val)                         \
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (heap->arr == NULL || heap->cap == 0                                \
             || heap->len == 0 || val == NULL)                                  \
@@ -161,7 +159,7 @@ heap_##name##_get(struct heap_##name *heap, type *val)                         \
 int                                                                            \
 heap_##name##_set(struct heap_##name *heap, const type val)                    \
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (heap->arr == NULL || heap->cap == 0 || heap->len == 0)             \
                 return -1;                                                     \
@@ -178,7 +176,7 @@ heap_##name##_set(struct heap_##name *heap, const type val)                    \
         return -1;                                                             \
 }                                                                              \
                                                                                \
-size_t                                                                         \
+unsigned long                                                                  \
 heap_##name##_len(struct heap_##name *heap)                                    \
 {                                                                              \
         return heap->len;                                                      \

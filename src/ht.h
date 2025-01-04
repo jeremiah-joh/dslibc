@@ -15,8 +15,6 @@
 #ifndef _HT_H
 #define _HT_H
 
-#include <stddef.h>
-
 #define INIT_SIZE 4
 
 #define NEXT(i, c) (((i) + 1) % (c))
@@ -30,22 +28,22 @@ struct ht_##name##_node {                                                      \
                                                                                \
 struct ht_##name {                                                             \
         struct ht_##name##_node *arr;                                          \
-        size_t cap, len;                                                       \
+        unsigned long cap, len;                                                \
 };                                                                             \
                                                                                \
 struct ht_##name##_iter {                                                      \
         struct ht_##name *ht;                                                  \
-        size_t idx;                                                            \
+        unsigned long idx;                                                     \
 };                                                                             \
                                                                                \
 struct ht_##name ht_##name##_new(void);                                        \
-struct ht_##name ht_##name##_from(const type *, const size_t);                 \
+struct ht_##name ht_##name##_from(const type *, const unsigned long);          \
 struct ht_##name ht_##name##_copy(const struct ht_##name *);                   \
 int ht_##name##_get(struct ht_##name *, type *);                               \
 int ht_##name##_set(struct ht_##name *, const type);                           \
 int ht_##name##_insert(struct ht_##name *, const type);                        \
 int ht_##name##_remove(struct ht_##name *, type *);                            \
-size_t ht_##name##_len(struct ht_##name *);                                    \
+unsigned long ht_##name##_len(struct ht_##name *);                             \
 void ht_##name##_free(struct ht_##name *);                                     \
                                                                                \
 struct ht_##name##_iter ht_##name##_iter(struct ht_##name *);                  \
@@ -55,7 +53,7 @@ extern int _ht_##name##_type
 
 #define INIT_HT_FUNC(name, type, hash, cmp, malloc, free)                      \
 static struct ht_##name##_node *                                               \
-ht_##name##_calloc(size_t cap)                                                 \
+ht_##name##_calloc(unsigned long cap)                                          \
 {                                                                              \
         struct ht_##name##_node *arr;                                          \
                                                                                \
@@ -70,7 +68,7 @@ ht_##name##_calloc(size_t cap)                                                 \
 static int                                                                     \
 ht_##name##_place(struct ht_##name *ht, const type val)                        \
 {                                                                              \
-        size_t h, i;                                                           \
+        unsigned long h, i;                                                    \
                                                                                \
         i = h = hash(val) & (ht->cap - 1);                                     \
         while (ht->arr[i].state == SOME)                                       \
@@ -84,10 +82,10 @@ ht_##name##_place(struct ht_##name *ht, const type val)                        \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-static size_t                                                                  \
+static unsigned long                                                           \
 ht_##name##_match(struct ht_##name *ht, const type val)                        \
 {                                                                              \
-        size_t h, i;                                                           \
+        unsigned long h, i;                                                    \
                                                                                \
         h = hash(val) & (ht->cap - 1);                                         \
         for (i = h; NEXT(i, ht->cap) != h; i = NEXT(i, ht->cap)) {             \
@@ -109,7 +107,7 @@ static int                                                                     \
 ht_##name##_extend(struct ht_##name *ht)                                       \
 {                                                                              \
         struct ht_##name cp;                                                   \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (ht->len < THREE_FOURTH(ht->cap))                                   \
                 return 0;                                                      \
@@ -142,10 +140,10 @@ ht_##name##_new(void)                                                          \
 }                                                                              \
                                                                                \
 struct ht_##name                                                               \
-ht_##name##_from(const type *arr, const size_t len)                            \
+ht_##name##_from(const type *arr, const unsigned long len)                     \
 {                                                                              \
         struct ht_##name ht;                                                   \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         ht.len = 0;                                                            \
                                                                                \
@@ -164,7 +162,7 @@ struct ht_##name                                                               \
 ht_##name##_copy(const struct ht_##name *ht)                                   \
 {                                                                              \
         struct ht_##name cp;                                                   \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         cp.cap = ht->cap;                                                      \
                                                                                \
@@ -181,7 +179,7 @@ ht_##name##_copy(const struct ht_##name *ht)                                   \
 int                                                                            \
 ht_##name##_get(struct ht_##name *ht, type *val)                               \
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (ht->arr == NULL || ht->cap == 0 || ht->len == 0 || val == NULL)    \
                 return -1;                                                     \
@@ -196,7 +194,7 @@ ht_##name##_get(struct ht_##name *ht, type *val)                               \
 int                                                                            \
 ht_##name##_set(struct ht_##name *ht, const type val)                          \
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (ht->arr == NULL || ht->cap == 0 || ht->len == 0)                   \
                 return -1;                                                     \
@@ -222,7 +220,7 @@ ht_##name##_insert(struct ht_##name *ht, const type val)                       \
 int                                                                            \
 ht_##name##_remove(struct ht_##name *ht, type *val)                            \
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (ht->arr == NULL || ht->cap == 0 || ht->len == 0 || val == NULL)    \
                 return -1;                                                     \
@@ -236,7 +234,7 @@ ht_##name##_remove(struct ht_##name *ht, type *val)                            \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-size_t                                                                         \
+unsigned long                                                                  \
 ht_##name##_len(struct ht_##name *ht)                                          \
 {                                                                              \
         return ht->len;                                                        \

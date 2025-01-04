@@ -15,31 +15,31 @@
 #ifndef _VEC_H
 #define _VEC_H
 
-#include <stddef.h>
-
 #define INIT_VEC_TYPE(name, type)                                              \
 struct vec_##name {                                                            \
         type *arr;                                                             \
-        size_t cap, len;                                                       \
+        unsigned long cap, len;                                                \
 };                                                                             \
                                                                                \
 struct vec_##name##_iter {                                                     \
         struct vec_##name *vec;                                                \
-        size_t idx;                                                            \
+        unsigned long idx;                                                     \
 };                                                                             \
                                                                                \
 struct vec_##name vec_##name##_new(void);                                      \
-struct vec_##name vec_##name##_from(const type *, const size_t);               \
+struct vec_##name vec_##name##_from(const type *, const unsigned long);        \
 struct vec_##name vec_##name##_copy(const struct vec_##name *);                \
 int vec_##name##_push(struct vec_##name *, const type);                        \
 int vec_##name##_pop(struct vec_##name *, type *);                             \
-int vec_##name##_get(struct vec_##name *, type *, const size_t);               \
-int vec_##name##_set(struct vec_##name *, const type, const size_t);           \
-int vec_##name##_append(struct vec_##name *, const type *, const size_t);      \
-int vec_##name##_insert(struct vec_##name *, const type, const size_t);        \
-int vec_##name##_remove(struct vec_##name *, type *, const size_t);            \
-int vec_##name##_shrink(struct vec_##name *, const size_t);                    \
-size_t vec_##name##_len(struct vec_##name *);                                  \
+int vec_##name##_get(struct vec_##name *, type *, const unsigned long);        \
+int vec_##name##_set(struct vec_##name *, const type, const unsigned long);    \
+int vec_##name##_append(struct vec_##name *,                                   \
+                        const type *,                                          \
+                        const unsigned long);                                  \
+int vec_##name##_insert(struct vec_##name *, const type, const unsigned long); \
+int vec_##name##_remove(struct vec_##name *, type *, const unsigned long);     \
+int vec_##name##_shrink(struct vec_##name *, const unsigned long);             \
+unsigned long vec_##name##_len(struct vec_##name *);                           \
 void vec_##name##_free(struct vec_##name *);                                   \
                                                                                \
 struct vec_##name##_iter vec_##name##_iter(struct vec_##name *);               \
@@ -49,7 +49,7 @@ extern int _vec_##name##_type
 
 #define INIT_VEC_FUNC(name, type, malloc, realloc, free)                       \
 static int                                                                     \
-vec_##name##_extend(struct vec_##name *vec, const size_t len)                  \
+vec_##name##_extend(struct vec_##name *vec, const unsigned long len)           \
 {                                                                              \
         if (vec->len < vec->cap)                                               \
                 return 0;                                                      \
@@ -75,10 +75,10 @@ vec_##name##_new(void)                                                         \
 }                                                                              \
                                                                                \
 struct vec_##name                                                              \
-vec_##name##_from(const type *arr, const size_t len)                           \
+vec_##name##_from(const type *arr, const unsigned long len)                    \
 {                                                                              \
         struct vec_##name vec;                                                 \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         for (vec.cap = 1; vec.cap < len; vec.cap <<= 1)                        \
                 ;                                                              \
@@ -96,7 +96,7 @@ struct vec_##name                                                              \
 vec_##name##_copy(const struct vec_##name *vec)                                \
 {                                                                              \
         struct vec_##name cpy;                                                 \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if ((cpy.arr = malloc(vec->cap * sizeof(type))) == NULL)               \
                 return vec_##name##_new();                                     \
@@ -134,7 +134,7 @@ vec_##name##_pop(struct vec_##name *vec, type *val)                            \
 }                                                                              \
                                                                                \
 int                                                                            \
-vec_##name##_get(struct vec_##name *vec, type *val, const size_t idx)          \
+vec_##name##_get(struct vec_##name *vec, type *val, const unsigned long idx)   \
 {                                                                              \
         if (vec->arr == NULL || vec->cap == 0 || vec->len == 0)                \
                 return -1;                                                     \
@@ -147,7 +147,9 @@ vec_##name##_get(struct vec_##name *vec, type *val, const size_t idx)          \
 }                                                                              \
                                                                                \
 int                                                                            \
-vec_##name##_set(struct vec_##name *vec, const type val, const size_t idx)     \
+vec_##name##_set(struct vec_##name *vec,                                       \
+                 const type val,                                               \
+                 const unsigned long idx)                                      \
 {                                                                              \
         if (vec->arr == NULL || vec->cap == 0 || vec->len == 0)                \
                 return -1;                                                     \
@@ -160,9 +162,11 @@ vec_##name##_set(struct vec_##name *vec, const type val, const size_t idx)     \
 }                                                                              \
                                                                                \
 int                                                                            \
-vec_##name##_append(struct vec_##name *vec, const type *arr, const size_t len) \
+vec_##name##_append(struct vec_##name *vec,                                    \
+                    const type *arr,                                           \
+                    const unsigned long len)                                   \
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (arr == NULL || len == 0)                                           \
                 return 0;                                                      \
@@ -179,9 +183,11 @@ vec_##name##_append(struct vec_##name *vec, const type *arr, const size_t len) \
 }                                                                              \
                                                                                \
 int                                                                            \
-vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx)  \
+vec_##name##_insert(struct vec_##name *vec,                                    \
+                    const type val,                                            \
+                    const unsigned long idx)                                   \
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (vec->arr == NULL)                                                  \
                 return -1;                                                     \
@@ -199,9 +205,9 @@ vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx)  \
 }                                                                              \
                                                                                \
 int                                                                            \
-vec_##name##_remove(struct vec_##name *vec, type *val, const size_t idx)       \
+vec_##name##_remove(struct vec_##name *vec, type *val, const unsigned long idx)\
 {                                                                              \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         if (vec->arr == NULL)                                                  \
                 return -1;                                                     \
@@ -218,7 +224,7 @@ vec_##name##_remove(struct vec_##name *vec, type *val, const size_t idx)       \
 }                                                                              \
                                                                                \
 int                                                                            \
-vec_##name##_shrink(struct vec_##name *vec, const size_t len)                  \
+vec_##name##_shrink(struct vec_##name *vec, const unsigned long len)           \
 {                                                                              \
         if (vec->arr == NULL)                                                  \
                 return -1;                                                     \
@@ -234,7 +240,7 @@ vec_##name##_shrink(struct vec_##name *vec, const size_t len)                  \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-size_t                                                                         \
+unsigned long                                                                  \
 vec_##name##_len(struct vec_##name *vec)                                       \
 {                                                                              \
         return vec->len;                                                       \

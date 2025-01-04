@@ -15,8 +15,6 @@
 #ifndef _SLL_H
 #define _SLL_H
 
-#include <stddef.h>
-
 #define INIT_SLL_TYPE(name, type)                                              \
 struct sll_##name##_node {                                                     \
         type val;                                                              \
@@ -25,7 +23,7 @@ struct sll_##name##_node {                                                     \
                                                                                \
 struct sll_##name {                                                            \
         struct sll_##name##_node *beg, *end;                                   \
-        size_t len;                                                            \
+        unsigned long len;                                                     \
 };                                                                             \
                                                                                \
 struct sll_##name##_iter {                                                     \
@@ -33,17 +31,17 @@ struct sll_##name##_iter {                                                     \
 };                                                                             \
                                                                                \
 struct sll_##name sll_##name##_new(void);                                      \
-struct sll_##name sll_##name##_from(const type *, const size_t);               \
+struct sll_##name sll_##name##_from(const type *, const unsigned long);        \
 struct sll_##name sll_##name##_copy(const struct sll_##name *);                \
 int sll_##name##_push(struct sll_##name *, const type);                        \
 int sll_##name##_pop(struct sll_##name *, type *);                             \
-int sll_##name##_get(struct sll_##name *, type *, const size_t);               \
-int sll_##name##_set(struct sll_##name *, const type, const size_t);           \
+int sll_##name##_get(struct sll_##name *, type *, const unsigned long);        \
+int sll_##name##_set(struct sll_##name *, const type, const unsigned long);    \
 int sll_##name##_append(struct sll_##name *, struct sll_##name *);             \
-int sll_##name##_insert(struct sll_##name *, const type, const size_t);        \
-int sll_##name##_remove(struct sll_##name *, type *, const size_t);            \
-int sll_##name##_shrink(struct sll_##name *, const size_t);                    \
-size_t sll_##name##_len(struct sll_##name *);                                  \
+int sll_##name##_insert(struct sll_##name *, const type, const unsigned long); \
+int sll_##name##_remove(struct sll_##name *, type *, const unsigned long);     \
+int sll_##name##_shrink(struct sll_##name *, const unsigned long);             \
+unsigned long sll_##name##_len(struct sll_##name *);                           \
 void sll_##name##_free(struct sll_##name *);                                   \
                                                                                \
 struct sll_##name##_iter sll_##name##_iter(struct sll_##name *);               \
@@ -67,7 +65,7 @@ sll_##name##_node(const type val)                                              \
 }                                                                              \
                                                                                \
 static struct sll_##name##_node *                                              \
-sll_##name##_ptr(struct sll_##name *sll, size_t idx)                           \
+sll_##name##_ptr(struct sll_##name *sll, unsigned long idx)                    \
 {                                                                              \
         struct sll_##name##_node *cur;                                         \
                                                                                \
@@ -100,10 +98,10 @@ sll_##name##_new(void)                                                         \
 }                                                                              \
                                                                                \
 struct sll_##name                                                              \
-sll_##name##_from(const type *arr, const size_t len)                           \
+sll_##name##_from(const type *arr, const unsigned long len)                    \
 {                                                                              \
         struct sll_##name sll;                                                 \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         sll = sll_##name##_new();                                              \
                                                                                \
@@ -165,7 +163,7 @@ sll_##name##_pop(struct sll_##name *sll, type *val)                            \
 }                                                                              \
                                                                                \
 int                                                                            \
-sll_##name##_get(struct sll_##name *sll, type *val, const size_t idx)          \
+sll_##name##_get(struct sll_##name *sll, type *val, const unsigned long idx)   \
 {                                                                              \
         struct sll_##name##_node *cur;                                         \
                                                                                \
@@ -180,7 +178,9 @@ sll_##name##_get(struct sll_##name *sll, type *val, const size_t idx)          \
 }                                                                              \
                                                                                \
 int                                                                            \
-sll_##name##_set(struct sll_##name *sll, const type val, const size_t idx)     \
+sll_##name##_set(struct sll_##name *sll,                                       \
+                 const type val,                                               \
+                 const unsigned long idx)                                      \
 {                                                                              \
         struct sll_##name##_node *cur;                                         \
                                                                                \
@@ -207,7 +207,9 @@ sll_##name##_append(struct sll_##name *old, struct sll_##name *new)            \
 }                                                                              \
                                                                                \
 int                                                                            \
-sll_##name##_insert(struct sll_##name *sll, const type val, const size_t idx)  \
+sll_##name##_insert(struct sll_##name *sll,                                    \
+                    const type val,                                            \
+                    const unsigned long idx)                                   \
 {                                                                              \
         struct sll_##name##_node *cur, *new;                                   \
                                                                                \
@@ -228,7 +230,7 @@ sll_##name##_insert(struct sll_##name *sll, const type val, const size_t idx)  \
 }                                                                              \
                                                                                \
 int                                                                            \
-sll_##name##_remove(struct sll_##name *sll, type *val, const size_t idx)       \
+sll_##name##_remove(struct sll_##name *sll, type *val, const unsigned long idx)\
 {                                                                              \
         struct sll_##name##_node *pre, *del;                                   \
                                                                                \
@@ -250,7 +252,7 @@ sll_##name##_remove(struct sll_##name *sll, type *val, const size_t idx)       \
 }                                                                              \
                                                                                \
 int                                                                            \
-sll_##name##_shrink(struct sll_##name *sll, const size_t len)                  \
+sll_##name##_shrink(struct sll_##name *sll, const unsigned long len)           \
 {                                                                              \
         struct sll_##name##_node *pre;                                         \
                                                                                \
@@ -267,7 +269,7 @@ sll_##name##_shrink(struct sll_##name *sll, const size_t len)                  \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-size_t                                                                         \
+unsigned long                                                                  \
 sll_##name##_len(struct sll_##name *sll)                                       \
 {                                                                              \
         return sll->len;                                                       \

@@ -15,8 +15,6 @@
 #ifndef _DLL_H
 #define _DLL_H
 
-#include <stddef.h>
-
 #define INIT_DLL_TYPE(name, type)                                              \
 struct dll_##name##_node {                                                     \
         type val;                                                              \
@@ -25,7 +23,7 @@ struct dll_##name##_node {                                                     \
                                                                                \
 struct dll_##name {                                                            \
         struct dll_##name##_node *beg, *end;                                   \
-        size_t len;                                                            \
+        unsigned long len;                                                     \
 };                                                                             \
                                                                                \
 struct dll_##name##_iter {                                                     \
@@ -33,19 +31,19 @@ struct dll_##name##_iter {                                                     \
 };                                                                             \
                                                                                \
 struct dll_##name dll_##name##_new(void);                                      \
-struct dll_##name dll_##name##_from(const type *, const size_t);               \
+struct dll_##name dll_##name##_from(const type *, const unsigned long);        \
 struct dll_##name dll_##name##_copy(const struct dll_##name *);                \
 int dll_##name##_push_back(struct dll_##name *, const type);                   \
 int dll_##name##_pop_back(struct dll_##name *, type *);                        \
 int dll_##name##_push_front(struct dll_##name *, const type);                  \
 int dll_##name##_pop_front(struct dll_##name *, type *);                       \
-int dll_##name##_get(struct dll_##name *, type *, const size_t);               \
-int dll_##name##_set(struct dll_##name *, const type, const size_t);           \
+int dll_##name##_get(struct dll_##name *, type *, const unsigned long);        \
+int dll_##name##_set(struct dll_##name *, const type, const unsigned long);    \
 int dll_##name##_append(struct dll_##name *, struct dll_##name *);             \
-int dll_##name##_insert(struct dll_##name *, const type, const size_t);        \
-int dll_##name##_remove(struct dll_##name *, type *, const size_t);            \
-int dll_##name##_shrink(struct dll_##name *, const size_t);                    \
-size_t dll_##name##_len(struct dll_##name *);                                  \
+int dll_##name##_insert(struct dll_##name *, const type, const unsigned long); \
+int dll_##name##_remove(struct dll_##name *, type *, const unsigned long);     \
+int dll_##name##_shrink(struct dll_##name *, const unsigned long);             \
+unsigned long dll_##name##_len(struct dll_##name *);                           \
 void dll_##name##_free(struct dll_##name *);                                   \
                                                                                \
 struct dll_##name##_iter dll_##name##_iter(struct dll_##name *);               \
@@ -69,7 +67,7 @@ dll_##name##_node(const type val)                                              \
 }                                                                              \
                                                                                \
 static struct dll_##name##_node *                                              \
-dll_##name##_ptr(struct dll_##name *dll, size_t idx)                           \
+dll_##name##_ptr(struct dll_##name *dll, unsigned long idx)                    \
 {                                                                              \
         struct dll_##name##_node *cur;                                         \
                                                                                \
@@ -109,10 +107,10 @@ dll_##name##_new(void)                                                         \
 }                                                                              \
                                                                                \
 struct dll_##name                                                              \
-dll_##name##_from(const type *arr, const size_t len)                           \
+dll_##name##_from(const type *arr, const unsigned long len)                    \
 {                                                                              \
         struct dll_##name dll;                                                 \
-        size_t i;                                                              \
+        unsigned long i;                                                       \
                                                                                \
         dll = dll_##name##_new();                                              \
                                                                                \
@@ -215,7 +213,7 @@ dll_##name##_pop_front(struct dll_##name *dll, type *val)                      \
 }                                                                              \
                                                                                \
 int                                                                            \
-dll_##name##_get(struct dll_##name *dll, type *val, const size_t idx)          \
+dll_##name##_get(struct dll_##name *dll, type *val, const unsigned long idx)   \
 {                                                                              \
         struct dll_##name##_node *cur;                                         \
                                                                                \
@@ -228,7 +226,9 @@ dll_##name##_get(struct dll_##name *dll, type *val, const size_t idx)          \
 }                                                                              \
                                                                                \
 int                                                                            \
-dll_##name##_set(struct dll_##name *dll, const type val, const size_t idx)     \
+dll_##name##_set(struct dll_##name *dll,                                       \
+                 const type val,                                               \
+                 const unsigned long idx)                                      \
 {                                                                              \
         struct dll_##name##_node *cur;                                         \
                                                                                \
@@ -253,7 +253,9 @@ dll_##name##_append(struct dll_##name *old, struct dll_##name *new)            \
 }                                                                              \
                                                                                \
 int                                                                            \
-dll_##name##_insert(struct dll_##name *dll, const type val, const size_t idx)  \
+dll_##name##_insert(struct dll_##name *dll,                                    \
+                    const type val,                                            \
+                    const unsigned long idx)                                   \
 {                                                                              \
         struct dll_##name##_node *cur, *new;                                   \
                                                                                \
@@ -274,7 +276,7 @@ dll_##name##_insert(struct dll_##name *dll, const type val, const size_t idx)  \
 }                                                                              \
                                                                                \
 int                                                                            \
-dll_##name##_remove(struct dll_##name *dll, type *val, const size_t idx)       \
+dll_##name##_remove(struct dll_##name *dll, type *val, const unsigned long idx)\
 {                                                                              \
         struct dll_##name##_node *del;                                         \
                                                                                \
@@ -294,7 +296,7 @@ dll_##name##_remove(struct dll_##name *dll, type *val, const size_t idx)       \
 }                                                                              \
                                                                                \
 int                                                                            \
-dll_##name##_shrink(struct dll_##name *dll, const size_t len)                  \
+dll_##name##_shrink(struct dll_##name *dll, const unsigned long len)           \
 {                                                                              \
         struct dll_##name##_node *prv;                                         \
                                                                                \
@@ -311,7 +313,7 @@ dll_##name##_shrink(struct dll_##name *dll, const size_t len)                  \
         return 0;                                                              \
 }                                                                              \
                                                                                \
-size_t                                                                         \
+unsigned long                                                                  \
 dll_##name##_len(struct dll_##name *dll)                                       \
 {                                                                              \
         return dll->len;                                                       \
