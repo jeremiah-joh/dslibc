@@ -2,7 +2,7 @@ Data Structure Library for C
 ============================
 
 This library provides a collection of commonly used data structures implemented
-in C, adhering to the ISO/IEC 9899:1990 standard.
+in C89. It has minimal dependency. It works even without C standard library.
 
 **Supported Data Structures:**
 
