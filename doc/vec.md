@@ -59,7 +59,7 @@ vec = vec_int_new();
 from
 ----
 
-`struct vec_##name vec_##name##_from(const type *arr, const size_t len);`
+`struct vec_##name vec_##name##_from(const type *arr, const unsigned long len);`
 
 Allocate a vector and fill it by `arr`\`s items.
 
@@ -141,7 +141,7 @@ vec_int_pop(&vec, &val);
 get
 ---
 
-`int vec_##name##_get(struct vec_##name *vec, type *val, const size_t idx);`
+`int vec_##name##_get(struct vec_##name *vec, type *val, const unsigned long idx);`
 
 Assigns the element at `idx` into `val` in `vec`. It returs -1 as error if the
 `idx` is out of range.
@@ -163,7 +163,7 @@ vec_int_get(&vec, &val, 3);
 set
 ---
 
-`int vec_##name##_set(struct vec_##name *vec, const type val, const size_t len);`
+`int vec_##name##_set(struct vec_##name *vec, const type val, const unsigned long len);`
 
 Assigns the `val` at `idx` in `vec`. It returns -1 as error if the `idx` is out
 of range.
@@ -184,7 +184,7 @@ vec_int_get(&vec, 0, 3);
 append
 ------
 
-`int vec_##name##_append(struct vec_##name *vec, const type *arr, const size_t len);`
+`int vec_##name##_append(struct vec_##name *vec, const type *arr, const unsigned long len);`
 
 Appends an `arr` to the back of the `vec`. It returns -1 as error if memory
 reallocation is failed.
@@ -205,7 +205,7 @@ vec_int_append(&vec, arr, 5);
 insert
 ------
 
-`int vec_##name##_insert(struct vec_##name *vec, const type val, const size_t idx);`
+`int vec_##name##_insert(struct vec_##name *vec, const type val, const unsigned long idx);`
 
 Inserts the `val` to the `idx` in `vec`. It returns -1 as error if `idx` is out
 of range or memory reallocation is failed.
@@ -226,7 +226,7 @@ vec_int_insert(&vec, 2, 2);
 remove
 ------
 
-`int vec_##name##_remove(struct vec_##name *vec, type *val, const size_t idx);`
+`int vec_##name##_remove(struct vec_##name *vec, type *val, const unsigned long idx);`
 
 Removes the element at the `idx` and assigns it into `val`. It returns -1 as
 error if `idx` is out of range or memory reallocation is failed.
@@ -248,7 +248,7 @@ vec_int_remove(&vec, &val, 2);
 shrink
 ------
 
-`int vec_##name##_shrink(struct vec_##name *vec, const size_t len);`
+`int vec_##name##_shrink(struct vec_##name *vec, const unsigned long len);`
 
 Shrinks the length of `vec` to `len`. It returns -1 as erro if `len` is greater
 than the length of `vec` or memory reallocation is failed.
@@ -269,7 +269,7 @@ vec_int_shrink(&vec, 3);
 len
 ---
 
-`size_t vec_##name##_len(struct vec_##name *vec);`
+`unsigned long vec_##name##_len(struct vec_##name *vec);`
 
 Returns the length of `vec`.
 
@@ -281,7 +281,7 @@ INIT_VEC_BOTH(int, int, malloc, realloc, free);
 
 struct vec_int vec;
 int arr[] = { 0, 1, 2, 3, 4 };
-size_t len;
+unsigned long len;
 
 vec = vec_int_from(arr, 5);
 len = vec_int_len(&vec);

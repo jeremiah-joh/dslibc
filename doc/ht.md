@@ -68,7 +68,7 @@ ht = ht_int_new();
 from
 ----
 
-`struct ht_##name ht_##name##_from(const type *arr, const size_t len);`
+`struct ht_##name ht_##name##_from(const type *arr, const unsigned long len);`
 
 Constructs a hash table and fill it by `arr`\`s items.
 
@@ -220,7 +220,7 @@ ht_int_set(&ht, val);
 len
 ---
 
-`size_t ht_##name##_len(struct ht_##name *ht);`
+`unsigned long ht_##name##_len(struct ht_##name *ht);`
 
 Returns the length of `ht`.
 
@@ -235,7 +235,7 @@ INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
 
 struct ht_int ht;
 int arr[] = { 0, 1, 2, 3, 4 };
-size_t len;
+unsigned long len;
 
 ht = ht_int_from(arr, 5);
 len = ht_int_len(&ht);

@@ -59,7 +59,7 @@ sll = sll_int_new();
 from
 ----
 
-`struct sll_##name sll_##name##_from(const type *arr, const size_t len);`
+`struct sll_##name sll_##name##_from(const type *arr, const unsigned long len);`
 
 Allocate a linked list and fill it by `arr`\`s items.
 
@@ -141,7 +141,7 @@ sll_int_pop(&sll, &val);
 get
 ---
 
-`int sll_##name##_get(struct sll_##name *sll, type *val, const size_t idx);`
+`int sll_##name##_get(struct sll_##name *sll, type *val, const unsigned long idx);`
 
 Assigns the element at `idx` into `val` in `sll`. It returs -1 as error if the
 `idx` is out of range.
@@ -163,7 +163,7 @@ sll_int_get(&sll, &val, 3);
 set
 ---
 
-`int sll_##name##_set(struct sll_##name *sll, const type val, const size_t len);`
+`int sll_##name##_set(struct sll_##name *sll, const type val, const unsigned long len);`
 
 Assigns the `val` at `idx` in `sll`. It returns -1 as error if the `idx` is out
 of range.
@@ -184,7 +184,7 @@ sll_int_get(&sll, 0, 3);
 append
 ------
 
-`int sll_##name##_append(struct sll_##name *sll, const type *arr, const size_t len);`
+`int sll_##name##_append(struct sll_##name *sll, const type *arr, const unsigned long len);`
 
 Appends an `arr` to the back of the `sll`. It returns -1 as error if memory
 allocation is failed.
@@ -205,7 +205,7 @@ sll_int_append(&sll, arr, 5);
 insert
 ------
 
-`int sll_##name##_insert(struct sll_##name *sll, const type val, const size_t idx);`
+`int sll_##name##_insert(struct sll_##name *sll, const type val, const unsigned long idx);`
 
 Inserts the `val` to the `idx` in `sll`. It returns -1 as error if `idx` is out
 of range or memory allocation is failed.
@@ -226,7 +226,7 @@ sll_int_insert(&sll, 2, 2);
 remove
 ------
 
-`int sll_##name##_remove(struct sll_##name *sll, type *val, const size_t idx);`
+`int sll_##name##_remove(struct sll_##name *sll, type *val, const unsigned long idx);`
 
 Removes the element at the `idx` and assigns it into `val`. It returns -1 as
 error if `idx` is out of range or memory deallocation is failed.
@@ -248,7 +248,7 @@ sll_int_remove(&sll, &val, 2);
 shrink
 ------
 
-`int sll_##name##_shrink(struct sll_##name *sll, const size_t len);`
+`int sll_##name##_shrink(struct sll_##name *sll, const unsigned long len);`
 
 Shrinks the length of `sll` to `len`. It returns -1 as erro if `len` is greater
 than the length of `sll` or memory deallocation is failed.
@@ -269,7 +269,7 @@ sll_int_shrink(&sll, 3);
 len
 ---
 
-`size_t sll_##name##_len(struct sll_##name *sll);`
+`unsigned long sll_##name##_len(struct sll_##name *sll);`
 
 Returns the length of `sll`.
 
@@ -281,7 +281,7 @@ INIT_SLL_BOTH(int, int, malloc, free);
 
 struct sll_int sll;
 int arr[] = { 0, 1, 2, 3, 4 };
-size_t len;
+unsigned long len;
 
 sll = sll_int_from(arr, 4);
 len = sll_int_len(&sll);

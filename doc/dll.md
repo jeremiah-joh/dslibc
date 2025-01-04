@@ -59,7 +59,7 @@ dll = dll_int_new();
 from
 ----
 
-`struct dll_##name dll_##name##_from(const type *arr, const size_t len);`
+`struct dll_##name dll_##name##_from(const type *arr, const unsigned long len);`
 
 Allocate a linked list and fill it by `arr`\`s items.
 
@@ -184,7 +184,7 @@ dll_int_pop_front(&dll, &val);
 get
 ---
 
-`int dll_##name##_get(struct dll_##name *dll, type *val, const size_t idx);`
+`int dll_##name##_get(struct dll_##name *dll, type *val, const unsigned long idx);`
 
 Assigns the element at `idx` into `val` in `dll`. It returs -1 as error if the
 `idx` is out of range.
@@ -206,7 +206,7 @@ dll_int_get(&dll, &val, 3);
 set
 ---
 
-`int dll_##name##_set(struct dll_##name *dll, const type val, const size_t len);`
+`int dll_##name##_set(struct dll_##name *dll, const type val, const unsigned long len);`
 
 Assigns the `val` at `idx` in `dll`. It returns -1 as error if the `idx` is out
 of range.
@@ -227,7 +227,7 @@ dll_int_get(&dll, 0, 3);
 append
 ------
 
-`int dll_##name##_append(struct dll_##name *dll, const type *arr, const size_t len);`
+`int dll_##name##_append(struct dll_##name *dll, const type *arr, const unsigned long len);`
 
 Appends an `arr` to the back of the `dll`. It returns -1 as error if memory
 allocation is failed.
@@ -248,7 +248,7 @@ dll_int_append(&dll, arr, 5);
 insert
 ------
 
-`int dll_##name##_insert(struct dll_##name *dll, const type val, const size_t idx);`
+`int dll_##name##_insert(struct dll_##name *dll, const type val, const unsigned long idx);`
 
 Inserts the `val` to the `idx` in `dll`. It returns -1 as error if `idx` is out
 of range or memory allocation is failed.
@@ -269,7 +269,7 @@ dll_int_insert(&dll, 2, 2);
 remove
 ------
 
-`int dll_##name##_remove(struct dll_##name *dll, type *val, const size_t idx);`
+`int dll_##name##_remove(struct dll_##name *dll, type *val, const unsigned long idx);`
 
 Removes the element at the `idx` and assigns it into `val`. It returns -1 as
 error if `idx` is out of range or memory deallocation is failed.
@@ -291,7 +291,7 @@ dll_int_remove(&dll, &val, 2);
 shrink
 ------
 
-`int dll_##name##_shrink(struct dll_##name *dll, const size_t len);`
+`int dll_##name##_shrink(struct dll_##name *dll, const unsigned long len);`
 
 Shrinks the length of `dll` to `len`. It returns -1 as erro if `len` is greater
 than the length of `dll` or memory deallocation is failed.
@@ -312,7 +312,7 @@ dll_int_shrink(&dll, 3);
 len
 ---
 
-`size_t dll_##name##_len(struct dll_##name *dll);`
+`unsigned long dll_##name##_len(struct dll_##name *dll);`
 
 Returns the length of `dll`.
 
@@ -324,7 +324,7 @@ INIT_DLL_BOTH(int, int, malloc, free);
 
 struct dll_int dll;
 int arr[] = { 0, 1, 2, 3, 4 };
-size_t len;
+unsigned long len;
 
 dll = dll_int_from(arr, 4);
 len = dll_int_len(&dll);

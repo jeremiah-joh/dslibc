@@ -93,7 +93,7 @@ heap = heap_int_new();
 from
 ----
 
-`struct heap_##name heap_##name##_from(const type *arr, const size_t len);`
+`struct heap_##name heap_##name##_from(const type *arr, const unsigned long len);`
 
 Constructs a heap and fill it by `arr`\`s items.
 
@@ -235,7 +235,7 @@ heap_int_set(&heap, 3);
 len
 ---
 
-`size_t heap_##name##_len(struct heap_##name *heap);`
+`unsigned long heap_##name##_len(struct heap_##name *heap);`
 
 Returns the length of `heap`.
 
@@ -249,7 +249,7 @@ INIT_MAX_HEAP_BOTH(int, int, malloc, realloc, free);
 
 struct heap_int heap;
 int arr[] = { 0, 1, 2, 3, 4 };
-size_t len;
+unsigned long len;
 
 heap = heap_int_from(arr, 4);
 len = heap_int_len(&heap);
