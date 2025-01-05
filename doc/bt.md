@@ -24,7 +24,7 @@ Initializes structures and function prototypes.
 ```c
 #include "bt.h"
 
-INIT_BT_TYPE(int, int);
+INIT_BT_TYPE(int, int, 5);
 ```
 
 INIT_BT_FUNC(name, type, ord, cmp, malloc, free)
