@@ -34,7 +34,7 @@ Initializes function definitions.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_FUNC(int, int, hash, cmp, malloc, free);
@@ -49,7 +49,7 @@ Initializes both structures and functions.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -66,7 +66,7 @@ Constructs an empty hash table.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -87,7 +87,7 @@ Constructs a hash table and fill it by `arr`\`s items.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -109,7 +109,7 @@ Constructs a deeply copied hash table from 'ht'.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -133,7 +133,7 @@ if there is no such value.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -159,7 +159,7 @@ Assigns `val` in `ht`. It returns 0 on success, -1 if there is no such value.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -186,7 +186,7 @@ value, or memory reallocation is failed.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -213,7 +213,7 @@ or memory reallocation is failed.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -239,7 +239,7 @@ Returns the length of `ht`.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -261,7 +261,7 @@ free
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -285,7 +285,7 @@ Constructs an iterator.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
@@ -310,7 +310,7 @@ there is no value left.
 #include "ht.h"
 #include <stdlib.h>
 
-int hash(int x) { /* some hash function */ }
+unsigned long hash(int x) { /* some hash function */ }
 int cmp(int x, int y) { return x - y; }
 
 INIT_HT_BOTH(int, int, hash, cmp, malloc, free);
