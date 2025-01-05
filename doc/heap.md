@@ -5,12 +5,14 @@ A binary heap that implements priority queue.
 
 Each macro parameters mean:
 
-* name - the name of data structure.
-* type - the type that data structure stores.
-* cmp - comparison function that returns subtraction of two inputs of `type`.
-* malloc - memory allocation function.
-* realloc - memory reallocation function.
-* free - memory deallocation function.
+| parameter | description                          |
+|-----------|--------------------------------------|
+| `name`    | the name of data structure.          |
+| `type`    | the type that data structure stores. |
+| `cmp`     | returns subtraction of two inputs.   |
+| `malloc`  | memory allocation function.          |
+| `realloc` | memory reallocation function.        |
+| `free`    | memory deallocation function.        |
 
 INIT_HEAP_TYPE(name, type)
 --------------------------

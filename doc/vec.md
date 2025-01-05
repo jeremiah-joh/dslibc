@@ -5,11 +5,13 @@ A growable array that implements stack.
 
 Each macro parameters mean:
 
-* name - the name of data structure.
-* type - the type that data structure stores.
-* malloc - memory allocation function.
-* realloc - memory reallocation function.
-* free - memory deallocation function.
+| parameter | description                          |
+|-----------|--------------------------------------|
+| `name`    | the name of data structure.          |
+| `type`    | the type that data structure stores. |
+| `malloc`  | memory allocation function.          |
+| `realloc` | memory reallocation function.        |
+| `free`    | memory deallocation function.        |
 
 INIT_VEC_TYPE(name, type)
 -------------------------

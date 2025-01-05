@@ -5,10 +5,12 @@ A doubly linked list that implements double-ended queue.
 
 Each macro parameters mean:
 
-* name - the name of data structure.
-* type - the type that data structure stores.
-* malloc - memory allocation function.
-* free - memory deallocation function.
+| parameter | description                          |
+|-----------|--------------------------------------|
+| `name`    | the name of data structure.          |
+| `type`    | the type that data structure stores. |
+| `malloc`  | memory allocation function.          |
+| `free`    | memory deallocation function.        |
 
 INIT_DLL_TYPE(name, type)
 -------------------------

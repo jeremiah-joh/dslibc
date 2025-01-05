@@ -5,10 +5,12 @@ A singly linked list that implements queue.
 
 Each macro parameters mean:
 
-* name - the name of data structure.
-* type - the type that data structure stores.
-* malloc - memory allocation function.
-* free - memory deallocation function.
+| parameter | description                          |
+|-----------|--------------------------------------|
+| `name`    | the name of data structure.          |
+| `type`    | the type that data structure stores. |
+| `malloc`  | memory allocation function.          |
+| `free`    | memory deallocation function.        |
 
 INIT_SLL_TYPE(name, type)
 -------------------------
