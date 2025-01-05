@@ -1,7 +1,7 @@
 Hash Table
 ==========
 
-A hash table that implements dictionary.
+A hash table that implements unorderd dictionary.
 
 Each macro parameters mean:
 
@@ -12,7 +12,6 @@ Each macro parameters mean:
 | `cmp`     | returns subtraction of two inputs.          |
 | `hash`    | hash function that returns `unsigned long`. |
 | `malloc`  | memory allocation function.                 |
-| `realloc` | memory reallocation function.               |
 | `free`    | memory deallocation function.               |
 
 INIT_HT_TYPE(name, type)
