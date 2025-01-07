@@ -15,6 +15,10 @@
 #ifndef _SLL_H
 #define _SLL_H
 
+#ifndef NULL
+#define NULL (void *)0
+#endif
+
 #define INIT_SLL_TYPE(name, type)                                              \
 struct sll_##name##_node {                                                     \
         type val;                                                              \

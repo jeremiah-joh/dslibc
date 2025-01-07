@@ -15,6 +15,10 @@
 #ifndef _DLL_H
 #define _DLL_H
 
+#ifndef NULL
+#define NULL (void *)0
+#endif
+
 #define INIT_DLL_TYPE(name, type)                                              \
 struct dll_##name##_node {                                                     \
         type val;                                                              \

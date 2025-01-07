@@ -15,6 +15,10 @@
 #ifndef _HT_H
 #define _HT_H
 
+#ifndef NULL
+#define NULL (void *)0
+#endif
+
 #define INIT_SIZE 4
 #define NEXT(i, c) (((i) + 1) % (c))
 #define THREE_FOURTH(i) ((i) - ((i) >> 2)) /* == i - (i / 4) */

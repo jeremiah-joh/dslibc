@@ -15,6 +15,10 @@
 #ifndef _HEAP_H
 #define _HEAP_H
 
+#ifndef NULL
+#define NULL (void *)0
+#endif
+
 #define PARENT(i) (((i) - 1) >> 1)
 
 #define INIT_HEAP_TYPE(name, type)                                             \

@@ -15,6 +15,10 @@
 #ifndef _VEC_H
 #define _VEC_H
 
+#ifndef NULL
+#define NULL (void *)0
+#endif
+
 #define INIT_VEC_TYPE(name, type)                                              \
 struct vec_##name {                                                            \
         type *arr;                                                             \
