@@ -60,7 +60,7 @@ vec_##name##_extend(struct vec_##name *vec, const unsigned long len)           \
         if (vec->cap == 0)                                                     \
                 vec->cap = 1;                                                  \
         for (; vec->cap < len; vec->cap <<= 1)                                 \
-                ;                                                              \
+               /* do nothing */;                                               \
         if ((vec->arr = realloc(vec->arr, vec->cap * sizeof(type))) == NULL)   \
                 return -1;                                                     \
                                                                                \
@@ -85,7 +85,7 @@ vec_##name##_from(const type *arr, const unsigned long len)                    \
         unsigned long i;                                                       \
                                                                                \
         for (vec.cap = 1; vec.cap < len; vec.cap <<= 1)                        \
-                ;                                                              \
+               /* do nothing */;                                               \
         if ((vec.arr = malloc(vec.cap * sizeof(type))) == NULL)                \
                 return vec_##name##_new();                                     \
         for (i = 0; i < len; i++)                                              \
@@ -235,7 +235,7 @@ vec_##name##_shrink(struct vec_##name *vec, const unsigned long len)           \
         if (vec->len <= len)                                                   \
                 return 0;                                                      \
         for (vec->cap = 1; vec->cap < len; vec->cap <<= 1)                     \
-                ;                                                              \
+               /* do nothing */;                                               \
         if ((vec->arr = realloc(vec->arr, vec->cap * sizeof(type))) == NULL)   \
                 return -1;                                                     \
                                                                                \

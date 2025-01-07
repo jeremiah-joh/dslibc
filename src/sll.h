@@ -74,7 +74,7 @@ sll_##name##_ptr(struct sll_##name *sll, unsigned long idx)                    \
         struct sll_##name##_node *cur;                                         \
                                                                                \
         for (cur = sll->beg; cur && idx != 0; cur = cur->nxt, idx--)           \
-                ;                                                              \
+               /* do nothing */;                                               \
                                                                                \
         return cur;                                                            \
 }                                                                              \

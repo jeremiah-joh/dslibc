@@ -151,7 +151,7 @@ ht_##name##_from(const type *arr, const unsigned long len)                     \
         ht.len = 0;                                                            \
                                                                                \
         for (ht.cap = INIT_SIZE; ht.cap < len; ht.cap <<= 1)                   \
-                ;                                                              \
+               /* do nothing */;                                               \
         if ((ht.arr = ht_##name##_calloc(ht.cap)) == NULL)                     \
                 return ht_##name##_new();                                      \
         for (i = 0; i < len; i++)                                              \

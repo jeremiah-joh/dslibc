@@ -56,7 +56,7 @@ heap_##name##_extend(struct heap_##name *heap, const unsigned long len)        \
         if (heap->cap == 0)                                                    \
                 heap->cap = 1;                                                 \
         for (; heap->cap < len; heap->cap <<= 1)                               \
-                ;                                                              \
+               /* do nothing */;                                               \
         if ((heap->arr = realloc(heap->arr, heap->cap * sizeof(type))) == NULL)\
                 return -1;                                                     \
                                                                                \
